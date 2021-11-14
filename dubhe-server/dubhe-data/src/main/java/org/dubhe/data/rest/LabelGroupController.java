@@ -53,8 +53,8 @@ public class LabelGroupController {
     @PostMapping(value = "/labelGroup")
     @PreAuthorize(Permissions.DATA)
     public DataResponseBody create(@Validated @RequestBody LabelGroupCreateDTO labelGroupCreateDTO) {
-        labelGroupService.creatLabelGroup(labelGroupCreateDTO);
-        return new DataResponseBody();
+        Long id = labelGroupService.creatLabelGroup(labelGroupCreateDTO);
+        return new DataResponseBody(id);
     }
 
     @ApiOperation(value = "标签组分页列表")
@@ -103,8 +103,8 @@ public class LabelGroupController {
     public DataResponseBody importLabelGroup(
             @RequestParam(value = "file", required = false) MultipartFile file,
             LabelGroupImportDTO labelGroupImportDTO) {
-        labelGroupService.importLabelGroup(labelGroupImportDTO, file);
-        return new DataResponseBody();
+        Long id = labelGroupService.importLabelGroup(labelGroupImportDTO, file);
+        return new DataResponseBody(id);
     }
 
 
