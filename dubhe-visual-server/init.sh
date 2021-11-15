@@ -1,6 +1,6 @@
 #!/bin/bash
 echo '开始下载anaconda，版本Anaconda3-2020.07-Linux-x86_64 ...'
-wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
+wget https://g-youcode.oss-cn-chengdu.aliyuncs.com/Anaconda3-2020.07-Linux-x86_64.sh?versionId=CAEQShiBgMCq8faP6RciIDgyNTc5OGRmNDQ4YTQ0OGRiNzBiNzcwODgxMmVhZTg4
 
 echo '安装anaconda环境 ...'
 
