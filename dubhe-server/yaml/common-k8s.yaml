@@ -17,7 +17,7 @@ k8s:
   # 命名空间关键字
   namespace: namespace
   # k8s ingress域名 如需测试需修改为合适的域名,注意：需要为此域名配置泛域名解析到 k8s集群master节点的ip
-  host: notebooktest.dubhe.club
+  host: notebook.youcode123.com
   # k8s ingress-controller 对外port
   port: 30865
   # k8s ingress-controller 对外grpc port
@@ -25,7 +25,7 @@ k8s:
   # k8s 模型部署配置
   serving:
     # k8s 模型部署域名 如需测试需修改为合适的域名
-    host: servingtest.dubhe.club
+    host: serving.youcode123.com
     # tls 证书 crt
     tls-crt:
     # tls 证书 key
