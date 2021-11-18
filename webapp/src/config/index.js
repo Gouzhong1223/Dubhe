@@ -30,7 +30,7 @@ export const API_MODULE_NAME = {
   ATLAS: 'measure', // 模型炼知
   K8S: 'k8s', // K8S
   DCM: 'dcm', // 医学dcm
-  DUBHE_PRO: 'terminal', // 天枢专业版
+  DUBHE_PRO: 'terminal', // 凌波智能专业版
 };
 
 // 登录、注册参数配置

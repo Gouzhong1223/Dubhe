@@ -1,21 +1,13 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
+You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
+required by applicable law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. * See the License for the specific language governing permissions and * limitations under
+the License. * ============================================================= */
 
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%">
     <div class="bg">
       <div class="left" />
       <div class="right" />
@@ -36,14 +28,14 @@
             </li>
           </transition-group>
           <!-- 翻页指示器 -->
-          <ul class="indicator-item">
+          <!-- <ul class="indicator-item">
             <li
               v-for="(item, index) in loginImageList.length"
               :key="index"
               :class="{ active: index === currentIndex }"
               @click="currentIndex = index"
             ></li>
-          </ul>
+          </ul> -->
           <!--  底部  -->
           <div v-if="$store.state.settings.showFooter" id="el-login-footer">
             <span>{{ $store.state.settings.footerTxt }}</span>
@@ -57,9 +49,6 @@
       <div class="right mb-w100">
         <!-- 左侧部分 -->
         <slot />
-        <div class="footer-logo">
-          <img src="@/assets/images/dubhe-logo.svg" width="74" alt />
-        </div>
       </div>
     </div>
   </div>
@@ -73,13 +62,8 @@ export default {
       loginImageList: [
         {
           id: 0,
-          title: '交互式模型构建',
-          text: '提供云端深度学习开发环境，包含notebook和深度学习网络可视化建模',
-        },
-        {
-          id: 1,
-          title: '海量数据处理',
-          text: '提供数据集版本管理及海量数据预处理与智能标注服务，大大减少人力成本',
+          title: '人工智能实训',
+          text: '提供云端深度学习开发环境，让你进入深度学习网络可视化建模的世界',
         },
       ],
       currentIndex: 0,
@@ -159,6 +143,7 @@ export default {
     height: 100%;
     padding-bottom: 70px;
     background: #fff;
+    overflow: hidden;
   }
 }
 
@@ -180,7 +165,7 @@ export default {
       margin-left: 8.236%;
       font-size: 32px;
       line-height: 42px;
-      color: rgb(92, 92, 91);
+      color: #fff;
       letter-spacing: 4px;
       -moz-user-select: none;
       -o-user-select: none;
@@ -196,7 +181,7 @@ export default {
       font-size: 14px;
       font-size: 18px;
       line-height: 28px;
-      color: rgb(92, 92, 91);
+      color: #fff;
       letter-spacing: 2px;
       -moz-user-select: none;
       -o-user-select: none;
@@ -207,7 +192,7 @@ export default {
   }
 
   .image-item:nth-child(1) {
-    background: url('../../assets/images/loginImage1.png') no-repeat center;
+    background: url('../../assets/images/loginImg.png') no-repeat center;
     background-size: cover;
   }
 
@@ -259,7 +244,7 @@ export default {
   font-family: Arial, serif;
   font-size: 12px;
   line-height: 40px;
-  color: rgb(92, 92, 91);
+  color: #fff;
   text-align: center;
   letter-spacing: 1px;
 }

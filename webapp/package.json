@@ -1,14 +1,14 @@
 {
   "name": "dubhe-web",
   "version": "2.0.0",
-  "description": "之江天枢人工智能开源平台",
+  "description": "凌波智能人工智能平台",
   "author": "zhejianglab",
   "keywords": [
     "web",
     "vue",
     "zhejianglab",
-    "之江天枢",
-    "人工智能"
+    "凌波智能",
+    "人工智能平台"
   ],
   "scripts": {
     "mock": "vue-cli-service serve --mode mock --open",

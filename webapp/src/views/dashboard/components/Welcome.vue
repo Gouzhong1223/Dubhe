@@ -1,24 +1,16 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
+You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
+required by applicable law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. * See the License for the specific language governing permissions and * limitations under
+the License. * ============================================================= */
 
 <template>
   <el-card class="welcome" shadow="never">
-    <div class="welcome-title">欢迎体验天枢一站式 AI 模型开发平台</div>
+    <div class="welcome-title">欢迎体验凌波智能一站式 AI 模型开发平台</div>
     <div class="welcome-desc">
-      天枢一站式 AI 模型开发平台（简称：一站式开发平台）面向 AI
+      凌波智能一站式 AI 模型开发平台（简称：一站式开发平台）面向 AI
       模型生产的生命周期，提供了包括数据处理(数据集管理、智能标注和数据增强)、算法开发、模型训练和模型管理等功能，方便用户一站式构建
       AI 算法。
     </div>

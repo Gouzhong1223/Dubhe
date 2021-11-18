@@ -1,21 +1,13 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
+You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
+required by applicable law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. * See the License for the specific language governing permissions and * limitations under
+the License. * ============================================================= */
 
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%">
     <login-public>
       <el-form
         ref="loginForm"
@@ -25,7 +17,7 @@
         label-width="0px"
         class="login-form"
       >
-        <h2 class="title">之江天枢人工智能开源平台</h2>
+        <h2 class="title">凌波智能人工智能平台</h2>
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
@@ -52,7 +44,7 @@
             v-model="loginForm.code"
             auto-complete="off"
             placeholder="验证码"
-            style="width: 63%;"
+            style="width: 63%"
             @keyup.enter.native="handleLogin"
           >
             <i slot="prefix" class="el-input__icon el-icon-circle-check" />
@@ -66,14 +58,14 @@
             <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
             <el-button
               type="text"
-              style="float: right;"
+              style="float: right"
               @click="$router.replace({ path: '/resetpassword' })"
               >找回密码</el-button
             >
             <el-button
               v-if="loginConfig.allowRegister"
               type="text"
-              style="float: right; margin-right: 10px;"
+              style="float: right; margin-right: 10px"
               @click="$router.replace({ path: '/register' })"
               >免费注册</el-button
             >
@@ -82,9 +74,10 @@
             :loading="loading"
             type="primary"
             size="medium"
-            style="width: 100%;"
+            class="submit-btn"
             @click.native.prevent="handleLogin"
           >
+            <div class="wave"></div>
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -198,6 +191,41 @@ export default {
     width: 14px;
     height: 39px;
     margin-left: 2px;
+  }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .wave {
+      position: absolute;
+      left: -50%;
+      top: 60%;
+      width: 150px;
+      height: 200px;
+      border-top-right-radius: 100px;
+      border-top-left-radius: 100px;
+      border-bottom-right-radius: 100px;
+      border-bottom-left-radius: 90px;
+      background: #2e4fde;
+      animation: wave 10s linear infinite;
+    }
+
+    @keyframes wave {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   }
 }
 
