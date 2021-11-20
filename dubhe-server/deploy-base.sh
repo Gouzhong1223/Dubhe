@@ -6,7 +6,7 @@ ENV=$1
 SOURCE_CODE_PATH=$(cd $(dirname ${BASH_SOURCE[0]}); pwd )
 
 #harbor 地址
-HARBOR_URL=harbor.dubhe.ai
+HARBOR_URL=harbor.dubhe.com
 #harbor 用户名
 HARBOR_USERNAME=admin
 #harbor 密码
@@ -40,5 +40,5 @@ mvn_build() {
 }
 
 update_k8s_yaml() {
-  sed -i "s#harbor.test.com#${HARBOR_URL}#g;s#fsPath#${FS_PATH}#g;s#env-value#${ENV}#g;s#containerLogPath#${CONTAINER_LOG_PATH}#g;s#hostLogPath#${HOST_LOG_PATH}#g;s#gatewayNodePort#${GATEWAY_NODE_PORT}#g" ${SOURCE_CODE_PATH}/deploy/*/*
+  sed -i "s#harbor.dubhe.com#${HARBOR_URL}#g;s#fsPath#${FS_PATH}#g;s#env-value#${ENV}#g;s#containerLogPath#${CONTAINER_LOG_PATH}#g;s#hostLogPath#${HOST_LOG_PATH}#g;s#gatewayNodePort#${GATEWAY_NODE_PORT}#g" ${SOURCE_CODE_PATH}/deploy/*/*
 }

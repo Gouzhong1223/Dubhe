@@ -49,7 +49,7 @@ public class DistributeTrainApiTest {
         bo.setName("batchserving-rn-wdma9");
         bo.setNamespace("sunjd");
         bo.setSize(30);
-        bo.setImage("harbor.dubhe.ai/oneflow/oneflow-cuda:py36-v3");
+        bo.setImage("harbor.dubhe.com/oneflow/oneflow-cuda:py36-v3");
         bo.setMasterCmd("export NODE_IPS=`cat /home/hostfile.json |jq -r '.[]|.ip'|paste -d \",\" -s` && cd /workspace/Classification/cnns && rm -rf core.* && rm -rf ./output/snapshots/* && python3 of_cnn_train_val.py --train_data_dir=$DATA_ROOT/train --train_data_part_num=$TRAIN_DATA_PART_NUM --val_data_dir=$DATA_ROOT/validation --val_data_part_num=$VAL_DATA_PART_NUM --num_nodes=$NODE_NUM --node_ips=\"$NODE_IPS\" --gpu_num_per_node=$GPU_NUM_PER_NODE --model_update=\"momentum\" --learning_rate=0.256 --loss_print_every_n_iter=1 --batch_size_per_device=1 --val_batch_size_per_device=1 --num_epoch=1 --model=\"resnet50\" --model_save_dir=/model");
         bo.setMemNum(8192);
         bo.setCpuNum(4000);

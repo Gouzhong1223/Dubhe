@@ -467,7 +467,7 @@ public class PtTrainJobServiceImpl implements PtTrainJobService {
                 .setWorkspaceRequest(ptTrainJobCreateDTO.getWorkspaceRequest())
                 .setTaskIdentify(taskIdentify);
 
-        //例如：  将harbor.dubhe.ai/notebook/notebook:v1 去掉 harbor地址
+        //例如：  将harbor.dubhe.com/notebook/notebook:v1 去掉 harbor地址
         String userImageName = trimHarborAddress(ptImageAndAlgorithmVO.getImageName());
         //结果集处理
         PtTrainJob ptTrainJob = saveTrainJobTableData(ptTrainJobCreateDTO, userContextService.getCurUser(), userImageName, trainKey, baseTrainJobDTO);

@@ -46,7 +46,7 @@ spec:
       serviceAccountName: dubhe-train
       containers:
         - name: dubhe-train
-          image: harbor.test.com/dubhe/dubhe-spring-cloud-k8s:env-value
+          image: harbor.dubhe.com/dubhe/dubhe-spring-cloud-k8s:env-value
           imagePullPolicy: Always
           env:
             - name: JAR_BALL

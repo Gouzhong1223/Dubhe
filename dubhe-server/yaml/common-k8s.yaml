@@ -70,7 +70,7 @@ k8s:
     gpu: 2
 #配置harbor
 harbor:
-  address: harbor.dubhe.ai
+  address: harbor.dubhe.com
   username: admin
   password: Harbor12345
   model-name: train

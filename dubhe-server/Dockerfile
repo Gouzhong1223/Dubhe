@@ -1,4 +1,4 @@
-FROM harbor.dubhe.ai/dubhe/docker-in-docker-java8-ssh:v3
+FROM harbor.dubhe.com/dubhe/docker-in-docker-java8-ssh:v3
 RUN apk add ffmpeg
 ENV LANG=C.UTF-8
 COPY */target/*-exec.jar /dubhe/
