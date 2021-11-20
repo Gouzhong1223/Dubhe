@@ -15,7 +15,7 @@
  */
 
 <template>
-  <div class="layout-root layout-same-style" style="width: 100%;">
+  <div class="layout-root layout-same-style" style="width: 100%">
     <el-dialog
       title="图片保存选项"
       :visible.sync="dialogFormVisible"
@@ -45,7 +45,11 @@
     >
       <i class="el-icon-loading" />
     </el-dialog>
-    <el-dialog :visible.sync="operationGuide" title="操作指南" class="layout-svg">
+    <el-dialog
+      :visible.sync="operationGuide"
+      title="操作指南"
+      class="layout-svg"
+    >
       <div id="write" class="">
         <h2>
           <a name="模型结构" class="md-header-anchor" />
@@ -92,7 +96,9 @@
         <p>
           <span>2.</span>
           <strong> <span>隐藏</span></strong>
-          <span>按钮用于实现针对符合批量筛选条件节点的隐藏，但并没有改变图的结构</span>
+          <span
+            >按钮用于实现针对符合批量筛选条件节点的隐藏，但并没有改变图的结构</span
+          >
         </p>
         <p>
           <span>3.</span>
@@ -164,7 +170,9 @@
             >
           </li>
           <li>
-            <span>在图表内部拖动鼠标选择一个方形区域可进行图表局部放大，双击图表可还原</span>
+            <span
+              >在图表内部拖动鼠标选择一个方形区域可进行图表局部放大，双击图表可还原</span
+            >
           </li>
         </ol>
         <h3>
@@ -283,7 +291,9 @@
             <span>每一直方图右上角有放大缩小按钮</span>
           </li>
           <li>
-            <span>右上角矩形框为用户定制所用，选中后再按定制按钮就可以把数据迁移上用户定制上</span>
+            <span
+              >右上角矩形框为用户定制所用，选中后再按定制按钮就可以把数据迁移上用户定制上</span
+            >
           </li>
         </ol>
         <p>
@@ -297,7 +307,9 @@
             <span>每一直方图右上角有放大缩小按钮</span>
           </li>
           <li>
-            <span>右上角矩形框为用户定制所用，选中后再按定制按钮就可以把数据迁移上用户定制上</span>
+            <span
+              >右上角矩形框为用户定制所用，选中后再按定制按钮就可以把数据迁移上用户定制上</span
+            >
           </li>
         </ol>
         <h3>
@@ -386,7 +398,9 @@
             <span>可以选择维度信息</span>
           </li>
           <li>
-            <span>播放按钮可以显示出step动态的动画（这个功能对于应2，3,4-8维）</span>
+            <span
+              >播放按钮可以显示出step动态的动画（这个功能对于应2，3,4-8维）</span
+            >
           </li>
         </ol>
         <h3>
@@ -492,7 +506,9 @@
             >点击某个盒须图，请求异常点数据，在盒须图中用红色圆圈标记出来，并把颜色矩阵中对应的矩形的边界高亮</span
           >
           <span />
-          <span>异常值的上下边界也可拖拽，停止拖拽时会重新获取新范围外的异常点数据</span>
+          <span
+            >异常值的上下边界也可拖拽，停止拖拽时会重新获取新范围外的异常点数据</span
+          >
           <span />
         </p>
         <h3>
@@ -508,7 +524,9 @@
           <span>数据信息栏</span>
         </h3>
         <p>
-          <span>鼠标放到颜色矩阵或是盒须图的异常点上，显示该点所在的行、列、数值大小等</span>
+          <span
+            >鼠标放到颜色矩阵或是盒须图的异常点上，显示该点所在的行、列、数值大小等</span
+          >
         </p>
         <h3>
           <a name="数据信息栏-n817" class="md-header-anchor" />
@@ -529,11 +547,15 @@
           <span>主体界面</span>
         </h3>
         <p>
-          <span>可以将媒体数据，标量数据，统计分析数据集中到用户定制集中显示</span>
+          <span
+            >可以将媒体数据，标量数据，统计分析数据集中到用户定制集中显示</span
+          >
         </p>
         <ol start="">
           <li>
-            <span>通过点击上面信息框的勾选框，再点击用户定制图标，自动跳转到用户定制</span>
+            <span
+              >通过点击上面信息框的勾选框，再点击用户定制图标，自动跳转到用户定制</span
+            >
           </li>
           <li>
             <span>点击‘X’，会删除对应的显示组件</span>
@@ -558,7 +580,7 @@
       <div>
         <el-checkbox v-model="syncDataBool">启用同步</el-checkbox>
       </div>
-      <div style="margin-top: 10px;">
+      <div style="margin-top: 10px">
         <el-input-number
           v-model="timeSync"
           class="input-number"
@@ -599,11 +621,16 @@
                 tag="li"
                 :to="item.routerName"
                 :class="[
-                  item.id == selected || (i == initId && initFlag) ? 'category-selected' : '',
+                  item.id == selected || (i == initId && initFlag)
+                    ? 'category-selected'
+                    : '',
                 ]"
                 @click.native="change(item)"
               >
-                <i :class="['iconfont', item.icon]" :style="{ fontSize: 16 + 'px' }" />
+                <i
+                  :class="['iconfont', item.icon]"
+                  :style="{ fontSize: 16 + 'px' }"
+                />
                 <span
                   :class="[leftStyle.categoryFlage ? 'span-after' : '']"
                   :style="
@@ -628,7 +655,10 @@
           :style="{ position: 'absolute', marginLeft: item.margin }"
           @click="isHide(item)"
         >
-          <i :class="['iconfont', item.name]" :style="{ fontSize: item.size }" />
+          <i
+            :class="['iconfont', item.name]"
+            :style="{ fontSize: item.size }"
+          />
         </p>
       </div>
     </div>
@@ -637,7 +667,7 @@
       :style="{ height: rightStyle.height, width: rightStyle.width }"
     >
       <div class="layout-header layout-same-style">
-        <div :class="['same-div']" style="width: 400px;">
+        <div :class="['same-div']" style="width: 400px">
           <p
             v-for="(item, i) in icons"
             :key="i"
@@ -645,7 +675,10 @@
             :title="item.chName"
             @click="jsutTest(item.raw)"
           >
-            <i :class="['iconfont', item.name]" :style="{ fontSize: item.size }" />
+            <i
+              :class="['iconfont', item.name]"
+              :style="{ fontSize: item.size }"
+            />
           </p>
           <p :class="['tool-p']" />
           <p :class="['run-select-container']" :style="{ width: '40%' }">
@@ -671,12 +704,12 @@
             </el-select>
           </p>
         </div>
-        <div :class="['same-div']" style="width: calc(100% - 800px);" />
-        <div :class="['same-div', 'search-tag']" style="width: 400px;">
+        <div :class="['same-div']" style="width: calc(100% - 800px)" />
+        <div :class="['same-div', 'search-tag']" style="width: 400px">
           <p :class="['run-select-container']" :style="{ margin: '0 0 0 0' }">
             <i
               :class="['el-icon-refresh']"
-              style="font-size: 19px; color: whitesmoke; cursor: pointer;"
+              style="font-size: 19px; color: whitesmoke; cursor: pointer"
               @click="isClicked"
             />
             <i
@@ -692,11 +725,17 @@
       <div
         id="full-screen1"
         class="layout-content layout-same-style"
-        style="background-color: white;"
+        style="background-color: white"
       >
         <div
-          :class="['right-slider', rightRetract.retractFlage ? 'right-slider-last' : '']"
-          :style="{ right: rightRetract.setBackLeft, width: rightRetract.width }"
+          :class="[
+            'right-slider',
+            rightRetract.retractFlage ? 'right-slider-last' : '',
+          ]"
+          :style="{
+            right: rightRetract.setBackLeft,
+            width: rightRetract.width,
+          }"
         >
           <p
             v-for="item in rightSilderIcons"
@@ -704,7 +743,10 @@
             :key="item.id"
             @click="rightSilder(item)"
           >
-            <i :class="['iconfont', item.name]" :style="{ fontSize: item.size }" />
+            <i
+              :class="['iconfont', item.name]"
+              :style="{ fontSize: item.size }"
+            />
           </p>
         </div>
         <router-view
@@ -722,20 +764,21 @@
   </div>
 </template>
 <script>
-import * as d3 from 'd3';
-import { createNamespacedHelpers } from 'vuex';
-import download from '@/utils/VisualUtils/download';
-import constants from '@/utils/VisualUtils/constants';
-import { param2Obj } from '@/utils';
-import Logo from '../../layout/components/Sidebar/Logo';
+import * as d3 from 'd3'
+import { createNamespacedHelpers } from 'vuex'
+import download from '@/utils/VisualUtils/download'
+import constants from '@/utils/VisualUtils/constants'
+import { param2Obj } from '@/utils'
+import Logo from '../../layout/components/Sidebar/Logo'
 
 const {
   mapMutations: mapLayoutMutations,
   mapActions: mapLayoutActions,
   mapGetters: mapLayoutGetters,
   mapState: mapLayoutState,
-} = createNamespacedHelpers('Visual/layout');
-const { mapMutations: mapCustomMutations } = createNamespacedHelpers('Visual/custom');
+} = createNamespacedHelpers('Visual/layout')
+const { mapMutations: mapCustomMutations } =
+  createNamespacedHelpers('Visual/custom')
 
 export default {
   components: {
@@ -822,14 +865,14 @@ export default {
       ],
       sync: false,
       leftSilderIcons: [
-        {
-          value: 0,
-          name: 'icon-zuohua',
-          ref: 'left',
-          shaowFlag: true,
-          size: '25px',
-          margin: '90px',
-        },
+        // {
+        //   value: 0,
+        //   name: 'icon-zuohua',
+        //   ref: 'left',
+        //   shaowFlag: true,
+        //   size: '25px',
+        //   margin: '90px',
+        // },
         {
           value: 1,
           name: 'icon-zhegeyidinghang',
@@ -873,7 +916,7 @@ export default {
       dataSyncVisible: false, // 用来是否显示整个设定数据同步界面
       timeSync: '30',
       operationGuide: false,
-    };
+    }
   },
   computed: {
     ...mapLayoutGetters([
@@ -900,146 +943,157 @@ export default {
       this.$message({
         message: val.split('_')[0],
         type: 'error',
-      });
+      })
     },
     selectedRaw(val) {
       if (val === 'media') {
-        this.rightSilder(this.rightSilderIcons[0]);
+        this.rightSilder(this.rightSilderIcons[0])
       } else if (val === 'graph') {
-        this.rightSilder(this.rightSilderIcons[1]);
+        this.rightSilder(this.rightSilderIcons[1])
       } else if (this.screenWidth < 1000) {
-        this.rightSilder(this.rightSilderIcons[0]);
+        this.rightSilder(this.rightSilderIcons[0])
       } else if (this.screenWidth >= 1000) {
-        this.rightSilder(this.rightSilderIcons[1]);
+        this.rightSilder(this.rightSilderIcons[1])
       }
     },
     screenWidth(val) {
       if (val < 1000) {
-        this.isHide(this.leftSilderIcons[0]);
+        this.isHide(this.leftSilderIcons[0])
         if (this.selectedRaw !== 'graph') {
-          this.rightSilder(this.rightSilderIcons[0]);
+          this.rightSilder(this.rightSilderIcons[0])
         }
       }
     },
     $route() {
-      const path = this.$route.path.split('/');
-      const name = path[path.length - 1];
-      const id = this.categoryIndex.indexOf(constants.CATEGORYORDER.indexOf(name));
-      const item = this.allCategoryInform[id];
-      this.initFlag = false;
-      this.selected = item.id;
-      this.init = 1;
-      this.selectedRaw = item.rawName;
-      this.setRunCategory(item.rawName);
-      this.todoName = item.rawName;
+      const path = this.$route.path.split('/')
+      const name = path[path.length - 1]
+      const id = this.categoryIndex.indexOf(
+        constants.CATEGORYORDER.indexOf(name)
+      )
+      const item = this.allCategoryInform[id]
+      this.initFlag = false
+      this.selected = item.id
+      this.init = 1
+      this.selectedRaw = item.rawName
+      this.setRunCategory(item.rawName)
+      this.todoName = item.rawName
       // 同步更新
       if (this.syncDataBool) {
         // 开启同步
-        this.clearSync();
-        this.timingFeatchCategory([this.timeSync * 1000, this.$route.path]);
+        this.clearSync()
+        this.timingFeatchCategory([this.timeSync * 1000, this.$route.path])
       } else {
         // 关闭同步
-        this.clearSync();
+        this.clearSync()
       }
     },
     initShowPanelInfo() {
       if (this.$route.path === '/visual') {
-        this.$router.push({ path: this.initShowPanelInfo.routerName });
+        this.$router.push({ path: this.initShowPanelInfo.routerName })
       }
-      this.initId = this.initSidebarId;
+      this.initId = this.initSidebarId
     },
     userSelectRunFile() {
-      this.$forceUpdate();
-      this.value1 = this.userSelectRunFile;
+      this.$forceUpdate()
+      this.value1 = this.userSelectRunFile
     },
     value1() {
-      this.getStateStore[this.selectedRaw] = this.value1;
-      this.setUserSelectRunFile(this.value1);
+      this.getStateStore[this.selectedRaw] = this.value1
+      this.setUserSelectRunFile(this.value1)
     },
     inputValue() {},
     multipleFlag() {
-      this.isMultiple = this.multipleFlag;
+      this.isMultiple = this.multipleFlag
     },
     isMultiple() {
-      this.update = false;
+      this.update = false
       setTimeout(() => {
-        this.update = true;
-      });
+        this.update = true
+      })
     },
     initWaitingMessage() {
-      this.initWaitVisible = false;
+      this.initWaitVisible = false
       if (this.initWaitingMessage === 'error') {
         this.$alert('对不起您没有权限', '警告', {
           confirmButtonText: '确定',
           type: 'error',
-        });
+        })
       } else {
-        this.initFeatchCategory(this.$route.path);
-        this.fontSize();
+        this.initFeatchCategory(this.$route.path)
+        this.fontSize()
       }
     },
     syncDataBool() {
       if (this.syncDataBool) {
         // 开启同步
-        this.timingFeatchCategory([this.timeSync * 1000, this.$route.path]);
+        this.timingFeatchCategory([this.timeSync * 1000, this.$route.path])
       } else {
         // 关闭同步
-        this.clearSync();
+        this.clearSync()
       }
     },
     allCategoryInform() {
       if (!this.leftSilderIcons[0].shaowFlag) {
-        this.isHide(this.leftSilderIcons[0]);
+        this.isHide(this.leftSilderIcons[0])
       }
     },
   },
   created() {
-    const params = param2Obj(window.location.href);
-    if (typeof params.id === 'undefined' || typeof params.trainJobName === 'undefined') {
+    const params = param2Obj(window.location.href)
+    if (
+      typeof params.id === 'undefined' ||
+      typeof params.trainJobName === 'undefined'
+    ) {
       // 查看sessionStorage里面是否有这两个数据
       if (typeof Storage !== 'undefined') {
         if (sessionStorage.id && sessionStorage.trainJobName) {
-          params.id = sessionStorage.id;
-          params.trainJobName = sessionStorage.trainJobName;
+          params.id = sessionStorage.id
+          params.trainJobName = sessionStorage.trainJobName
         } else {
-          this.setErrorMessage(`${'没有参数 id 和 trainJobName!!!' + '_'}${new Date().getTime()}`);
+          this.setErrorMessage(
+            `${'没有参数 id 和 trainJobName!!!' + '_'}${new Date().getTime()}`
+          )
         }
       } else {
         this.setErrorMessage(
-          `${'对不起，你的浏览器不支持 web storage!!!' + '_'}${new Date().getTime()}`
-        );
+          `${
+            '对不起，你的浏览器不支持 web storage!!!' + '_'
+          }${new Date().getTime()}`
+        )
         // document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
       }
     } else {
       // 存储一份到sessionStorage里面
-      sessionStorage.id = params.id;
-      sessionStorage.trainJobName = params.trainJobName;
+      sessionStorage.id = params.id
+      sessionStorage.trainJobName = params.trainJobName
     }
     // TODO 临时解决方案，最终使用上面的方案
     // const params = {
     //   id: 'test',
     //   trainJobName: 'test',
     // };
-    this.setParams(params);
-    this.initWaitingPage(params);
+    this.setParams(params)
+    this.initWaitingPage(params)
   },
   mounted() {
     const h =
-      window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const hReal = h * 0.905 * 0.075 * 0.5;
-    this.actegoryClickStyle.divTop = `0 0 ${hReal / 2}px 0`;
-    this.actegoryClickStyle.divAim = `${hReal}px 0 0 ${hReal}px`;
-    this.actegoryClickStyle.divBottom = `0 ${hReal / 2}px 0 0`;
-    const that = this;
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight
+    const hReal = h * 0.905 * 0.075 * 0.5
+    this.actegoryClickStyle.divTop = `0 0 ${hReal / 2}px 0`
+    this.actegoryClickStyle.divAim = `${hReal}px 0 0 ${hReal}px`
+    this.actegoryClickStyle.divBottom = `0 ${hReal / 2}px 0 0`
+    const that = this
     window.onresize = () => {
       return (() => {
-        window.screenWidth = document.body.clientWidth;
-        that.screenWidth = window.screenWidth;
-      })();
-    };
-    that.screenWidth = document.body.clientWidth;
-    const secondIndex = 2;
-    this.selectedRaw = this.$route.path.split('/')[secondIndex];
+        window.screenWidth = document.body.clientWidth
+        that.screenWidth = window.screenWidth
+      })()
+    }
+    that.screenWidth = document.body.clientWidth
+    const secondIndex = 2
+    this.selectedRaw = this.$route.path.split('/')[secondIndex]
   },
   methods: {
     ...mapLayoutActions([
@@ -1059,64 +1113,64 @@ export default {
     ]),
     ...mapCustomMutations(['setData']),
     isClicked() {
-      d3.select('.el-icon-refresh').attr('class', 'el-icon-refresh anim');
+      d3.select('.el-icon-refresh').attr('class', 'el-icon-refresh anim')
       setTimeout(() => {
-        d3.select('.anim').attr('class', 'el-icon-refresh');
-      }, 5000);
+        d3.select('.anim').attr('class', 'el-icon-refresh')
+      }, 5000)
       // 手动的数据同步
-      this.timingFeatchCategoryOnce(this.$route.path);
+      this.timingFeatchCategoryOnce(this.$route.path)
     },
     change(item) {
-      this.initFlag = false;
-      this.selected = item.id;
-      this.todoName = item.rawName;
+      this.initFlag = false
+      this.selected = item.id
+      this.todoName = item.rawName
     },
     getOptions() {
-      this.options = this.initRunFile;
+      this.options = this.initRunFile
     },
     isHide(item) {
       if (item.ref === 'left') {
-        item.shaowFlag = false;
-        this.leftSilderIcons[1].shaowFlag = true;
-        this.leftStyle.width = '62px';
-        this.rightStyle.width = 'calc(100% - 62px)';
-        this.logoFlag = false;
+        item.shaowFlag = false
+        this.leftSilderIcons[1].shaowFlag = true
+        this.leftStyle.width = '62px'
+        this.rightStyle.width = 'calc(100% - 62px)'
+        this.logoFlag = false
         this.allCategoryInform.forEach((val) => {
-          val.name = '';
-        });
-        this.leftStyle.categoryFlage = true;
-        this.logoImgStyleFlage = true;
+          val.name = ''
+        })
+        this.leftStyle.categoryFlage = true
+        this.logoImgStyleFlage = true
       } else if (item.ref === 'right') {
-        item.shaowFlag = false;
-        this.leftSilderIcons[0].shaowFlag = true;
-        this.leftStyle.width = '180px';
-        this.rightStyle.width = 'calc(100% - 180px)';
-        this.logoFlag = true;
+        item.shaowFlag = false
+        this.leftSilderIcons[0].shaowFlag = true
+        this.leftStyle.width = '180px'
+        this.rightStyle.width = 'calc(100% - 180px)'
+        this.logoFlag = true
         this.allCategoryInform.forEach((val) => {
-          val.icon = val.iconCopy;
-          val.name = val.nameCopy;
-        });
-        this.leftStyle.categoryFlage = false;
-        this.logoImgStyleFlage = false;
+          val.icon = val.iconCopy
+          val.name = val.nameCopy
+        })
+        this.leftStyle.categoryFlage = false
+        this.logoImgStyleFlage = false
       }
     },
     rightSilder(item) {
       if (item.ref === 'right') {
-        item.shaowFlag = false;
-        this.rightSilderIcons[1].shaowFlag = true;
-        this.contentsStyle.leftWidth = 'calc(100% - 26px)';
-        this.contentsStyle.rightShowFlag = false;
-        this.rightRetract.setBackLeft = '0.5';
-        this.rightRetract.width = '26px';
-        this.rightRetract.retractFlage = true;
+        item.shaowFlag = false
+        this.rightSilderIcons[1].shaowFlag = true
+        this.contentsStyle.leftWidth = 'calc(100% - 26px)'
+        this.contentsStyle.rightShowFlag = false
+        this.rightRetract.setBackLeft = '0.5'
+        this.rightRetract.width = '26px'
+        this.rightRetract.retractFlage = true
       } else if (item.ref === 'left') {
-        item.shaowFlag = false;
-        this.rightSilderIcons[0].shaowFlag = true;
-        this.contentsStyle.leftWidth = 'calc(100% - 290px)';
-        this.contentsStyle.rightShowFlag = true;
-        this.rightRetract.setBackLeft = '0';
-        this.rightRetract.width = '290px';
-        this.rightRetract.retractFlage = false;
+        item.shaowFlag = false
+        this.rightSilderIcons[0].shaowFlag = true
+        this.contentsStyle.leftWidth = 'calc(100% - 290px)'
+        this.contentsStyle.rightShowFlag = true
+        this.rightRetract.setBackLeft = '0'
+        this.rightRetract.width = '290px'
+        this.rightRetract.retractFlage = false
       }
     },
     jsutTest(val) {
@@ -1124,85 +1178,89 @@ export default {
         if (this.downloadState.indexOf(this.selectedRaw) >= 0) {
           if (this.svgDownloadList[this.selectedRaw].length === 0) {
             this.setErrorMessage(
-              `${'请先在当前页面勾选需要下载的图片' + '_'}${new Date().getTime()}`
-            );
+              `${
+                '请先在当前页面勾选需要下载的图片' + '_'
+              }${new Date().getTime()}`
+            )
           } else {
-            this.dialogFormVisible = true;
+            this.dialogFormVisible = true
           }
         } else {
-          this.setErrorMessage(`${'当前页面不支持下载' + '_'}${new Date().getTime()}`);
-          this.dialogFormVisible = false;
+          this.setErrorMessage(
+            `${'当前页面不支持下载' + '_'}${new Date().getTime()}`
+          )
+          this.dialogFormVisible = false
         }
       } else if (val === 'fullScreen') {
         const isFull =
           document.fullscreenElement ||
           document.mozFullScreenElement ||
           document.webkitFullscreenElement ||
-          document.msFullscreenElement;
+          document.msFullscreenElement
         if (isFull) {
           if (document.cancelFullScreen) {
-            document.cancelFullScreen();
+            document.cancelFullScreen()
           } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
+            document.mozCancelFullScreen()
           } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
+            document.webkitCancelFullScreen()
           } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
+            document.msExitFullscreen()
           }
         } else {
-          let element;
+          let element
           if (this.selectedRaw === 'graph') {
-            element = document.getElementById('full-screen1');
+            element = document.getElementById('full-screen1')
           } else {
-            element = document.getElementById('full-screen');
+            element = document.getElementById('full-screen')
           }
           if (element.requestFullscreen) {
-            element.requestFullscreen();
+            element.requestFullscreen()
           } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
+            element.msRequestFullscreen()
           } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
+            element.mozRequestFullScreen()
           } else if (element.webkitRequestFullScreen) {
-            element.webkitRequestFullScreen();
+            element.webkitRequestFullScreen()
           }
         }
       } else if (val === 'custom') {
         const { className } = document
           .getElementsByClassName('category-selected')[0]
-          .getElementsByTagName('i')[0];
-        const iconName = className.split(' ')[1];
-        let index = 0;
+          .getElementsByTagName('i')[0]
+        const iconName = className.split(' ')[1]
+        let index = 0
         for (; index < this.allCategoryInform.length; index += 1) {
           if (this.allCategoryInform[index].icon === iconName) {
-            index = this.allCategoryInform[index].rawName;
-            break;
+            index = this.allCategoryInform[index].rawName
+            break
           }
         }
-        this.setData(index);
+        this.setData(index)
         if (this.$route.path !== '/visual/custom') {
-          this.$router.push({ path: '/visual/custom' });
+          this.$router.push({ path: '/visual/custom' })
         }
       }
     },
     downloadSvg() {
-      this.dialogFormVisible = false;
+      this.dialogFormVisible = false
       this.svgDownloadList[this.selectedRaw].forEach((val) => {
-        const testDOM = document.querySelector(val);
+        const testDOM = document.querySelector(val)
         download.covertSVG2Image(
           testDOM,
           this.form.input,
           testDOM.width.baseVal.value,
           testDOM.height.baseVal.value,
           this.form.type
-        );
-      });
-      this.form.input = '下载';
-      this.form.type = 'png';
+        )
+      })
+      this.form.input = '下载'
+      this.form.type = 'png'
     },
     downCancel() {
-      this.dialogFormVisible = false;
-      this.form.input = '下载';
-      this.form.type = 'png';
+      this.dialogFormVisible = false
+      this.form.input = '下载'
+      this.form.type = 'png'
     },
     testDownloadJson2csv() {
       const testObject = [
@@ -1216,29 +1274,29 @@ export default {
           age: '22',
           gender: 'male',
         },
-      ];
-      download.downloadJSON2CSV(testObject);
+      ]
+      download.downloadJSON2CSV(testObject)
     },
     getTigger(val) {
-      const time = new Date();
-      const currentTime = time.toLocaleString();
+      const time = new Date()
+      const currentTime = time.toLocaleString()
       if (val.ref === 'setting') {
-        this.setTimer(currentTime);
+        this.setTimer(currentTime)
       }
       if (val.ref === 'setting') {
         // 将同步窗口显示
-        this.dataSyncVisible = true;
+        this.dataSyncVisible = true
       }
       if (val.ref === 'help') {
-        this.operationGuide = true;
+        this.operationGuide = true
       }
     },
     fontSize() {
-      const deviceWidth = document.documentElement.offsetWidth;
-      this.autoFontSize = parseInt(deviceWidth / 109, 10);
+      const deviceWidth = document.documentElement.offsetWidth
+      this.autoFontSize = parseInt(deviceWidth / 109, 10)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -1329,8 +1387,8 @@ export default {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 28px;
-  background-color: #625eb3;
+  height: 40px;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
 
   .same-div {
     display: flex;
@@ -1398,7 +1456,7 @@ export default {
   p {
     position: relative;
     font-weight: 700;
-    color: #625eb3;
+    color: #3c97f7;
     cursor: pointer;
   }
 }
@@ -1409,7 +1467,7 @@ export default {
   p {
     position: relative;
     font-weight: 700;
-    color: #625eb3;
+    color: #3c97f7;
     cursor: pointer;
   }
 }
@@ -2173,7 +2231,8 @@ export default {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    box-shadow: rgba(12, 13, 14, 0.2) 0 1px 0, rgb(255, 255, 255) 0 0 0 2px inset;
+    box-shadow: rgba(12, 13, 14, 0.2) 0 1px 0,
+      rgb(255, 255, 255) 0 0 0 2px inset;
   }
   .md-comment {
     font-family: var(--monospace);
@@ -2327,7 +2386,8 @@ export default {
   }
 
   body {
-    font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial,
+      sans-serif;
     line-height: 1.6;
     color: rgb(51, 51, 51);
   }

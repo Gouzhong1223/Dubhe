@@ -10,12 +10,12 @@ module.exports = {
     es6: true
   },
   extends: ["airbnb-base", "plugin:vue/recommended", "eslint-config-prettier", "prettier/vue"],
-  plugins: ["import",  "eslint-plugin-prettier"],
+  plugins: ["import", "eslint-plugin-prettier"],
   settings: {
     'import/resolver': {
-       webpack: {
-         config: require.resolve('@vue/cli-service/webpack.config.js') 
-       },
+      webpack: {
+        config: require.resolve('@vue/cli-service/webpack.config.js')
+      },
     }
   },
   rules: {
@@ -23,7 +23,7 @@ module.exports = {
       'error',
       {
         printWidth: 100,
-        semi: true,
+        semi: false,
         singleQuote: true,
         trailingComma: 'es5',
         endOfLine: 'auto',

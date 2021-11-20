@@ -78,8 +78,7 @@ the License. * ============================================================= */
             @click.native.prevent="handleLogin"
           >
             <div class="wave"></div>
-            <span v-if="!loading">登 录</span>
-            <span v-else>登 录 中...</span>
+            <span>登 录</span>
           </el-button>
         </el-form-item>
       </el-form>
@@ -88,11 +87,11 @@ the License. * ============================================================= */
 </template>
 
 <script>
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
-import { getCodeImg } from '@/api/auth';
-import LoginPublic from '@/components/LoginPublic';
-import { loginConfig } from '@/config';
+import { getCodeImg } from '@/api/auth'
+import LoginPublic from '@/components/LoginPublic'
+import { loginConfig } from '@/config'
 
 export default {
   name: 'Login',
@@ -116,49 +115,49 @@ export default {
         code: [{ required: true, trigger: 'change', message: '验证码不能为空' }],
       },
       loading: false,
-    };
+    }
   },
   created() {
-    this.getCode();
-    this.getCookie();
+    this.getCode()
+    this.getCookie()
   },
   methods: {
     getCode() {
       getCodeImg().then((res) => {
-        this.codeUrl = res.img;
-        this.loginForm.uuid = res.uuid;
-      });
+        this.codeUrl = res.img
+        this.loginForm.uuid = res.uuid
+      })
     },
     getCookie() {
-      this.loginForm.username = Cookies.get('username') || '';
+      this.loginForm.username = Cookies.get('username') || ''
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           if (this.loginForm.rememberMe) {
-            Cookies.set('username', this.loginForm.username, { expires: 7 });
+            Cookies.set('username', this.loginForm.username, { expires: 7 })
           } else {
-            Cookies.remove('username');
+            Cookies.remove('username')
           }
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
-              this.loading = false;
-              this.$router.push({ path: '/' });
+              this.loading = false
+              this.$router.push({ path: '/' })
             })
             .catch((err) => {
-              this.$message.error(err.message);
-              this.loading = false;
-              this.getCode();
-            });
-          return true;
+              this.$message.error(err.message)
+              this.loading = false
+              this.getCode()
+            })
+          return true
         }
-        return false;
-      });
+        return false
+      })
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
