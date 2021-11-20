@@ -6,7 +6,7 @@ spring:
       routes:
       # id唯一表示 路由至admin服务
       - id: admin-route
-      # uri=> lb://服务名称  
+      # uri=> lb://服务名称
         uri: lb://admin
       # 路由规则
         predicates:
@@ -14,7 +14,7 @@ spring:
         filters:
           - StripPrefix=3
       - id: visual-route
-      # uri=> lb://服务名称  
+      # uri=> lb://服务名称
         uri: lb://admin
       # 路由规则
         predicates:
@@ -77,12 +77,12 @@ spring:
           - StripPrefix=3
       # id唯一表示 路由至data(数据集)服务
       - id: dubhe-data
-      # uri=> lb://服务名称  
+      # uri=> lb://服务名称
         uri: lb://dubhe-data
       # 路由规则
         predicates:
           - Path=/api/v1/data/**
-        filters: 
+        filters:
           - StripPrefix=3
       # 路由至dubhe-optimize(模型优化)服务
       - id: dubhe-optimize
@@ -124,5 +124,12 @@ spring:
         uri: lb://dubhe-data-dcm
         predicates:
           - Path=/api/v1/dcm/**
+        filters:
+          - StripPrefix=3
+      # 路由至dubhe-course(课程)服务
+      - id: dubhe-course
+        uri: lb://dubhe-course
+        predicates:
+          - Path=/api/v1/course/**
         filters:
           - StripPrefix=3
