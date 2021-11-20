@@ -37,8 +37,12 @@
 // danger button
 .el-button--danger {
   color: #ff4949;
-  background-color: #ffeded;
+  background: linear-gradient(to right, #f7d1d1, #ffeded);
   border-color: #ffb6b6;
+
+  &:hover {
+    background: linear-gradient(90deg, #ea6672, #f09165);
+  }
 
   &.is-disabled,
   &.is-disabled:hover,

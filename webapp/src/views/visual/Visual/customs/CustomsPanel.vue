@@ -35,7 +35,7 @@
   line-height: 30px;
   color: white;
   text-align: left;
-  background-color: #625eb3;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-radius: 3px;
 
   .dot {
@@ -90,10 +90,14 @@
 }
 </style>
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%;">
-    <div id="8888" style="height: 50%; overflow: auto;" :class="[scalar ? '' : 'show']">
+  <div style="display: flex; flex-direction: column; height: 100%">
+    <div
+      id="8888"
+      style="height: 50%; overflow: auto"
+      :class="[scalar ? '' : 'show']"
+    >
       <el-col :span="24">
-        <ScalarsPanel style="clear: both;" />
+        <ScalarsPanel style="clear: both" />
         <div />
       </el-col>
     </div>
@@ -101,7 +105,9 @@
     <div />
     <div v-if="statistics" id="9999" class="statisticPanelTemp">
       <el-card>
-        <div class="infoTitle"><i class="el-icon-chat-dot-round dot" /><span>统计分析</span></div>
+        <div class="infoTitle">
+          <i class="el-icon-chat-dot-round dot" /><span>统计分析</span>
+        </div>
         <div class="statisticPanelContent">
           <div class="scroll scroll1">
             <span>数据显示比率({{ statisticShowNumber }}%)</span>
@@ -132,8 +138,12 @@
       </el-card>
       <div class="statisticInfo">
         <el-card>
-          <div class="infoTitle"><i class="el-icon-chat-dot-round dot" />数据信息栏</div>
-          <div v-show="!statisticInfoShowFlag" class="infoContent">暂无信息</div>
+          <div class="infoTitle">
+            <i class="el-icon-chat-dot-round dot" />数据信息栏
+          </div>
+          <div v-show="!statisticInfoShowFlag" class="infoContent">
+            暂无信息
+          </div>
           <div v-show="statisticInfoShowFlag" class="infoContent">
             <div>
               <el-row>
@@ -166,13 +176,13 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
-import ScalarsPanel from '../scalars/ScalarsPanel';
+import { createNamespacedHelpers } from 'vuex'
+import ScalarsPanel from '../scalars/ScalarsPanel'
 
-const { mapMutations: mapCustomMutations, mapGetters: mapCustomGetters } = createNamespacedHelpers(
-  'Visual/custom'
-);
-const { mapGetters: mapStatisticGatters } = createNamespacedHelpers('Visual/statistic');
+const { mapMutations: mapCustomMutations, mapGetters: mapCustomGetters } =
+  createNamespacedHelpers('Visual/custom')
+const { mapGetters: mapStatisticGatters } =
+  createNamespacedHelpers('Visual/statistic')
 export default {
   components: {
     ScalarsPanel,
@@ -184,7 +194,7 @@ export default {
       statisticMode: '三维',
       statisticShowNumber: 30,
       statisticInfoShowFlag: false,
-    };
+    }
   },
   computed: {
     ...mapCustomGetters([
@@ -201,23 +211,23 @@ export default {
   },
   watch: {
     getStatisticData() {
-      this.statistics = this.getStatisticData.length;
+      this.statistics = this.getStatisticData.length
     },
     getStatisticInfo(val) {
       if (val.length) {
-        this.statisticInfoShowFlag = true;
+        this.statisticInfoShowFlag = true
       } else {
-        this.statisticInfoShowFlag = false;
+        this.statisticInfoShowFlag = false
       }
     },
   },
   mounted() {
-    this.statistics = this.getStatisticData.length;
-    this.statisticMode = this.getStatisticMode;
-    this.statisticShowNumber = this.getStatisticShowNumber;
+    this.statistics = this.getStatisticData.length
+    this.statisticMode = this.getStatisticMode
+    this.statisticShowNumber = this.getStatisticShowNumber
   },
   methods: {
     ...mapCustomMutations(['setStatisticMode', 'setStatisticShowNumber']),
   },
-};
+}
 </script>

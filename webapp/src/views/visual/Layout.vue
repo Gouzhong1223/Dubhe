@@ -1388,7 +1388,7 @@ export default {
   flex-direction: row;
   width: 100%;
   height: 40px;
-  background: linear-gradient(to right, #6e83fb, #3c97f7);
+  background: linear-gradient(to left, #6e83fb, #3c97f7);
 
   .same-div {
     display: flex;
@@ -1476,7 +1476,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  background-color: #f3f7ff;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
 
   .layout-logo {
     display: -webkit-box;

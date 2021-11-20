@@ -700,16 +700,16 @@ export default {
 }
 
 .graphhead2 {
-  background-color: #1f65f5;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
 }
 
 #c-graph {
   margin-right: 2%;
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 #s-graph {
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .graphPanelContent {
@@ -743,7 +743,7 @@ export default {
   line-height: 30px;
   color: white;
   text-align: left;
-  background-color: #1f65f5;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-radius: 5px;
 
   .dot {

@@ -24,7 +24,12 @@
         <div class="infoContent">
           <div class="scroll">
             <span>Smooth({{ smooth }})</span>
-            <el-slider v-model="smooth" :max="0.9" :step="0.1" class="rangeNumber" />
+            <el-slider
+              v-model="smooth"
+              :max="0.9"
+              :step="0.1"
+              class="rangeNumber"
+            />
           </div>
           <div class="select">
             <span>Y-axis:</span>
@@ -35,8 +40,12 @@
           </div>
           <div class="action">
             <span>视图操作</span>
-            <el-button class="button" round size="small" @click="startmerge()">合并</el-button>
-            <el-button class="button" round size="small" @click="startback()">还原</el-button>
+            <el-button class="button" round size="small" @click="startmerge()"
+              >合并</el-button
+            >
+            <el-button class="button" round size="small" @click="startback()"
+              >还原</el-button
+            >
           </div>
         </div>
       </el-card>
@@ -44,18 +53,18 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
 
-const { mapMutations: mapScalarMutations, mapGetters: mapScalarGetters } = createNamespacedHelpers(
-  'Visual/scalar'
-);
-const { mapMutations: mapCustomMutations } = createNamespacedHelpers('Visual/custom');
+const { mapMutations: mapScalarMutations, mapGetters: mapScalarGetters } =
+  createNamespacedHelpers('Visual/scalar')
+const { mapMutations: mapCustomMutations } =
+  createNamespacedHelpers('Visual/custom')
 export default {
   data() {
     return {
       checked: true,
       xradio: 0,
-    };
+    }
   },
   computed: {
     ...mapScalarGetters([
@@ -68,18 +77,18 @@ export default {
     ]),
     smooth: {
       get() {
-        return this.smoothvalue;
+        return this.smoothvalue
       },
       set(value) {
-        this.setsmoothvalue(value);
+        this.setsmoothvalue(value)
       },
     },
     yselect: {
       get() {
-        return this.yaxis;
+        return this.yaxis
       },
       set(value) {
-        this.setyaxis(value);
+        this.setyaxis(value)
       },
     },
   },
@@ -91,30 +100,30 @@ export default {
       if (Object.keys(this.checkeditem).length > 2) {
         this.$alert('选择图表种类至多为两种', '警告', {
           confirmButtonText: '确定',
-        });
+        })
       } else if (this.checkedorder.length > 6) {
         this.$alert('选择图表数量至多为六幅', '警告', {
           confirmButtonText: '确定',
-        });
+        })
       } else if (this.checkedorder.length < 2) {
         this.$alert('请选择至少两幅图表', '提示', {
           confirmButtonText: '确定',
-        });
+        })
       } else {
-        this.merge();
+        this.merge()
       }
     },
     startback() {
       if (this.backednumber.length > 0) {
-        this.back();
+        this.back()
       } else {
         this.$alert('未选中可还原的图表', '提示', {
           confirmButtonText: '确定',
-        });
+        })
       }
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -129,7 +138,7 @@ export default {
   font-size: 12px;
   color: white;
   text-align: left;
-  background-color: rgb(96, 97, 173);
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-bottom: 1px solid #8f8ad7;
 }
 

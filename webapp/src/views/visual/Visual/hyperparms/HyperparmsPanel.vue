@@ -19,7 +19,9 @@
     <div class="information">
       <el-card>
         <div class="infoTitle">
-          <div class="statistichead1"><span class="icon iconfont">&#xe634;</span>控制面板</div>
+          <div class="statistichead1">
+            <span class="icon iconfont">&#xe634;</span>控制面板
+          </div>
         </div>
         <div>
           <div v-show="!panelShow" class="infoContent infoItem">暂无信息</div>
@@ -75,11 +77,16 @@
     <div class="information">
       <el-card>
         <div class="infoTitle">
-          <div class="statistichead1"><span class="icon iconfont">&#xe633;</span>统计信息栏</div>
+          <div class="statistichead1">
+            <span class="icon iconfont">&#xe633;</span>统计信息栏
+          </div>
         </div>
         <div v-show="!panelShow" class="infoContent infoItem">暂无信息</div>
         <div v-show="panelShow" class="infoContent hypTable">
-          <el-table :data="localSelectedDatas" :header-cell-style="{ color: 'rgb(96, 97, 174)' }">
+          <el-table
+            :data="localSelectedDatas"
+            :header-cell-style="{ color: 'rgb(96, 97, 174)' }"
+          >
             <el-table-column
               v-for="(item, index) in localKeys"
               :key="index"
@@ -95,7 +102,9 @@
     <div class="information">
       <el-card>
         <div class="infoTitle">
-          <div class="statistichead1"><span class="icon iconfont">&#xe636;</span>数据信息栏</div>
+          <div class="statistichead1">
+            <span class="icon iconfont">&#xe636;</span>数据信息栏
+          </div>
         </div>
         <div class="infoContent">
           <div v-show="!infoControl" class="infoItem">暂无信息</div>
@@ -115,13 +124,11 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
-import * as d3 from 'd3';
+import { createNamespacedHelpers } from 'vuex'
+import * as d3 from 'd3'
 
-const {
-  mapMutations: mapHyperparmMutations,
-  mapGetters: mapHyperparmGatters,
-} = createNamespacedHelpers('Visual/hyperparm');
+const { mapMutations: mapHyperparmMutations, mapGetters: mapHyperparmGatters } =
+  createNamespacedHelpers('Visual/hyperparm')
 export default {
   data() {
     return {
@@ -135,7 +142,7 @@ export default {
       infoControl: false,
       columnWidth: ['31%', '22%', '25%', '22%'],
       panelShow: false,
-    };
+    }
   },
   computed: {
     ...mapHyperparmGatters([
@@ -152,71 +159,75 @@ export default {
   },
   watch: {
     getHypEmpty(val) {
-      this.panelShow = val;
+      this.panelShow = val
     },
     selected(newValue) {
-      this.setSelected(newValue);
+      this.setSelected(newValue)
     },
     getSelected(val) {
-      this.selected = val;
+      this.selected = val
     },
     getFocusData(newValue) {
-      this.focusData = JSON.parse(JSON.stringify(newValue));
+      this.focusData = JSON.parse(JSON.stringify(newValue))
       if (this.focusData.length !== 0) {
-        this.infoControl = true;
+        this.infoControl = true
       } else {
-        this.infoControl = false;
+        this.infoControl = false
       }
       if (this.getAllData.length !== 0) {
-        this.keys = Object.keys(this.getAllData[0]);
+        this.keys = Object.keys(this.getAllData[0])
       }
     },
     getGlobalSelectedDatas(newValue) {
       if (newValue === []) {
-        newValue = this.getAllData;
+        newValue = this.getAllData
       }
-      this.calcData(newValue);
+      this.calcData(newValue)
     },
   },
   mounted() {
-    this.selected = this.getSelected;
-    this.localAxisType = this.getAxisType;
-    this.calcData(this.getAllData);
+    this.selected = this.getSelected
+    this.localAxisType = this.getAxisType
+    this.calcData(this.getAllData)
   },
   methods: {
-    ...mapHyperparmMutations(['setSelected', 'setGlobalSelectedDatas', 'setAxisType']),
+    ...mapHyperparmMutations([
+      'setSelected',
+      'setGlobalSelectedDatas',
+      'setAxisType',
+    ]),
     changeData(label, item) {
-      this.setAxisType(label, item);
+      this.setAxisType(label, item)
     },
     calcData(newValue) {
-      const data = JSON.parse(JSON.stringify(newValue));
-      const calcItems = this.getMainParams;
-      const format = d3.format('.2f');
-      let res = [];
+      const data = JSON.parse(JSON.stringify(newValue))
+      const calcItems = this.getMainParams
+      const format = d3.format('.2f')
+      let res = []
       calcItems.forEach((d) => {
         const maxData = d3.max(data, (i) => {
-          return +i[d];
-        });
+          return +i[d]
+        })
         const minData = d3.min(data, (i) => {
-          return +i[d];
-        });
+          return +i[d]
+        })
         const meanData = d3.mean(data, (i) => {
-          return +i[d];
-        });
+          return +i[d]
+        })
         const temp = {
           Items: d,
           Min: format(minData),
           Mean: format(meanData),
           Max: format(maxData),
-        };
-        res.push(temp);
-      });
-      res = JSON.parse(JSON.stringify(res));
-      this.localSelectedDatas = res;
-      this.localKeys = d3.keys(res[0]);
+        }
+        res.push(temp)
+      })
+      res = JSON.parse(JSON.stringify(res))
+      this.localSelectedDatas = res
+      this.localKeys = d3.keys(res[0])
     },
   },
-};
+}
 </script>
 <style lang="less" scoped>
 .information {
@@ -230,7 +241,7 @@ export default {
   font-size: 12px;
   color: white;
   text-align: left;
-  background-color: rgb(96, 97, 173);
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-bottom: 1px solid #8f8ad7;
 }
 
