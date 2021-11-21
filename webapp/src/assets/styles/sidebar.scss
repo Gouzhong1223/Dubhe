@@ -88,7 +88,7 @@
         color: $primaryColor !important;
         padding-left: 16px !important;
         background: $menuActiveBg !important;
-        border-left: 4px solid $primaryColor;
+        border-left: 6px solid #ba7bfe;
 
         i {
           color: $primaryColor !important;
@@ -166,7 +166,7 @@
 
           padding-left: 36px !important;
           background: $menuActiveBg !important;
-          border-left: 4px solid $primaryColor;
+          border-left: 6px solid #ba7bfe;
         }
       }
     }
@@ -215,7 +215,7 @@
 
       &.is-active>.el-submenu__title {
         background: $menuActiveBg !important;
-        border-left: 4px solid $primaryColor;
+        border-left: 6px solid #ba7bfe;
 
         i {
           margin-left: 21px;
@@ -292,7 +292,7 @@
     &.is-active {
       padding-left: 16px !important;
       background: $menuHoverBg !important;
-      border-left: 4px solid $primaryColor;
+      border-left: 6px solid #ba7bfe;
     }
 
     &:hover {
