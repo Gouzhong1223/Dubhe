@@ -33,12 +33,11 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
 // eslint-disable-next-line no-unused-vars
-const { mapMutations: mapMediaMutations, mapGetters: mapMediaGetters } = createNamespacedHelpers(
-  'media'
-);
-export default {};
+const { mapMutations: mapMediaMutations, mapGetters: mapMediaGetters } =
+  createNamespacedHelpers('media')
+export default {}
 </script>
 
 <style lang="less" scoped>
@@ -72,7 +71,7 @@ select {
       padding: 2% 2% 2% 5%;
       color: white;
       text-align: left;
-      background-color: #625eb3;
+      background: linear-gradient(to right, #6e83fb, #3c97f7);
       border-bottom: 1px solid #8f8ad7;
 
       .iconfont {

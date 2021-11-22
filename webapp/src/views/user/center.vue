@@ -1,18 +1,9 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License, Version 2.0 (the
+"License"); * you may not use this file except in compliance with the License. * You may obtain a
+copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by
+applicable law or agreed to in writing, software * distributed under the License is distributed on
+an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See
+the License for the specific language governing permissions and * limitations under the License. */
 
 <template>
   <div class="app-container">
@@ -43,12 +34,11 @@
         <div class="info-label">用户角色</div>
         <div class="info-text">{{ userRoles }}</div>
       </div>
-      <div class="info-row">
-        <div class="info-label">用户设置</div>
+      <div class="info-row" style="margin-top: 40px">
         <div class="info-text">
-          <el-button type="text" @click="infoDialog = true">修改信息</el-button>
-          <el-button type="text" @click="$refs.pass.dialog = true">修改密码</el-button>
-          <el-button type="text" @click="$refs.email.dialog = true">修改邮箱</el-button>
+          <el-button @click="infoDialog = true">修改信息</el-button>
+          <el-button @click="$refs.pass.dialog = true">修改密码</el-button>
+          <el-button @click="$refs.email.dialog = true">修改邮箱</el-button>
         </div>
       </div>
     </el-card>
@@ -73,17 +63,17 @@
       @open="onDialogOpen"
       @ok="doSubmit"
     >
-      <el-form ref="form" :model="form" :rules="rules" style="margin-top: 10px;" label-width="65px">
+      <el-form ref="form" :model="form" :rules="rules" style="margin-top: 10px" label-width="65px">
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="form.nickName" style="width: 40%;" />
-          <span style="margin-left: 10px; color: #c0c0c0;">用户昵称不作为登录使用</span>
+          <el-input v-model="form.nickName" style="width: 40%" />
+          <span style="margin-left: 10px; color: #c0c0c0">用户昵称不作为登录使用</span>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model="form.phone" style="width: 40%;" />
-          <span style="margin-left: 10px; color: #c0c0c0;">一个手机号只能注册一个用户</span>
+          <el-input v-model="form.phone" style="width: 40%" />
+          <span style="margin-left: 10px; color: #c0c0c0">一个手机号只能注册一个用户</span>
         </el-form-item>
         <el-form-item label="性别">
-          <el-radio-group v-model="form.sex" style="width: 178px;">
+          <el-radio-group v-model="form.sex" style="width: 178px">
             <el-radio label="男">男</el-radio>
             <el-radio label="女">女</el-radio>
           </el-radio-group>
@@ -97,17 +87,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import store from '@/store';
-import { bucketName, bucketHost } from '@/utils/minIO';
-import { validateName } from '@/utils/validate';
-import { invalidFileNameChar } from '@/utils';
-import { updateAvatar } from '@/api/user';
-import BaseModal from '@/components/BaseModal';
-import UploadForm from '@/components/UploadForm';
-import updateEmail from './components/updateEmail';
-import updatePass from './components/updatePass';
+import store from '@/store'
+import { bucketName, bucketHost } from '@/utils/minIO'
+import { validateName } from '@/utils/validate'
+import { invalidFileNameChar } from '@/utils'
+import { updateAvatar } from '@/api/user'
+import BaseModal from '@/components/BaseModal'
+import UploadForm from '@/components/UploadForm'
+import updateEmail from './components/updateEmail'
+import updatePass from './components/updatePass'
 
 export default {
   name: 'Center',
@@ -138,28 +128,28 @@ export default {
         ],
       },
       uploadFilters: [invalidFileNameChar],
-    };
+    }
   },
   computed: {
     ...mapGetters(['user']),
     userRoles() {
-      const roles = this.user.roles || [];
-      const names = roles.map((role) => role.name);
-      return names.join(' ') || '-';
+      const roles = this.user.roles || []
+      const names = roles.map((role) => role.name)
+      return names.join(' ') || '-'
     },
     uploadParams() {
       return {
         objectPath: `avatar/${this.user.id}`, // 对象存储路径
-      };
+      }
     },
   },
   created() {
-    store.dispatch('GetUserInfo').then(() => {});
+    store.dispatch('GetUserInfo').then(() => {})
   },
   methods: {
     uploadSuccess(res) {
-      if (!res.length) return;
-      const filePath = res[0].data.objectName;
+      if (!res.length) return
+      const filePath = res[0].data.objectName
       updateAvatar({
         path: `${bucketName}/${filePath}`,
         realName: `${bucketHost}/${bucketName}/${filePath}`,
@@ -168,21 +158,21 @@ export default {
           title: '头像修改成功',
           type: 'success',
           duration: 2500,
-        });
-        store.dispatch('GetUserInfo').then(() => {});
-      });
+        })
+        store.dispatch('GetUserInfo').then(() => {})
+      })
     },
     uploadError() {
       this.$message({
         message: '头像修改失败',
         type: 'error',
-      });
+      })
     },
     openUploadDialog() {
-      this.uploadDialogVisible = true;
+      this.uploadDialogVisible = true
     },
     handleClose() {
-      this.uploadDialogVisible = false;
+      this.uploadDialogVisible = false
     },
     onDialogOpen() {
       this.form = {
@@ -190,37 +180,40 @@ export default {
         nickName: this.user.nickName,
         sex: this.user.sex,
         phone: this.user.phone,
-      };
+      }
     },
     doSubmit() {
       if (this.$refs.form) {
         this.$refs.form.validate((valid) => {
           if (valid) {
-            this.saveLoading = true;
+            this.saveLoading = true
             store
               .dispatch('UpdateUserInfo', this.form)
               .then(() => {
-                this.editSuccessNotify();
-                this.saveLoading = false;
-                this.infoDialog = false;
+                this.editSuccessNotify()
+                this.saveLoading = false
+                this.infoDialog = false
               })
               .catch(() => {
-                this.saveLoading = false;
-                this.infoDialog = false;
-              });
+                this.saveLoading = false
+                this.infoDialog = false
+              })
           }
-        });
+        })
       }
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+.box-card {
+  border-radius: 30px;
+}
 .avatar {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   margin: 20px 0;
   cursor: pointer;
   border-radius: 50%;

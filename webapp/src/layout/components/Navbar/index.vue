@@ -1,18 +1,9 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License, Version 2.0 (the
+"License"); * you may not use this file except in compliance with the License. * You may obtain a
+copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by
+applicable law or agreed to in writing, software * distributed under the License is distributed on
+an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See
+the License for the specific language governing permissions and * limitations under the License. */
 
 <template>
   <div class="navbar">
@@ -41,16 +32,12 @@
           <img :src="user.avatar" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" style="border-radius: 20px">
           <router-link to="/user/center">
-            <el-dropdown-item>
-              个人中心
-            </el-dropdown-item>
+            <el-dropdown-item> 个人中心 </el-dropdown-item>
           </router-link>
-          <span style="display: block;" @click="open">
-            <el-dropdown-item divided>
-              退出登录
-            </el-dropdown-item>
+          <span style="display: block" @click="open">
+            <el-dropdown-item divided> 退出登录 </el-dropdown-item>
           </span>
         </el-dropdown-menu>
       </el-dropdown>
@@ -59,10 +46,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import Hamburger from '@/components/Hamburger';
-import BackIcon from './BackIcon';
+import Hamburger from '@/components/Hamburger'
+import BackIcon from './BackIcon'
 
 export default {
   components: {
@@ -87,14 +74,14 @@ export default {
     return {
       dialogVisible: false,
       selectIndex: 0,
-    };
+    }
   },
   computed: {
     ...mapGetters(['sidebar', 'device', 'user']),
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar');
+      this.$store.dispatch('app/toggleSideBar')
     },
     open() {
       this.$confirm('确定注销并退出系统吗？', '提示', {
@@ -102,16 +89,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        this.logout();
-      });
+        this.logout()
+      })
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        window.location.reload();
-      });
+        window.location.reload()
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -203,10 +190,11 @@ export default {
         margin-top: 5px;
 
         .user-avatar {
-          width: 40px;
-          height: 40px;
+          width: 42px;
+          height: 42px;
           cursor: pointer;
           border-radius: 50%;
+          border: 2px solid #2e4fde;
         }
 
         .el-icon-caret-bottom {

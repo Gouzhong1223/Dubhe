@@ -27,7 +27,9 @@
               <el-row type="flex" justify="space-between">
                 <el-col :span="8">
                   <div>
-                    <span class="midFont">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签</span>
+                    <span class="midFont"
+                      >标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签</span
+                    >
                   </div>
                 </el-col>
                 <el-col :span="16">
@@ -58,7 +60,11 @@
                 </el-col>
                 <el-col :span="16">
                   <div class="center">
-                    <el-select v-model="curMethod" class="tagSelect histmodeselect" size="small">
+                    <el-select
+                      v-model="curMethod"
+                      class="tagSelect histmodeselect"
+                      size="small"
+                    >
                       <el-option
                         v-for="item in allMethods"
                         :key="item.value"
@@ -79,7 +85,11 @@
                 </el-col>
                 <el-col :span="16">
                   <div class="center">
-                    <el-select v-model="curDim" class="tagSelect histmodeselect" size="small">
+                    <el-select
+                      v-model="curDim"
+                      class="tagSelect histmodeselect"
+                      size="small"
+                    >
                       <el-option
                         v-for="(item, index) in allDims"
                         :key="index"
@@ -91,14 +101,21 @@
                 </el-col>
               </el-row>
             </div>
-            <div v-if="getReceivedQuestionInfo && getReceivedCurInfo" class="infoItem">
+            <div
+              v-if="getReceivedQuestionInfo && getReceivedCurInfo"
+              class="infoItem"
+            >
               <el-row type="flex" justify="space-around" class="row-bg">
                 <el-col :span="5">
                   <el-button
                     background-color="#736FBC"
                     type="primary"
                     size="medium"
-                    :icon="playAction ? 'iconfont icon-zanting' : 'iconfont icon-ziyuan74'"
+                    :icon="
+                      playAction
+                        ? 'iconfont icon-zanting'
+                        : 'iconfont icon-ziyuan74'
+                    "
                     @click="playActionClick()"
                   />
                 </el-col>
@@ -115,7 +132,9 @@
                 </el-col>
                 <el-col :span="8">
                   <div class="grid-content">
-                    <span text-align="center" class="midFont">{{ curMapStep }} / {{ curMax }}</span>
+                    <span text-align="center" class="midFont"
+                      >{{ curMapStep }} / {{ curMax }}</span
+                    >
                   </div>
                 </el-col>
               </el-row>
@@ -140,28 +159,34 @@
                 display="none"
               >
                 <div
-                  v-if="getQuestionInfo[userSelectRunFile][getCurInfo.curTag]['sample']"
+                  v-if="
+                    getQuestionInfo[userSelectRunFile][getCurInfo.curTag][
+                      'sample'
+                    ]
+                  "
                   class="showBox"
                 >
                   <div
                     v-if="
-                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag]['sample_type'] ==
-                        'text' && getMessage != ''
+                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag][
+                        'sample_type'
+                      ] == 'text' && getMessage != ''
                     "
                     class="image"
                   >
-                    <el-scrollbar style="height: 100%;">
+                    <el-scrollbar style="height: 100%">
                       <p>{{ getPanelSampleData['url'] }}</p>
                     </el-scrollbar>
                   </div>
                   <div
                     v-if="
-                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag]['sample_type'] ==
-                        'image' && getMessage != ''
+                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag][
+                        'sample_type'
+                      ] == 'image' && getMessage != ''
                     "
                     class="image"
                   >
-                    <el-scrollbar style="height: 100%;">
+                    <el-scrollbar style="height: 100%">
                       <el-image
                         :src="getPanelSampleData['url']"
                         :preview-src-list="[getPanelSampleData['url']]"
@@ -171,16 +196,18 @@
                   </div>
                   <div
                     v-if="
-                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag]['sample_type'] ==
-                        'audio' && getMessage != ''
+                      getQuestionInfo[userSelectRunFile][getCurInfo.curTag][
+                        'sample_type'
+                      ] == 'audio' && getMessage != ''
                     "
                     class="image"
                   >
-                    <el-scrollbar style="height: 100%;">
+                    <el-scrollbar style="height: 100%">
                       <AudioContainer
                         v-if="
-                          getQuestionInfo[userSelectRunFile][getCurInfo.curTag]['sample_type'] ==
-                            'audio' && getMessage != ''
+                          getQuestionInfo[userSelectRunFile][getCurInfo.curTag][
+                            'sample_type'
+                          ] == 'audio' && getMessage != ''
                         "
                         :theUrl="getPanelSampleData['url']"
                         theControlList="noMuted noSpeed onlyOnePlaying"
@@ -189,7 +216,7 @@
                     </el-scrollbar>
                   </div>
                 </div>
-                <div style="padding: 14px;" class="imageSpan">
+                <div style="padding: 14px" class="imageSpan">
                   <span>{{ getMessage[1] }}</span>
                 </div>
               </el-card>
@@ -202,16 +229,15 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
 
 const {
   mapGetters: mapEmbeddingGetters,
   mapMutations: mapEmbeddingMutations,
   mapActions: mapEmbeddingActions,
-} = createNamespacedHelpers('Visual/embedding');
-const { mapState: mapLayoutStates, mapGetters: mapLayoutGetters } = createNamespacedHelpers(
-  'Visual/layout'
-);
+} = createNamespacedHelpers('Visual/embedding')
+const { mapState: mapLayoutStates, mapGetters: mapLayoutGetters } =
+  createNamespacedHelpers('Visual/layout')
 export default {
   components: {},
   data() {
@@ -245,7 +271,7 @@ export default {
       checkedLabels: [],
       lableTypes: [],
       curLineWidth: 1,
-    };
+    }
   },
   computed: {
     ...mapEmbeddingGetters([
@@ -268,179 +294,190 @@ export default {
   },
   watch: {
     curLineWidth() {
-      this.setLineWidth(this.curLineWidth);
+      this.setLineWidth(this.curLineWidth)
     },
     getReceivedCurInfo() {
       // 只触发一次第一次
       if (this.userSelectRunFile === '') {
-        return;
+        return
       }
-      this.setCurInfo(['received', false]); // 屏蔽别的请求
+      this.setCurInfo(['received', false]) // 屏蔽别的请求
       for (let i = 0; i < this.getCategoryInfo.curRuns.length; i += 1) {
         if (this.userSelectRunFile === this.getCategoryInfo.curRuns[i]) {
-          this.curTags = this.getCategoryInfo.curTags[i].slice(0);
+          this.curTags = this.getCategoryInfo.curTags[i].slice(0)
         }
       }
-      const someIndex = 0;
-      this.curTag = this.curTags[someIndex];
-      this.curMethod = this.getCurInfo.curMethod;
-      this.curDim = this.getCurInfo.curDim;
-      this.curStep = this.getCurInfo.curStep;
-      this.curMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+      const someIndex = 0
+      this.curTag = this.curTags[someIndex]
+      this.curMethod = this.getCurInfo.curMethod
+      this.curDim = this.getCurInfo.curDim
+      this.curStep = this.getCurInfo.curStep
+      this.curMax =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
+        ]
+      this.curMapMax =
         this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
-      ];
-      this.curMapMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax;
-      this.curMin = 0;
-      this.curMapStep = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
-        this.curStep
-      ];
+      this.curMin = 0
+      this.curMapStep =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.curStep
+        ]
       const param = {
         run: this.userSelectRunFile,
         tag: this.curTag,
         step: this.curMapStep,
         method: this.curMethod.toLowerCase(),
         dims: parseInt(this.curDim, 10),
-      };
-      this.fetchDataPower(param);
+      }
+      this.fetchDataPower(param)
     },
     curTag() {
-      this.setCurInfo(['curTag', this.curTag]);
-      this.fetchData();
+      this.setCurInfo(['curTag', this.curTag])
+      this.fetchData()
     },
     curMethod() {
-      this.setCurInfo(['curMethod', this.curMethod]);
-      this.fetchData();
+      this.setCurInfo(['curMethod', this.curMethod])
+      this.fetchData()
     },
     curDim() {
-      this.setCurInfo(['curDim', this.curDim]);
-      this.fetchData();
+      this.setCurInfo(['curDim', this.curDim])
+      this.fetchData()
     },
     curStep() {
-      this.setCurInfo(['curStep', this.curStep]);
-      this.curMapStep = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
-        this.curStep
-      ];
+      this.setCurInfo(['curStep', this.curStep])
+      this.curMapStep =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.curStep
+        ]
     },
     curMapStep() {
-      this.setCurInfo(['curMapStep', this.curMapStep]);
-      this.fetchData();
+      this.setCurInfo(['curMapStep', this.curMapStep])
+      this.fetchData()
     },
     getReceivedQuestionInfo() {
       for (let i = 0; i < this.getCategoryInfo.curRuns.length; i += 1) {
         if (this.userSelectRunFile === this.getCategoryInfo.curRuns[i]) {
-          this.curTags = this.getCategoryInfo.curTags[i].slice(0);
+          this.curTags = this.getCategoryInfo.curTags[i].slice(0)
         }
       }
     },
     checkedLabels(val) {
-      this.setCheckLabels(val);
+      this.setCheckLabels(val)
     },
     getMessage() {
       if (
-        this.getQuestionInfo[this.userSelectRunFile][this.getCurInfo.curTag].sample &&
+        this.getQuestionInfo[this.userSelectRunFile][this.getCurInfo.curTag]
+          .sample &&
         this.getMessage.length > 0
       ) {
-        this.fetchSampleData(this.getMessage[0]);
+        this.fetchSampleData(this.getMessage[0])
       }
     },
     getReceivedCurData() {
       if (parseInt(this.curDim, 10) > 3) {
-        this.lableTypes = this.getCurData.labelType.slice(0);
+        this.lableTypes = this.getCurData.labelType.slice(0)
       }
-      const vm = this;
+      const vm = this
       if (this.playAction) {
         setTimeout(() => {
           if (vm.playAction) {
-            let curSteptmp = vm.curStep;
-            curSteptmp += 1;
+            let curSteptmp = vm.curStep
+            curSteptmp += 1
             if (curSteptmp > vm.curMapMax) {
-              vm.playAction = false;
+              vm.playAction = false
             } else {
-              vm.curStep += 1;
+              vm.curStep += 1
             }
           }
-        }, 2000);
+        }, 2000)
       }
     },
     userSelectRunFile() {
-      this.setMessage('');
+      this.setMessage('')
       if (!this.getReceivedQuestionInfo) {
-        return;
+        return
       }
-      this.setCurInfo(['received', false]); // 屏蔽别的请求
+      this.setCurInfo(['received', false]) // 屏蔽别的请求
       for (let i = 0; i < this.getCategoryInfo.curRuns.length; i += 1) {
         if (this.userSelectRunFile === this.getCategoryInfo.curRuns[i]) {
-          this.curTags = this.getCategoryInfo.curTags[i].slice(0);
+          this.curTags = this.getCategoryInfo.curTags[i].slice(0)
         }
       }
-      const someIndex = 0;
-      this.curTag = this.curTags[someIndex];
-      this.curMethod = 'PCA';
-      this.curDim = '3维';
-      this.curStep = 0;
-      this.curMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+      const someIndex = 0
+      this.curTag = this.curTags[someIndex]
+      this.curMethod = 'PCA'
+      this.curDim = '3维'
+      this.curStep = 0
+      this.curMax =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
+        ]
+      this.curMapMax =
         this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
-      ];
-      this.curMapMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax;
-      this.curMin = 0;
-      this.curMapStep = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
-        this.curStep
-      ];
+      this.curMin = 0
+      this.curMapStep =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.curStep
+        ]
       const param = {
         run: this.userSelectRunFile,
         tag: this.curTag,
         step: this.curMapStep,
         method: this.curMethod.toLowerCase(),
         dims: parseInt(this.curDim, 10),
-      };
-      this.fetchDataPower(param);
+      }
+      this.fetchDataPower(param)
     },
     getErrorMessage(val) {
       this.$message({
         message: val.split('_')[0],
         type: 'error',
-      });
+      })
     },
   },
   created() {
     // 每次加载的时候都会触发
-    this.curLineWidth = this.getLineWidth;
+    this.curLineWidth = this.getLineWidth
     if (!this.getInitStateFlag) {
       if (this.getReceivedCategoryInfo) {
-        this.fetchAllStep();
+        this.fetchAllStep()
       }
     } else {
-      this.setInitStateFlag(false);
+      this.setInitStateFlag(false)
     }
     if (this.getReceivedQuestionInfo) {
-      this.setCurInfo(['received', false]); // 屏蔽别的请求
+      this.setCurInfo(['received', false]) // 屏蔽别的请求
       for (let i = 0; i < this.getCategoryInfo.curRuns.length; i += 1) {
         if (this.userSelectRunFile === this.getCategoryInfo.curRuns[i]) {
-          this.curTags = this.getCategoryInfo.curTags[i].slice(0);
+          this.curTags = this.getCategoryInfo.curTags[i].slice(0)
         }
       }
-      const someIndex = 0;
-      this.curTag = this.curTags[someIndex];
-      this.curMethod = this.getCurInfo.curMethod;
-      this.curDim = this.getCurInfo.curDim;
-      this.curStep = this.getCurInfo.curStep;
-      this.curMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+      const someIndex = 0
+      this.curTag = this.curTags[someIndex]
+      this.curMethod = this.getCurInfo.curMethod
+      this.curDim = this.getCurInfo.curDim
+      this.curStep = this.getCurInfo.curStep
+      this.curMax =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
+        ]
+      this.curMapMax =
         this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax
-      ];
-      this.curMapMax = this.getQuestionInfo[this.userSelectRunFile][this.curTag].curMax;
       // this.curMin = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[0]
-      this.curMin = 0;
-      this.curMapStep = this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
-        this.curStep
-      ];
+      this.curMin = 0
+      this.curMapStep =
+        this.getQuestionInfo[this.userSelectRunFile][this.curTag].allSteps[
+          this.curStep
+        ]
       const param = {
         run: this.userSelectRunFile,
         tag: this.curTag,
         step: this.curMapStep,
         method: this.curMethod.toLowerCase(),
         dims: parseInt(this.curDim, 10),
-      };
-      this.fetchDataPower(param);
+      }
+      this.fetchDataPower(param)
     }
   },
   methods: {
@@ -453,19 +490,19 @@ export default {
     ]),
     ...mapEmbeddingActions(['fetchSampleData', 'featchData', 'fetchAllStep']),
     playActionClick() {
-      this.playAction = !this.playAction; // 取非
+      this.playAction = !this.playAction // 取非
       if (this.playAction) {
         if (this.curStep === 0) {
-          this.fetchData();
+          this.fetchData()
         } else {
-          this.curStep = 0;
+          this.curStep = 0
         }
       }
     },
     fetchData() {
       if (!this.getReceivedCurInfo || !this.getCurInfo.received) {
         // 只要数据未准备好就不触发请求
-        return;
+        return
       }
       // console.log('this.getCurInfo.curMethod', this.getCurInfo.curMethod)
       const param = {
@@ -474,14 +511,14 @@ export default {
         step: this.getCurInfo.curMapStep,
         method: this.getCurInfo.curMethod.toLowerCase(),
         dims: parseInt(this.getCurInfo.curDim, 10),
-      };
-      this.featchData(param);
+      }
+      this.featchData(param)
     },
     fetchDataPower(param) {
-      this.featchData(param);
+      this.featchData(param)
     },
   },
-};
+}
 </script>
 <style lang="less" scoped>
 .typeselect {
@@ -514,7 +551,7 @@ select {
       padding: 2% 2% 2% 5%;
       color: white;
       text-align: left;
-      background-color: #625eb3;
+      background: linear-gradient(to right, #6e83fb, #3c97f7);
       border-bottom: 1px solid #8f8ad7;
 
       .iconfont {
@@ -536,8 +573,8 @@ select {
   }
 
   /deep/ .infoContent {
-    @backgroundColorList: #ef6f38, #efdd79, #c5507a, #9359b0, #525c99, #47c1d6, #b5d4e8, #15746c,
-      #81c19c, #a08983;
+    @backgroundColorList: #ef6f38, #efdd79, #c5507a, #9359b0, #525c99, #47c1d6,
+      #b5d4e8, #15746c, #81c19c, #a08983;
     .backgroundcard(@className, @backgroundColorList,@i) {
       .@{className}@{i} .el-checkbox__inner {
         //属性名称 可以直接拼接属性
