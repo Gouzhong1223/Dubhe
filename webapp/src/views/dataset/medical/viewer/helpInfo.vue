@@ -1,33 +1,31 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
+You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
+required by applicable law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. * See the License for the specific language governing permissions and * limitations under
+the License. * ============================================================= */
 
 <template>
   <div class="dwv-content">
-    <p>欢迎使用天枢医疗影像标注工具！</p>
+    <p>欢迎使用凌波智能医疗影像标注工具！</p>
     <p>
       在这里，你可以通过上传标准
       <el-link href="https://www.dicomstandard.org/" target="_blank">DICOM</el-link>
       文件就能实现随时随地进行医疗影像查询、阅片、智能识别、影像标注等常见操作。系统还提供了一些标准工具对影像文件进行操作，包括滚动浏览，缩放/拖拽，窗宽/窗位，对比，预设窗口等工具。
     </p>
-    <p>所有 DICOM 标签都可以点击「查看标签」按钮进行查询，你可以指定搜索条件对信息进行过滤。</p>
+    <p>
+      所有 DICOM 标签都可以点击「查看标签」按钮进行查询，你可以指定搜索条件对信息进行过滤。
+    </p>
     <p>下列工具定义了与用户操作相关的产品交互行为：</p>
     <el-collapse v-model="activeNames" accordion>
       <el-collapse-item title="滚动浏览（Scroll）" name="Scroll">
-        <div>鼠标滚轮：使用快速浏览模式，可以通过鼠标滚轮动作对图像切片（slice）进行快速切换。</div>
-        <div>键盘快键：按住键盘快捷键右键可以切换下一张切片，左键切换上一张切片。</div>
+        <div>
+          鼠标滚轮：使用快速浏览模式，可以通过鼠标滚轮动作对图像切片（slice）进行快速切换。
+        </div>
+        <div>
+          键盘快键：按住键盘快捷键右键可以切换下一张切片，左键切换上一张切片。
+        </div>
         <div>自动播放：双击切片开始切片逐帧自动切换模式，再次单击停止。</div>
       </el-collapse-item>
       <el-collapse-item title="缩放拖拽（ZoomAndPan）" name="ZoomAndPan">
@@ -37,7 +35,9 @@
       </el-collapse-item>
       <el-collapse-item title="窗宽窗位（WW/WC）" name="WindowLevel">
         <div>改变图像的窗位和窗宽。</div>
-        <div>按住鼠标按住拖动图像，沿水平方向改变窗宽，沿竖直方向改变窗位。</div>
+        <div>
+          按住鼠标按住拖动图像，沿水平方向改变窗宽，沿竖直方向改变窗位。
+        </div>
         <div>双击影像，可将该点作为窗位窗宽中心值。</div>
       </el-collapse-item>
       <el-collapse-item title="绘制标注（Draw）" name="Draw">

@@ -18,7 +18,7 @@ module.exports = {
   /**
    * @description 网站标题
    */
-  title: '之江天枢人工智能开源平台',
+  title: '凌波智能人工智能平台',
   /**
    * @description 固定头部
    */
@@ -50,7 +50,7 @@ module.exports = {
   /**
    * 底部文字
    */
-  footerTxt: '© 2020 之江天枢人工智能开源平台',
+  footerTxt: '© 2021 凌波智能人工智能平台',
   /**
    * 备案号
    */

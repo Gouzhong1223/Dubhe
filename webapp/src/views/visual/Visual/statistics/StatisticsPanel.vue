@@ -39,7 +39,7 @@
                   :min="10"
                   :max="100"
                   class="rangeNumber"
-                  style="color: red;"
+                  style="color: red"
                   @change="mySetBinNum(binNumber)"
                 />
               </div>
@@ -47,7 +47,11 @@
                 <el-row>
                   <el-col :span="8">模式</el-col>
                   <el-col :span="16">
-                    <el-select v-model="mode" class="histmodeselect" @change="myChangeMode(mode)">
+                    <el-select
+                      v-model="mode"
+                      class="histmodeselect"
+                      @change="myChangeMode(mode)"
+                    >
                       <el-option value="三维">三维</el-option>
                       <el-option value="二维">二维</el-option>
                     </el-select>
@@ -65,7 +69,7 @@
           <div class="infoTitle" @click="scrollToTop(1)">分布图</div>
           <div class="statisticPanelContent">
             <div class="distPanel">
-              <div style="text-align: center;">
+              <div style="text-align: center">
                 <span>暂无功能</span>
               </div>
             </div>
@@ -76,7 +80,9 @@
     <div class="statisticInfo">
       <el-card>
         <div class="info">
-          <div class="infoTitle"><i class="el-icon-chat-dot-round dot" />数据信息栏</div>
+          <div class="infoTitle">
+            <i class="el-icon-chat-dot-round dot" />数据信息栏
+          </div>
           <div v-show="!infoShowFlag" class="infoContent">暂无信息</div>
           <div v-show="infoShowFlag" class="infoContent">
             <div>
@@ -110,12 +116,10 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
 
-const {
-  mapMutations: mapStatisticMutations,
-  mapGetters: mapStatisticGatters,
-} = createNamespacedHelpers('Visual/statistic');
+const { mapMutations: mapStatisticMutations, mapGetters: mapStatisticGatters } =
+  createNamespacedHelpers('Visual/statistic')
 
 export default {
   name: 'HistPanel',
@@ -127,7 +131,7 @@ export default {
       infoShowFlag: false,
       myHistShow: true,
       myDistShow: false,
-    };
+    }
   },
   computed: {
     ...mapStatisticGatters([
@@ -145,27 +149,27 @@ export default {
   watch: {
     getStatisticInfo(val) {
       if (val.length) {
-        this.infoShowFlag = true;
+        this.infoShowFlag = true
       } else {
-        this.infoShowFlag = false;
+        this.infoShowFlag = false
       }
     },
     getShowNumber(val) {
-      this.showNumber = val;
+      this.showNumber = val
     },
     getHistShow(val) {
-      this.myHistShow = val;
+      this.myHistShow = val
     },
     getDistShow(val) {
-      this.myDistShow = val;
+      this.myDistShow = val
     },
   },
   created() {
-    this.mode = this.getMode;
-    this.showNumber = this.getShowNumber;
-    this.binNumber = this.getBinNum;
-    this.myHistShow = this.getHistShow;
-    this.myDistShow = this.getDistShow;
+    this.mode = this.getMode
+    this.showNumber = this.getShowNumber
+    this.binNumber = this.getBinNum
+    this.myHistShow = this.getHistShow
+    this.myDistShow = this.getDistShow
   },
   methods: {
     ...mapStatisticMutations([
@@ -177,7 +181,9 @@ export default {
       'setDistShow',
     ]),
     scrollToTop(index) {
-      document.getElementsByClassName('statistics-container')[index].scrollIntoView(true);
+      document
+        .getElementsByClassName('statistics-container')
+        [index].scrollIntoView(true)
     },
     myChangeShownumber(showNumber) {
       if (!this.getDrawAllSvgFinished) {
@@ -185,10 +191,10 @@ export default {
         this.$message({
           message: '统计分析页面还在渲染中，勿操作控制面板',
           type: 'warning',
-        });
-        this.showNumber = this.getShowNumber;
+        })
+        this.showNumber = this.getShowNumber
       } else {
-        this.changeShownumber(showNumber);
+        this.changeShownumber(showNumber)
       }
     },
     myChangeMode(mode) {
@@ -196,10 +202,10 @@ export default {
         this.$message({
           message: '统计分析页面还在渲染中，勿操作控制面板',
           type: 'warning',
-        });
-        this.mode = this.getMode;
+        })
+        this.mode = this.getMode
       } else {
-        this.changeMode(mode);
+        this.changeMode(mode)
       }
     },
     mySetBinNum(binNumber) {
@@ -207,14 +213,14 @@ export default {
         this.$message({
           message: '统计分析页面还在渲染中，勿操作控制面板',
           type: 'warning',
-        });
-        this.binNumber = this.getBinNum;
+        })
+        this.binNumber = this.getBinNum
       } else {
-        this.setBinNum(binNumber);
+        this.setBinNum(binNumber)
       }
     },
   },
-};
+}
 </script>
 >
 
@@ -266,7 +272,7 @@ export default {
   line-height: 30px;
   color: white;
   text-align: left;
-  background-color: #625eb3;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-radius: 3px;
 
   .dot {

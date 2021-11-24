@@ -15,24 +15,34 @@
 */
 
 .el-button--primary {
-  color: $primaryColor;
-  background-color: $primaryPlainBgColor;
+  color: #fff;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-color: $primaryBorderColor;
+  transition: all 0.5s;
+
+  &:hover {
+    background: linear-gradient(90deg, #6375fc, #ba7bfe);
+  }
 
   &.is-disabled,
   &.is-disabled:hover,
   &.is-disabled:focus,
   &.is-disabled:active {
-    color: #8295eb;
+    color: #fff;
     background-color: $primaryPlainBgColor;
     border-color: #d5dcf8;
   }
 }
+
 // danger button
 .el-button--danger {
   color: #ff4949;
-  background-color: #ffeded;
+  background: linear-gradient(to right, #f7d1d1, #ffeded);
   border-color: #ffb6b6;
+
+  &:hover {
+    background: linear-gradient(90deg, #ea6672, #f09165);
+  }
 
   &.is-disabled,
   &.is-disabled:hover,
@@ -55,6 +65,7 @@
 
 // el-radio border
 .el-radio.is-bordered {
+
   &.is-checked,
   &:hover {
     border-color: $primaryBorderColor;
@@ -72,23 +83,26 @@
 }
 
 .el-radio-button__orig-radio {
-  &:checked + .el-radio-button__inner,
-  &:hover + .el-radio-button__inner {
+
+  &:checked+.el-radio-button__inner,
+  &:hover+.el-radio-button__inner {
     color: $primaryColor;
     background-color: $primaryPlainBgColor;
     border-color: $primaryBorderColor;
     box-shadow: -1px 0 0 0 $primaryBorderColor;
   }
 
-  &:checked:hover + .el-radio-button__inner {
+  &:checked:hover+.el-radio-button__inner {
     color: #fff;
     background-color: $primaryHoverColor;
     border-color: $primaryHoverColor;
     box-shadow: -1px 0 0 0 $primaryHoverColor;
   }
 }
+
 // checkbox-button
 .el-checkbox-button {
+
   &.is-checked .el-checkbox-button__inner,
   .el-checkbox-button__inner:hover {
     color: $primaryColor;
@@ -108,6 +122,7 @@
     box-shadow: -1px 0 0 0 $primaryHoverColor;
   }
 }
+
 // checkbox__input
 .el-checkbox__input {
   .el-checkbox__inner:hover {
@@ -136,6 +151,7 @@
     border-color: $borderColorBase;
   }
 }
+
 // radio
 .el-radio__input {
   .el-radio__inner:hover {
@@ -151,6 +167,7 @@
     }
   }
 }
+
 // switch
 .el-switch__core {
   background-color: #c0c4cc;
@@ -201,6 +218,15 @@
 
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
+}
+
+.el-submenu__title {
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
+  color: #fff !important;
+
+  .svg-icon {
+    color: #fff !important;
+  }
 }
 
 .el-submenu__title,

@@ -1,18 +1,9 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License, Version 2.0 (the
+"License"); * you may not use this file except in compliance with the License. * You may obtain a
+copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by
+applicable law or agreed to in writing, software * distributed under the License is distributed on
+an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See
+the License for the specific language governing permissions and * limitations under the License. */
 
 <template>
   <div :class="classObj" class="app-wrapper">
@@ -36,8 +27,8 @@
           <template v-slot:right>
             <slot name="right-options" />
             <ResourceMonitoring />
-            <Guideline />
-            <Feedback />
+            <!-- <Guideline /> -->
+            <!-- <Feedback /> -->
           </template>
         </navbar>
       </div>
@@ -54,9 +45,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import ResizeMixin from './mixin/ResizeHandler';
-import { AppMain, Navbar, Sidebar, Guideline, Feedback, ResourceMonitoring } from './components';
+import { mapState } from 'vuex'
+import ResizeMixin from './mixin/ResizeHandler'
+import { AppMain, Navbar, Sidebar, ResourceMonitoring } from './components'
 
 export default {
   name: 'BaseLayout',
@@ -64,8 +55,7 @@ export default {
     AppMain,
     Navbar,
     Sidebar,
-    Guideline,
-    Feedback,
+
     ResourceMonitoring,
   },
   mixins: [ResizeMixin],
@@ -105,31 +95,31 @@ export default {
         noSidebar: !this.showSidebar,
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile',
-      };
+      }
     },
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false });
+      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     },
     onClickBack() {
-      const backTo = this.$route?.meta?.backTo;
+      const backTo = this.$route?.meta?.backTo
       // 指定跳转路由 name
       if (backTo) {
-        this.$router.push({ name: backTo });
+        this.$router.push({ name: backTo })
       } else {
         // 不存在历史记录
         // 或者新开 Tab
         // chrome 新开tab页面历史记录为 2
         if (!window.history.length || window.history.length <= 2) {
-          this.$router.push('/');
-          return;
+          this.$router.push('/')
+          return
         }
-        this.$router ? this.$router.back() : window.history.back();
+        this.$router ? this.$router.back() : window.history.back()
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

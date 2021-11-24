@@ -1,21 +1,13 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
+You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
+required by applicable law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied. * See the License for the specific language governing permissions and * limitations under
+the License. * ============================================================= */
 
 <template>
-  <div style="height: 100%;">
+  <div style="height: 100%">
     <login-public>
       <el-form
         ref="registerForm"
@@ -24,7 +16,7 @@
         label-width="26%"
         class="register-form"
       >
-        <h2 class="register-title">之江天枢人工智能开源平台</h2>
+        <h2 class="register-title">凌波智能人工智能平台</h2>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="registerForm.username" placeholder="请输入用户名" />
         </el-form-item>
@@ -44,10 +36,10 @@
           <el-input v-model="registerForm.email" auto-complete="on" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item label="邮箱验证码" prop="code">
-          <el-input v-model="registerForm.code" style="width: 50%;" placeholder="请输入验证码" />
+          <el-input v-model="registerForm.code" style="width: 50%" placeholder="请输入验证码" />
           <el-button
             :loading="codeLoading"
-            style="width: 48%; padding: 8px 0;"
+            style="width: 48%; padding: 8px 0"
             :disabled="isDisabled"
             @click="sendCode"
             >{{ buttonName }}</el-button
@@ -59,18 +51,21 @@
         <el-form-item label="确认密码" prop="pass">
           <el-input v-model="registerForm.pass" type="password" placeholder="请再次输入密码" />
         </el-form-item>
+        <el-form-item>
+          <div class="go-login fr">
+            已有账号?<el-button type="text" @click="$router.replace({ path: '/login' })"
+              >去登录</el-button
+            >
+          </div>
+        </el-form-item>
         <el-button
           type="primary"
           size="medium"
-          style="width: 100%;"
+          class="submit-btn"
           @click="submitForm('registerForm')"
-          >注册</el-button
-        >
-        <div class="go-login fr">
-          已有账号?<el-button type="text" @click="$router.replace({ path: '/login' })"
-            >去登录</el-button
-          >
-        </div>
+          >注册
+          <div class="wave"></div>
+        </el-button>
       </el-form>
     </login-public>
   </div>
@@ -144,7 +139,12 @@ export default {
         code: [{ required: true, trigger: 'change', message: '验证码不能为空' }],
         password: [
           { required: true, trigger: 'blur', message: '密码不能为空' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+          {
+            min: 6,
+            max: 20,
+            message: '长度在 6 到 20 个字符',
+            trigger: 'blur',
+          },
         ],
         pass: [
           { required: true, message: '请再次验证密码', trigger: 'blur' },
@@ -270,6 +270,42 @@ export default {
 
   .el-form-item {
     margin-bottom: 15px;
+  }
+
+  .submit-btn {
+    position: relative;
+    overflow: hidden;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .wave {
+      position: absolute;
+
+      left: -50%;
+      top: 60%;
+      width: 150px;
+      height: 200px;
+      border-top-right-radius: 100px;
+      border-top-left-radius: 100px;
+      border-bottom-right-radius: 100px;
+      border-bottom-left-radius: 90px;
+      background: #2e4fde;
+      animation: wave 10s linear infinite;
+    }
+
+    @keyframes wave {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   }
 }
 

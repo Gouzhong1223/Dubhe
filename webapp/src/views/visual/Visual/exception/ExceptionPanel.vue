@@ -20,7 +20,9 @@
       <el-card>
         <!-- 盒线图倍数相关信息 -->
         <div>
-          <div class="infoTitle"><i class="el-icon-chat-dot-round dot" />盒线图相关信息：</div>
+          <div class="infoTitle">
+            <i class="el-icon-chat-dot-round dot" />盒线图相关信息：
+          </div>
           <div v-show="!boxInfoShowFlag" class="infoContent">暂无信息</div>
           <div v-show="boxInfoShowFlag" class="infoContent">
             <el-row class="item">
@@ -38,12 +40,17 @@
             <div v-if="!dq0Show">
               <el-row class="item">
                 <el-col :span="colSpan0[0]">联动&nbsp;：</el-col>
-                <el-col :span="colSpan0[1]"><el-checkbox v-model="myLinkChecked"/></el-col>
+                <el-col :span="colSpan0[1]"
+                  ><el-checkbox v-model="myLinkChecked"
+                /></el-col>
               </el-row>
               <el-row class="item excepPanelSelect">
                 <el-col :span="colSpan1[0]">上四分位距倍数&nbsp;：</el-col>
                 <el-col :span="colSpan1[1]"
-                  ><el-input v-model="curBoxInfo.upTimes" type="number" @change="changeUpTimes()"
+                  ><el-input
+                    v-model="curBoxInfo.upTimes"
+                    type="number"
+                    @change="changeUpTimes()"
                 /></el-col>
               </el-row>
               <el-row class="item excepPanelSelect">
@@ -56,7 +63,9 @@
                 /></el-col>
               </el-row>
               <div class="item subButtonDiv">
-                <el-button class="subButton" @click="submitBoxInfo()">确定</el-button>
+                <el-button class="subButton" @click="submitBoxInfo()"
+                  >确定</el-button
+                >
               </div>
             </div>
             <div v-if="dq0Show">
@@ -101,12 +110,10 @@
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
 
-const {
-  mapGetters: mapExceptionGetters,
-  mapMutations: mapExceptionMutations,
-} = createNamespacedHelpers('Visual/exception');
+const { mapGetters: mapExceptionGetters, mapMutations: mapExceptionMutations } =
+  createNamespacedHelpers('Visual/exception')
 export default {
   data() {
     return {
@@ -125,7 +132,7 @@ export default {
       upDownValue: [0, 0],
       colSpan0: [7, 17],
       colSpan1: [12, 12],
-    };
+    }
   },
   computed: {
     ...mapExceptionGetters([
@@ -142,49 +149,53 @@ export default {
   },
   watch: {
     getRectCurInfo(val) {
-      this.curRectInfo = val;
+      this.curRectInfo = val
       if (this.curRectInfo[0] === '') {
-        this.rectInfoShowFlag = false;
+        this.rectInfoShowFlag = false
       } else {
-        this.rectInfoShowFlag = true;
+        this.rectInfoShowFlag = true
       }
     },
     getCurIqrTimes(val) {
       if (val[0] === '') {
-        this.boxInfoShowFlag = false;
-        return;
+        this.boxInfoShowFlag = false
+        return
       }
-      this.boxInfoShowFlag = true;
-      [
+      this.boxInfoShowFlag = true
+      ;[
         this.curBoxInfo.run,
         this.curBoxInfo.tag,
         this.curBoxInfo.step,
         this.curBoxInfo.upTimes,
         this.curBoxInfo.downTimes,
-      ] = val;
-      this.runSeletChange();
-      this.tagSeletChange();
+      ] = val
+      this.runSeletChange()
+      this.tagSeletChange()
     },
     myLinkChecked() {
-      this.setLinkChecked(this.myLinkChecked);
+      this.setLinkChecked(this.myLinkChecked)
     },
     getExcepBoxStatistic(val) {
-      this.excepBoxStatisticFlag = true;
-      this.excepBoxStatistic = val;
+      this.excepBoxStatisticFlag = true
+      this.excepBoxStatistic = val
     },
     getDq0Show(val) {
-      this.dq0Show = val;
+      this.dq0Show = val
     },
     getUpDownValue(val) {
-      this.upDownValue = val;
+      this.upDownValue = val
     },
   },
   mounted() {
-    this.dq0Show = this.getDq0Show;
-    this.setRectCurInfo(['', '', '', '', '', '', '']);
+    this.dq0Show = this.getDq0Show
+    this.setRectCurInfo(['', '', '', '', '', '', ''])
   },
   methods: {
-    ...mapExceptionMutations(['setCurIqrTimes', 'setLinkChecked', 'setRectCurInfo']),
+    ...mapExceptionMutations([
+      'setCurIqrTimes',
+      'setLinkChecked',
+      'setRectCurInfo',
+    ]),
     mySetCurIqrTimes() {
       this.setCurIqrTimes([
         this.curBoxInfo.run,
@@ -192,13 +203,13 @@ export default {
         this.curBoxInfo.step,
         this.curBoxInfo.upTimes,
         this.curBoxInfo.downTimes,
-      ]);
+      ])
     },
     runSeletChange() {
       for (let i = 0; i < this.getRun.length; i += 1) {
         if (this.getRun[i] === this.curBoxInfo.run) {
-          this.curRunTag = this.getTag[i];
-          break;
+          this.curRunTag = this.getTag[i]
+          break
         }
       }
     },
@@ -208,96 +219,96 @@ export default {
           this.getAllStep[i][0] === this.curBoxInfo.run &&
           this.getAllStep[i][1] === this.curBoxInfo.tag
         ) {
-          this.curRunTagStep = this.getAllStep[i][2].step;
-          break;
+          this.curRunTagStep = this.getAllStep[i][2].step
+          break
         }
       }
     },
     computeMaxTimes() {
-      let curStepBox = [];
+      let curStepBox = []
       for (let i = 0; i < this.getAllStep.length; i += 1) {
         if (
           this.getAllStep[i][0] === this.curBoxInfo.run &&
           this.getAllStep[i][1] === this.curBoxInfo.tag
         ) {
-          let k = 0;
+          let k = 0
           for (let j = 0; j < this.curRunTagStep.length; j += 1) {
             if (this.curRunTagStep[j] === this.curBoxInfo.step) {
-              k = j;
-              break;
+              k = j
+              break
             }
           }
-          curStepBox = this.getAllStep[i][2].box[k];
-          break;
+          curStepBox = this.getAllStep[i][2].box[k]
+          break
         }
       }
-      const dq = curStepBox[0][1] - curStepBox[0][3];
-      const maxUpTimes = (curStepBox[1][5] - curStepBox[0][1]) / dq;
-      const maxDownTimes = (curStepBox[0][3] - curStepBox[1][0]) / dq;
-      return [maxDownTimes, maxUpTimes];
+      const dq = curStepBox[0][1] - curStepBox[0][3]
+      const maxUpTimes = (curStepBox[1][5] - curStepBox[0][1]) / dq
+      const maxDownTimes = (curStepBox[0][3] - curStepBox[1][0]) / dq
+      return [maxDownTimes, maxUpTimes]
     },
     changeUpTimes() {
-      this.downUpChange = 'up';
+      this.downUpChange = 'up'
       if (Number(this.curBoxInfo.upTimes) < 0) {
         this.$message({
           message: '倍数不能为负数',
           type: 'warning',
-        });
-        return;
+        })
+        return
       }
-      const [maxDownTimes, maxUpTimes] = this.computeMaxTimes();
+      const [maxDownTimes, maxUpTimes] = this.computeMaxTimes()
       if (this.curBoxInfo.upTimes > maxUpTimes) {
         this.$message({
           message: `上四分位距的倍数最大只能为：${maxUpTimes}`,
           type: 'warning',
-        });
-        this.curBoxInfo.upTimes = maxUpTimes;
+        })
+        this.curBoxInfo.upTimes = maxUpTimes
       }
       // 联动
       if (this.getLinkChecked) {
-        let downTimesTemp = this.curBoxInfo.upTimes;
+        let downTimesTemp = this.curBoxInfo.upTimes
         if (maxDownTimes < downTimesTemp) {
           this.$message({
             message: `下四分位距的倍数最大只能为：${maxDownTimes}`,
             type: 'warning',
-          });
-          downTimesTemp = maxDownTimes;
+          })
+          downTimesTemp = maxDownTimes
           // 反过来又会影响downTimes，因为联动，希望上下倍数相同
-          this.curBoxInfo.upTimes = maxDownTimes;
+          this.curBoxInfo.upTimes = maxDownTimes
         }
-        this.curBoxInfo.downTimes = downTimesTemp;
+        this.curBoxInfo.downTimes = downTimesTemp
       }
     },
     changeDownTimes() {
-      this.downUpChange = 'down';
+      this.downUpChange = 'down'
       if (Number(this.curBoxInfo.downTimes) < 0) {
         this.$message({
           message: '倍数不能为负数',
           type: 'warning',
-        });
-        return;
+        })
+        return
       }
-      const [maxDownTimes, maxUpTimes] = this.computeMaxTimes();
+      const [maxDownTimes, maxUpTimes] = this.computeMaxTimes()
       if (this.curBoxInfo.downTimes > maxDownTimes) {
         this.$message({
           message: `下四分位距的倍数最大只能为：${maxDownTimes}`,
           type: 'warning',
-        });
-        this.curBoxInfo.downTimes = maxDownTimes;
+        })
+        this.curBoxInfo.downTimes = maxDownTimes
       }
       // 联动
       if (this.getLinkChecked) {
-        let upTimesTemp = this.curBoxInfo.downTimes;
+        let upTimesTemp = this.curBoxInfo.downTimes
         if (maxUpTimes < upTimesTemp) {
           this.$message({
             message: `上四分位距的倍数最大只能为：${maxUpTimes}`,
             type: 'warning',
-          });
-          upTimesTemp = maxUpTimes;
+          })
+          upTimesTemp = maxUpTimes
           // 反过来又会影响downTimes，因为联动，希望上下倍数相同
-          this.curBoxInfo.downTimes = maxUpTimes;
+          this.curBoxInfo.downTimes = maxUpTimes
         }
-        this.curBoxInfo.upTimes = upTimesTemp;
+        this.curBoxInfo.upTimes = upTimesTemp
       }
     },
     submitBoxInfo() {
@@ -308,9 +319,9 @@ export default {
         this.myLinkChecked
       ) {
         if (this.downUpChange === 'downUp') {
-          this.changeDownTimes();
+          this.changeDownTimes()
         } else {
-          this.changeUpTimes();
+          this.changeUpTimes()
         }
       }
       // 如果没有变化就不提交
@@ -318,13 +329,16 @@ export default {
         Number(this.curBoxInfo.upTimes) === this.getCurIqrTimes[3] &&
         Number(this.curBoxInfo.downTimes) === this.getCurIqrTimes[4]
       )
-        return;
-      if (Number(this.curBoxInfo.upTimes) < 0 || Number(this.curBoxInfo.downTimes) < 0) {
+        return
+      if (
+        Number(this.curBoxInfo.upTimes) < 0 ||
+        Number(this.curBoxInfo.downTimes) < 0
+      ) {
         this.$message({
           message: '倍数不能为负数',
           type: 'warning',
-        });
-        return;
+        })
+        return
       }
       this.setCurIqrTimes([
         this.curBoxInfo.run,
@@ -332,10 +346,10 @@ export default {
         this.curBoxInfo.step,
         Number(this.curBoxInfo.upTimes),
         Number(this.curBoxInfo.downTimes),
-      ]);
+      ])
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -355,7 +369,7 @@ export default {
   line-height: 30px;
   color: white;
   text-align: left;
-  background-color: #625eb3;
+  background: linear-gradient(to right, #6e83fb, #3c97f7);
   border-radius: 3px;
 
   .dot {
@@ -438,7 +452,12 @@ export default {
 }
 
 /deep/
-.excepPanel .el-checkbox__input.is-checked .el-checkbox__inner .excepPanel .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  .excepPanel
+  .el-checkbox__input.is-checked
+  .el-checkbox__inner
+  .excepPanel
+  .el-checkbox__input.is-indeterminate
+  .el-checkbox__inner {
   background-color: #625eb3;
   border-color: #625eb3;
 }
