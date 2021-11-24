@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = {"org.dubhe.**.dao"})
 public class DubheCourseApplication {
     public static void main(String[] args) {
-        System.setProperty("es.set.netty.runtime.available.processors", "false");
+//        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(DubheCourseApplication.class, args);
     }
 }
