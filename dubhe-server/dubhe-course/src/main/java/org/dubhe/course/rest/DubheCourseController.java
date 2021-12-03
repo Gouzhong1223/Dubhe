@@ -4,9 +4,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.course.domain.dto.CourseCreateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,9 +37,16 @@ public class DubheCourseController {
 
     @GetMapping("listAllCourses")
     @ApiOperation(value = "获取所有的课程")
-    @PreAuthorize(Permissions.DATA)
+    @PreAuthorize(Permissions.COURSE)
     public DataResponseBody listAllCourses() {
         return new DataResponseBody(courseService.listAllCourses());
+    }
+
+    @PostMapping("createCourse")
+    @ApiOperation("创建课程")
+    @PreAuthorize(Permissions.COURSE_CREATE)
+    public DataResponseBody createCourse(CourseCreateDTO courseCreateDTO) {
+        return new DataResponseBody(courseService.createCourse(courseCreateDTO));
     }
 
 }

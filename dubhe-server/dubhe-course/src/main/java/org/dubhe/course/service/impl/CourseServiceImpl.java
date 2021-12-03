@@ -1,6 +1,7 @@
 package org.dubhe.course.service.impl;
 
 import org.dubhe.course.domain.Course;
+import org.dubhe.course.domain.dto.CourseCreateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,11 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> listAllCourses() {
+        return null;
+    }
+
+    @Override
+    public Course createCourse(CourseCreateDTO courseCreateDTO) {
         return null;
     }
 }

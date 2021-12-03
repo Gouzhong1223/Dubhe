@@ -1,6 +1,7 @@
 package org.dubhe.course.service;
 
 import org.dubhe.course.domain.Course;
+import org.dubhe.course.domain.dto.CourseCreateDTO;
 
 import java.util.List;
 
@@ -16,5 +17,16 @@ import java.util.List;
  * @Version : 1.0.0
  */
 public interface CourseService {
+    /**
+     * 获取所有的课程
+     * @return
+     */
     List<Course> listAllCourses();
+
+    /**
+     * 创建课程
+     * @param courseCreateDTO courseCreateDTO
+     * @return Course
+     */
+    Course createCourse(CourseCreateDTO courseCreateDTO);
 }
