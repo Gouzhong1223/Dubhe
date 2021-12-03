@@ -14,45 +14,40 @@ import java.time.LocalDateTime;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-03 22:33
+ * @Date : create by QingSong in 2021-12-03 22:34
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
  * @PackageName : org.dubhe.course.domain
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
-@ApiModel(value = "dubhe-cloud-prod.course")
+@ApiModel(value = "dubhe-cloud-prod.course_file")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course implements Serializable {
+public class CourseFile implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * 课程主键
+     * 课程文件 ID
      */
-    @ApiModelProperty(value = "课程主键")
+    @ApiModelProperty(value = "课程文件 ID")
     private Long id;
     /**
-     * 课程名字
+     * 课程文件名字
      */
-    @ApiModelProperty(value = "课程名字")
+    @ApiModelProperty(value = "课程文件名字")
     private String name;
     /**
-     * 课程类型
+     * 课程文件类型
      */
-    @ApiModelProperty(value = "课程类型")
-    private Long type;
+    @ApiModelProperty(value = "课程文件类型")
+    private Integer type;
     /**
-     * 课程简介
+     * 课程文件 URL
      */
-    @ApiModelProperty(value = "课程简介")
-    private String introduction;
-    /**
-     * 总共章节
-     */
-    @ApiModelProperty(value = "总共章节")
-    private Integer totalChapters;
+    @ApiModelProperty(value = "课程文件 URL")
+    private String url;
     /**
      * 创建时间
      */
@@ -63,19 +58,4 @@ public class Course implements Serializable {
      */
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
-    /**
-     * 封面图
-     */
-    @ApiModelProperty(value = "封面图")
-    private String coverImage;
-    /**
-     * 状态码 0-不可见 1-可见
-     */
-    @ApiModelProperty(value = "状态码 0-不可见 1-可见")
-    private Integer status;
-    /**
-     * 创建者 ID
-     */
-    @ApiModelProperty(value = "创建者 ID")
-    private Integer createUserId;
 }

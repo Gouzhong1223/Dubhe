@@ -19,12 +19,14 @@ import java.util.List;
 public interface CourseService {
     /**
      * 获取所有的课程
+     *
      * @return
      */
     List<Course> listAllCourses();
 
     /**
      * 创建课程
+     *
      * @param courseCreateDTO courseCreateDTO
      * @return Course
      */

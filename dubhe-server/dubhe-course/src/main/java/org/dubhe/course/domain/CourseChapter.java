@@ -21,38 +21,43 @@ import java.time.LocalDateTime;
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
-@ApiModel(value = "dubhe-cloud-prod.course")
+@ApiModel(value = "dubhe-cloud-prod.course_chapter")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course implements Serializable {
+public class CourseChapter implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
-     * 课程主键
+     * 章节主键
      */
-    @ApiModelProperty(value = "课程主键")
+    @ApiModelProperty(value = "章节主键")
     private Long id;
     /**
-     * 课程名字
+     * 章节名字
      */
-    @ApiModelProperty(value = "课程名字")
+    @ApiModelProperty(value = "章节名字")
     private String name;
     /**
-     * 课程类型
+     * 章节序号
      */
-    @ApiModelProperty(value = "课程类型")
-    private Long type;
+    @ApiModelProperty(value = "章节序号")
+    private Integer serialNumber;
     /**
-     * 课程简介
+     * 章节类型 0-pdf 1-视频 2-PPT
      */
-    @ApiModelProperty(value = "课程简介")
+    @ApiModelProperty(value = "章节类型 0-pdf 1-视频 2-PPT")
+    private Integer chapterType;
+    /**
+     * 章节所属课程
+     */
+    @ApiModelProperty(value = "章节所属课程")
+    private Long courseId;
+    /**
+     * 章节简介
+     */
+    @ApiModelProperty(value = "章节简介")
     private String introduction;
-    /**
-     * 总共章节
-     */
-    @ApiModelProperty(value = "总共章节")
-    private Integer totalChapters;
     /**
      * 创建时间
      */
@@ -64,18 +69,8 @@ public class Course implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
     /**
-     * 封面图
+     * 文件 ID
      */
-    @ApiModelProperty(value = "封面图")
-    private String coverImage;
-    /**
-     * 状态码 0-不可见 1-可见
-     */
-    @ApiModelProperty(value = "状态码 0-不可见 1-可见")
-    private Integer status;
-    /**
-     * 创建者 ID
-     */
-    @ApiModelProperty(value = "创建者 ID")
-    private Integer createUserId;
+    @ApiModelProperty(value = "文件 ID")
+    private Long fileId;
 }
