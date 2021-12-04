@@ -1,4 +1,5 @@
 package org.dubhe.course.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import org.dubhe.course.domain.CourseType;
 
@@ -25,4 +26,7 @@ public interface CourseTypeMapper {
     int updateByPrimaryKeySelective(CourseType record);
 
     int updateByPrimaryKey(CourseType record);
+
+    CourseType selectOneByName(@Param("name")String name);
+
 }
