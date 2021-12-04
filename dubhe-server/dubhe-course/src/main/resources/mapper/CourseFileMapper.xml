@@ -4,9 +4,9 @@
     <resultMap id="BaseResultMap" type="org.dubhe.course.domain.CourseFile">
         <!--@mbg.generated-->
         <!--@Table dubhe-cloud-prod.course_file-->
-        <result column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -16,26 +16,37 @@
         <!--@mbg.generated-->
         id, `name`, `type`, url, createTime, updateTime, uri
     </sql>
-    <insert id="insert" parameterType="org.dubhe.course.domain.CourseFile">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course_file (id, `name`, `type`,
-        url, createTime, updateTime,
-        uri)
-        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-        #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-        #{uri,jdbcType=VARCHAR})
+        select
+        <include refid="Base_Column_List"/>
+        from dubhe-cloud-prod.course_file
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete from dubhe-cloud-prod.course_file
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.dubhe.course.domain.CourseFile"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into dubhe-cloud-prod.course_file (`name`, `type`, url,
+        createTime, updateTime, uri
+        )
+        values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{uri,jdbcType=VARCHAR}
+        )
     </insert>
-    <insert id="insertSelective" parameterType="org.dubhe.course.domain.CourseFile">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.dubhe.course.domain.CourseFile"
+            useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into dubhe-cloud-prod.course_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="name != null and name != ''">
                 `name`,
             </if>
-            <if test="type != null">
+            <if test="type != null and type != ''">
                 `type`,
             </if>
             <if test="url != null and url != ''">
@@ -52,14 +63,11 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
             <if test="name != null and name != ''">
                 #{name,jdbcType=VARCHAR},
             </if>
-            <if test="type != null">
-                #{type,jdbcType=INTEGER},
+            <if test="type != null and type != ''">
+                #{type,jdbcType=VARCHAR},
             </if>
             <if test="url != null and url != ''">
                 #{url,jdbcType=VARCHAR},
@@ -75,4 +83,40 @@
             </if>
         </trim>
     </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.dubhe.course.domain.CourseFile">
+        <!--@mbg.generated-->
+        update dubhe-cloud-prod.course_file
+        <set>
+            <if test="name != null and name != ''">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null and type != ''">
+                `type` = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uri != null and uri != ''">
+                uri = #{uri,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.dubhe.course.domain.CourseFile">
+        <!--@mbg.generated-->
+        update dubhe-cloud-prod.course_file
+        set `name` = #{name,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+        uri = #{uri,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

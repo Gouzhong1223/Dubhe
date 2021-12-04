@@ -69,8 +69,8 @@ public class OssUtil {
             if (null != result) {
                 logger.info("==========>OSS文件上传成功,OSS地址：" + filePath);
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("link", "https://" + bucketName + "." + endpoint + "/" + filePath);
-                hashMap.put("url", filePath);
+                hashMap.put("url", "https://" + bucketName + "." + endpoint + "/" + filePath);
+                hashMap.put("uri", filePath);
                 return hashMap;
             }
         } catch (OSSException oe) {
