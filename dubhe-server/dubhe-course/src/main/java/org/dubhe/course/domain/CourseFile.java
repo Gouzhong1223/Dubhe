@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-03 22:34
+ * @Date : create by QingSong in 2021-12-04 19:33
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
  * @PackageName : org.dubhe.course.domain
@@ -58,4 +58,9 @@ public class CourseFile implements Serializable {
      */
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
+    /**
+     * 课程文件 uri
+     */
+    @ApiModelProperty(value = "课程文件 uri")
+    private String uri;
 }

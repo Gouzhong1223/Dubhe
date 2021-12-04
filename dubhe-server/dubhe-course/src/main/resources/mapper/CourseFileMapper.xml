@@ -10,19 +10,20 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="uri" jdbcType="VARCHAR" property="uri"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, `type`, url, createTime, updateTime
+        id, `name`, `type`, url, createTime, updateTime, uri
     </sql>
     <insert id="insert" parameterType="org.dubhe.course.domain.CourseFile">
         <!--@mbg.generated-->
         insert into dubhe-cloud-prod.course_file (id, `name`, `type`,
-        url, createTime, updateTime
-        )
+        url, createTime, updateTime,
+        uri)
         values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-        #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-        )
+        #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{uri,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="org.dubhe.course.domain.CourseFile">
         <!--@mbg.generated-->
@@ -46,6 +47,9 @@
             <if test="updateTime != null">
                 updateTime,
             </if>
+            <if test="uri != null and uri != ''">
+                uri,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -65,6 +69,9 @@
             </if>
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="uri != null and uri != ''">
+                #{uri,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
