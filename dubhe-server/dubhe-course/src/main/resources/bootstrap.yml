@@ -4,6 +4,10 @@ server:
   rest-version: v1
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
   application:
     name: dubhe-course
   profiles:
@@ -39,6 +43,13 @@ spring:
   # 配置允许后面的Bean覆盖前面名称重复的Bean
   main:
     allow-bean-definition-overriding: true
+aliyun:
+  oss:
+    endpoint: oss-cn-chengdu.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI4G2pN7QavFUeTe9H5kWf # 访问身份验证中用到用户标识
+    accessKeySecret: mwztFsMlFJ1ozh3aq1WP0GnzdcnvYF # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: g-youcode # oss的存储空间
+    filehost: clockin
 
 #mybatis-plus配置控制台打印完整带参数SQL语句
 #mybatis-plus:
