@@ -79,7 +79,9 @@ public enum LogEnum {
     //云端Serving
     SERVING,
     //专业版终端
-    TERMINAL;
+    TERMINAL,
+    //课程
+    COURSE;
 
     /**
      * 判断日志类型不能为空
