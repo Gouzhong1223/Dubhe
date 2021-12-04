@@ -37,6 +37,14 @@ public final class Permissions {
     public static final String COURSE_DELETE = "hasAuthority('ROLE_course_delete')";
 
     /**
+     * 课程分类权限
+     */
+    public static final String COURSE_TYPE = "hasAuthority('ROLE_course_type')";
+    public static final String COURSE_TYPE_CREATE = "hasAuthority('ROLE_course_type_create')";
+    public static final String COURSE_TYPE_UPDATE = "hasAuthority('ROLE_course_type_update')";
+    public static final String COURSE_TYPE_DELETE = "hasAuthority('ROLE_course_type_delete')";
+
+    /**
      * notebook权限
      */
     public static final String NOTEBOOK = "hasAuthority('ROLE_notebook')";
