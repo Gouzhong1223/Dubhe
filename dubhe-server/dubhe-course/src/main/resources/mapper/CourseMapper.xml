@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.dubhe.course.mapper.CourseMapper">
+<mapper namespace="org.dubhe.course.dao.CourseMapper">
     <resultMap id="BaseResultMap" type="org.dubhe.course.domain.Course">
         <!--@mbg.generated-->
         <!--@Table dubhe-cloud-prod.course-->

@@ -1,4 +1,4 @@
-package org.dubhe.course.mapper;
+package org.dubhe.course.dao;
 
 import org.dubhe.course.domain.CourseUserSchedule;
 

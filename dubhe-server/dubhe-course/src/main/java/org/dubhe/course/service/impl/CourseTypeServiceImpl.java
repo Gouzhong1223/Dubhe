@@ -5,7 +5,7 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
 import org.dubhe.course.domain.CourseType;
-import org.dubhe.course.mapper.CourseTypeMapper;
+import org.dubhe.course.dao.CourseTypeMapper;
 import org.dubhe.course.service.CourseTypeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

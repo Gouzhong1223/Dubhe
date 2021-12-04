@@ -1,6 +1,6 @@
 package org.dubhe.course.service.impl;
 
-import org.dubhe.course.mapper.CourseFileMapper;
+import org.dubhe.course.dao.CourseFileMapper;
 import org.dubhe.course.service.CourseFileService;
 import org.springframework.stereotype.Service;
 

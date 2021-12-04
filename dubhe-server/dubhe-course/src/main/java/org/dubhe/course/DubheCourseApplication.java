@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Version : 1.0.0
  */
 @SpringBootApplication(scanBasePackages = "org.dubhe")
-@MapperScan(basePackages = {"org.dubhe.**.mapper"})
+@MapperScan(basePackages = {"org.dubhe.**.dao"})
 public class DubheCourseApplication {
     public static void main(String[] args) {
         SpringApplication.run(DubheCourseApplication.class, args);
