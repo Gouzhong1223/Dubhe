@@ -3,6 +3,8 @@ package org.dubhe.course.dao;
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseType;
 
+import java.util.List;
+
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
@@ -29,4 +31,5 @@ public interface CourseTypeMapper {
 
     CourseType selectOneByName(@Param("name") String name);
 
+    List<CourseType> selectAll();
 }

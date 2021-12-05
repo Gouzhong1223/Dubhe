@@ -1,21 +1,29 @@
 package org.dubhe.course.service.impl;
 
 import org.dubhe.biz.base.constant.ResponseCode;
+import org.dubhe.biz.base.context.UserContext;
 import org.dubhe.biz.base.service.UserContextService;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
 import org.dubhe.course.dao.CourseFileMapper;
 import org.dubhe.course.dao.CourseMapper;
+import org.dubhe.course.dao.CourseScheduleMapper;
+import org.dubhe.course.dao.CourseTypeMapper;
 import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.CourseFile;
+import org.dubhe.course.domain.CourseSchedule;
+import org.dubhe.course.domain.CourseType;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
+import org.dubhe.course.domain.dto.CourseDetailDTO;
+import org.dubhe.course.domain.dto.CourseTypeDetailDTO;
 import org.dubhe.course.domain.dto.CourseUpdateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,21 +42,98 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     private static final Integer DEFAULT_TOTAL_CHAPTER = 0;
+    private static final Integer DEFAULT_FINISH_CHAPTER = 0;
+    private static final Integer DEFAULT_SCHEDULE = 0;
+    private static final Integer DEFAULT_DONE = 0;
     private static final Integer DEFAULT_COURSE_STATUS = 1;
 
     private final CourseFileMapper courseFileMapper;
     private final CourseMapper courseMapper;
     private final UserContextService userContextService;
+    private final CourseScheduleMapper courseScheduleMapper;
+    private final CourseTypeMapper courseTypeMapper;
 
-    public CourseServiceImpl(CourseFileMapper courseFileMapper, CourseMapper courseMapper, UserContextService userContextService) {
+    public CourseServiceImpl(CourseFileMapper courseFileMapper, CourseMapper courseMapper, UserContextService userContextService, CourseScheduleMapper courseScheduleMapper, CourseTypeMapper courseTypeMapper) {
         this.courseFileMapper = courseFileMapper;
         this.courseMapper = courseMapper;
         this.userContextService = userContextService;
+        this.courseScheduleMapper = courseScheduleMapper;
+        this.courseTypeMapper = courseTypeMapper;
     }
 
     @Override
-    public List<Course> listAllCourses() {
-        return null;
+    public DataResponseBody listAllCourses() {
+        // 获取当前用户信息
+        UserContext curUser = userContextService.getCurUser();
+        Long userId = curUser.getId();
+
+        // 获取所有的课程分类
+        List<CourseType> courseTypes = courseTypeMapper.selectAll();
+
+        // 根据分类查询所有的课程并且组装 courseDTO
+        ArrayList<CourseTypeDetailDTO> courseTypeDetailDTOS = new ArrayList<>();
+
+        courseTypes.forEach(e -> {
+            // 构建 courseTypeDetailDTO
+            CourseTypeDetailDTO courseTypeDetailDTO = new CourseTypeDetailDTO();
+            courseTypeDetailDTO.setCourseTypeId(e.getId());
+            courseTypeDetailDTO.setCourseTypeName(e.getName());
+            // 构建 CourseDetailDTO 列表
+            ArrayList<CourseDetailDTO> courseDetailDTOS = new ArrayList<>();
+
+            // 根据课程类型 ID 查询 Course
+            List<Course> courses = courseMapper.selectAllByType(e.getId());
+            courses.forEach(course -> {
+                CourseDetailDTO courseDetailDTO = generateCourseDetailDTO(userId, course);
+                // 添加结果集
+                courseDetailDTOS.add(courseDetailDTO);
+            });
+
+            // 设置 courseTypeDetailDTO 的 Course 为 courseDetailDTOS
+            courseTypeDetailDTO.setCourses(courseDetailDTOS);
+
+            // 将组装的 courseTypeDetailDTO 添加到结果集
+            courseTypeDetailDTOS.add(courseTypeDetailDTO);
+        });
+        return new DataResponseBody<>(courseTypeDetailDTOS);
+    }
+
+    /**
+     * 根据 userId 和 courseID 生成 CourseDetailDTO
+     *
+     * @param userId userId
+     * @param course course
+     * @return CourseDetailDTO
+     */
+    private CourseDetailDTO generateCourseDetailDTO(Long userId, Course course) {
+        // 根据 userId 和 courseId 查询学习进度
+        CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, course.getId());
+        CourseDetailDTO courseDetailDTO = new CourseDetailDTO();
+        // 设置课程 ID
+        courseDetailDTO.setCourseId(course.getId());
+        // 设置课程名字
+        courseDetailDTO.setCourseName(course.getName());
+        // 设置课程简介
+        courseDetailDTO.setIntroduction(course.getIntroduction());
+        // 设置总章节
+        courseDetailDTO.setTotalChapter(course.getTotalChapters());
+        // 判断用户是否有学习记录
+        if (courseSchedule != null) {
+            // 有学习记录则从 courseSchedule 中取
+            courseDetailDTO.setFinishChapter(courseSchedule.getLearnedChapterNum());
+            courseDetailDTO.setSchedule(courseSchedule.getSchedule());
+            courseDetailDTO.setStartTime(courseSchedule.getStartTime());
+            courseDetailDTO.setLastStudyTime(courseSchedule.getLastUpdateTime());
+            courseDetailDTO.setDone(courseSchedule.getDone());
+        } else {
+            // 如果没有学习记录则将进度相关变量设置为默认值
+            courseDetailDTO.setFinishChapter(DEFAULT_FINISH_CHAPTER);
+            courseDetailDTO.setSchedule(DEFAULT_SCHEDULE);
+            courseDetailDTO.setStartTime(null);
+            courseDetailDTO.setLastStudyTime(null);
+            courseDetailDTO.setDone(DEFAULT_DONE);
+        }
+        return courseDetailDTO;
     }
 
     @Override

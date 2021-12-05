@@ -38,7 +38,7 @@ public class DubheCourseController {
     @ApiOperation(value = "获取所有的课程")
     @PreAuthorize(Permissions.COURSE)
     public DataResponseBody listAllCourses() {
-        return new DataResponseBody(courseService.listAllCourses());
+        return courseService.listAllCourses();
     }
 
     @PostMapping("createCourse")

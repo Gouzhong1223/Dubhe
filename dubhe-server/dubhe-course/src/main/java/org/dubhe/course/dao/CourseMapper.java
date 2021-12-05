@@ -1,6 +1,9 @@
 package org.dubhe.course.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.Course;
+
+import java.util.List;
 
 /**
  * @Author : Gouzhong
@@ -25,4 +28,6 @@ public interface CourseMapper {
     int updateByPrimaryKeySelective(Course record);
 
     int updateByPrimaryKey(Course record);
+
+    List<Course> selectAllByType(@Param("type") Long type);
 }

@@ -1,11 +1,8 @@
 package org.dubhe.course.service;
 
 import org.dubhe.biz.base.vo.DataResponseBody;
-import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
 import org.dubhe.course.domain.dto.CourseUpdateDTO;
-
-import java.util.List;
 
 /**
  * @Author : Gouzhong
@@ -24,7 +21,7 @@ public interface CourseService {
      *
      * @return List<Course>
      */
-    List<Course> listAllCourses();
+    DataResponseBody listAllCourses();
 
     /**
      * 创建课程

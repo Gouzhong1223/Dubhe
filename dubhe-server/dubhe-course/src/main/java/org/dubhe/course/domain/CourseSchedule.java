@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-03 22:34
+ * @Date : create by QingSong in 2021-12-05 22:36
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
  * @PackageName : org.dubhe.course.domain
@@ -68,4 +68,9 @@ public class CourseSchedule implements Serializable {
      */
     @ApiModelProperty(value = "所属课程 ID")
     private Long courseId;
+    /**
+     * userID
+     */
+    @ApiModelProperty(value = "userID")
+    private Long userId;
 }
