@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
+import org.dubhe.course.domain.dto.CourseUpdateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -45,6 +46,13 @@ public class DubheCourseController {
     @PreAuthorize(Permissions.COURSE_CREATE)
     public DataResponseBody createCourse(@RequestBody @Validated CourseCreateDTO courseCreateDTO) {
         return courseService.createCourse(courseCreateDTO);
+    }
+
+    @PostMapping("updateCourse")
+    @ApiOperation("更新课程")
+    @PreAuthorize(Permissions.COURSE_UPDATE)
+    public DataResponseBody updateCourse(@RequestBody @Validated CourseUpdateDTO courseUpdateDTO) {
+        return courseService.updateCourse(courseUpdateDTO);
     }
 
 }

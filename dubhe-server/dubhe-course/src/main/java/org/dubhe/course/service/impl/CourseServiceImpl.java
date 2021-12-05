@@ -10,6 +10,7 @@ import org.dubhe.course.dao.CourseMapper;
 import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.CourseFile;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
+import org.dubhe.course.domain.dto.CourseUpdateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,5 +61,36 @@ public class CourseServiceImpl implements CourseService {
         courseMapper.insertSelective(courseRecord);
         LogUtil.info(LogEnum.COURSE, "新增课程:" + courseRecord);
         return new DataResponseBody<>(courseRecord);
+    }
+
+    @Override
+    public DataResponseBody updateCourse(CourseUpdateDTO courseUpdateDTO) {
+        Course courseRecord = updateCourseFromDTO(courseUpdateDTO);
+        try {
+            courseMapper.updateByPrimaryKeySelective(courseRecord);
+            LogUtil.info(LogEnum.COURSE, "更新课程:" + courseRecord);
+        } catch (Exception e) {
+            LogUtil.error(LogEnum.COURSE, "更新课程失败:" + e.getMessage());
+            e.printStackTrace();
+        }
+        return new DataResponseBody<>(courseRecord);
+    }
+
+    /**
+     * 根据 DTO 转换 Course
+     *
+     * @param courseUpdateDTO courseUpdateDTO
+     * @return Course
+     */
+    private Course updateCourseFromDTO(CourseUpdateDTO courseUpdateDTO) {
+        Course courseRecord = courseMapper.selectByPrimaryKey(courseUpdateDTO.getCourseId());
+        CourseFile courseFile = courseFileMapper.selectByPrimaryKey(courseUpdateDTO.getCoverImageId());
+        courseRecord.setName(courseUpdateDTO.getCourseName());
+        courseRecord.setType(courseUpdateDTO.getCourseTypeId());
+        courseRecord.setIntroduction(courseUpdateDTO.getIntroduction());
+        courseRecord.setCoverImage(courseFile.getUrl());
+        courseRecord.setStatus(courseUpdateDTO.getStatus());
+        courseRecord.setUpdateTime(LocalDateTime.now());
+        return courseRecord;
     }
 }

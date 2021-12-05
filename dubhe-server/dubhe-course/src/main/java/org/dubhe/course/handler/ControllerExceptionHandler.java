@@ -24,19 +24,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-//    @ExceptionHandler(ClockInException.class)
+    //    @ExceptionHandler(ClockInException.class)
 //    @ResponseBody
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    public ResponseDto handlerBlogException(ClockInException ex) {
 //        return new ResponseDto(ex.getCode(), ex.getMessage());
 //    }
 //
-//    @ExceptionHandler(Exception.class)
-//    @ResponseBody
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ResponseDto handlerAllException(Exception ex) {
-//        return new ResponseDto(ResultCode.FAIL.getCode(), ex.getMessage());
-//    }
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public DataResponseBody handlerAllException(Exception ex) {
+        return new DataResponseBody(ResponseCode.ERROR, ex.getMessage());
+    }
 //
 //    @ExceptionHandler(MethodArgumentNotValidException.class)
 //    @ResponseBody

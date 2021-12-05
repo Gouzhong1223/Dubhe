@@ -3,6 +3,7 @@ package org.dubhe.course.service;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
+import org.dubhe.course.domain.dto.CourseUpdateDTO;
 
 import java.util.List;
 
@@ -32,4 +33,12 @@ public interface CourseService {
      * @return DataResponseBody
      */
     DataResponseBody createCourse(CourseCreateDTO courseCreateDTO);
+
+    /**
+     * 更新课程信息
+     *
+     * @param courseUpdateDTO courseUpdateDTO
+     * @return DataResponseBody
+     */
+    DataResponseBody updateCourse(CourseUpdateDTO courseUpdateDTO);
 }
