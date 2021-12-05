@@ -13,7 +13,7 @@
         <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="coverImage" jdbcType="VARCHAR" property="coverImage"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="createUserId" jdbcType="INTEGER" property="createUserId"/>
+        <result column="createUserId" jdbcType="BIGINT" property="createUserId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -32,24 +32,23 @@
         delete from dubhe-cloud-prod.course
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="org.dubhe.course.domain.Course">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.dubhe.course.domain.Course"
+            useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course (id, `name`, `type`,
-        introduction, totalChapters, createTime,
-        updateTime, coverImage, `status`,
-        createUserId)
-        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT},
-        #{introduction,jdbcType=VARCHAR}, #{totalChapters,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP}, #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-        #{createUserId,jdbcType=INTEGER})
+        insert into dubhe-cloud-prod.course (`name`, `type`, introduction,
+        totalChapters, createTime, updateTime,
+        coverImage, `status`, createUserId
+        )
+        values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT}, #{introduction,jdbcType=VARCHAR},
+        #{totalChapters,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+        #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT}
+        )
     </insert>
-    <insert id="insertSelective" parameterType="org.dubhe.course.domain.Course">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.dubhe.course.domain.Course"
+            useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into dubhe-cloud-prod.course
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="name != null and name != ''">
                 `name`,
             </if>
@@ -79,9 +78,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
             <if test="name != null and name != ''">
                 #{name,jdbcType=VARCHAR},
             </if>
@@ -107,7 +103,7 @@
                 #{status,jdbcType=INTEGER},
             </if>
             <if test="createUserId != null">
-                #{createUserId,jdbcType=INTEGER},
+                #{createUserId,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -140,7 +136,7 @@
                 `status` = #{status,jdbcType=INTEGER},
             </if>
             <if test="createUserId != null">
-                createUserId = #{createUserId,jdbcType=INTEGER},
+                createUserId = #{createUserId,jdbcType=BIGINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -156,7 +152,7 @@
         updateTime = #{updateTime,jdbcType=TIMESTAMP},
         coverImage = #{coverImage,jdbcType=VARCHAR},
         `status` = #{status,jdbcType=INTEGER},
-        createUserId = #{createUserId,jdbcType=INTEGER}
+        createUserId = #{createUserId,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>
