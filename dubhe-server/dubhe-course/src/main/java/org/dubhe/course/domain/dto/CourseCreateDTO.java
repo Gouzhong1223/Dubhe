@@ -1,5 +1,12 @@
 package org.dubhe.course.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
@@ -11,5 +18,17 @@ package org.dubhe.course.domain.dto;
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CourseCreateDTO {
+    @NotNull(message = "课程名称不能为空")
+    private String courseName;
+    @NotNull(message = "课程类型主键不能为空")
+    private Long courseTypeId;
+    @NotNull(message = "课程简介不能为空")
+    private String introduction;
+    @NotNull(message = "课程封面图 ID 不能为空")
+    private Long coverImageId;
 }

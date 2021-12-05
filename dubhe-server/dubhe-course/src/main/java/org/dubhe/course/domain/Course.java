@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-03 22:33
+ * @Date : create by QingSong in 2021-12-05 12:42
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
  * @PackageName : org.dubhe.course.domain
@@ -77,5 +77,5 @@ public class Course implements Serializable {
      * 创建者 ID
      */
     @ApiModelProperty(value = "创建者 ID")
-    private Integer createUserId;
+    private Long createUserId;
 }

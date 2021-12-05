@@ -1,5 +1,6 @@
 package org.dubhe.course.service;
 
+import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
 
@@ -20,7 +21,7 @@ public interface CourseService {
     /**
      * 获取所有的课程
      *
-     * @return
+     * @return List<Course>
      */
     List<Course> listAllCourses();
 
@@ -28,7 +29,7 @@ public interface CourseService {
      * 创建课程
      *
      * @param courseCreateDTO courseCreateDTO
-     * @return Course
+     * @return DataResponseBody
      */
-    Course createCourse(CourseCreateDTO courseCreateDTO);
+    DataResponseBody createCourse(CourseCreateDTO courseCreateDTO);
 }

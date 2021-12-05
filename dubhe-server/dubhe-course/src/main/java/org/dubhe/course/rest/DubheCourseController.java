@@ -7,10 +7,8 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.course.domain.dto.CourseCreateDTO;
 import org.dubhe.course.service.CourseService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -45,8 +43,8 @@ public class DubheCourseController {
     @PostMapping("createCourse")
     @ApiOperation("创建课程")
     @PreAuthorize(Permissions.COURSE_CREATE)
-    public DataResponseBody createCourse(CourseCreateDTO courseCreateDTO) {
-        return new DataResponseBody(courseService.createCourse(courseCreateDTO));
+    public DataResponseBody createCourse(@RequestBody @Validated CourseCreateDTO courseCreateDTO) {
+        return courseService.createCourse(courseCreateDTO);
     }
 
 }
