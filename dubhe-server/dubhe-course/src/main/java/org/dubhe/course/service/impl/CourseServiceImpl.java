@@ -66,6 +66,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public DataResponseBody updateCourse(CourseUpdateDTO courseUpdateDTO) {
         Course courseRecord = updateCourseFromDTO(courseUpdateDTO);
+        if (courseRecord == null) {
+            return new DataResponseBody(ResponseCode.ERROR, "封面图 ID 不存在!");
+        }
         try {
             courseMapper.updateByPrimaryKeySelective(courseRecord);
             LogUtil.info(LogEnum.COURSE, "更新课程:" + courseRecord);
@@ -85,6 +88,9 @@ public class CourseServiceImpl implements CourseService {
     private Course updateCourseFromDTO(CourseUpdateDTO courseUpdateDTO) {
         Course courseRecord = courseMapper.selectByPrimaryKey(courseUpdateDTO.getCourseId());
         CourseFile courseFile = courseFileMapper.selectByPrimaryKey(courseUpdateDTO.getCoverImageId());
+        if (courseFile == null) {
+            return null;
+        }
         courseRecord.setName(courseUpdateDTO.getCourseName());
         courseRecord.setType(courseUpdateDTO.getCourseTypeId());
         courseRecord.setIntroduction(courseUpdateDTO.getIntroduction());
