@@ -5,7 +5,9 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
+import org.dubhe.course.dao.CourseMapper;
 import org.dubhe.course.dao.CourseTypeMapper;
+import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.CourseType;
 import org.dubhe.course.domain.dto.CourseTypeUpdateDTO;
 import org.dubhe.course.service.CourseTypeService;
@@ -31,9 +33,11 @@ import java.time.LocalDateTime;
 public class CourseTypeServiceImpl implements CourseTypeService {
 
     private final CourseTypeMapper courseTypeMapper;
+    private final CourseMapper courseMapper;
 
-    public CourseTypeServiceImpl(CourseTypeMapper courseTypeMapper) {
+    public CourseTypeServiceImpl(CourseTypeMapper courseTypeMapper, CourseMapper courseMapper) {
         this.courseTypeMapper = courseTypeMapper;
+        this.courseMapper = courseMapper;
     }
 
     @Override
@@ -63,6 +67,21 @@ public class CourseTypeServiceImpl implements CourseTypeService {
         courseType.setUpdateTime(LocalDateTime.now());
         courseTypeMapper.updateByPrimaryKeySelective(courseType);
         LogUtil.info(LogEnum.COURSE, "更新课程分类信息:" + courseType);
+        return DataResponseFactory.success(courseType);
+    }
+
+    @Override
+    public DataResponseBody deleteCourseType(Long courseTypeId) {
+        CourseType courseType = courseTypeMapper.selectByPrimaryKey(courseTypeId);
+        if (courseType == null) {
+            return DataResponseFactory.failed("课程分类不存在!");
+
+        }
+        Course course = courseMapper.selectOneByType(courseTypeId);
+        if (course != null) {
+            return DataResponseFactory.failed("有课程已经绑定了当前课程分类,不可删除!");
+        }
+        courseTypeMapper.deleteByPrimaryKey(courseTypeId);
         return DataResponseFactory.success(courseType);
     }
 

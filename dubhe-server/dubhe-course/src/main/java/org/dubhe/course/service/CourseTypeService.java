@@ -30,4 +30,12 @@ public interface CourseTypeService {
      * @return DataResponseBody
      */
     DataResponseBody updateCourseType(CourseTypeUpdateDTO courseTypeUpdateDTO);
+
+    /**
+     * 删除课程分类
+     *
+     * @param courseTypeId 课程分类 ID
+     * @return DataResponseBody
+     */
+    DataResponseBody deleteCourseType(Long courseTypeId);
 }

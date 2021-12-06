@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.constant.ResponseCode;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.course.domain.dto.CourseTypeUpdateDTO;
 import org.dubhe.course.service.CourseTypeService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,5 +50,13 @@ public class DubheCourseTypeController {
     @PreAuthorize(Permissions.COURSE_TYPE_UPDATE)
     public DataResponseBody updateCourseType(@RequestBody @Validated CourseTypeUpdateDTO courseTypeUpdateDTO) {
         return courseTypeService.updateCourseType(courseTypeUpdateDTO);
+    }
+
+    @DeleteMapping("deleteCourseType/{courseTypeId}")
+    public DataResponseBody deleteCourseType(@PathVariable Long courseTypeId) {
+        if (courseTypeId == null || courseTypeId == 0) {
+            return DataResponseFactory.failed("courseTypeId 不能为空");
+        }
+        return courseTypeService.deleteCourseType(courseTypeId);
     }
 }

@@ -30,4 +30,12 @@ public interface CourseMapper {
     int updateByPrimaryKey(Course record);
 
     List<Course> selectAllByType(@Param("type") Long type);
+
+    /**
+     * 根据分类查询一个 Course
+     *
+     * @param type 分类 ID
+     * @return Course
+     */
+    Course selectOneByType(@Param("type") Long type);
 }
