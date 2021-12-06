@@ -85,4 +85,9 @@ public class CourseTypeServiceImpl implements CourseTypeService {
         return DataResponseFactory.success(courseType);
     }
 
+    @Override
+    public DataResponseBody getAllCourseTypes() {
+        return DataResponseFactory.success(courseTypeMapper.selectAll());
+    }
+
 }

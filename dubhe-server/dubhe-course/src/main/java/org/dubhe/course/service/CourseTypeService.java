@@ -38,4 +38,11 @@ public interface CourseTypeService {
      * @return DataResponseBody
      */
     DataResponseBody deleteCourseType(Long courseTypeId);
+
+    /**
+     * 获取所有的课程分类
+     *
+     * @return DataResponseBody
+     */
+    DataResponseBody getAllCourseTypes();
 }

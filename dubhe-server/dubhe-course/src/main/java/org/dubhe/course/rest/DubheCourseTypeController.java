@@ -35,6 +35,13 @@ public class DubheCourseTypeController {
         this.courseTypeService = courseTypeService;
     }
 
+    @GetMapping("getAllCourseTypes")
+    @ApiOperation("获取所有的课程分类")
+    @PreAuthorize(Permissions.COURSE_TYPE)
+    public DataResponseBody getAllCourseTypes() {
+        return courseTypeService.getAllCourseTypes();
+    }
+
     @PostMapping("createCourseType")
     @ApiOperation("创建课程分类")
     @PreAuthorize(Permissions.COURSE_TYPE_CREATE)
@@ -53,6 +60,8 @@ public class DubheCourseTypeController {
     }
 
     @DeleteMapping("deleteCourseType/{courseTypeId}")
+    @ApiOperation("删除课程分类")
+    @PreAuthorize(Permissions.COURSE_TYPE_DELETE)
     public DataResponseBody deleteCourseType(@PathVariable Long courseTypeId) {
         if (courseTypeId == null || courseTypeId == 0) {
             return DataResponseFactory.failed("courseTypeId 不能为空");
