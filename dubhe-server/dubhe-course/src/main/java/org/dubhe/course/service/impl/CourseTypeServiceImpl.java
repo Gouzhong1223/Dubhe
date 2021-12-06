@@ -2,10 +2,12 @@ package org.dubhe.course.service.impl;
 
 import org.dubhe.biz.base.constant.ResponseCode;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
 import org.dubhe.course.dao.CourseTypeMapper;
 import org.dubhe.course.domain.CourseType;
+import org.dubhe.course.domain.dto.CourseTypeUpdateDTO;
 import org.dubhe.course.service.CourseTypeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +51,19 @@ public class CourseTypeServiceImpl implements CourseTypeService {
             e.printStackTrace();
         }
         return new DataResponseBody<>(courseType);
+    }
+
+    @Override
+    public DataResponseBody updateCourseType(CourseTypeUpdateDTO courseTypeUpdateDTO) {
+        CourseType courseType = courseTypeMapper.selectByPrimaryKey(courseTypeUpdateDTO.getCourseTypeId());
+        if (courseType == null) {
+            return DataResponseFactory.failed("课程分类不存在!");
+        }
+        courseType.setName(courseTypeUpdateDTO.getCourseTypeName());
+        courseType.setUpdateTime(LocalDateTime.now());
+        courseTypeMapper.updateByPrimaryKeySelective(courseType);
+        LogUtil.info(LogEnum.COURSE, "更新课程分类信息:" + courseType);
+        return DataResponseFactory.success(courseType);
     }
 
 }

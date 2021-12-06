@@ -5,12 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.constant.ResponseCode;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.course.domain.dto.CourseTypeUpdateDTO;
 import org.dubhe.course.service.CourseTypeService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author : Gouzhong
@@ -43,5 +42,12 @@ public class DubheCourseTypeController {
             return new DataResponseBody(ResponseCode.ERROR, "课程分类名字不能为空!");
         }
         return courseTypeService.createCourseType(courseTypeName);
+    }
+
+    @PutMapping("updateCourseType")
+    @ApiOperation("更新课程分类信息")
+    @PreAuthorize(Permissions.COURSE_TYPE_UPDATE)
+    public DataResponseBody updateCourseType(@RequestBody @Validated CourseTypeUpdateDTO courseTypeUpdateDTO) {
+        return courseTypeService.updateCourseType(courseTypeUpdateDTO);
     }
 }

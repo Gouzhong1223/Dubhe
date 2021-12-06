@@ -1,6 +1,7 @@
 package org.dubhe.course.service;
 
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.course.domain.dto.CourseTypeUpdateDTO;
 
 /**
  * @Author : Gouzhong
@@ -21,4 +22,12 @@ public interface CourseTypeService {
      * @return DataResponseBody
      */
     DataResponseBody createCourseType(String courseTypeName);
+
+    /**
+     * 更新课程分类信息
+     *
+     * @param courseTypeUpdateDTO courseTypeUpdateDTO
+     * @return DataResponseBody
+     */
+    DataResponseBody updateCourseType(CourseTypeUpdateDTO courseTypeUpdateDTO);
 }
