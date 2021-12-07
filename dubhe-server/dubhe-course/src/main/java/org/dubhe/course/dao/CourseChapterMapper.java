@@ -1,6 +1,9 @@
 package org.dubhe.course.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseChapter;
+
+import java.util.List;
 
 /**
  * @Author : Gouzhong
@@ -25,4 +28,12 @@ public interface CourseChapterMapper {
     int updateByPrimaryKeySelective(CourseChapter record);
 
     int updateByPrimaryKey(CourseChapter record);
+
+    /**
+     * 根据课程 ID 查询所有的章节
+     *
+     * @param courseId 课程ID
+     * @return List<CourseChapter>
+     */
+    List<CourseChapter> selectAllByCourseId(@Param("courseId") Long courseId);
 }
