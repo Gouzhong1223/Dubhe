@@ -21,4 +21,13 @@ public interface CourseChapterService {
      * @return DataResponseBody
      */
     DataResponseBody listAllCourseChapter(Long courseId);
+
+    /**
+     * 学习课程章节
+     *
+     * @param chapterId 章节 ID
+     * @param courseId  课程 ID
+     * @return DataResponseBody
+     */
+    DataResponseBody studyCourseChapter(Long chapterId, Long courseId);
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.course.service.CourseChapterService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,19 @@ public class CourseChapterController {
     @ApiOperation("获取所有章节")
     @PreAuthorize(Permissions.COURSE_CHAPTER)
     public DataResponseBody listAllCourseChapter(@PathVariable Long courseId) {
+        if (courseId == null || courseId == 0) {
+            return DataResponseFactory.failed("courseId不能为空或0");
+        }
         return courseChapterService.listAllCourseChapter(courseId);
+    }
+
+    @GetMapping("studyCourseChapter/{courseId}/{chapterId}")
+    @ApiOperation("学习章节")
+    @PreAuthorize(Permissions.COURSE_CHAPTER)
+    public DataResponseBody studyCourseChapter(@PathVariable Long chapterId, @PathVariable Long courseId) {
+        if (chapterId == null || chapterId == 0 || courseId == null || courseId == 0) {
+            return DataResponseFactory.failed("参数不能为空!");
+        }
+        return courseChapterService.studyCourseChapter(chapterId, courseId);
     }
 }

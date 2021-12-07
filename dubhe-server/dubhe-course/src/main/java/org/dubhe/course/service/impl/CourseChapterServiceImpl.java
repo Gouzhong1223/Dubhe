@@ -3,17 +3,14 @@ package org.dubhe.course.service.impl;
 import org.dubhe.biz.base.service.UserContextService;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
-import org.dubhe.course.dao.CourseChapterMapper;
-import org.dubhe.course.dao.CourseChapterScheduleMapper;
-import org.dubhe.course.dao.CourseFileMapper;
-import org.dubhe.course.domain.CourseChapter;
-import org.dubhe.course.domain.CourseChapterSchedule;
-import org.dubhe.course.domain.CourseFile;
+import org.dubhe.course.dao.*;
+import org.dubhe.course.domain.*;
 import org.dubhe.course.domain.dto.CourseChapterDetailDTO;
 import org.dubhe.course.service.CourseChapterService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,12 +34,21 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     private final UserContextService userContextService;
     private final CourseChapterMapper courseChapterMapper;
     private final CourseFileMapper courseFileMapper;
+    private final CourseScheduleMapper courseScheduleMapper;
+    private final CourseMapper courseMapper;
 
-    public CourseChapterServiceImpl(CourseChapterScheduleMapper courseChapterScheduleMapper, UserContextService userContextService, CourseChapterMapper courseChapterMapper, CourseFileMapper courseFileMapper) {
+    public CourseChapterServiceImpl(CourseChapterScheduleMapper courseChapterScheduleMapper,
+                                    UserContextService userContextService,
+                                    CourseChapterMapper courseChapterMapper,
+                                    CourseFileMapper courseFileMapper,
+                                    CourseScheduleMapper courseScheduleMapper,
+                                    CourseMapper courseMapper) {
         this.courseChapterScheduleMapper = courseChapterScheduleMapper;
         this.userContextService = userContextService;
         this.courseChapterMapper = courseChapterMapper;
         this.courseFileMapper = courseFileMapper;
+        this.courseScheduleMapper = courseScheduleMapper;
+        this.courseMapper = courseMapper;
     }
 
     @Override
@@ -62,6 +68,67 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         // 按照章节序号排序
         courseChapterDetailDTOS.sort(Comparator.comparingInt(CourseChapterDetailDTO::getSerialNumber));
         return DataResponseFactory.success(courseChapterDetailDTOS);
+    }
+
+    @Override
+    public DataResponseBody studyCourseChapter(Long chapterId, Long courseId) {
+        Long userId = userContextService.getCurUserId();
+        // 添加章节学习记录
+        CourseChapterSchedule courseChapterSchedule = new CourseChapterSchedule(null, LocalDateTime.now(), courseId, chapterId, userId);
+        courseChapterScheduleMapper.insertSelective(courseChapterSchedule);
+
+        // 根据 课程 ID 查询课程
+        Course course = courseMapper.selectByPrimaryKey(courseId);
+
+        // 更新课程预览看到的学习记录
+        CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, courseId);
+        courseSchedule = updateOrNotCourseSchedule(courseId, userId, course, courseSchedule);
+        // 更新课程学习进度
+        courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
+
+        // 查询课程章节
+        CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
+        return DataResponseFactory.success(courseChapter);
+    }
+
+    /**
+     * 根据学习情况更新CourseSchedule
+     *
+     * @param courseId       课程 ID
+     * @param userId         userID
+     * @param course         课程
+     * @param courseSchedule 课程进度
+     * @return CourseSchedule
+     */
+    private CourseSchedule updateOrNotCourseSchedule(Long courseId, Long userId, Course course, CourseSchedule courseSchedule) {
+        // 判断用户是否第一次学习此课程
+        if (courseSchedule == null) {
+            // 第一次学习此课程
+            courseSchedule = new CourseSchedule(null, LocalDateTime.now(),
+                    LocalDateTime.now(), course.getTotalChapters(),
+                    1, (int) (((float) 1 / (float) course.getTotalChapters()) * 100),
+                    0, courseId, userId);
+        } else {
+            // 不是第一次学习此课程
+            Integer learnedChapterNum = courseSchedule.getLearnedChapterNum();
+            if (learnedChapterNum + 1 == courseSchedule.getTotalChapterNum()) {
+                // 表示学完这章就 done
+                courseSchedule.setDone(1);
+                courseSchedule.setLearnedChapterNum(courseSchedule.getTotalChapterNum());
+                courseSchedule.setSchedule(100);
+                courseSchedule.setLastUpdateTime(LocalDateTime.now());
+            } else if (learnedChapterNum.equals(courseSchedule.getTotalChapterNum())) {
+                // 已经学完了
+                // 更新最后一次学习时间
+                courseSchedule.setLastUpdateTime(LocalDateTime.now());
+            } else {
+                // 加上这一张也没学完
+                courseSchedule.setLearnedChapterNum(courseSchedule.getLearnedChapterNum() + 1);
+                courseSchedule.setSchedule((int) (((float) courseSchedule.getLearnedChapterNum() / (float) course.getTotalChapters()) * 100));
+                courseSchedule.setLastUpdateTime(LocalDateTime.now());
+            }
+        }
+        return courseSchedule;
     }
 
     /**
