@@ -5,6 +5,7 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.course.dao.*;
 import org.dubhe.course.domain.*;
+import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
 import org.dubhe.course.domain.dto.CourseChapterDetailDTO;
 import org.dubhe.course.service.CourseChapterService;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,59 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         // 查询课程章节
         CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
         return DataResponseFactory.success(courseChapter);
+    }
+
+    @Override
+    public DataResponseBody createCourseChapter(CourseChapterCreateDTO courseChapterCreateDTO) {
+        Course course = courseMapper.selectByPrimaryKey(courseChapterCreateDTO.getCourseId());
+        if (course == null) {
+            return DataResponseFactory.failed("课程不存在!");
+        }
+        CourseFile courseFile = courseFileMapper.selectByPrimaryKey(courseChapterCreateDTO.getFileId());
+        if (courseFile == null) {
+            return DataResponseFactory.failed("文件不存在!");
+        }
+        CourseChapter courseChapter = getCourseChapter(courseChapterCreateDTO);
+        courseChapterMapper.insertSelective(courseChapter);
+        updateCourseSchedules(course);
+        return DataResponseFactory.success(courseChapter);
+    }
+
+
+    /**
+     * 根据 courseChapterCreateDTO 构建 CourseChapter
+     *
+     * @param courseChapterCreateDTO courseChapterCreateDTO
+     * @return CourseChapter
+     */
+    private CourseChapter getCourseChapter(CourseChapterCreateDTO courseChapterCreateDTO) {
+        return CourseChapter.builder()
+                .id(null)
+                .name(courseChapterCreateDTO.getCourseChapterName())
+                .serialNumber(courseChapterCreateDTO.getSerialNumber())
+                .chapterType(courseChapterCreateDTO.getChapterType())
+                .courseId(courseChapterCreateDTO.getCourseId())
+                .introduction(courseChapterCreateDTO.getIntroduction())
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .fileId(courseChapterCreateDTO.getFileId()).build();
+    }
+
+    /**
+     * 因为在上传所有章节之前可能已经产生了该课程的学习记录,所以要对学习记录更新一遍
+     *
+     * @param course 课程对象
+     */
+    private void updateCourseSchedules(Course course) {
+        course.setTotalChapters(course.getTotalChapters() + 1);
+        course.setUpdateTime(LocalDateTime.now());
+        List<CourseSchedule> courseSchedules = courseScheduleMapper.selectAllByCourseId(course.getId());
+        courseSchedules.forEach(e -> {
+            e.setTotalChapterNum(e.getTotalChapterNum() + 1);
+            e.setSchedule((int) (((float) e.getLearnedChapterNum() / (float) e.getTotalChapterNum()) * 100));
+            courseScheduleMapper.updateByPrimaryKeySelective(e);
+        });
+        courseMapper.updateByPrimaryKeySelective(course);
     }
 
     /**

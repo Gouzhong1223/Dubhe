@@ -5,12 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
+import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
 import org.dubhe.course.service.CourseChapterService;
+import org.simpleframework.xml.core.Validate;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author : Gouzhong
@@ -52,5 +51,12 @@ public class CourseChapterController {
             return DataResponseFactory.failed("参数不能为空!");
         }
         return courseChapterService.studyCourseChapter(chapterId, courseId);
+    }
+
+    @PostMapping("createCourseChapter")
+    @ApiOperation("上传课程章节")
+    @PreAuthorize(Permissions.COURSE_CHAPTER_CREATE)
+    public DataResponseBody createCourseChapter(@RequestBody @Validate CourseChapterCreateDTO courseChapterCreateDTO) {
+        return courseChapterService.createCourseChapter(courseChapterCreateDTO);
     }
 }

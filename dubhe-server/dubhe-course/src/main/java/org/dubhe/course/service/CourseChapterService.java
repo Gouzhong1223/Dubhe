@@ -1,6 +1,7 @@
 package org.dubhe.course.service;
 
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
 
 /**
  * @Author : Gouzhong
@@ -30,4 +31,12 @@ public interface CourseChapterService {
      * @return DataResponseBody
      */
     DataResponseBody studyCourseChapter(Long chapterId, Long courseId);
+
+    /**
+     * 上传课程章节
+     *
+     * @param courseChapterCreateDTO courseChapterCreateDTO
+     * @return DataResponseBody
+     */
+    DataResponseBody createCourseChapter(CourseChapterCreateDTO courseChapterCreateDTO);
 }

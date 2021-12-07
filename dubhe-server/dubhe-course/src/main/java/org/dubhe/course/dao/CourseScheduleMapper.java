@@ -1,4 +1,5 @@
 package org.dubhe.course.dao;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseSchedule;
@@ -28,4 +29,6 @@ public interface CourseScheduleMapper {
     int updateByPrimaryKey(CourseSchedule record);
 
     CourseSchedule selectOneByUserIdAndCourseId(@Param("userId") Long userId, @Param("courseId") Long courseId);
+
+    List<CourseSchedule> selectAllByCourseId(@Param("courseId")Long courseId);
 }
