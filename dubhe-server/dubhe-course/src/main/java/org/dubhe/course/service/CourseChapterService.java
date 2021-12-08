@@ -48,4 +48,12 @@ public interface CourseChapterService {
      * @return DataResponseBody
      */
     DataResponseBody updateCourseChapter(CourseChapterUpdateDTO courseChapterUpdateDTO);
+
+    /**
+     * 删除章节信息
+     *
+     * @param courseChapterId 章节 ID
+     * @return DataResponseBody
+     */
+    DataResponseBody deleteCourseChapter(Long courseChapterId);
 }

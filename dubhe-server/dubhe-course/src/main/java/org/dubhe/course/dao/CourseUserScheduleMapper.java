@@ -22,4 +22,11 @@ public interface CourseUserScheduleMapper {
     int insertSelective(CourseUserSchedule record);
 
     List<CourseUserSchedule> selectAllByUserId(@Param("userId") Long userId);
+
+    /**
+     * 查询所有的学习记录
+     *
+     * @return 所有学习记录
+     */
+    List<CourseUserSchedule> selectAll();
 }

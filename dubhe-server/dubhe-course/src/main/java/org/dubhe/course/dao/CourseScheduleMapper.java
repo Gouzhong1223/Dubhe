@@ -41,4 +41,11 @@ public interface CourseScheduleMapper {
      * @return 删除数量
      */
     int deleteByCourseIdAndUserId(@Param("courseId") Long courseId, @Param("userId") Long userId);
+
+    /**
+     * 查询所有的学习记录
+     *
+     * @return List<CourseSchedule>
+     */
+    List<CourseSchedule> selectAll();
 }

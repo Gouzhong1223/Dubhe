@@ -3,6 +3,8 @@ package org.dubhe.course.dao;
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseChapterSchedule;
 
+import java.util.List;
+
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
@@ -45,4 +47,20 @@ public interface CourseChapterScheduleMapper {
      * @return int
      */
     int deleteByCourseIdAndUserId(@Param("courseId") Long courseId, @Param("userId") Long userId);
+
+    /**
+     * 根据章节 ID 删除学习记录
+     *
+     * @param chapterId 章节 ID
+     * @return 删除数
+     */
+    int deleteByChapterId(@Param("chapterId") Long chapterId);
+
+    /**
+     * 用户所有学习过这一章节的用户 ID
+     *
+     * @param chapterId 章节 ID
+     * @return 所有学习过这一章节的用户 ID
+     */
+    List<Long> selectUserIdByChapterId(@Param("chapterId") Long chapterId);
 }

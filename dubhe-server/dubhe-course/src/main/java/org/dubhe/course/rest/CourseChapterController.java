@@ -67,4 +67,14 @@ public class CourseChapterController {
     public DataResponseBody updateCourseChapter(@RequestBody @Validate CourseChapterUpdateDTO courseChapterUpdateDTO) {
         return courseChapterService.updateCourseChapter(courseChapterUpdateDTO);
     }
+
+    @DeleteMapping("deleteCourseChapter/{courseChapterId}")
+    @ApiOperation("删除章节")
+    @PreAuthorize(Permissions.COURSE_CHAPTER_DELETE)
+    public DataResponseBody deleteCourseChapter(@PathVariable Long courseChapterId) {
+        if (courseChapterId == null || courseChapterId == 0) {
+            return DataResponseFactory.failed("参数不能为空!");
+        }
+        return courseChapterService.deleteCourseChapter(courseChapterId);
+    }
 }

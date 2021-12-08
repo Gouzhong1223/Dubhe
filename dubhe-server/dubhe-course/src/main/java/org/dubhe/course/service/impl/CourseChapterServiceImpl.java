@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author : Gouzhong
@@ -38,19 +39,22 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     private final CourseFileMapper courseFileMapper;
     private final CourseScheduleMapper courseScheduleMapper;
     private final CourseMapper courseMapper;
+    private final CourseUserScheduleMapper courseUserScheduleMapper;
 
     public CourseChapterServiceImpl(CourseChapterScheduleMapper courseChapterScheduleMapper,
                                     UserContextService userContextService,
                                     CourseChapterMapper courseChapterMapper,
                                     CourseFileMapper courseFileMapper,
                                     CourseScheduleMapper courseScheduleMapper,
-                                    CourseMapper courseMapper) {
+                                    CourseMapper courseMapper,
+                                    CourseUserScheduleMapper courseUserScheduleMapper) {
         this.courseChapterScheduleMapper = courseChapterScheduleMapper;
         this.userContextService = userContextService;
         this.courseChapterMapper = courseChapterMapper;
         this.courseFileMapper = courseFileMapper;
         this.courseScheduleMapper = courseScheduleMapper;
         this.courseMapper = courseMapper;
+        this.courseUserScheduleMapper = courseUserScheduleMapper;
     }
 
     @Override
@@ -126,6 +130,47 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         extracted(courseChapterUpdateDTO, courseChapter);
         courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
         return DataResponseFactory.success(courseChapter);
+    }
+
+    @Override
+    public DataResponseBody deleteCourseChapter(Long courseChapterId) {
+        // 判断章节是否存在
+        CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(courseChapterId);
+        if (courseChapter == null) {
+            return DataResponseFactory.failed("章节不存在");
+        }
+        // 删除章节
+        courseChapterMapper.deleteByPrimaryKey(courseChapterId);
+        // 更新课程学习进度
+        // 查询所有学习过这一章节的用户 ID
+        List<Long> userIds = courseChapterScheduleMapper.selectUserIdByChapterId(courseChapterId);
+        // 查询所有学习记录
+        List<CourseSchedule> courseSchedules = courseScheduleMapper.selectAll();
+        courseSchedules.forEach(courseSchedule -> {
+            if (userIds.contains(courseSchedule.getUserId())) {
+                // 已经学习过此章节的用户所产生的学习进度需要修改,将已学习的章节-1
+                courseSchedule.setLearnedChapterNum(courseSchedule.getLearnedChapterNum() - 1);
+            }
+            // 将课程的总章节-1
+            courseSchedule.setTotalChapterNum(courseSchedule.getTotalChapterNum() - 1);
+            if (Objects.equals(courseSchedule.getLearnedChapterNum(), courseSchedule.getTotalChapterNum())) {
+                // 如果总章节-1 之后用户的学习章节和总章节一样就将学习进度完结
+                courseSchedule.setSchedule(100);
+                courseSchedule.setDone(1);
+            }
+            courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
+        });
+
+        // 删除章节学习记录
+        courseChapterScheduleMapper.deleteByChapterId(courseChapterId);
+
+        // 更新课程
+        Course course = courseMapper.selectByPrimaryKey(courseChapter.getCourseId());
+        course.setTotalChapters(course.getTotalChapters() - 1);
+        course.setUpdateTime(LocalDateTime.now());
+
+        // 返回
+        return DataResponseFactory.success();
     }
 
     /**
