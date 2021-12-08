@@ -2,6 +2,7 @@ package org.dubhe.course.service;
 
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
+import org.dubhe.course.domain.dto.CourseChapterUpdateDTO;
 
 /**
  * @Author : Gouzhong
@@ -39,4 +40,12 @@ public interface CourseChapterService {
      * @return DataResponseBody
      */
     DataResponseBody createCourseChapter(CourseChapterCreateDTO courseChapterCreateDTO);
+
+    /**
+     * 更新章节信息
+     *
+     * @param courseChapterUpdateDTO courseChapterUpdateDTO
+     * @return DataResponseBody
+     */
+    DataResponseBody updateCourseChapter(CourseChapterUpdateDTO courseChapterUpdateDTO);
 }

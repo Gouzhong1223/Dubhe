@@ -7,6 +7,7 @@ import org.dubhe.course.dao.*;
 import org.dubhe.course.domain.*;
 import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
 import org.dubhe.course.domain.dto.CourseChapterDetailDTO;
+import org.dubhe.course.domain.dto.CourseChapterUpdateDTO;
 import org.dubhe.course.service.CourseChapterService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +107,40 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         courseChapterMapper.insertSelective(courseChapter);
         updateCourseSchedules(course);
         return DataResponseFactory.success(courseChapter);
+    }
+
+    @Override
+    public DataResponseBody updateCourseChapter(CourseChapterUpdateDTO courseChapterUpdateDTO) {
+        CourseFile courseFile = courseFileMapper.selectByPrimaryKey(courseChapterUpdateDTO.getFileId());
+        if (courseFile == null) {
+            return DataResponseFactory.failed("文件不存在");
+        }
+        Course course = courseMapper.selectByPrimaryKey(courseChapterUpdateDTO.getCourseId());
+        if (course == null) {
+            return DataResponseFactory.failed("课程不存在");
+        }
+        CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(courseChapterUpdateDTO.getCourseChapterId());
+        if (courseChapter == null) {
+            return DataResponseFactory.failed("章节 ID 不存在");
+        }
+        extracted(courseChapterUpdateDTO, courseChapter);
+        courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
+        return DataResponseFactory.success(courseChapter);
+    }
+
+    /**
+     * 将 courseChapterUpdateDTO 映射到 courseChapter
+     *
+     * @param courseChapterUpdateDTO 修改信息
+     * @param courseChapter          courseChapter
+     */
+    private void extracted(CourseChapterUpdateDTO courseChapterUpdateDTO, CourseChapter courseChapter) {
+        courseChapter.setCourseId(courseChapterUpdateDTO.getCourseId());
+        courseChapter.setName(courseChapterUpdateDTO.getCourseChapterName());
+        courseChapter.setSerialNumber(courseChapterUpdateDTO.getSerialNumber());
+        courseChapter.setChapterType(courseChapterUpdateDTO.getChapterType());
+        courseChapter.setIntroduction(courseChapterUpdateDTO.getIntroduction());
+        courseChapter.setFileId(courseChapterUpdateDTO.getFileId());
     }
 
 

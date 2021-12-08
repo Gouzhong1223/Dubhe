@@ -6,6 +6,7 @@ import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.course.domain.dto.CourseChapterCreateDTO;
+import org.dubhe.course.domain.dto.CourseChapterUpdateDTO;
 import org.dubhe.course.service.CourseChapterService;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,5 +59,12 @@ public class CourseChapterController {
     @PreAuthorize(Permissions.COURSE_CHAPTER_CREATE)
     public DataResponseBody createCourseChapter(@RequestBody @Validate CourseChapterCreateDTO courseChapterCreateDTO) {
         return courseChapterService.createCourseChapter(courseChapterCreateDTO);
+    }
+
+    @PutMapping("updateCourseChapter")
+    @ApiOperation("更新章节信息")
+    @PreAuthorize(Permissions.COURSE_CHAPTER_UPDATE)
+    public DataResponseBody updateCourseChapter(@RequestBody @Validate CourseChapterUpdateDTO courseChapterUpdateDTO) {
+        return courseChapterService.updateCourseChapter(courseChapterUpdateDTO);
     }
 }
