@@ -4,12 +4,10 @@ import org.dubhe.biz.base.constant.ResponseCode;
 import org.dubhe.biz.base.context.UserContext;
 import org.dubhe.biz.base.service.UserContextService;
 import org.dubhe.biz.base.vo.DataResponseBody;
+import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
-import org.dubhe.course.dao.CourseFileMapper;
-import org.dubhe.course.dao.CourseMapper;
-import org.dubhe.course.dao.CourseScheduleMapper;
-import org.dubhe.course.dao.CourseTypeMapper;
+import org.dubhe.course.dao.*;
 import org.dubhe.course.domain.Course;
 import org.dubhe.course.domain.CourseFile;
 import org.dubhe.course.domain.CourseSchedule;
@@ -52,13 +50,23 @@ public class CourseServiceImpl implements CourseService {
     private final UserContextService userContextService;
     private final CourseScheduleMapper courseScheduleMapper;
     private final CourseTypeMapper courseTypeMapper;
+    private final CourseChapterScheduleMapper courseChapterScheduleMapper;
+    private final CourseChapterMapper courseChapterMapper;
 
-    public CourseServiceImpl(CourseFileMapper courseFileMapper, CourseMapper courseMapper, UserContextService userContextService, CourseScheduleMapper courseScheduleMapper, CourseTypeMapper courseTypeMapper) {
+    public CourseServiceImpl(CourseFileMapper courseFileMapper,
+                             CourseMapper courseMapper,
+                             UserContextService userContextService,
+                             CourseScheduleMapper courseScheduleMapper,
+                             CourseTypeMapper courseTypeMapper,
+                             CourseChapterScheduleMapper courseChapterScheduleMapper,
+                             CourseChapterMapper courseChapterMapper) {
         this.courseFileMapper = courseFileMapper;
         this.courseMapper = courseMapper;
         this.userContextService = userContextService;
         this.courseScheduleMapper = courseScheduleMapper;
         this.courseTypeMapper = courseTypeMapper;
+        this.courseChapterScheduleMapper = courseChapterScheduleMapper;
+        this.courseChapterMapper = courseChapterMapper;
     }
 
     @Override
@@ -162,6 +170,26 @@ public class CourseServiceImpl implements CourseService {
             e.printStackTrace();
         }
         return new DataResponseBody<>(courseRecord);
+    }
+
+    @Override
+    public DataResponseBody deleteCourse(Long courseId) {
+        // 判断课程是否存在
+        Course course = courseMapper.selectByPrimaryKey(courseId);
+        if (course == null) {
+            return DataResponseFactory.failed("课程不存在!");
+        }
+        // 获取当前用户的 ID
+        Long userId = userContextService.getCurUserId();
+        // 删除课程
+        courseMapper.deleteByPrimaryKey(courseId);
+        // 删除课程里面所有的章节
+        courseChapterMapper.deleteByCourseId(courseId);
+        // 删除课程章节的学习记录
+        courseChapterScheduleMapper.deleteByCourseIdAndUserId(courseId, userId);
+        // 删除课程的学习进度
+        courseScheduleMapper.deleteByCourseIdAndUserId(courseId, userId);
+        return DataResponseFactory.success();
     }
 
     /**

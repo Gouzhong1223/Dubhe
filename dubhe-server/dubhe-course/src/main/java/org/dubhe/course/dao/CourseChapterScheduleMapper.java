@@ -36,4 +36,13 @@ public interface CourseChapterScheduleMapper {
      * @return CourseChapterSchedule
      */
     CourseChapterSchedule selectOneByUserIdAndChapterIdAndCourseId(@Param("userId") Long userId, @Param("chapterId") Long chapterId, @Param("courseId") Long courseId);
+
+    /**
+     * 根据用户 ID 和课程 ID 删除章节学习记录
+     *
+     * @param courseId 课程 ID
+     * @param userId   用户 ID
+     * @return int
+     */
+    int deleteByCourseIdAndUserId(@Param("courseId") Long courseId, @Param("userId") Long userId);
 }

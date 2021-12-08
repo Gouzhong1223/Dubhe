@@ -36,4 +36,12 @@ public interface CourseChapterMapper {
      * @return List<CourseChapter>
      */
     List<CourseChapter> selectAllByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 根据课程 ID 删除所有的章节
+     *
+     * @param courseId 课程 ID
+     * @return int
+     */
+    int deleteByCourseId(@Param("courseId") Long courseId);
 }

@@ -38,4 +38,12 @@ public interface CourseService {
      * @return DataResponseBody
      */
     DataResponseBody updateCourse(CourseUpdateDTO courseUpdateDTO);
+
+    /**
+     * 删除课程信息
+     *
+     * @param courseId 课程 ID
+     * @return DataResponseBody
+     */
+    DataResponseBody deleteCourse(Long courseId);
 }

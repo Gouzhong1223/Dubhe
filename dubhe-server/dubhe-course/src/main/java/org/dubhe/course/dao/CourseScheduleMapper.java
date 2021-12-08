@@ -1,8 +1,9 @@
 package org.dubhe.course.dao;
-import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseSchedule;
+
+import java.util.List;
 
 /**
  * @Author : Gouzhong
@@ -30,5 +31,14 @@ public interface CourseScheduleMapper {
 
     CourseSchedule selectOneByUserIdAndCourseId(@Param("userId") Long userId, @Param("courseId") Long courseId);
 
-    List<CourseSchedule> selectAllByCourseId(@Param("courseId")Long courseId);
+    List<CourseSchedule> selectAllByCourseId(@Param("courseId") Long courseId);
+
+    /**
+     * 根据用户 ID 和课程 ID 删除课程学习进度
+     *
+     * @param courseId 课程 ID
+     * @param userId   用户 ID
+     * @return 删除数量
+     */
+    int deleteByCourseIdAndUserId(@Param("courseId") Long courseId, @Param("userId") Long userId);
 }
