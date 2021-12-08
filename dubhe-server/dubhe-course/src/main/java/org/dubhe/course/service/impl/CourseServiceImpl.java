@@ -90,7 +90,14 @@ public class CourseServiceImpl implements CourseService {
             ArrayList<CourseDetailDTO> courseDetailDTOS = new ArrayList<>();
 
             // 根据课程类型 ID 查询 Course
-            List<Course> courses = courseMapper.selectAllByType(e.getId());
+            List<Course> courses;
+            if (curUser.getNickName().equals("admin")) {
+                // 管理员能看到所有课程
+                courses = courseMapper.selectAllByType(e.getId());
+            } else {
+                // 用户只能看到已经激活的课程
+                courses = courseMapper.selectAllByTypeAndStatus(e.getId(), DEFAULT_COURSE_STATUS);
+            }
             courses.forEach(course -> {
                 CourseDetailDTO courseDetailDTO = generateCourseDetailDTO(userId, course);
                 // 添加结果集

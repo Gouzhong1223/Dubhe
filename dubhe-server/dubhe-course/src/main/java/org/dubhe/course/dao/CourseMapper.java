@@ -32,6 +32,15 @@ public interface CourseMapper {
     List<Course> selectAllByType(@Param("type") Long type);
 
     /**
+     * 根据状态和类型查询课程
+     *
+     * @param type   类型
+     * @param status 状态
+     * @return List<Course>
+     */
+    List<Course> selectAllByTypeAndStatus(@Param("type") Long type, @Param("status") Integer status);
+
+    /**
      * 根据分类查询一个 Course
      *
      * @param type 分类 ID
