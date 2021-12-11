@@ -1,5 +1,6 @@
 package org.dubhe.course.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.dubhe.course.domain.CourseFile;
 
 /**
@@ -13,6 +14,7 @@ import org.dubhe.course.domain.CourseFile;
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
+@Mapper
 public interface CourseFileMapper {
     int deleteByPrimaryKey(Long id);
 

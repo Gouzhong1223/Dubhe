@@ -1,5 +1,6 @@
 package org.dubhe.course.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.course.domain.CourseUserSchedule;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
+@Mapper
 public interface CourseUserScheduleMapper {
     int insert(CourseUserSchedule record);
 
