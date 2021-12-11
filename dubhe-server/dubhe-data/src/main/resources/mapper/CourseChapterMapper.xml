@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dubhe.data.course.dao.CourseChapterMapper">
+    <resultMap id="BaseResultMap" type="org.dubhe.data.course.domain.CourseChapter">
+        <!--@mbg.generated-->
+        <!--@Table dubhe-cloud-prod.course_chapter-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="serialNumber" jdbcType="INTEGER" property="serialNumber"/>
+        <result column="chapterType" jdbcType="INTEGER" property="chapterType"/>
+        <result column="courseId" jdbcType="BIGINT" property="courseId"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="fileId" jdbcType="BIGINT" property="fileId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, serialNumber, chapterType, courseId, introduction, createTime, updateTime,
+        fileId
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from dubhe-cloud-prod.course_chapter
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete
+        from dubhe-cloud-prod.course_chapter
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="org.dubhe.data.course.domain.CourseChapter">
+        <!--@mbg.generated-->
+        insert into dubhe-cloud-prod.course_chapter (id, `name`, serialNumber,
+                                                     chapterType, courseId, introduction,
+                                                     createTime, updateTime, fileId)
+        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{serialNumber,jdbcType=INTEGER},
+                #{chapterType,jdbcType=INTEGER}, #{courseId,jdbcType=BIGINT}, #{introduction,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{fileId,jdbcType=BIGINT}
+                )
+    </insert>
+    <insert id="insertSelective" parameterType="org.dubhe.data.course.domain.CourseChapter">
+        <!--@mbg.generated-->
+        insert into dubhe-cloud-prod.course_chapter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null and name != ''">
+                `name`,
+            </if>
+            <if test="serialNumber != null">
+                serialNumber,
+            </if>
+            <if test="chapterType != null">
+                chapterType,
+            </if>
+            <if test="courseId != null">
+                courseId,
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="fileId != null">
+                fileId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="name != null and name != ''">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="serialNumber != null">
+                #{serialNumber,jdbcType=INTEGER},
+            </if>
+            <if test="chapterType != null">
+                #{chapterType,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=BIGINT},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fileId != null">
+                #{fileId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.dubhe.data.course.domain.CourseChapter">
+        <!--@mbg.generated-->
+        update dubhe-cloud-prod.course_chapter
+        <set>
+            <if test="name != null and name != ''">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="serialNumber != null">
+                serialNumber = #{serialNumber,jdbcType=INTEGER},
+            </if>
+            <if test="chapterType != null">
+                chapterType = #{chapterType,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                courseId = #{courseId,jdbcType=BIGINT},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fileId != null">
+                fileId = #{fileId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.dubhe.data.course.domain.CourseChapter">
+        <!--@mbg.generated-->
+        update dubhe-cloud-prod.course_chapter
+                set `name` = #{name,jdbcType=VARCHAR},
+                        serialNumber = #{serialNumber,jdbcType=INTEGER},
+                        chapterType = #{chapterType,jdbcType=INTEGER},
+                        courseId = #{courseId,jdbcType=BIGINT},
+                        introduction = #{introduction,jdbcType=VARCHAR},
+                        createTime = #{createTime,jdbcType=TIMESTAMP},
+                        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+                        fileId = #{fileId,jdbcType=BIGINT} where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--auto generated by MybatisCodeHelper on 2021-12-06-->
+    <select id="selectAllByCourseId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dubhe-cloud-prod.course_chapter
+        <where>
+            <if test="courseId != null">
+                and courseId=#{courseId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <!--auto generated by MybatisCodeHelper on 2021-12-08-->
+    <delete id="deleteByCourseId">
+        delete
+        from dubhe-cloud-prod.course_chapter
+        <where>
+            <if test="courseId != null">
+                and courseId=#{courseId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </delete>
+</mapper>

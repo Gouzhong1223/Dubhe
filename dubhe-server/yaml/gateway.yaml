@@ -126,10 +126,3 @@ spring:
           - Path=/api/v1/dcm/**
         filters:
           - StripPrefix=3
-      # 路由至dubhe-course(课程)服务
-      - id: dubhe-course
-        uri: lb://dubhe-course
-        predicates:
-          - Path=/api/v1/course/**
-        filters:
-          - StripPrefix=3

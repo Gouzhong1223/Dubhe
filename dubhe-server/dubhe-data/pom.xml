@@ -13,8 +13,18 @@
     <packaging>jar</packaging>
     <name>Data 数据处理</name>
     <description>数据处理模块</description>
-
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <aliyun-sdk-oss.version>2.5.0</aliyun-sdk-oss.version>
+    </properties>
     <dependencies>
+        <!--    阿里 oss    -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${aliyun-sdk-oss.version}</version>
+        </dependency>
         <!-- Biz 通用配置 -->
         <dependency>
             <groupId>org.dubhe.biz</groupId>
