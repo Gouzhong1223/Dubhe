@@ -1,6 +1,117 @@
 -- DDL 脚本
 use `dubhe-cloud-prod`;
 
+-- ----------------------------
+-- Table structure for course
+-- ----------------------------
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course` (
+                          `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '课程主键',
+                          `name` varchar(255) DEFAULT NULL COMMENT '课程名字',
+                          `type` bigint(255) DEFAULT NULL COMMENT '课程类型',
+                          `introduction` varchar(255) DEFAULT NULL COMMENT '课程简介',
+                          `totalChapters` int(255) DEFAULT NULL COMMENT '总共章节',
+                          `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+                          `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+                          `coverImage` varchar(255) DEFAULT NULL COMMENT '封面图',
+                          `status` int(255) DEFAULT NULL COMMENT '状态码 0-不可见 1-可见',
+                          `createUserId` bigint(20) DEFAULT NULL COMMENT '创建者 ID',
+                          PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_chapter
+-- ----------------------------
+DROP TABLE IF EXISTS `course_chapter`;
+CREATE TABLE `course_chapter` (
+                                  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '章节主键',
+                                  `name` varchar(255) DEFAULT NULL COMMENT '章节名字',
+                                  `serialNumber` int(11) DEFAULT NULL COMMENT '章节序号',
+                                  `chapterType` int(255) DEFAULT NULL COMMENT '章节类型 0-pdf 1-视频 2-PPT',
+                                  `courseId` bigint(20) DEFAULT NULL COMMENT '章节所属课程',
+                                  `introduction` varchar(255) DEFAULT NULL COMMENT '章节简介',
+                                  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+                                  `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+                                  `fileId` bigint(20) DEFAULT NULL COMMENT '文件 ID',
+                                  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_chapter_course
+-- ----------------------------
+DROP TABLE IF EXISTS `course_chapter_course`;
+CREATE TABLE `course_chapter_course` (
+                                         `chapterId` int(11) DEFAULT NULL COMMENT '章节 ID',
+                                         `courseId` int(11) DEFAULT NULL COMMENT '课程 ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_chapter_schedule
+-- ----------------------------
+DROP TABLE IF EXISTS `course_chapter_schedule`;
+CREATE TABLE `course_chapter_schedule` (
+                                           `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '章节进度主键',
+                                           `startTime` datetime NOT NULL COMMENT '学习时间',
+                                           `courseId` bigint(20) NOT NULL COMMENT '所属课程 ID',
+                                           `chapterId` bigint(20) NOT NULL COMMENT '所属章节 ID',
+                                           `userId` bigint(20) NOT NULL COMMENT 'userId',
+                                           PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_file
+-- ----------------------------
+DROP TABLE IF EXISTS `course_file`;
+CREATE TABLE `course_file` (
+                               `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '课程文件 ID',
+                               `name` varchar(255) DEFAULT NULL COMMENT '课程文件名字',
+                               `type` varchar(255) DEFAULT NULL COMMENT '课程文件类型',
+                               `url` varchar(255) DEFAULT NULL COMMENT '课程文件 URL',
+                               `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+                               `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
+                               `uri` varchar(255) DEFAULT NULL COMMENT '课程文件 uri',
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_schedule
+-- ----------------------------
+DROP TABLE IF EXISTS `course_schedule`;
+CREATE TABLE `course_schedule` (
+                                   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '学习进度 ID',
+                                   `startTime` datetime DEFAULT NULL COMMENT '开始学习时间',
+                                   `lastUpdateTime` datetime DEFAULT NULL COMMENT '最后更新时间',
+                                   `totalChapterNum` int(20) DEFAULT NULL COMMENT '需要学习的章节数',
+                                   `learnedChapterNum` int(20) DEFAULT NULL COMMENT '已经学习的章节数',
+                                   `schedule` int(255) DEFAULT NULL COMMENT '学习进度 如 85 表示 85%',
+                                   `done` int(255) DEFAULT NULL COMMENT '是否已经完成,已完成-1  未完成-0',
+                                   `courseId` bigint(20) DEFAULT NULL COMMENT '所属课程 ID',
+                                   `userId` bigint(20) DEFAULT NULL COMMENT 'userID',
+                                   PRIMARY KEY (`id`),
+                                   KEY `userId_courseId` (`userId`,`courseId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_type
+-- ----------------------------
+DROP TABLE IF EXISTS `course_type`;
+CREATE TABLE `course_type` (
+                               `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '课程类型主键',
+                               `name` varchar(255) DEFAULT NULL COMMENT '课程类型名字',
+                               `createTime` datetime DEFAULT NULL COMMENT '课程创建时间',
+                               `updateTime` datetime DEFAULT NULL COMMENT '课程更新时间',
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for course_user_schedule
+-- ----------------------------
+DROP TABLE IF EXISTS `course_user_schedule`;
+CREATE TABLE `course_user_schedule` (
+                                        `userId` bigint(20) DEFAULT NULL COMMENT 'userId',
+                                        `scheduleId` bigint(20) DEFAULT NULL COMMENT '进度 ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- 原boot单体项目 DDL 脚本内容
 CREATE TABLE IF NOT EXISTS `data_dataset` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
