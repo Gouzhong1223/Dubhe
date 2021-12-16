@@ -3,7 +3,7 @@
 <mapper namespace="org.dubhe.data.course.dao.CourseChapterCourseMapper">
     <resultMap id="BaseResultMap" type="org.dubhe.data.course.domain.CourseChapterCourse">
         <!--@mbg.generated-->
-        <!--@Table dubhe-cloud-prod.course_chapter_course-->
+        <!--@Table course_chapter_course-->
         <result column="chapterId" jdbcType="INTEGER" property="chapterId"/>
         <result column="courseId" jdbcType="INTEGER" property="courseId"/>
     </resultMap>
@@ -13,12 +13,12 @@
     </sql>
     <insert id="insert" parameterType="org.dubhe.data.course.domain.CourseChapterCourse">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course_chapter_course (chapterId, courseId)
+        insert into course_chapter_course (chapterId, courseId)
         values (#{chapterId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" parameterType="org.dubhe.data.course.domain.CourseChapterCourse">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course_chapter_course
+        insert into course_chapter_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="chapterId != null">
                 chapterId,

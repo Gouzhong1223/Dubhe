@@ -3,7 +3,7 @@
 <mapper namespace="org.dubhe.data.course.dao.CourseUserScheduleMapper">
     <resultMap id="BaseResultMap" type="org.dubhe.data.course.domain.CourseUserSchedule">
         <!--@mbg.generated-->
-        <!--@Table dubhe-cloud-prod.course_user_schedule-->
+        <!--@Table course_user_schedule-->
         <result column="userId" jdbcType="BIGINT" property="userId"/>
         <result column="scheduleId" jdbcType="BIGINT" property="scheduleId"/>
     </resultMap>
@@ -13,12 +13,12 @@
     </sql>
     <insert id="insert" parameterType="org.dubhe.data.course.domain.CourseUserSchedule">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course_user_schedule (userId, scheduleId)
+        insert into course_user_schedule (userId, scheduleId)
         values (#{userId,jdbcType=BIGINT}, #{scheduleId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" parameterType="org.dubhe.data.course.domain.CourseUserSchedule">
         <!--@mbg.generated-->
-        insert into dubhe-cloud-prod.course_user_schedule
+        insert into course_user_schedule
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
                 userId,
@@ -41,7 +41,7 @@
     <select id="selectAllByUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dubhe-cloud-prod.course_user_schedule
+        from course_user_schedule
         <where>
             <if test="userId != null">
                 and userId=#{userId,jdbcType=BIGINT}
@@ -53,6 +53,6 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from dubhe-cloud-prod.course_user_schedule
+        from course_user_schedule
     </select>
 </mapper>
