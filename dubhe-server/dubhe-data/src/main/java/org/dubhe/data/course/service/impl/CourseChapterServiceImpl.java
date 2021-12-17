@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author : Gouzhong
@@ -94,7 +91,10 @@ public class CourseChapterServiceImpl implements CourseChapterService {
 
         // 查询课程章节
         CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
-        return DataResponseFactory.success(courseChapter);
+        HashMap<String, Object> resultMap = new HashMap<>(2);
+        resultMap.put("courseChapter", courseChapter);
+        resultMap.put("fileUrl", courseFileMapper.selectByPrimaryKey(courseChapter.getFileId()).getUrl());
+        return DataResponseFactory.success(resultMap);
     }
 
     @Override
