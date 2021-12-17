@@ -1,20 +1,18 @@
 package org.dubhe.data.course.dao;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.dubhe.data.course.domain.CourseFile;
 
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-04 22:11
+ * @Date : create by QingSong in 2021-12-17 21:38
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
- * @PackageName : org.dubhe.course.dao
+ * @PackageName : org.dubhe.data.course.dao
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
-@Mapper
 public interface CourseFileMapper {
     int deleteByPrimaryKey(Long id);
 

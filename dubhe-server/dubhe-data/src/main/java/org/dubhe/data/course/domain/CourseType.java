@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-03 22:34
+ * @Date : create by QingSong in 2021-12-17 21:35
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
- * @PackageName : org.dubhe.course.domain
+ * @PackageName : org.dubhe.data.course.domain
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
-@ApiModel(value = "dubhe-cloud-prod.course_type")
+@ApiModel(value = "course_type")
 @Data
 @Builder
 @AllArgsConstructor

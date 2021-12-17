@@ -1,6 +1,5 @@
 package org.dubhe.data.course.dao;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.dubhe.data.course.domain.Course;
 
@@ -10,14 +9,13 @@ import java.util.List;
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
  * @Description :
- * @Date : create by QingSong in 2021-12-05 12:42
+ * @Date : create by QingSong in 2021-12-17 21:37
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
- * @PackageName : org.dubhe.course.dao
+ * @PackageName : org.dubhe.data.course.dao
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
-@Mapper
 public interface CourseMapper {
     int deleteByPrimaryKey(Long id);
 
