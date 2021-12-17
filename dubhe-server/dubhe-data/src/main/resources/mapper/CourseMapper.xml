@@ -37,11 +37,11 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into course (`name`, `type`, introduction,
-        totalChapters, createTime, updateTime,
-        coverImage, `status`, createUserId)
+                            totalChapters, createTime, updateTime,
+                            coverImage, `status`, createUserId)
         values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT}, #{introduction,jdbcType=VARCHAR},
-        #{totalChapters,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-        #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT})
+                #{totalChapters,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.dubhe.data.course.domain.Course"
             useGeneratedKeys="true">
@@ -143,15 +143,15 @@
     <update id="updateByPrimaryKey" parameterType="org.dubhe.data.course.domain.Course">
         <!--@mbg.generated-->
         update course
-        set `name` = #{name,jdbcType=VARCHAR},
-        `type` = #{type,jdbcType=BIGINT},
-        introduction = #{introduction,jdbcType=VARCHAR},
-        totalChapters = #{totalChapters,jdbcType=INTEGER},
-        createTime = #{createTime,jdbcType=TIMESTAMP},
-        updateTime = #{updateTime,jdbcType=TIMESTAMP},
-        coverImage = #{coverImage,jdbcType=VARCHAR},
-        `status` = #{status,jdbcType=INTEGER},
-        createUserId = #{createUserId,jdbcType=BIGINT}
+        set `name`        = #{name,jdbcType=VARCHAR},
+            `type`        = #{type,jdbcType=BIGINT},
+            introduction  = #{introduction,jdbcType=VARCHAR},
+            totalChapters = #{totalChapters,jdbcType=INTEGER},
+            createTime    = #{createTime,jdbcType=TIMESTAMP},
+            updateTime    = #{updateTime,jdbcType=TIMESTAMP},
+            coverImage    = #{coverImage,jdbcType=VARCHAR},
+            `status`      = #{status,jdbcType=INTEGER},
+            createUserId  = #{createUserId,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 

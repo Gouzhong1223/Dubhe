@@ -25,18 +25,17 @@
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         <!--@mbg.generated-->
-        delete from course_file
+        delete
+        from course_file
         where id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.dubhe.data.course.domain.CourseFile"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into course_file (`name`, `type`, url,
-        createTime, updateTime, uri
-        )
+                                 createTime, updateTime, uri)
         values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
-        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{uri,jdbcType=VARCHAR}
-        )
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{uri,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.dubhe.data.course.domain.CourseFile"
             useGeneratedKeys="true">
@@ -111,12 +110,12 @@
     <update id="updateByPrimaryKey" parameterType="org.dubhe.data.course.domain.CourseFile">
         <!--@mbg.generated-->
         update course_file
-        set `name` = #{name,jdbcType=VARCHAR},
-        `type` = #{type,jdbcType=VARCHAR},
-        url = #{url,jdbcType=VARCHAR},
-        createTime = #{createTime,jdbcType=TIMESTAMP},
-        updateTime = #{updateTime,jdbcType=TIMESTAMP},
-        uri = #{uri,jdbcType=VARCHAR}
+        set `name`     = #{name,jdbcType=VARCHAR},
+            `type`     = #{type,jdbcType=VARCHAR},
+            url        = #{url,jdbcType=VARCHAR},
+            createTime = #{createTime,jdbcType=TIMESTAMP},
+            updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            uri        = #{uri,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>
