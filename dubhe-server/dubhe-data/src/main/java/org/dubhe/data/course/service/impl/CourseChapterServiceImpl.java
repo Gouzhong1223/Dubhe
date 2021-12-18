@@ -75,21 +75,46 @@ public class CourseChapterServiceImpl implements CourseChapterService {
 
     @Override
     public DataResponseBody studyCourseChapter(Long chapterId, Long courseId) {
-        Long userId = userContextService.getCurUserId();
-        // 添加章节学习记录
-        CourseChapterSchedule courseChapterSchedule = new CourseChapterSchedule(null, LocalDateTime.now(), courseId, chapterId, userId);
-        courseChapterScheduleMapper.insertSelective(courseChapterSchedule);
-
-        // 根据 课程 ID 查询课程
         Course course = courseMapper.selectByPrimaryKey(courseId);
-
-        // 更新课程预览看到的学习记录
-        CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, courseId);
-        courseSchedule = updateOrNotCourseSchedule(courseId, userId, course, courseSchedule);
-        // 更新课程学习进度
-        // courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
-
+        if (course == null) {
+            return DataResponseFactory.failed("课程不存在!");
+        }
+        CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
+        if (courseChapter == null) {
+            return DataResponseFactory.failed("章节不存在!");
+        }
+        Long userId = userContextService.getCurUserId();
+        // 查询是否有该章节的学习记录
+        CourseChapterSchedule chapterSchedule = courseChapterScheduleMapper.selectOneByUserIdAndChapterIdAndCourseId(userId, chapterId, courseId);
+        if (chapterSchedule != null) {
+            // 已经学过该章节了
+            // 直接查询课程章节并返回 更新课程最后一次学习时间
+            CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, courseId);
+            courseSchedule.setLastUpdateTime(LocalDateTime.now());
+            courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
+            // 返回章节信息
+            return getCourseChapterDataResponseBody(chapterId);
+        } else {
+            // 第一次学习该章节
+            CourseChapterSchedule courseChapterSchedule = new CourseChapterSchedule(null, LocalDateTime.now(), courseId, chapterId, userId);
+            // 插入章节学习记录
+            courseChapterScheduleMapper.insertSelective(courseChapterSchedule);
+            // 更新课程预览看到的学习记录
+            CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, courseId);
+            // 更新课程学习进度
+            updateOrNotCourseSchedule(courseId, userId, course, courseSchedule);
+        }
         // 查询课程章节
+        return getCourseChapterDataResponseBody(chapterId);
+    }
+
+    /**
+     * 获取章节详情并封装结果集
+     *
+     * @param chapterId 章节 ID
+     * @return DataResponseBody
+     */
+    private DataResponseBody getCourseChapterDataResponseBody(Long chapterId) {
         CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
         HashMap<String, Object> resultMap = new HashMap<>(2);
         resultMap.put("courseChapter", courseChapter);
@@ -232,9 +257,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
      * @param userId         userID
      * @param course         课程
      * @param courseSchedule 课程进度
-     * @return CourseSchedule
      */
-    private CourseSchedule updateOrNotCourseSchedule(Long courseId, Long userId, Course course, CourseSchedule courseSchedule) {
+    private void updateOrNotCourseSchedule(Long courseId, Long userId, Course course, CourseSchedule courseSchedule) {
         // 判断用户是否第一次学习此课程
         if (courseSchedule == null) {
             // 第一次学习此课程
@@ -266,7 +290,6 @@ public class CourseChapterServiceImpl implements CourseChapterService {
             // 不是第一次学习就应该更新学习记录
             courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
         }
-        return courseSchedule;
     }
 
     /**
