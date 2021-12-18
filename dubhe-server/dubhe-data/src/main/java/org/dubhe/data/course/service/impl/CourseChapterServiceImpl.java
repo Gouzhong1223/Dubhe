@@ -87,7 +87,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, courseId);
         courseSchedule = updateOrNotCourseSchedule(courseId, userId, course, courseSchedule);
         // 更新课程学习进度
-        courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
+        // courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
 
         // 查询课程章节
         CourseChapter courseChapter = courseChapterMapper.selectByPrimaryKey(chapterId);
@@ -242,6 +242,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                     LocalDateTime.now(), course.getTotalChapters(),
                     1, (int) (((float) 1 / (float) course.getTotalChapters()) * 100),
                     0, courseId, userId);
+            // 第一次学习就应该插入记录
+            courseScheduleMapper.insertSelective(courseSchedule);
         } else {
             // 不是第一次学习此课程
             Integer learnedChapterNum = courseSchedule.getLearnedChapterNum();
@@ -261,6 +263,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                 courseSchedule.setSchedule((int) (((float) courseSchedule.getLearnedChapterNum() / (float) course.getTotalChapters()) * 100));
                 courseSchedule.setLastUpdateTime(LocalDateTime.now());
             }
+            // 不是第一次学习就应该更新学习记录
+            courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
         }
         return courseSchedule;
     }
