@@ -1,7 +1,7 @@
 #!/bin/bash
 #基础部署脚本
 #环境，用以区分部署的命名空间，日志路径
-ENV=$1
+ENV=v1
 #本文件绝对路径
 SOURCE_CODE_PATH=$(cd $(dirname ${BASH_SOURCE[0]}); pwd )
 
