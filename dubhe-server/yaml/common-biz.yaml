@@ -90,11 +90,11 @@ minioweb:
       method: Web.Login
   zip:
     url: minio/zip?token=
-    
+
 #是否开启 swagger-ui
 swagger:
   enabled: true
-  
+
 # 配置slq打印日志
 logging:
   level:
@@ -114,7 +114,7 @@ data:
     # 文件存储服务器用户名
     userName: root
 
-feign: 
+feign:
 # 开启httpclient
   httpclient:
     enabled: true
@@ -147,3 +147,10 @@ user:
     cpu-limit: 10
     memory-limit: 32
     gpu-limit: 2
+aliyun:
+  oss:
+    endpoint: oss-cn-chengdu.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI4G4gRbiU3j9QPDMTukWh # 访问身份验证中用到用户标识
+    accessKeySecret: 5qcNOO1kuXnZOXoBpE5tQPcC4qQrt7 # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: g-youcode # oss的存储空间
+    filehost: dubhe-course
