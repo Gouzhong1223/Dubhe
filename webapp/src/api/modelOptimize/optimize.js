@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(data) {
@@ -46,7 +46,7 @@ export function del(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task`,
     method: 'delete',
     data,
-  });
+  })
 }
 
 export function getOptimizeAlgorithms(params) {
@@ -54,7 +54,7 @@ export function getOptimizeAlgorithms(params) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/getAlgorithm`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getBuiltInModel(params) {
@@ -62,7 +62,7 @@ export function getBuiltInModel(params) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/getBuiltInModel`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getOptimizeDatasets(params) {
@@ -70,7 +70,7 @@ export function getOptimizeDatasets(params) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/getDataset`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getCustomizeDatasets(params) {
@@ -78,7 +78,7 @@ export function getCustomizeDatasets(params) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/myDataset`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function addCustomizeDatasets(data) {
@@ -86,7 +86,7 @@ export function addCustomizeDatasets(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/myDataset`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function submit(data) {
@@ -94,7 +94,7 @@ export function submit(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/task/submit`,
     method: 'post',
     data,
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

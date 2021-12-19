@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/permission`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ADMIN}/permission`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -38,7 +38,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ADMIN}/permission`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 export function edit(data) {
@@ -46,12 +46,12 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ADMIN}/permission`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function getPermissionTree() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/permission/tree`,
     method: 'get',
-  });
+  })
 }

@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.MODEL}/ptModelBranch`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelBranch`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelBranch`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(data) {
@@ -46,7 +46,7 @@ export function del(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelBranch`,
     method: 'delete',
     data,
-  });
+  })
 }
 
 export function convertPreset(data) {
@@ -54,7 +54,7 @@ export function convertPreset(data) {
     url: `${API_MODULE_NAME.MODEL}/ptModelBranch/convertPreset`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 模型格式转换，只支持转至 ONNX
@@ -63,7 +63,7 @@ export function formatConvert(id) {
     url: `${API_MODULE_NAME.MODEL}/ptModelBranch/convertOnnx`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

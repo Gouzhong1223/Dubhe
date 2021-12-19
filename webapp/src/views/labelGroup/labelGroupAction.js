@@ -24,12 +24,12 @@ export default {
     doConvert: Function,
   },
   render(h, { data, props }) {
-    const { doFork, goDetail, doEdit, doConvert } = props;
+    const { doFork, goDetail, doEdit, doConvert } = props
     const columnProps = {
       ...data,
       scopedSlots: {
         header: () => {
-          return <span>操作</span>;
+          return <span>操作</span>
         },
         default: ({ row }) => {
           const btnProps = {
@@ -41,43 +41,43 @@ export default {
               marginLeft: '0px',
               marginRight: '10px',
             },
-          };
+          }
 
           // 查看详情按钮
           const checkButton = (
             <el-button {...btnProps} onClick={() => goDetail(row)}>
               查看详情
             </el-button>
-          );
+          )
 
           // 编辑按钮
-          let showEditButton = true;
+          let showEditButton = true
           const editButton = (
             <el-button {...btnProps} onClick={() => doEdit(row)}>
               编辑
             </el-button>
-          );
+          )
 
           // 复制按钮
-          let showForkButton = true;
+          let showForkButton = true
           const forkButton = (
             <el-button {...btnProps} onClick={() => doFork(row)}>
               复制
             </el-button>
-          );
+          )
 
-          let showConvert = true;
+          let showConvert = true
           const convertButton = (
             <el-button {...btnProps} onClick={() => doConvert(row)}>
               设为预置
             </el-button>
-          );
+          )
 
           // 预置标签组只具备查看标签功能
           if (row.type === 1) {
-            showEditButton = false;
-            showForkButton = false;
-            showConvert = false;
+            showEditButton = false
+            showForkButton = false
+            showConvert = false
           }
 
           return (
@@ -87,11 +87,11 @@ export default {
               {showForkButton && forkButton}
               {showConvert && convertButton}
             </span>
-          );
+          )
         },
       },
-    };
+    }
 
-    return h('el-table-column', columnProps);
+    return h('el-table-column', columnProps)
   },
-};
+}

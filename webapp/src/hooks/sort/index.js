@@ -14,23 +14,23 @@
  * =============================================================
  */
 
-import { reactive } from '@vue/composition-api';
+import { reactive } from '@vue/composition-api'
 
 export function useSort() {
   const sortInfo = reactive({
     sort: undefined,
     order: undefined,
-  });
+  })
 
   const setSort = (sort) => {
     Object.assign(sortInfo, {
       sort: sort.sort || undefined,
       order: sort.order || undefined,
-    });
-  };
+    })
+  }
 
   return {
     sortInfo,
     setSort,
-  };
+  }
 }

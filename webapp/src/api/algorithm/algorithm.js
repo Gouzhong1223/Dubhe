@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -46,14 +46,14 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms`,
     method: 'delete',
     data: ids,
-  });
+  })
 }
 
 export function myAlgorithmCount() {
   return request({
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms/myAlgorithmCount`,
     method: 'get',
-  });
+  })
 }
 
 // 获取可推理算法列表
@@ -61,7 +61,7 @@ export function getInferenceAlgorithm() {
   return request({
     url: `/${API_MODULE_NAME.ALGORITHM}/algorithms/getInferenceAlgorithm`,
     method: 'get',
-  });
+  })
 }
 
-export default { list, add, del };
+export default { list, add, del }

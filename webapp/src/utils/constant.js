@@ -32,57 +32,57 @@ export const Constant = {
     fork: 'Fork ',
     edit: '编辑',
   },
-};
+}
 
 // 算法来源枚举值
 export const ALGORITHM_RESOURCE_ENUM = {
   CUSTOM: 1, // 我的算法
   PRESET: 2, // 预置算法
-};
+}
 
 // 模型分类枚举值
 export const MODEL_RESOURCE_ENUM = {
   CUSTOM: 0, // 我的模型
   PRESET: 1, // 预训练模型
   ATLAS: 2, // 炼知模型
-};
+}
 
 // 模型分类名称
 export const MODEL_RESOURCE_MAP = {
   [MODEL_RESOURCE_ENUM.CUSTOM]: '我的模型',
   [MODEL_RESOURCE_ENUM.PRESET]: '预训练模型',
   [MODEL_RESOURCE_ENUM.ATLAS]: '炼知模型',
-};
+}
 
 // 炼知模型打包状态枚举
 export const ALTAS_MODEL_PACKAGE_ENUM = {
   UNPACKAGED: 0,
   PACKAGED: 1,
-};
+}
 
 // 资源类型枚举
 export const RESOURCES_POOL_TYPE_ENUM = {
   CPU: 0,
   GPU: 1,
-};
+}
 
 // 资源业务场景枚举
 export const RESOURCES_MODULE_ENUM = {
   NOTEBOOK: 1,
   TRAIN: 2,
   SERVING: 3,
-};
+}
 
 // 资源类型名称
 export const RESOURCES_POOL_TYPE_MAP = {
   [RESOURCES_POOL_TYPE_ENUM.CPU]: 'CPU',
   [RESOURCES_POOL_TYPE_ENUM.GPU]: 'GPU',
-};
+}
 
 // webSocket topic 枚举值
 export const WEB_SOCKET_TOPIC_ENUM = {
   RESOURCE_MONITOR: 'resourceMonitor', // 用户资源监控
-};
+}
 
 // K8S pod 业务标签枚举值
 export const K8S_BUSINESS_LABEL_ENUM = {
@@ -93,7 +93,7 @@ export const K8S_BUSINESS_LABEL_ENUM = {
   BATCH_SERVING: 'batchserving',
   TADL: 'tadl',
   TERMINAL: 'terminal',
-};
+}
 
 // K8S pod 业务标签与业务模块对应关系匹配
 export const K8S_BUSINESS_LABEL_MAP = {
@@ -104,19 +104,19 @@ export const K8S_BUSINESS_LABEL_MAP = {
   [K8S_BUSINESS_LABEL_ENUM.BATCH_SERVING]: '云端 Serving 批量服务',
   [K8S_BUSINESS_LABEL_ENUM.TADL]: 'TADL',
   [K8S_BUSINESS_LABEL_ENUM.TERMINAL]: '凌波智能专业版',
-};
+}
 
 // 默认进度条颜色
 export const defaultProcessColors = [
   { color: '#909399', percentage: 40 },
   { color: '#e6a23c', percentage: 80 },
   { color: '#67c23a', percentage: 100 },
-];
+]
 
 // 系统管理员ID
-export const ADMIN_ROLE_ID = 1;
+export const ADMIN_ROLE_ID = 1
 
 // 时间常量
-export const ONE_MINUTE = 1000 * 60;
+export const ONE_MINUTE = 1000 * 60
 
-export const ONE_HOUR = ONE_MINUTE * 60;
+export const ONE_HOUR = ONE_MINUTE * 60

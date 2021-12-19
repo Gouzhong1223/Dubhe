@@ -23,18 +23,34 @@ export const TRAINING_STATUS_ENUM = {
   STOPED: 4, // 停止
   UNKNOW: 5, // 未知
   CREATE_FAILED: 7, // 创建失败
-};
+}
 
 // 训练状态匹配
 export const TRAINING_STATUS_MAP = {
   [TRAINING_STATUS_ENUM.PENDING]: { name: '待处理', statusMap: 'running' },
   [TRAINING_STATUS_ENUM.RUNNING]: { name: '运行中', statusMap: 'running' },
-  [TRAINING_STATUS_ENUM.FINISHED]: { name: '运行完成', tagMap: 'success', statusMap: 'done' },
-  [TRAINING_STATUS_ENUM.FAILED]: { name: '运行失败', tagMap: 'danger', statusMap: 'done' },
-  [TRAINING_STATUS_ENUM.STOPED]: { name: '停止', tagMap: 'info', statusMap: 'done' },
+  [TRAINING_STATUS_ENUM.FINISHED]: {
+    name: '运行完成',
+    tagMap: 'success',
+    statusMap: 'done',
+  },
+  [TRAINING_STATUS_ENUM.FAILED]: {
+    name: '运行失败',
+    tagMap: 'danger',
+    statusMap: 'done',
+  },
+  [TRAINING_STATUS_ENUM.STOPED]: {
+    name: '停止',
+    tagMap: 'info',
+    statusMap: 'done',
+  },
   [TRAINING_STATUS_ENUM.UNKNOW]: { name: '未知', statusMap: 'done' },
-  [TRAINING_STATUS_ENUM.CREATE_FAILED]: { name: '创建失败', tagMap: 'danger', statusMap: 'done' },
-};
+  [TRAINING_STATUS_ENUM.CREATE_FAILED]: {
+    name: '创建失败',
+    tagMap: 'danger',
+    statusMap: 'done',
+  },
+}
 
 // 目录树弹窗文案
 export const copywriting = {
@@ -57,7 +73,7 @@ export const copywriting = {
     jobResume:
       '此功能将会以用户选择的模型作为预训练模型进行新一轮训练，之前的训练结果将被覆盖且无法找回。建议先保存模型！',
   },
-};
+}
 
 // 镜像管理相关参数
 export const IMAGE_RESOURCE_ENUM = {
@@ -65,13 +81,13 @@ export const IMAGE_RESOURCE_ENUM = {
   PRESET: '1', // 训练预置镜像
   NOTEBOOK: '2', // notebook镜像
   TERMINAL: '3', // 终端镜像
-};
+}
 
 export const IMAGE_PROJECT_TYPE = {
   TRAIN: 1, // 训练镜像和预置镜像类型
   NOTEBOOK: 0, // notebook镜像类型
   TERMINAL: 3, // 终端镜像
-};
+}
 
 // 训练可视化列表页查询项
 export const trainVisualQueryFormItems = [
@@ -90,7 +106,7 @@ export const trainVisualQueryFormItems = [
     defaultTime: ['00:00:00', '23:59:59'],
     pickerOptions: {
       disabledDate(time) {
-        return time.getTime() > new Date().setHours(23, 59, 59, 999);
+        return time.getTime() > new Date().setHours(23, 59, 59, 999)
       },
     },
     valueFormat: 'timestamp',
@@ -107,14 +123,14 @@ export const trainVisualQueryFormItems = [
     btnType: 'primary',
     func: 'query',
   },
-];
+]
 
 // 训练可视化列表页表头
 export function getTrainVisualColumns({ goVisual, jobStatusList }) {
-  const statusTagMap = {};
+  const statusTagMap = {}
   Object.keys(TRAINING_STATUS_MAP).forEach((key) => {
-    statusTagMap[key] = TRAINING_STATUS_MAP[key].tagMap;
-  });
+    statusTagMap[key] = TRAINING_STATUS_MAP[key].tagMap
+  })
   return [
     {
       label: '名称',
@@ -136,7 +152,9 @@ export function getTrainVisualColumns({ goVisual, jobStatusList }) {
       prop: 'trainStatus',
       dropdownList: jobStatusList.value,
       formatter(value) {
-        return jobStatusList.value.find((status) => status.value === String(value))?.label;
+        return jobStatusList.value.find(
+          (status) => status.value === String(value),
+        )?.label
       },
       type: 'tag',
       tagMap: statusTagMap,
@@ -160,5 +178,5 @@ export function getTrainVisualColumns({ goVisual, jobStatusList }) {
         },
       ],
     },
-  ];
+  ]
 }

@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import { nextTick, reactive, ref, computed, toRefs } from '@vue/composition-api';
-import { isNil } from 'lodash';
+import { nextTick, reactive, ref, computed, toRefs } from '@vue/composition-api'
+import { isNil } from 'lodash'
 
-import { getTerminalList } from '@/api/terminal';
-import { getEmptyFormatter, generateMap } from '@/utils';
+import { getTerminalList } from '@/api/terminal'
+import { getEmptyFormatter, generateMap } from '@/utils'
 
 export const getGiFromMi = (value, fixed = 2) => {
-  return (Number(value) / 1024).toFixed(fixed);
-};
+  return (Number(value) / 1024).toFixed(fixed)
+}
 
 // 连接状态枚举值
 export const TERMINAL_STATUS_ENUM = {
@@ -30,7 +30,7 @@ export const TERMINAL_STATUS_ENUM = {
   SAVING: 1, // 保存中
   RUNNING: 2, // 运行中
   STOPPED: 3, // 已停止
-};
+}
 
 // 连接状态枚举匹配
 export const TERMINAL_STATUS_MAP = {
@@ -38,7 +38,7 @@ export const TERMINAL_STATUS_MAP = {
   [TERMINAL_STATUS_ENUM.SAVING]: { name: '保存中' },
   [TERMINAL_STATUS_ENUM.RUNNING]: { name: '运行中', tagMap: 'success' },
   [TERMINAL_STATUS_ENUM.STOPPED]: { name: '已停止', tagMap: 'info' },
-};
+}
 
 // 连接节点状态枚举值
 export const TERMINAL_INFO_STATUS_ENUM = {
@@ -46,7 +46,7 @@ export const TERMINAL_INFO_STATUS_ENUM = {
   PENDING: 1, // 调度中
   RUNNING: 2, // 运行中
   STOPPED: 3, // 已停止
-};
+}
 
 // 连接状态枚举匹配
 export const TERMINAL_INFO_STATUS_MAP = {
@@ -54,7 +54,7 @@ export const TERMINAL_INFO_STATUS_MAP = {
   [TERMINAL_INFO_STATUS_ENUM.PENDING]: { name: '调度中' },
   [TERMINAL_INFO_STATUS_ENUM.RUNNING]: { name: '运行中', tagMap: 'success' },
   [TERMINAL_INFO_STATUS_ENUM.STOPPED]: { name: '已停止', tagMap: 'info' },
-};
+}
 
 // 概览页表头列表
 export const overviewTableColumns = [
@@ -66,7 +66,7 @@ export const overviewTableColumns = [
     label: '状态',
     prop: 'status',
     formatter(status) {
-      return TERMINAL_STATUS_MAP[status]?.name || '未知';
+      return TERMINAL_STATUS_MAP[status]?.name || '未知'
     },
     type: 'tag',
     tagMap: { ...generateMap(TERMINAL_STATUS_MAP, 'tagMap') },
@@ -103,61 +103,62 @@ export const overviewTableColumns = [
     prop: 'lastStopTime',
     type: 'time',
   },
-];
+]
 
 // 获取终端连接列表
 export const useGetTerminals = ({ postprocessor } = {}) => {
   const state = reactive({
     loading: false,
-  });
+  })
 
-  const originTerminalList = ref([]);
+  const originTerminalList = ref([])
 
   const getTerminals = async () => {
-    state.loading = true;
+    state.loading = true
     originTerminalList.value = await getTerminalList().finally(() => {
-      state.loading = false;
-    });
-  };
+      state.loading = false
+    })
+  }
 
   const terminalList = computed(() => {
     if (typeof postprocessor === 'function') {
-      return postprocessor(originTerminalList.value);
+      return postprocessor(originTerminalList.value)
     }
-    return originTerminalList.value;
-  });
+    return originTerminalList.value
+  })
 
-  return { terminalList, getTerminals, ...toRefs(state) };
-};
+  return { terminalList, getTerminals, ...toRefs(state) }
+}
 
 // 轮询钩子
 export function usePoll({ pollFn, stopFn, timeStep = 3000 } = {}) {
-  let timeoutId;
-  let keepPoll;
-  if (typeof pollFn !== 'function') return Promise.reject(new Error('pollFn 必须是一个函数'));
+  let timeoutId
+  let keepPoll
+  if (typeof pollFn !== 'function')
+    return Promise.reject(new Error('pollFn 必须是一个函数'))
 
   const stopPoll = () => {
-    clearTimeout(timeoutId);
-    timeoutId = null;
-  };
+    clearTimeout(timeoutId)
+    timeoutId = null
+  }
 
   const startPoll = async () => {
-    if (timeoutId) stopPoll(); // 如果有前置轮询，则先停止
-    await pollFn();
+    if (timeoutId) stopPoll() // 如果有前置轮询，则先停止
+    await pollFn()
     if (typeof stopFn === 'function') {
-      keepPoll = stopFn();
+      keepPoll = stopFn()
     } else {
-      keepPoll = true;
+      keepPoll = true
     }
     if (keepPoll) {
-      timeoutId = setTimeout(startPoll, timeStep);
+      timeoutId = setTimeout(startPoll, timeStep)
     }
-  };
+  }
 
   return {
     startPoll,
     stopPoll,
-  };
+  }
 }
 
 // TODO: 探究 useForm 是否能够被提取为公共钩子，来共享其中的基础方法
@@ -166,47 +167,47 @@ export const useForm = ({ defaultForm, customValidate }) => {
    * defaultForm 用于设置表单默认值
    * customValidate 为一个函数，用于根据表单值做自定义校验，入参为 form 对象，出参为一个标记是否有效的布尔值
    */
-  const formRef = ref(null);
+  const formRef = ref(null)
 
-  const form = reactive({ ...defaultForm });
+  const form = reactive({ ...defaultForm })
 
   const initForm = (originForm = {}) => {
     Object.keys(defaultForm).forEach((key) => {
-      form[key] = isNil(originForm[key]) ? defaultForm[key] : originForm[key];
-    });
-  };
+      form[key] = isNil(originForm[key]) ? defaultForm[key] : originForm[key]
+    })
+  }
 
   const validate = (resolve, reject) => {
-    let valid = true;
+    let valid = true
 
     formRef.value.validate((isValid) => {
-      valid = valid && isValid;
-    });
+      valid = valid && isValid
+    })
 
     if (typeof customValidate === 'function') {
-      valid = customValidate(form) && valid;
+      valid = customValidate(form) && valid
     }
 
     if (valid) {
       if (typeof resolve === 'function') {
-        resolve(form);
+        resolve(form)
       }
-      return true;
+      return true
     }
     if (typeof reject === 'function') {
-      reject(form);
+      reject(form)
     }
-    return false;
-  };
+    return false
+  }
 
   const clearValidate = (...args) => {
-    formRef.value.clearValidate(...args);
-  };
+    formRef.value.clearValidate(...args)
+  }
 
   const resetForm = () => {
-    initForm();
-    nextTick(clearValidate);
-  };
+    initForm()
+    nextTick(clearValidate)
+  }
 
   return {
     formRef,
@@ -215,8 +216,8 @@ export const useForm = ({ defaultForm, customValidate }) => {
     validate,
     clearValidate,
     resetForm,
-  };
-};
+  }
+}
 
 // 连接节点表头列表
 export const connectionNodeTableColumns = [
@@ -240,11 +241,11 @@ export const connectionNodeTableColumns = [
     formatter(value, node) {
       return `${node.cpuNum / 1000}CPU ${getGiFromMi(node.memNum)}Gi ${
         node.gpuNum
-      }GPU ${getGiFromMi(node.diskMemNum)}Gi`;
+      }GPU ${getGiFromMi(node.diskMemNum)}Gi`
     },
   },
   {
     label: '状态',
     prop: 'status',
   },
-];
+]

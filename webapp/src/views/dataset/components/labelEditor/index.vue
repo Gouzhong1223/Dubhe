@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-popover
@@ -33,7 +27,11 @@
       style="margin-top: 20px;"
     >
       <el-form-item label="名称" prop="name">
-        <el-input ref="inputRef" v-model="state.form.name" :placeholder="props.title" />
+        <el-input
+          ref="inputRef"
+          v-model="state.form.name"
+          :placeholder="props.title"
+        />
       </el-form-item>
       <el-form-item label="颜色" prop="color">
         <el-color-picker v-model="state.form.color" />
@@ -49,10 +47,10 @@
   </el-popover>
 </template>
 <script>
-import Vue from 'vue';
-import { reactive, ref } from '@vue/composition-api';
-import { validateName } from '@/utils/validate';
-import { isNil } from 'lodash';
+import Vue from 'vue'
+import { reactive, ref } from '@vue/composition-api'
+import { isNil } from 'lodash'
+import { validateName } from '@/utils/validate'
 
 export default {
   name: 'LabelEditor',
@@ -65,8 +63,8 @@ export default {
     },
   },
   setup(props, ctx) {
-    const inputRef = ref(null);
-    const formRef = ref(null);
+    const inputRef = ref(null)
+    const formRef = ref(null)
 
     const state = reactive({
       visible: false,
@@ -75,15 +73,19 @@ export default {
         name: props.labelData.name || '',
         color: props.labelData.color || '#2e4fde',
       },
-    });
+    })
 
     // 表单规则
     const rules = {
       name: [
-        { required: true, message: '请输入标签名称', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请输入标签名称',
+          trigger: ['change', 'blur'],
+        },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
-    };
+    }
 
     const handleCancel = () => {
       Object.assign(state, {
@@ -92,45 +94,48 @@ export default {
           name: props.labelData.name || '',
           color: props.labelData.color || '#2e4fde',
         },
-      });
-    };
+      })
+    }
 
     // 编辑标注名称
     const handleOk = () => {
       formRef.value.validate().then((valid) => {
         if (!valid) {
-          return;
+          return
         }
         // 标签信息无改动时，只需关闭弹窗
         if (
-          !(state.form.color === props.labelData.color && state.form.name === props.labelData.name)
+          !(
+            state.form.color === props.labelData.color &&
+            state.form.name === props.labelData.name
+          )
         ) {
-          ctx.emit('handleOk', props.labelData.id, state.form);
+          ctx.emit('handleOk', props.labelData.id, state.form)
         }
         // 原来的传入数据为空，判断是创建标签，故清空，否则是编辑标签，刷新key
         if (isNil(props.labelData.name)) {
-          handleCancel();
+          handleCancel()
         } else {
           Object.assign(state, {
             dialogKey: state.dialogKey + 1,
-          });
+          })
         }
-      });
-    };
+      })
+    }
 
     const onShow = () => {
       // onShow 的时候重置
       Vue.nextTick(() => {
-        const input = inputRef && inputRef.value.$refs.input;
-        input && input.focus();
-      });
-    };
+        const input = inputRef && inputRef.value.$refs.input
+        input && input.focus()
+      })
+    }
 
     const onHide = () => {
       Object.assign(state, {
         dialogKey: state.dialogKey + 1,
-      });
-    };
+      })
+    }
 
     return {
       props,
@@ -142,7 +147,7 @@ export default {
       handleCancel,
       onShow,
       onHide,
-    };
+    }
   },
-};
+}
 </script>

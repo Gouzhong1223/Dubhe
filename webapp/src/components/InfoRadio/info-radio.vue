@@ -1,6 +1,11 @@
 <template>
   <div class="info-data-radio">
-    <el-radio-group ref="radioRef" v-model="state.sValue" v-bind="attrs" v-on="listeners">
+    <el-radio-group
+      ref="radioRef"
+      v-model="state.sValue"
+      v-bind="attrs"
+      v-on="listeners"
+    >
       <component
         :is="radioElement"
         v-for="item in state.list"
@@ -15,8 +20,8 @@
   </div>
 </template>
 <script>
-import { reactive, computed, watch, ref } from '@vue/composition-api';
-import { isNil } from 'lodash';
+import { reactive, computed, watch, ref } from '@vue/composition-api'
+import { isNil } from 'lodash'
 
 export default {
   name: 'InfoRadio',
@@ -49,54 +54,59 @@ export default {
     innerRef: Function,
   },
   setup(props, ctx) {
-    const { labelKey, valueKey, innerRef, transformOptions } = props;
+    const { labelKey, valueKey, innerRef, transformOptions } = props
 
-    const elementRef = !isNil(innerRef) ? innerRef() : ref(null);
+    const elementRef = !isNil(innerRef) ? innerRef() : ref(null)
 
     const buildOptions = (list) =>
       list.map((d) => ({
         ...d,
         label: d[labelKey],
         value: d[valueKey],
-      }));
+      }))
 
-    const rawList = buildOptions(props.dataSource);
+    const rawList = buildOptions(props.dataSource)
 
-    const list = typeof transformOptions === 'function' ? transformOptions(rawList) : rawList;
+    const list =
+      typeof transformOptions === 'function'
+        ? transformOptions(rawList)
+        : rawList
 
     const state = reactive({
       list,
       sValue: !isNil(props.value) ? props.value : undefined,
-    });
+    })
 
     const handleChange = (value) => {
-      ctx.emit('change', value);
-    };
+      ctx.emit('change', value)
+    }
 
     watch(
       () => props.value,
       (next) => {
         Object.assign(state, {
           sValue: next,
-        });
-      }
-    );
+        })
+      },
+    )
 
     watch(
       () => props.dataSource,
       (next) => {
         Object.assign(state, {
           list: buildOptions(next),
-        });
-      }
-    );
+        })
+      },
+    )
 
-    const radioElement = computed(() => (props.type === 'button' ? 'el-radio-button' : 'el-radio'));
-    const attrs = computed(() => ctx.attrs);
+    const radioElement = computed(() =>
+      props.type === 'button' ? 'el-radio-button' : 'el-radio',
+    )
+    const attrs = computed(() => ctx.attrs)
     const listeners = computed(() => ({
       ...ctx.listeners,
       change: handleChange,
-    }));
+    }))
 
     return {
       state,
@@ -105,7 +115,7 @@ export default {
       listeners,
       radioElement,
       handleChange,
-    };
+    }
   },
-};
+}
 </script>

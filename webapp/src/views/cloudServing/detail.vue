@@ -1,26 +1,26 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="serving-detail-container" class="app-container">
     <header class="flex flex-between flex-vertical-align">
       <p>您的位置：云端 Serving / {{ item.name }}</p>
       <span class="btn-group">
-        <el-button type="primary" :disabled="!isStoped" @click="doEdit">编辑</el-button>
-        <el-button v-if="isStoped" type="primary" :loading="startLoading" @click="doStartDebounce"
+        <el-button type="primary" :disabled="!isStoped" @click="doEdit"
+          >编辑</el-button
+        >
+        <el-button
+          v-if="isStoped"
+          type="primary"
+          :loading="startLoading"
+          @click="doStartDebounce"
           >启动</el-button
         >
         <el-button
@@ -31,7 +31,11 @@
           @click="doStopDebounce"
           >停止</el-button
         >
-        <el-button type="primary" :disabled="!isStoped" :loading="deleteLoading" @click="doDelete"
+        <el-button
+          type="primary"
+          :disabled="!isStoped"
+          :loading="deleteLoading"
+          @click="doDelete"
           >删除</el-button
         >
         <el-button type="primary" @click="doRefreshDebounce">刷新</el-button>
@@ -56,7 +60,9 @@
       </div>
       <div>
         <span class="detail-label">运行节点数/总节点数</span>
-        <span class="detail-value">{{ item.runningNode || 0 }}/{{ item.totalNode || 0 }}</span>
+        <span class="detail-value"
+          >{{ item.runningNode || 0 }}/{{ item.totalNode || 0 }}</span
+        >
       </div>
       <div>
         <span class="detail-label">调用失败次数/总次数</span>
@@ -79,7 +85,9 @@
             <ModelDetail :model="model" />
             <el-button slot="reference"
               >{{ model.modelName || `模型${model.id}`
-              }}{{ model.modelVersion ? `-${model.modelVersion}` : '' }}</el-button
+              }}{{
+                model.modelVersion ? `-${model.modelVersion}` : ''
+              }}</el-button
             >
           </el-popover>
         </span>
@@ -141,7 +149,7 @@
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce'
 
 import {
   start,
@@ -149,22 +157,22 @@ import {
   del as deleteServing,
   detail as getServingDetail,
   getPredictParam,
-} from '@/api/cloudServing';
-import MsgPopover from '@/components/MsgPopover';
-import { generateMap, emitter } from '@/utils';
+} from '@/api/cloudServing'
+import MsgPopover from '@/components/MsgPopover'
+import { generateMap, emitter } from '@/utils'
 import {
   SERVING_STATUS_ENUM,
   ONLINE_SERVING_STATUS_MAP,
   ONLINE_SERVING_TYPE,
   serviceTypeMap,
   numFormatter,
-} from './util';
-import ModelDetail from './components/modelDetail';
-import ServingCallGuide from './components/servingCallGuide';
-import ServingPredict from './components/servingPredict';
-import ServingMonitor from './components/servingMonitor';
-import ServingLog from './components/servingLog';
-import ServingDeploymentRecord from './components/servingDeploymentRecord';
+} from './util'
+import ModelDetail from './components/modelDetail'
+import ServingCallGuide from './components/servingCallGuide'
+import ServingPredict from './components/servingPredict'
+import ServingMonitor from './components/servingMonitor'
+import ServingLog from './components/servingLog'
+import ServingDeploymentRecord from './components/servingDeploymentRecord'
 
 export default {
   name: 'CloudServingDetail',
@@ -212,93 +220,103 @@ export default {
       serviceTypeMap,
 
       timeoutId: null, // 用于记录当前轮询 timeoutId
-    };
+    }
   },
   computed: {
     callCount() {
       if (this.item.type === ONLINE_SERVING_TYPE.GRPC) {
-        return '-/-';
+        return '-/-'
       }
-      return `${this.failCount}/${this.totalCount}`;
+      return `${this.failCount}/${this.totalCount}`
     },
     failCount() {
-      return numFormatter(this.item.failNum) || 0;
+      return numFormatter(this.item.failNum) || 0
     },
     totalCount() {
-      return numFormatter(this.item.totalNum) || 0;
+      return numFormatter(this.item.totalNum) || 0
     },
     modelList() {
-      const list = [];
+      const list = []
       this.item.modelConfigList.forEach((config) => {
         list.push({
           id: config.id,
-          label: `${config.modelName}${config.modelVersion ? `-${config.modelVersion}` : ''}`,
-        });
-      });
-      return list;
+          label: `${config.modelName}${
+            config.modelVersion ? `-${config.modelVersion}` : ''
+          }`,
+        })
+      })
+      return list
     },
     isStoped() {
       return (
-        [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(this.item.status) !== -1
-      );
+        [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(
+          this.item.status,
+        ) !== -1
+      )
     },
     isRunning() {
-      return SERVING_STATUS_ENUM.WORKING === this.item.status;
+      return SERVING_STATUS_ENUM.WORKING === this.item.status
     },
     stopable() {
       return (
-        [SERVING_STATUS_ENUM.WORKING, SERVING_STATUS_ENUM.IN_DEPLOYMENT].indexOf(
-          this.item.status
-        ) !== -1
-      );
+        [
+          SERVING_STATUS_ENUM.WORKING,
+          SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+        ].indexOf(this.item.status) !== -1
+      )
     },
     showMessage() {
-      return [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.IN_DEPLOYMENT].includes(
-        this.item.status
-      );
+      return [
+        SERVING_STATUS_ENUM.EXCEPTION,
+        SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+      ].includes(this.item.status)
     },
     statusNameMap() {
-      return generateMap(ONLINE_SERVING_STATUS_MAP, 'name');
+      return generateMap(ONLINE_SERVING_STATUS_MAP, 'name')
     },
   },
   beforeRouteEnter(to, from, next) {
     if (!to.query.id) {
-      next('/cloudServing');
+      next('/cloudServing')
     } else {
-      next();
+      next()
     }
   },
   async created() {
-    this.serviceId = Number(this.$route.query.id);
-    this.refetch = debounce(1000, this.getServingDetail);
-    this.doStartDebounce = debounce(1000, this.doStart);
-    this.doStopDebounce = debounce(1000, this.doStop);
-    this.doRefreshDebounce = debounce(1000, this.doRefresh);
-    emitter.on('jumpToServingDetail', this.onJumpIn);
-    await this.getServingDetail();
-    const { target } = this.$route.params;
+    this.serviceId = Number(this.$route.query.id)
+    this.refetch = debounce(1000, this.getServingDetail)
+    this.doStartDebounce = debounce(1000, this.doStart)
+    this.doStopDebounce = debounce(1000, this.doStop)
+    this.doRefreshDebounce = debounce(1000, this.doRefresh)
+    emitter.on('jumpToServingDetail', this.onJumpIn)
+    await this.getServingDetail()
+    const { target } = this.$route.params
     if (target) {
-      this.activeDetailTabName = target;
+      this.activeDetailTabName = target
     }
   },
   beforeDestroy() {
-    this.keepPoll = false;
-    emitter.off('jumpToServingDetail', this.onJumpIn);
+    this.keepPoll = false
+    emitter.off('jumpToServingDetail', this.onJumpIn)
   },
   methods: {
     // Getters
     async getServingDetail() {
-      this.item = await getServingDetail(this.serviceId);
-      this.predictParam = { ...(await getPredictParam(this.serviceId)), id: this.serviceId };
+      this.item = await getServingDetail(this.serviceId)
+      this.predictParam = {
+        ...(await getPredictParam(this.serviceId)),
+        id: this.serviceId,
+      }
       if (
         this.keepPoll &&
-        [SERVING_STATUS_ENUM.IN_DEPLOYMENT, SERVING_STATUS_ENUM.WORKING].indexOf(
-          this.item.status
-        ) !== -1
+        [
+          SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+          SERVING_STATUS_ENUM.WORKING,
+        ].indexOf(this.item.status) !== -1
       ) {
         this.timeoutId = setTimeout(() => {
-          this.refetch();
-        }, 1000);
+          this.refetch()
+        }, 1000)
       }
     },
 
@@ -308,71 +326,73 @@ export default {
         name: 'CloudServingForm',
         query: { type: 'onlineServing' },
         params: { id: this.serviceId },
-      });
+      })
     },
     async doStart() {
-      this.startLoading = true;
+      this.startLoading = true
       await start(this.serviceId).finally(() => {
-        this.startLoading = false;
-      });
+        this.startLoading = false
+      })
       this.$message({
         message: '启动成功',
         type: 'success',
-      });
-      this.doRefresh();
+      })
+      this.doRefresh()
     },
     async doStop() {
-      this.stopLoading = true;
+      this.stopLoading = true
       await stop(this.serviceId).finally(() => {
-        this.stopLoading = false;
-      });
+        this.stopLoading = false
+      })
       this.$message({
         message: '停止成功',
         type: 'success',
-      });
-      this.doRefresh();
+      })
+      this.doRefresh()
     },
     doDelete() {
-      this.$confirm('此操作将删除该服务, 是否继续?', '请确认').then(async () => {
-        this.deleteLoading = true;
-        await deleteServing(this.serviceId).finally(() => {
-          this.deleteLoading = false;
-        });
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.$router.push({ name: 'CloudServing' });
-      });
+      this.$confirm('此操作将删除该服务, 是否继续?', '请确认').then(
+        async () => {
+          this.deleteLoading = true
+          await deleteServing(this.serviceId).finally(() => {
+            this.deleteLoading = false
+          })
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.$router.push({ name: 'CloudServing' })
+        },
+      )
     },
     doRefresh() {
-      this.getServingDetail();
+      this.getServingDetail()
       this.refreshMap = {
         guide: true,
         predict: true,
         monitor: true,
         log: true,
         deployment: true,
-      };
+      }
       this.$nextTick(() => {
-        this.$refs[this.activeDetailTabName].reset();
-      });
+        this.$refs[this.activeDetailTabName].reset()
+      })
     },
 
     // Handlers
     onReseted() {
-      this.refreshMap[this.activeDetailTabName] = false;
+      this.refreshMap[this.activeDetailTabName] = false
     },
     onJumpIn() {
       this.$nextTick(() => {
-        this.serviceId = Number(this.$route.query.id);
-        clearTimeout(this.timeoutId);
-        this.activeDetailTabName = 'guide';
-        this.doRefresh();
-      });
+        this.serviceId = Number(this.$route.query.id)
+        clearTimeout(this.timeoutId)
+        this.activeDetailTabName = 'guide'
+        this.doRefresh()
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

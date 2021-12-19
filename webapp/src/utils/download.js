@@ -14,43 +14,51 @@
  * =============================================================
  */
 
-import streamSaver from 'streamsaver';
-import { minioBaseUrl } from '@/utils/minIO';
-import ZIP from './zip';
+import streamSaver from 'streamsaver'
+import { minioBaseUrl } from '@/utils/minIO'
+import ZIP from './zip'
 
-const pMap = require('p-map');
+const pMap = require('p-map')
 
-streamSaver.mitm = 'https://static.tianshu.org.cn/mitm.html';
+streamSaver.mitm = 'https://static.tianshu.org.cn/mitm.html'
 
 // 默认名字解析
-const defaultName = (file) => file.name;
+const defaultName = (file) => file.name
 
 // 下载单一文件
 export const downloadFileAsStream = (url, fileName) => {
-  const fileStream = streamSaver.createWriteStream(fileName || url.split('/').pop());
+  const fileStream = streamSaver.createWriteStream(
+    fileName || url.split('/').pop(),
+  )
   fetch(url).then((res) => {
-    const readableStream = res.body;
+    const readableStream = res.body
 
     if (window.WritableStream && readableStream.pipeTo) {
-      return readableStream.pipeTo(fileStream);
+      return readableStream.pipeTo(fileStream)
     }
     // 兼容 WritableStream
-    const writer = fileStream.getWriter();
-    const reader = res.body.getReader();
+    const writer = fileStream.getWriter()
+    const reader = res.body.getReader()
     const pump = () =>
       reader
         .read()
-        .then((result) => (result.done ? writer.close() : writer.write(result.value).then(pump)));
-    return pump();
-  });
-};
+        .then((result) =>
+          result.done ? writer.close() : writer.write(result.value).then(pump),
+        )
+    return pump()
+  })
+}
 
 // 下载 zip 包
 // eslint-disable-next-line
-export const downloadFilesAsZip = (files, zipName = 'demo.zip', options = {}) => {
-  const fileName = options.fileName || defaultName;
-  const { concurrency = 5 } = options;
-  const fileStream = streamSaver.createWriteStream(zipName);
+export const downloadFilesAsZip = (
+  files,
+  zipName = 'demo.zip',
+  options = {},
+) => {
+  const fileName = options.fileName || defaultName
+  const { concurrency = 5 } = options
+  const fileStream = streamSaver.createWriteStream(zipName)
   const readableZipStream = new ZIP({
     async pull(ctrl) {
       const mapper = async (file) => {
@@ -58,49 +66,59 @@ export const downloadFilesAsZip = (files, zipName = 'demo.zip', options = {}) =>
           ctrl.enqueue({
             name: typeof fileName === 'function' ? fileName(file) : fileName,
             stream: () => body,
-          });
-        });
-      };
+          })
+        })
+      }
 
-      await pMap(files, mapper, { concurrency });
-      ctrl.close();
+      await pMap(files, mapper, { concurrency })
+      ctrl.close()
     },
-  });
+  })
 
   // more optimized
   if (window.WritableStream && readableZipStream.pipeTo) {
     // eslint-disable-next-line
-    return readableZipStream.pipeTo(fileStream).then(() => console.log('done writing'));
+    return readableZipStream
+      .pipeTo(fileStream)
+      .then(() => console.log('done writing'))
   }
 
   // less optimized
-  const writer = fileStream.getWriter();
-  const reader = readableZipStream.getReader();
+  const writer = fileStream.getWriter()
+  const reader = readableZipStream.getReader()
   const pump = () =>
-    reader.read().then((res) => (res.done ? writer.close() : writer.write(res.value).then(pump)));
+    reader
+      .read()
+      .then((res) =>
+        res.done ? writer.close() : writer.write(res.value).then(pump),
+      )
 
-  pump();
-};
+  pump()
+}
 
 // 基于minIO objectPath 自动解析目录
-export const downloadZipFromObjectPath = async (objectPath, zipName = 'demo.zip', options = {}) => {
-  const result = await window.minioClient.listObjects(objectPath);
-  let objects = result.slice();
+export const downloadZipFromObjectPath = async (
+  objectPath,
+  zipName = 'demo.zip',
+  options = {},
+) => {
+  const result = await window.minioClient.listObjects(objectPath)
+  let objects = result.slice()
   if (typeof options.filter === 'function') {
-    objects = options.filter(result);
+    objects = options.filter(result)
   }
   const files = objects.map((d) => ({
     url: `${minioBaseUrl}/${d.name}`,
     name: d.name,
-  }));
+  }))
   if (options.flat) {
-    let path = objectPath;
+    let path = objectPath
     if (path.charAt(path.length - 1) !== '/') {
-      path += '/';
+      path += '/'
     }
-    options.fileName = (file) => file.name.replace(path, '');
+    options.fileName = (file) => file.name.replace(path, '')
   }
   if (files.length) {
-    downloadFilesAsZip(files, zipName, options);
+    downloadFilesAsZip(files, zipName, options)
   }
-};
+}

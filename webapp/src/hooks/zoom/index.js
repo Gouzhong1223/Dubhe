@@ -14,4 +14,4 @@
  * =============================================================
  */
 
-export { default as useZoom } from './useZoom';
+export { default as useZoom } from './useZoom'

@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 // 获取连接列表
 export function getTerminalList() {
   return request({
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/list`,
     method: 'get',
-  });
+  })
 }
 
 // 创建连接
@@ -31,7 +31,7 @@ export function createTerminal(data) {
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/create`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 保存并停止连接
@@ -40,7 +40,7 @@ export function preserveTerminal(data) {
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/preserve`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 删除连接
@@ -49,7 +49,7 @@ export function deleteTerminal(id) {
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/delete`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
 // 重启连接
@@ -58,7 +58,7 @@ export function restartTerminal(data) {
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/restart`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 根据 id 查询连接详情
@@ -67,5 +67,5 @@ export function getDetailById(id) {
     url: `/${API_MODULE_NAME.DUBHE_PRO}/terminals/detail`,
     method: 'get',
     param: { id },
-  });
+  })
 }

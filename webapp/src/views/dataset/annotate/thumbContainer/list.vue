@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div ref="listWrapper" class="infinite-list-wrapper" style="overflow: auto;">
@@ -35,10 +29,10 @@
   </div>
 </template>
 <script>
-import { reactive, watch, computed, ref } from '@vue/composition-api';
+import { reactive, watch, computed, ref } from '@vue/composition-api'
 
-import { limit } from '@/views/dataset/annotate';
-import ListItem from './listItem';
+import { limit } from '@/views/dataset/annotate'
+import ListItem from './listItem'
 
 export default {
   name: 'Scroller',
@@ -77,13 +71,13 @@ export default {
     updateState: Function,
   },
   setup(props, ctx) {
-    const { updateState, queryNextPage } = props;
+    const { updateState, queryNextPage } = props
 
-    const listWrapper = ref(null);
+    const listWrapper = ref(null)
 
     const state = reactive({
       loading: false,
-    });
+    })
 
     watch(
       () => props.addList,
@@ -92,23 +86,23 @@ export default {
         updateState({
           offset: props.offset + Math.min(limit, next.length),
           hasMore: next.length >= limit,
-        });
-      }
-    );
+        })
+      },
+    )
 
     // 计算值
-    const disabled = computed(() => state.loading || !props.hasMore);
+    const disabled = computed(() => state.loading || !props.hasMore)
 
     const handleClick = (item) => {
-      if (item.id === props.currentImg.id) return;
+      if (item.id === props.currentImg.id) return
       // 触发 changeImg
-      ctx.emit('changeImg', item);
-    };
+      ctx.emit('changeImg', item)
+    }
 
     const loadMore = () => {
       Object.assign(state, {
         loading: true,
-      });
+      })
       queryNextPage({
         offset: props.offset,
         type: props.type,
@@ -116,9 +110,9 @@ export default {
       }).then(() => {
         Object.assign(state, {
           loading: false,
-        });
-      });
-    };
+        })
+      })
+    }
 
     return {
       state,
@@ -126,9 +120,9 @@ export default {
       loadMore,
       handleClick,
       listWrapper,
-    };
+    }
   },
-};
+}
 </script>
 <style scoped lang="scss">
 .infinite-list-wrapper {

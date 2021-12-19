@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import { getEmptyFormatter, ALGORITHM_RESOURCE_ENUM } from '@/utils';
+import { getEmptyFormatter, ALGORITHM_RESOURCE_ENUM } from '@/utils'
 
 export function getColumns({
   doEdit,
@@ -26,7 +26,7 @@ export function getColumns({
   allAlgorithmUsageList,
   isAdmin,
 }) {
-  const isPreset = active === String(ALGORITHM_RESOURCE_ENUM.PRESET);
+  const isPreset = active === String(ALGORITHM_RESOURCE_ENUM.PRESET)
   return [
     {
       label: 'ID',
@@ -53,7 +53,7 @@ export function getColumns({
       label: '是否支持推理',
       prop: 'inference',
       formatter(value) {
-        return value ? '支持' : '不支持';
+        return value ? '支持' : '不支持'
       },
       minWidth: '140px',
       dropdownList: [
@@ -114,7 +114,7 @@ export function getColumns({
         },
       ],
     },
-  ];
+  ]
 }
 
 export function getQueryFormItems({ active }) {
@@ -139,5 +139,5 @@ export function getQueryFormItems({ active }) {
       btnType: 'primary',
       func: 'query',
     },
-  ];
+  ]
 }

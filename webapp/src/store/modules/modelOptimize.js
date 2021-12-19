@@ -24,23 +24,23 @@ const state = {
     sort: { sort: null, order: null },
     query: {},
   },
-};
+}
 
 const mutations = {
   UPDATE_OPTIMIZE_PAGE_INFO(state, pageInfo) {
-    state.optimizePageInfo = pageInfo;
+    state.optimizePageInfo = pageInfo
   },
-};
+}
 
 const actions = {
   updateOptimizePageInfo({ commit }, pageInfo) {
-    commit('UPDATE_OPTIMIZE_PAGE_INFO', pageInfo);
+    commit('UPDATE_OPTIMIZE_PAGE_INFO', pageInfo)
   },
-};
+}
 
 export default {
   namespaced: true,
   state,
   mutations,
   actions,
-};
+}

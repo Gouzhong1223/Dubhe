@@ -14,13 +14,13 @@
  * =============================================================
  */
 
-import cx from 'classnames';
-import Vue from 'vue';
-import { reactive } from '@vue/composition-api';
+import cx from 'classnames'
+import Vue from 'vue'
+import { reactive } from '@vue/composition-api'
 
-import Drag from '@/components/Drag';
-import Group from '../group';
-import BrushSelection from './BrushSelection';
+import Drag from '@/components/Drag'
+import Group from '../group'
+import BrushSelection from './BrushSelection'
 
 export default {
   name: 'Brush',
@@ -54,54 +54,62 @@ export default {
   },
 
   setup(props) {
-    const { onBrushStart, onBrushMove, left, top, onChange, onBrushEnd, transformZoom } = props;
+    const {
+      onBrushStart,
+      onBrushMove,
+      left,
+      top,
+      onChange,
+      onBrushEnd,
+      transformZoom,
+    } = props
     const state = reactive({
       start: { x: 0, y: 0 },
       end: { x: 0, y: 0 },
       extent: { x0: 0, x1: 0, y0: 0, y1: 0 },
       isBrushing: false,
-    });
+    })
     const getWidth = () => {
-      return Math.abs(state.extent.x1 - state.extent.x0);
-    };
+      return Math.abs(state.extent.x1 - state.extent.x0)
+    }
 
     const getHeight = () => {
-      return Math.abs(state.extent.y1 - state.extent.y0);
-    };
+      return Math.abs(state.extent.y1 - state.extent.y0)
+    }
 
     const getExtent = (start, end) => {
-      const x0 = Math.min(start.x, end.x);
-      const x1 = Math.max(start.x, end.x);
-      const y0 = Math.min(start.y, end.y);
-      const y1 = Math.max(start.y, end.y);
+      const x0 = Math.min(start.x, end.x)
+      const x1 = Math.max(start.x, end.x)
+      const y0 = Math.min(start.y, end.y)
+      const y1 = Math.max(start.y, end.y)
 
       return {
         x0,
         x1,
         y0,
         y1,
-      };
-    };
+      }
+    }
 
     const update = (updater, callback) => {
-      Object.assign(state, updater(state));
+      Object.assign(state, updater(state))
       Vue.nextTick(() => {
         if (callback) {
-          callback(state);
+          callback(state)
         }
         if (onChange) {
-          onChange(state);
+          onChange(state)
         }
-      });
-    };
+      })
+    }
 
     const handleDragStart = (draw, event) => {
       const start = transformZoom({
         x: draw.x + draw.dx - left,
         y: draw.y + draw.dy - top,
-      });
+      })
       if (onBrushStart) {
-        onBrushStart(start, event);
+        onBrushStart(start, event)
       }
 
       update((prevBrush) => ({
@@ -115,32 +123,32 @@ export default {
           y1: -1,
         },
         isBrushing: true,
-      }));
-    };
+      }))
+    }
 
     const handleDragMove = (draw, event) => {
-      if (!draw.isDragging) return;
+      if (!draw.isDragging) return
       const end = transformZoom({
         x: draw.x + draw.dx - left,
         y: draw.y + draw.dy - top,
-      });
+      })
 
       update(
         (prevBrush) => {
-          const { start } = prevBrush;
-          const extent = getExtent(start, end);
+          const { start } = prevBrush
+          const extent = getExtent(start, end)
           return {
             ...prevBrush,
             end,
             extent,
-          };
+          }
         },
         (nextState) => {
           // 回调
-          typeof onBrushMove === 'function' && onBrushMove(nextState, event);
-        }
-      );
-    };
+          typeof onBrushMove === 'function' && onBrushMove(nextState, event)
+        },
+      )
+    }
 
     const handleDragEnd = (draw, event, options = {}) => {
       update(
@@ -148,9 +156,9 @@ export default {
           ...prevBrush,
           isBrushing: false,
         }),
-        (state) => onBrushEnd(state, event, options)
-      );
-    };
+        (state) => onBrushEnd(state, event, options),
+      )
+    }
 
     return {
       state,
@@ -161,15 +169,22 @@ export default {
       handleDragMove,
       handleDragEnd,
       getExtent,
-    };
+    }
   },
 
   render() {
-    const { stageWidth, stageHeight, className, left, top, brushSelectionStyle } = this;
-    const { start, end, isBrushing } = this.state;
+    const {
+      stageWidth,
+      stageHeight,
+      className,
+      left,
+      top,
+      brushSelectionStyle,
+    } = this
+    const { start, end, isBrushing } = this.state
 
-    const width = this.getWidth();
-    const height = this.getHeight();
+    const width = this.getWidth()
+    const height = this.getHeight()
 
     const dragProps = {
       props: {
@@ -180,7 +195,7 @@ export default {
         onDragMove: this.handleDragMove,
         onDragEnd: this.handleDragEnd,
       },
-    };
+    }
 
     return (
       <Group className={cx('db-brush', className)} left={left} top={top}>
@@ -215,6 +230,6 @@ export default {
           </g>
         )}
       </Group>
-    );
+    )
   },
-};
+}

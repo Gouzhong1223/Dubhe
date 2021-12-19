@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import { isNil } from 'lodash';
-import { toFixed, addSuffix } from '@/utils';
+import { isNil } from 'lodash'
+import { toFixed, addSuffix } from '@/utils'
 
 export default {
   name: 'BrushTip',
@@ -26,47 +26,47 @@ export default {
   },
   setup(props) {
     const getWidth = () => {
-      const { extent } = props.brush;
-      if (isNil(extent)) return 0;
-      return extent.x1 - extent.x0;
-    };
+      const { extent } = props.brush
+      if (isNil(extent)) return 0
+      return extent.x1 - extent.x0
+    }
 
     const getHeight = () => {
-      const { extent } = props.brush;
-      if (isNil(extent)) return 0;
-      return extent.y1 - extent.y0;
-    };
+      const { extent } = props.brush
+      if (isNil(extent)) return 0
+      return extent.y1 - extent.y0
+    }
 
     const getEndPoint = () => {
-      const { extent = {} } = props.brush;
-      return { x: extent.x1, y: extent.y1 };
-    };
+      const { extent = {} } = props.brush
+      return { x: extent.x1, y: extent.y1 }
+    }
 
     return {
       getWidth,
       getHeight,
       getEndPoint,
-    };
+    }
   },
   render() {
-    const width = this.getWidth();
-    const height = this.getHeight();
-    const endPoint = this.getEndPoint();
-    const { svg } = this.dimension;
+    const width = this.getWidth()
+    const height = this.getHeight()
+    const endPoint = this.getEndPoint()
+    const { svg } = this.dimension
 
     const sizeTipStyle = {
       left: addSuffix(this.brush.extent?.x0),
       top: addSuffix(this.brush.extent?.y0 - 30),
-    };
+    }
 
     const dimensionTipStyle = {
       right: addSuffix(svg.width - this.brush.extent?.x1),
       top: addSuffix(this.brush.extent?.y1 + 6),
-    };
+    }
 
     // 到上边缘
     if (this.brush.extent?.y0 < 30) {
-      sizeTipStyle.top = addSuffix(this.brush.extent?.y0 + 6);
+      sizeTipStyle.top = addSuffix(this.brush.extent?.y0 + 6)
     }
 
     return (
@@ -86,6 +86,6 @@ export default {
           )}
         </div>
       </div>
-    );
+    )
   },
-};
+}

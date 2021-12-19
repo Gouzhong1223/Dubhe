@@ -14,51 +14,51 @@
  * =============================================================
  */
 
-import axios from 'axios';
-import Config from '@/settings';
-import { getToken } from '@/utils/auth';
-import store from '@/store/modules/Visual/layout';
+import axios from 'axios'
+import Config from '@/settings'
+import { getToken } from '@/utils/auth'
+import store from '@/store/modules/Visual/layout'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const url = require('url');
+const url = require('url')
 
 const service = axios.create({
   baseURL: url.resolve(process.env.VUE_APP_VISUAL_API, '/visual'),
   timeout: Config.timeout, // 请求超时时间
   withCredentials: true,
-});
+})
 
 // 请求拦截,暂时未用
 service.interceptors.request.use(
   (config) => {
     if (getToken()) {
-      config.headers.Authorization = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+      config.headers.Authorization = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
-    return config;
+    return config
   },
   (err) => {
-    return err;
-  }
-);
+    return err
+  },
+)
 
 // 响应拦截,暂时未用
 service.interceptors.response.use(
   (response) => {
-    return response;
+    return response
   },
   (err) => {
-    return Promise.reject(err);
-  }
-);
+    return Promise.reject(err)
+  },
+)
 
 const useGet = (url, params) => {
-  const user = store.state.params;
-  params.trainJobName = user.trainJobName;
-  return service.get(url, { params });
-};
+  const user = store.state.params
+  params.trainJobName = user.trainJobName
+  return service.get(url, { params })
+}
 
 const usePost = (url, jsonData) => {
-  return service.post(url, jsonData);
-};
+  return service.post(url, jsonData)
+}
 
-export default { useGet, usePost };
+export default { useGet, usePost }

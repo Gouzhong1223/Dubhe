@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="ToolbarButton usn" :class="getklass()" @click="handleClick(item)">
@@ -21,7 +15,7 @@
   </div>
 </template>
 <script>
-import cx from 'classnames';
+import cx from 'classnames'
 
 export default {
   name: 'ToolbarButton',
@@ -33,18 +27,18 @@ export default {
     const getklass = () =>
       cx({
         active: props.activeTool === props.item.command,
-      });
+      })
     const handleClick = (item) => {
-      if (item.command === props.activeTool) return;
-      ctx.emit('change', item);
-    };
+      if (item.command === props.activeTool) return
+      ctx.emit('change', item)
+    }
 
     return {
       getklass,
       handleClick,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 @import '~@/assets/styles/mixin.scss';

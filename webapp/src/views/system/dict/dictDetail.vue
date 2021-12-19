@@ -1,18 +1,11 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance
+with the License. * You may obtain a copy of the License at * *
+http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law
+or agreed to in writing, software * distributed under the License is distributed
+on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. */
 
 <template>
   <div>
@@ -28,13 +21,28 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典标签" prop="label">
-          <el-input v-model="form.label" style="width: 370px;" maxlength="50" show-word-limit />
+          <el-input
+            v-model="form.label"
+            style="width: 370px;"
+            maxlength="50"
+            show-word-limit
+          />
         </el-form-item>
         <el-form-item label="字典值" prop="value">
-          <el-input v-model="form.value" style="width: 370px;" maxlength="255" show-word-limit />
+          <el-input
+            v-model="form.value"
+            style="width: 370px;"
+            maxlength="255"
+            show-word-limit
+          />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input-number v-model.number="form.sort" :min="0" :max="999" style="width: 370px;" />
+          <el-input-number
+            v-model.number="form.sort"
+            :min="0"
+            :max="999"
+            style="width: 370px;"
+          />
         </el-form-item>
       </el-form>
     </BaseModal>
@@ -65,14 +73,14 @@
 </template>
 
 <script>
-import CRUD, { presenter, header, form } from '@crud/crud';
-import pagination from '@crud/Pagination';
-import udOperation from '@crud/UD.operation';
-import crudDictDetail from '@/api/system/dictDetail';
-import BaseModal from '@/components/BaseModal';
-import { hasPermission } from '@/utils';
+import CRUD, { presenter, header, form } from '@crud/crud'
+import pagination from '@crud/Pagination'
+import udOperation from '@crud/UD.operation'
+import crudDictDetail from '@/api/system/dictDetail'
+import BaseModal from '@/components/BaseModal'
+import { hasPermission } from '@/utils'
 
-const defaultForm = { id: null, label: null, value: null };
+const defaultForm = { id: null, label: null, value: null }
 
 export default {
   components: { pagination, udOperation, BaseModal },
@@ -88,13 +96,17 @@ export default {
         },
         queryOnPresenterCreated: false,
       }),
-    ];
+    ]
   },
   mixins: [
     presenter(),
     header(),
     form(function id() {
-      return { dictId: this.dictId, sort: this.crud.data.length + 1, ...defaultForm };
+      return {
+        dictId: this.dictId,
+        sort: this.crud.data.length + 1,
+        ...defaultForm,
+      }
     }),
   ],
   data() {
@@ -104,12 +116,19 @@ export default {
       rules: {
         label: [{ required: true, message: '请输入字典标签', trigger: 'blur' }],
         value: [{ required: true, message: '请输入字典值', trigger: 'blur' }],
-        sort: [{ required: true, message: '请输入序号', trigger: 'blur', type: 'number' }],
+        sort: [
+          {
+            required: true,
+            message: '请输入序号',
+            trigger: 'blur',
+            type: 'number',
+          },
+        ],
       },
-    };
+    }
   },
   methods: {
     hasPermission,
   },
-};
+}
 </script>

@@ -1,23 +1,21 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div v-hotkey.stop="keymap">
     <div class="flex flex-between">
-      <el-tabs :value="activeTab" class="eltabs-inlineblock" @tab-click="handlePanelClick">
+      <el-tabs
+        :value="activeTab"
+        class="eltabs-inlineblock"
+        @tab-click="handlePanelClick"
+      >
         <el-tab-pane :label="countInfoAuido.unfinished" name="unfinished" />
         <el-tab-pane :label="countInfoAuido.finished" name="finished" />
       </el-tabs>
@@ -34,7 +32,11 @@
       </div>
     </div>
     <el-card class="box-card" style="margin-top: 20px;" shadow="never">
-      <div slot="header" class="clearfix flex flex-between" style="line-height: 32px;">
+      <div
+        slot="header"
+        class="clearfix flex flex-between"
+        style="line-height: 32px;"
+      >
         <span v-if="showCurrent">{{ current }}</span>
         <div class="f1">
           <div class="fr">
@@ -45,7 +47,11 @@
               >下一篇(<i class="el-icon-right"></i>)</el-button
             >
             <el-popconfirm title="确认删除该音频？" @onConfirm="deleteFile">
-              <el-button slot="reference" :disabled="!showDelete" type="text" class="ml-10"
+              <el-button
+                slot="reference"
+                :disabled="!showDelete"
+                type="text"
+                class="ml-10"
                 >删除</el-button
               >
             </el-popconfirm>
@@ -54,12 +60,20 @@
       </div>
       <div class="text">
         <Exception v-if="!!showException" />
-        <div v-else-if="loading" class="flex flex-center g6" style="min-height: 80px;">
+        <div
+          v-else-if="loading"
+          class="flex flex-center g6"
+          style="min-height: 80px;"
+        >
           加载中...
         </div>
         <div v-else>
           <span>{{ title }}</span>
-          <WaveSurfer :url="state.url" :height="100" style="margin-top: 10px;" />
+          <WaveSurfer
+            :url="state.url"
+            :height="100"
+            style="margin-top: 10px;"
+          />
           <label class="shift-text">语音转文本</label>
           <el-input
             v-model="state.content"
@@ -71,16 +85,18 @@
       </div>
     </el-card>
     <div v-if="fileId" class="action-bar mt-20 flex flex-end">
-      <el-button type="primary" :disabled="comfirmDisabled" @click="confirm">确认（C）</el-button>
+      <el-button type="primary" :disabled="comfirmDisabled" @click="confirm"
+        >确认（C）</el-button
+      >
     </div>
   </div>
 </template>
 <script>
-import { reactive, watch, computed } from '@vue/composition-api';
+import { reactive, watch, computed } from '@vue/composition-api'
 
-import WaveSurfer from '@/components/WaveSurfer';
-import Exception from '@/components/Exception';
-import { colorByLuminance } from '@/utils';
+import WaveSurfer from '@/components/WaveSurfer'
+import Exception from '@/components/Exception'
+import { colorByLuminance } from '@/utils'
 
 export default {
   name: 'AudioClassifyWorkSpace',
@@ -114,82 +130,92 @@ export default {
       activeTab: props.activeTab || 'unfinished',
       url: props.url || '',
       content: '',
-    });
+    })
 
     const countInfoAuido = computed(() => ({
       unfinished: `无标注信息（${props.countInfo.unfinished}）`,
       finished: `有标注信息（${props.countInfo.finished}）`,
-    }));
+    }))
 
     // 确认是否可操作
-    const comfirmDisabled = computed(() => state.loading || props.saving || !props.fileId);
+    const comfirmDisabled = computed(
+      () => state.loading || props.saving || !props.fileId,
+    )
 
     const percentage = computed(() => {
-      const total = props.countInfo.unfinished + props.countInfo.finished;
-      return total === 0 ? 0 : (props.countInfo.finished / total) * 100;
-    });
+      const total = props.countInfo.unfinished + props.countInfo.finished
+      return total === 0 ? 0 : (props.countInfo.finished / total) * 100
+    })
 
     const progress = computed(() => {
-      return `${props.countInfo.finished}/${props.countInfo.finished + props.countInfo.unfinished}`;
-    });
+      return `${props.countInfo.finished}/${props.countInfo.finished +
+        props.countInfo.unfinished}`
+    })
 
     const getStyle = (item) => {
-      const color = colorByLuminance(item.color);
+      const color = colorByLuminance(item.color)
       return {
         color,
         border: 'none',
-      };
-    };
+      }
+    }
 
-    const showCurrent = computed(() => props.pageInfo.total > 0);
-    const current = computed(() => `当前音频顺序：${props.pageInfo.current}`);
+    const showCurrent = computed(() => props.pageInfo.total > 0)
+    const current = computed(() => `当前音频顺序：${props.pageInfo.current}`)
     // 上一页，下一页
-    const showPrev = computed(() => props.pageInfo.current > 1);
-    const showNext = computed(() => props.pageInfo.current < props.pageInfo.total);
-    const showDelete = computed(() => props.pageInfo.total > 0);
-    const showException = computed(() => props.loading === false && state.url === '');
-    const title = computed(() => state.url.substring(state.url.lastIndexOf('/') + 1));
+    const showPrev = computed(() => props.pageInfo.current > 1)
+    const showNext = computed(
+      () => props.pageInfo.current < props.pageInfo.total,
+    )
+    const showDelete = computed(() => props.pageInfo.total > 0)
+    const showException = computed(
+      () => props.loading === false && state.url === '',
+    )
+    const title = computed(() =>
+      state.url.substring(state.url.lastIndexOf('/') + 1),
+    )
 
     const handlePanelClick = (tab) => {
-      props.changeActiveTab(tab);
-    };
+      props.changeActiveTab(tab)
+    }
 
     // 每种类型实现 confirm
     const confirm = () => {
-      if (comfirmDisabled.value) return;
+      if (comfirmDisabled.value) return
       // 导入分类标注内容
       ctx.emit('confirm', {
         annotation: state.content.length ? [{ content: state.content }] : null,
-      });
-    };
+      })
+    }
 
     const keymap = computed(() => ({
       c: confirm,
-    }));
+    }))
 
     watch(
       () => props.url,
       (next) => {
-        state.url = next;
-      }
-    );
+        state.url = next
+      },
+    )
 
     watch(
       () => props.activeTab,
       (next) => {
-        state.activeTab = next;
-      }
-    );
+        state.activeTab = next
+      },
+    )
 
     watch(
       () => props.fileId,
       () => {
-        const isContent = Array.isArray(props.annotation) && props.annotation.length > 0;
+        const isContent =
+          Array.isArray(props.annotation) && props.annotation.length > 0
         Object.assign(state, {
           content: isContent ? props.annotation[0].content : '',
-        });
-      }
-    );
+        })
+      },
+    )
 
     return {
       state,
@@ -208,9 +234,9 @@ export default {
       comfirmDisabled,
       confirm,
       keymap,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 .text-label {

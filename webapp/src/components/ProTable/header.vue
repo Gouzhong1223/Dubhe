@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="pro-table-header flex py-4">
@@ -54,7 +48,7 @@
 </template>
 
 <script>
-import BaseForm from '@/components/BaseForm';
+import BaseForm from '@/components/BaseForm'
 
 export default {
   name: 'ProTableHeader',
@@ -106,18 +100,18 @@ export default {
   setup(props, { emit }) {
     // 点击创建按钮，抛出创建事件
     const onCreate = () => {
-      emit('create');
-    };
+      emit('create')
+    }
     // 点击删除按钮，抛出删除事件
     const onDelete = () => {
-      emit('delete');
-    };
+      emit('delete')
+    }
     return {
       onCreate,
       onDelete,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

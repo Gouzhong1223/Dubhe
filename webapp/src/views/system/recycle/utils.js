@@ -22,7 +22,7 @@ export const RECYCLE_STATUS_ENUM = {
   DELETING: 3, // 删除中
   RESTORING: 4, // 还原中
   RESTORED: 5, // 已还原
-};
+}
 
 export const recycleStatusMap = {
   [RECYCLE_STATUS_ENUM.DELETION]: { status: '待删除', tag: '' },
@@ -31,4 +31,4 @@ export const recycleStatusMap = {
   [RECYCLE_STATUS_ENUM.DELETING]: { status: '删除中', tag: 'warning' },
   [RECYCLE_STATUS_ENUM.RESTORING]: { status: '还原中', tag: 'warning' },
   [RECYCLE_STATUS_ENUM.RESTORED]: { status: '已还原', tag: 'success' },
-};
+}

@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -27,8 +21,16 @@
       @add="doAdd"
       @row-click="onRowClick"
     />
-    <el-drawer title="用户组成员" :visible.sync="drawerVisible" custom-class="px-20">
-      <BaseTable :loading="drawerLoading" :data="currentGroupUserList" :columns="userColumns" />
+    <el-drawer
+      title="用户组成员"
+      :visible.sync="drawerVisible"
+      custom-class="px-20"
+    >
+      <BaseTable
+        :loading="drawerLoading"
+        :data="currentGroupUserList"
+        :columns="userColumns"
+      />
     </el-drawer>
     <!-- 用户组表单弹窗 -->
     <BaseModal
@@ -115,13 +117,13 @@
 </template>
 
 <script>
-import { computed, reactive, ref, toRefs } from '@vue/composition-api';
-import { Message, MessageBox } from 'element-ui';
+import { computed, reactive, ref, toRefs } from '@vue/composition-api'
+import { Message, MessageBox } from 'element-ui'
 
-import ProTable from '@/components/ProTable';
-import BaseTable from '@/components/BaseTable';
-import BaseModal from '@/components/BaseModal';
-import BaseForm from '@/components/BaseForm';
+import ProTable from '@/components/ProTable'
+import BaseTable from '@/components/BaseTable'
+import BaseModal from '@/components/BaseModal'
+import BaseForm from '@/components/BaseForm'
 import {
   list,
   add,
@@ -134,9 +136,9 @@ import {
   updateUserState,
   updateUserRoles,
   deleteGroupUsers,
-} from '@/api/system/userGroup';
-import { list as getRoleList } from '@/api/system/role';
-import { hasPermission } from '@/utils';
+} from '@/api/system/userGroup'
+import { list as getRoleList } from '@/api/system/role'
+import { hasPermission } from '@/utils'
 
 import {
   getColumns,
@@ -146,7 +148,7 @@ import {
   groupFormRules,
   getRoleEditFormItems,
   roleEditRules,
-} from './utils';
+} from './utils'
 
 export default {
   name: 'UserGroup',
@@ -181,33 +183,33 @@ export default {
       roleList: [],
       roleEditVisible: false,
       roleEditSubmitting: false,
-    });
+    })
 
     // refs
-    const proTableRef = ref(null);
-    const groupFormRef = ref(null);
-    const roleEditFormRef = ref(null);
+    const proTableRef = ref(null)
+    const groupFormRef = ref(null)
+    const roleEditFormRef = ref(null)
 
     // 用户列表
     // 获取未分组用户列表
     const getUngroupedUserList = async () => {
-      state.ungroupedUserList = await getUngroupedUsers();
+      state.ungroupedUserList = await getUngroupedUsers()
       if (!state.ungroupedUserList.length) {
-        Message.warning('没有未分组的用户');
+        Message.warning('没有未分组的用户')
       }
-    };
+    }
     // 获取组成员列表
     const getGroupUserList = async (groupId) => {
-      state.currentGroupUserList = await getUserListByGroup(groupId);
-    };
+      state.currentGroupUserList = await getUserListByGroup(groupId)
+    }
     // 清空未分组用户列表、当前用户列表、用户编辑选择数组
     const resetUserLists = () => {
       Object.assign(state, {
         ungroupedUserList: [],
         currentGroupUserList: [],
         userEditSelectedList: [],
-      });
-    };
+      })
+    }
 
     // 角色列表
     const getRoles = () => {
@@ -215,228 +217,240 @@ export default {
         current: 1,
         size: 500,
       }).then((res) => {
-        state.roleList = res.result;
-      });
-    };
+        state.roleList = res.result
+      })
+    }
 
     // 表单操作
     const defaultForm = {
       name: null,
       description: null,
       id: null,
-    };
-    const form = reactive({ ...defaultForm });
+    }
+    const form = reactive({ ...defaultForm })
     const formTitle = computed(() => {
       switch (state.formType) {
         case 'edit':
-          return '修改用户组信息';
+          return '修改用户组信息'
         case 'add':
         default:
-          return '创建用户组';
+          return '创建用户组'
       }
-    });
+    })
     const formModalOkText = computed(() => {
       switch (state.formType) {
         case 'add':
           if (state.createStep === 0) {
-            return '下一步';
+            return '下一步'
           }
-          return '保存';
+          return '保存'
         case 'edit':
         default:
-          return '确定';
+          return '确定'
       }
-    });
+    })
     const initForm = (originForm = {}) => {
       Object.keys(form).forEach((key) => {
-        form[key] = originForm[key] !== undefined ? originForm[key] : defaultForm[key];
-      });
-    };
+        form[key] =
+          originForm[key] !== undefined ? originForm[key] : defaultForm[key]
+      })
+    }
     const onFormConfirm = () => {
       // 提交创建/修改表单
       if (state.createStep === 0) {
         groupFormRef.value.validate((form) => {
-          state.formSubmitting = true;
-          let submitFn;
-          let submitType;
+          state.formSubmitting = true
+          let submitFn
+          let submitType
           switch (state.formType) {
             case 'edit':
-              submitFn = edit;
-              submitType = '修改';
-              break;
+              submitFn = edit
+              submitType = '修改'
+              break
             case 'add':
             default:
-              submitFn = add;
-              submitType = '创建';
+              submitFn = add
+              submitType = '创建'
           }
           submitFn(form)
             .then((res) => {
-              Message.success(`${submitType}成功！`);
+              Message.success(`${submitType}成功！`)
               switch (state.formType) {
                 case 'edit':
-                  state.formVisible = false;
-                  break;
+                  state.formVisible = false
+                  break
                 case 'add':
-                  state.createStep = 1;
-                  state.currentGroup = res;
-                  getUngroupedUserList();
-                  break;
+                  state.createStep = 1
+                  state.currentGroup = res
+                  getUngroupedUserList()
+                  break
                 // no default
               }
-              proTableRef.value.refresh();
+              proTableRef.value.refresh()
             })
             .finally(() => {
-              state.formSubmitting = false;
-            });
-        });
+              state.formSubmitting = false
+            })
+        })
       } else if (state.createStep === 1) {
         updateGroupUsers({
           groupId: state.currentGroup.id,
           userIds: state.userEditSelectedList,
         }).then(() => {
-          Message.success('用户组成员保存成功');
-          state.formVisible = false;
-        });
+          Message.success('用户组成员保存成功')
+          state.formVisible = false
+        })
       }
-    };
+    }
     const onFormClose = () => {
-      initForm();
-      state.createStep === 0 && groupFormRef.value.clearValidate(); // 从创建表单关闭时清空验证
-      state.createStep = 0;
-      resetUserLists();
-    };
+      initForm()
+      state.createStep === 0 && groupFormRef.value.clearValidate() // 从创建表单关闭时清空验证
+      state.createStep = 0
+      resetUserLists()
+    }
 
     // 编辑用户组成员
     const userEditTitle = computed(() => {
-      return `编辑用户组成员${state.currentGroup ? ` - ${state.currentGroup.name}` : ''}`;
-    });
+      return `编辑用户组成员${
+        state.currentGroup ? ` - ${state.currentGroup.name}` : ''
+      }`
+    })
     const userEditTransferData = computed(() => {
-      return state.ungroupedUserList.concat(state.currentGroupUserList).map((user) => {
-        return {
-          key: user.id,
-          label: user.nickName,
-        };
-      });
-    });
+      return state.ungroupedUserList
+        .concat(state.currentGroupUserList)
+        .map((user) => {
+          return {
+            key: user.id,
+            label: user.nickName,
+          }
+        })
+    })
     const onUserEditSubmit = () => {
-      state.userEditSubmitting = true;
+      state.userEditSubmitting = true
       updateGroupUsers({
         groupId: state.currentGroup.id,
         userIds: state.userEditSelectedList,
       })
         .then(() => {
-          Message.success('用户组成员保存成功');
-          state.userEditVisible = false;
+          Message.success('用户组成员保存成功')
+          state.userEditVisible = false
         })
         .finally(() => {
-          state.userEditSubmitting = false;
-        });
-    };
+          state.userEditSubmitting = false
+        })
+    }
     const onUserEditClose = () => {
-      resetUserLists();
-    };
+      resetUserLists()
+    }
 
     // 批量修改角色
     const roleEditTitle = computed(() => {
-      return `批量修改用户角色${state.currentGroup ? ` - ${state.currentGroup.name}` : ''}`;
-    });
+      return `批量修改用户角色${
+        state.currentGroup ? ` - ${state.currentGroup.name}` : ''
+      }`
+    })
     const roleEditFormItems = computed(() => {
-      return getRoleEditFormItems(state.roleList);
-    });
-    const roleEditForm = reactive({ roleId: null });
+      return getRoleEditFormItems(state.roleList)
+    })
+    const roleEditForm = reactive({ roleId: null })
     const onRoleEditSubmit = () => {
       roleEditFormRef.value.validate((form) => {
-        state.roleEditSubmitting = true;
+        state.roleEditSubmitting = true
         updateUserRoles(state.currentGroup.id, [form.roleId])
           .then(() => {
-            Message.success('批量修改角色成功');
-            state.roleEditVisible = false;
+            Message.success('批量修改角色成功')
+            state.roleEditVisible = false
           })
           .finally(() => {
-            state.roleEditSubmitting = false;
-          });
-      });
-    };
+            state.roleEditSubmitting = false
+          })
+      })
+    }
     const onRoleEditClose = () => {
-      roleEditForm.roleId = null;
-      roleEditFormRef.value.clearValidate();
-    };
+      roleEditForm.roleId = null
+      roleEditFormRef.value.clearValidate()
+    }
 
     // 表格操作方法
     // 创建用户组
     const doAdd = () => {
-      state.formType = 'add';
-      state.formVisible = true;
-      initForm();
-    };
+      state.formType = 'add'
+      state.formVisible = true
+      initForm()
+    }
     // 修改用户组信息
     const doEdit = (row) => {
-      state.formType = 'edit';
-      state.formVisible = true;
-      initForm(row);
-    };
+      state.formType = 'edit'
+      state.formVisible = true
+      initForm(row)
+    }
     // 修改用户组成员
     const doEditUsers = (row) => {
-      state.userEditDataLoadingCount = 0; // 重置数据加载计数
-      state.currentGroup = row;
+      state.userEditDataLoadingCount = 0 // 重置数据加载计数
+      state.currentGroup = row
       getUngroupedUserList().then(() => {
-        state.userEditDataLoadingCount += 1;
-      });
+        state.userEditDataLoadingCount += 1
+      })
       getGroupUserList(row.id).then(() => {
-        state.userEditSelectedList = state.currentGroupUserList.map((user) => user.id);
-        state.userEditDataLoadingCount += 1;
-      });
-      state.userEditVisible = true;
-    };
+        state.userEditSelectedList = state.currentGroupUserList.map(
+          (user) => user.id,
+        )
+        state.userEditDataLoadingCount += 1
+      })
+      state.userEditVisible = true
+    }
     // 删除用户组
     const doDelete = (row) => {
       MessageBox.confirm('此操作将删除该用户组', '请确认').then(() => {
         del(row.id).then(() => {
-          Message.success('删除成功');
-          proTableRef.value.refresh();
-        });
-      });
-    };
+          Message.success('删除成功')
+          proTableRef.value.refresh()
+        })
+      })
+    }
     // 批量激活/锁定用户
     const doActiveDeactive = (row, enabled) => {
-      MessageBox.confirm(`此操作将批量${enabled ? '激活' : '锁定'}该组所有用户`, '请确认').then(
-        () => {
-          updateUserState(row.id, enabled).then(() => {
-            Message.success('用户状态修改成功');
-          });
-        }
-      );
-    };
+      MessageBox.confirm(
+        `此操作将批量${enabled ? '激活' : '锁定'}该组所有用户`,
+        '请确认',
+      ).then(() => {
+        updateUserState(row.id, enabled).then(() => {
+          Message.success('用户状态修改成功')
+        })
+      })
+    }
     // 批量删除用户
     const doDeleteUsers = (row) => {
-      MessageBox.confirm('此操作将删除该用户组内的所有用户', '请确认').then(() => {
-        deleteGroupUsers(row.id).then(() => {
-          Message.success('用户删除成功');
-        });
-      });
-    };
+      MessageBox.confirm('此操作将删除该用户组内的所有用户', '请确认').then(
+        () => {
+          deleteGroupUsers(row.id).then(() => {
+            Message.success('用户删除成功')
+          })
+        },
+      )
+    }
     // 批量修改用户角色
     const doChangeRoles = (row) => {
       // 如果角色列表为空，则请求角色列表
       if (!state.roleList.length) {
-        getRoles();
+        getRoles()
       }
-      state.currentGroup = row;
-      state.roleEditVisible = true;
-    };
+      state.currentGroup = row
+      state.roleEditVisible = true
+    }
 
     // 从组删除用户
     const doDeleteUserFromGroup = (row) => {
       MessageBox.confirm(
         `将从用户组“${state.currentGroup.name}”中移除用户“${row.nickName}”`,
-        '请确认'
+        '请确认',
       ).then(() => {
         deleteUserFromGroup([row.id], state.currentGroup.id).then(() => {
-          Message.success('删除成功');
-          getGroupUserList(state.currentGroup.id);
-        });
-      });
-    };
+          Message.success('删除成功')
+          getGroupUserList(state.currentGroup.id)
+        })
+      })
+    }
 
     // 列信息
     const columns = computed(() => {
@@ -447,23 +461,23 @@ export default {
         doActiveDeactive,
         doDeleteUsers,
         doChangeRoles,
-      });
-    });
+      })
+    })
     const userColumns = computed(() => {
       return getUserColumns({
         doDeleteUserFromGroup,
-      });
-    });
+      })
+    })
 
     // 单击行显示当前组成员列表
     const onRowClick = async (row) => {
-      state.drawerLoading = true;
-      state.drawerVisible = true;
-      state.currentGroup = row;
+      state.drawerLoading = true
+      state.drawerVisible = true
+      state.currentGroup = row
       await getGroupUserList(row.id).finally(() => {
-        state.drawerLoading = false;
-      });
-    };
+        state.drawerLoading = false
+      })
+    }
 
     return {
       list,
@@ -501,9 +515,9 @@ export default {
       roleEditForm,
       onRoleEditSubmit,
       onRoleEditClose,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

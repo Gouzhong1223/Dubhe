@@ -21,4 +21,4 @@ export const svgBaseProps = {
   fill: 'currentColor',
   'aria-hidden': 'true',
   focusable: 'false',
-};
+}

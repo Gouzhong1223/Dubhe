@@ -19,8 +19,17 @@
       </SearchBox>
     </div>
     <div v-if="!showFilter" class="checkRow">
-      <el-checkbox-group v-model="state.checkList" class="flex" @change="handleCheckChange">
-        <el-checkbox v-for="item in formItems" :key="item.value" :label="item.value" class="f1">
+      <el-checkbox-group
+        v-model="state.checkList"
+        class="flex"
+        @change="handleCheckChange"
+      >
+        <el-checkbox
+          v-for="item in formItems"
+          :key="item.value"
+          :label="item.value"
+          class="f1"
+        >
           选择该列
         </el-checkbox>
       </el-checkbox-group>
@@ -52,9 +61,9 @@
   </div>
 </template>
 <script>
-import { reactive, watch } from '@vue/composition-api';
-import BaseTable from '@/components/BaseTable';
-import SearchBox from '@/components/SearchBox';
+import { reactive, watch } from '@vue/composition-api'
+import BaseTable from '@/components/BaseTable'
+import SearchBox from '@/components/SearchBox'
 
 export default {
   name: 'PreviewerTable',
@@ -75,22 +84,22 @@ export default {
     setState: Function,
   },
   setup(props, ctx) {
-    const { setState } = props;
+    const { setState } = props
     const state = reactive({
       checkList: props.checkList || [],
       initialValue: {
         columns: [],
       },
-    });
+    })
 
     const popperAttrs = {
       placement: 'left-end',
-    };
+    }
 
     const formItems = props.columns.map((d) => ({
       label: d.label,
       value: d.prop,
-    }));
+    }))
 
     const filterItems = [
       {
@@ -98,15 +107,15 @@ export default {
         type: 'checkboxGroup',
         options: formItems,
       },
-    ];
+    ]
 
     const handleFilter = (values) => {
-      setState({ checkList: values.columns });
-    };
+      setState({ checkList: values.columns })
+    }
 
     const getCellClass = ({ column }) => {
-      return state.checkList.includes(column.label) ? 'highlight' : '';
-    };
+      return state.checkList.includes(column.label) ? 'highlight' : ''
+    }
 
     // eslint-disable-next-line
     const span = ({ rowIndex, columnIndex }) => {
@@ -114,28 +123,28 @@ export default {
       if (rowIndex === Math.min(10, props.data.length - 1)) {
         // 展示第一列，并设置 span
         if (columnIndex === 0) {
-          return [1, props.columns.length];
+          return [1, props.columns.length]
         }
         // 其他列不展示
-        return [0, 0];
+        return [0, 0]
       }
-    };
+    }
 
     const handleChange = (...params) => {
-      const [columns] = params;
-      setState({ checkList: columns });
-    };
+      const [columns] = params
+      setState({ checkList: columns })
+    }
 
     const handleCheckChange = (values) => {
-      ctx.emit('change', values);
-    };
+      ctx.emit('change', values)
+    }
 
     watch(
       () => props.checkList,
       (next) => {
-        state.checkList = next;
-      }
-    );
+        state.checkList = next
+      },
+    )
 
     return {
       state,
@@ -147,9 +156,9 @@ export default {
       handleCheckChange,
       handleFilter,
       handleChange,
-    };
+    }
   },
-};
+}
 </script>
 <style scoped lang="scss">
 @import '@/assets/styles/variables.scss';

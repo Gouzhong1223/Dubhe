@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="wrapper">
@@ -35,7 +29,10 @@
           <!-- tabs页和工具栏 -->
           <div class="audio-classify-tab">
             <el-tabs :value="lastTabName" @tab-click="handleTabClick">
-              <el-tab-pane :label="countInfoAudio.unfinished" name="unfinished" />
+              <el-tab-pane
+                :label="countInfoAudio.unfinished"
+                name="unfinished"
+              />
               <el-tab-pane :label="countInfoAudio.finished" name="finished" />
             </el-tabs>
             <SearchBox
@@ -46,11 +43,16 @@
               :initialValue="initialValue"
               :popperAttrs="popperAttrs"
             >
-              <el-button slot="trigger" type="text" style="margin-bottom: 14px; margin-left: 30px;"
+              <el-button
+                slot="trigger"
+                type="text"
+                style="margin-bottom: 14px; margin-left: 30px;"
                 >筛选<i class="el-icon-arrow-down el-icon--right"
               /></el-button>
             </SearchBox>
-            <div class="audio-classify-button flex flex-between flex-vertical-align">
+            <div
+              class="audio-classify-button flex flex-between flex-vertical-align"
+            >
               <div class="row-left f1"></div>
               <div class="row-right">
                 <el-tooltip
@@ -74,7 +76,12 @@
                 >
                   导入文件
                 </el-button>
-                <el-button icon="el-icon-right" class="ml-40" type="primary" @click="goDetail(-1)">
+                <el-button
+                  icon="el-icon-right"
+                  class="ml-40"
+                  type="primary"
+                  @click="goDetail(-1)"
+                >
                   去标注
                 </el-button>
               </div>
@@ -91,7 +98,12 @@
                 >
                   {{ checkAll ? '取消全选' : '选择全部' }}
                 </el-checkbox>
-                <el-button class="danger" type="text" :loading="delAllLoading" @click="doDelete">
+                <el-button
+                  class="danger"
+                  type="text"
+                  :loading="delAllLoading"
+                  @click="doDelete"
+                >
                   批量删除
                 </el-button>
               </div>
@@ -142,24 +154,29 @@
 </template>
 
 <script>
-import { Message, MessageBox } from 'element-ui';
-import { pick } from 'lodash';
-import { computed, reactive, toRefs, watch } from '@vue/composition-api';
-import cx from 'classnames';
-import { isStatus, fileCodeMap, getFileFromMinIO, annotationCodeMap } from '@/views/dataset/util';
-import { list as listRequest, submit, del } from '@/api/preparation/datafile';
+import { Message, MessageBox } from 'element-ui'
+import { pick } from 'lodash'
+import { computed, reactive, toRefs, watch } from '@vue/composition-api'
+import cx from 'classnames'
+import {
+  isStatus,
+  fileCodeMap,
+  getFileFromMinIO,
+  annotationCodeMap,
+} from '@/views/dataset/util'
+import { list as listRequest, submit, del } from '@/api/preparation/datafile'
 import {
   detail,
   count,
   queryLabels as queryLabelsApi,
   createLabel as createLabelApi,
-} from '@/api/preparation/dataset';
-import UploadForm from '@/components/UploadForm';
-import InfoAlert from '@/components/InfoAlert';
-import SearchBox from '@/components/SearchBox';
-import Exception from '@/components/Exception';
-import SideBar from '@/views/dataset/nlp/annotation/sidebar';
-import AudioCards from './AudioCards';
+} from '@/api/preparation/dataset'
+import UploadForm from '@/components/UploadForm'
+import InfoAlert from '@/components/InfoAlert'
+import SearchBox from '@/components/SearchBox'
+import Exception from '@/components/Exception'
+import SideBar from '@/views/dataset/nlp/annotation/sidebar'
+import AudioCards from './AudioCards'
 
 export default {
   name: 'Audio',
@@ -261,189 +278,199 @@ export default {
           options: [],
         },
       ],
-    });
+    })
     const pagination = reactive({
       current: 1,
       pageSize: 10,
       total: 0,
-    });
+    })
 
     // computed
     const formItems = computed(() =>
-      data.lastTabName === 'unfinished' ? data.formItemsUnfinish : data.formItemsFinish
-    );
+      data.lastTabName === 'unfinished'
+        ? data.formItemsUnfinish
+        : data.formItemsFinish,
+    )
     const uploadParams = computed(() => ({
       datasetId: data.datasetId,
       objectPath: `dataset/${data.datasetId}/origin`,
-    }));
+    }))
     const countInfoAudio = computed(() => {
       return {
         unfinished: `无标注信息（${data.countInfo.unfinished}）`,
         finished: `有标注信息（${data.countInfo.finished}）`,
-      };
-    });
+      }
+    })
     // 是否禁用文件导入
     const disableImport = computed(() => {
-      if (data.lastTabName === 'finished') return true;
-      if (data.isTable && isStatus(data.datasetInfo, 'IMPORTING')) return true;
-      return false;
-    });
+      if (data.lastTabName === 'finished') return true
+      if (data.isTable && isStatus(data.datasetInfo, 'IMPORTING')) return true
+      return false
+    })
     // 是否导入中
     const isImporting = computed(() => {
-      return isStatus(data.datasetInfo, 'IMPORTING');
-    });
+      return isStatus(data.datasetInfo, 'IMPORTING')
+    })
     const refreshKlass = computed(() => {
       return cx('el-icon-refresh', {
         rotate: isImporting.value,
-      });
-    });
+      })
+    })
     const selectedId = computed(() => {
-      const selectId = [];
+      const selectId = []
       data.audioDataList.forEach((item) => {
-        selectId.push(item.id);
-      });
-      return selectId;
-    });
+        selectId.push(item.id)
+      })
+      return selectId
+    })
     const audioType = computed(
-      () => data.datasetInfo?.annotateType || annotationCodeMap.AUDIOCLASSIFY
-    );
+      () => data.datasetInfo?.annotateType || annotationCodeMap.AUDIOCLASSIFY,
+    )
 
     /** methods */
     // 用来请求tabs页上的数量
     const setCountInfo = async () => {
-      const countInfo = await count(root.$route.params.datasetId, data.queryParams);
-      data.countInfo = countInfo;
-    };
+      const countInfo = await count(
+        root.$route.params.datasetId,
+        data.queryParams,
+      )
+      data.countInfo = countInfo
+    }
 
-    const setPage = (page = {}) => Object.assign(pagination, page);
+    const setPage = (page = {}) => Object.assign(pagination, page)
 
     // 数据请求
     const refresh = async () => {
       Object.assign(data, {
         checkedId: [],
         checkAll: false,
-      });
-      data.loading = true;
-      const { current, pageSize } = pagination;
+      })
+      data.loading = true
+      const { current, pageSize } = pagination
       const { page, result } = await listRequest({
         current,
         size: pageSize,
         ...data.queryParams,
       }).finally(() => {
-        data.loading = false;
-      });
-      setPage(page);
-      data.audioDataList = result;
-      setCountInfo();
-    };
+        data.loading = false
+      })
+      setPage(page)
+      data.audioDataList = result
+      setCountInfo()
+    }
 
     const query = () => {
       setPage({
         current: 1,
-      });
-      refresh();
-    };
+      })
+      refresh()
+    }
 
     const resetQuery = () => {
-      data.queryParams.status = data.statusMap[data.lastTabName];
-      query();
-    };
+      data.queryParams.status = data.statusMap[data.lastTabName]
+      query()
+    }
 
     const onSizeChange = (size) => {
       setPage({
         pageSize: size,
         current: 1,
-      });
-      query();
-    };
+      })
+      query()
+    }
 
     const onPageChange = (page) => {
       setPage({
         current: page,
-      });
-      refresh();
-    };
+      })
+      refresh()
+    }
 
     const handleFilter = (form) => {
-      Object.assign(data.queryParams, form);
-      query();
-    };
+      Object.assign(data.queryParams, form)
+      query()
+    }
 
     const handleTabClick = (tab) => {
-      const tabName = tab.name;
+      const tabName = tab.name
       if (data.lastTabName === tabName) {
-        return;
+        return
       }
       // 切换tab页清除筛选条件
       Object.assign(data, {
         lastTabName: tabName,
-      });
-      data.queryParams = pick(data.queryParams, ['status', 'datasetId']);
-      resetQuery();
-    };
+      })
+      data.queryParams = pick(data.queryParams, ['status', 'datasetId'])
+      resetQuery()
+    }
 
     const handleClose = () => {
-      data.uploadDialogVisible = false;
-    };
+      data.uploadDialogVisible = false
+    }
 
     const uploadSuccess = (res) => {
-      const files = getFileFromMinIO(res);
+      const files = getFileFromMinIO(res)
       // 提交业务上传
       if (files.length > 0) {
         submit(data.datasetId, files).then(() => {
-          Message.success('上传文件成功');
-          query();
-        });
+          Message.success('上传文件成功')
+          query()
+        })
       }
-    };
+    }
 
     const uploadError = (err) => {
-      Message.error(err.message || '上传文件失败');
-    };
+      Message.error(err.message || '上传文件失败')
+    }
 
     const onRefresh = () => {
-      resetQuery();
-    };
+      resetQuery()
+    }
 
     const handleCheckAllChange = (val) => {
-      data.checkedId = val ? selectedId.value : [];
-      data.isIndeterminate = false;
-    };
+      data.checkedId = val ? selectedId.value : []
+      data.isIndeterminate = false
+    }
 
     const handleCheckedIdChange = (value) => {
-      const checkedCount = value.length;
-      data.checkAll = checkedCount === data.audioDataList.length;
-      data.isIndeterminate = checkedCount > 0 && checkedCount < data.audioDataList.length;
-    };
+      const checkedCount = value.length
+      data.checkAll = checkedCount === data.audioDataList.length
+      data.isIndeterminate =
+        checkedCount > 0 && checkedCount < data.audioDataList.length
+    }
 
     const doDelete = () => {
-      MessageBox.confirm(`确认删除选中的${data.checkedId.length}个文件?`, '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        data.delAllLoading = true;
+      MessageBox.confirm(
+        `确认删除选中的${data.checkedId.length}个文件?`,
+        '提示',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        },
+      ).then(() => {
+        data.delAllLoading = true
         const params = {
           fileIds: data.checkedId,
           datasetIds: data.datasetId,
-        };
+        }
         if (data.checkedId.length) {
           del(params)
             .then(() => {
-              Message.success('删除文件成功');
-              data.checkedId = [];
-              query();
+              Message.success('删除文件成功')
+              data.checkedId = []
+              query()
             })
             .finally(() => {
-              data.delAllLoading = false;
-            });
+              data.delAllLoading = false
+            })
         }
-      });
-    };
+      })
+    }
 
     const sizeOfPage = () => {
-      return pagination.pageSize * (pagination.current - 1);
-    };
+      return pagination.pageSize * (pagination.current - 1)
+    }
 
     const goDetail = (index = 0) => {
       const query =
@@ -451,7 +478,7 @@ export default {
           ? {
               tab: 'finished',
             }
-          : {};
+          : {}
       root.$router.push({
         name: 'AudioAnnotation',
         query,
@@ -459,31 +486,33 @@ export default {
           current: index >= 0 ? sizeOfPage() + index + 1 : 1,
           datasetId: data.datasetId,
         },
-      });
-    };
+      })
+    }
 
     const queryDatasetInfo = () => {
       detail(data.datasetId).then((res) => {
-        data.datasetInfo = res || {};
-      });
-    };
+        data.datasetInfo = res || {}
+      })
+    }
 
     // 查询标签
     const queryLabels = async (requestParams = {}) => {
-      const labels = await queryLabelsApi(data.datasetId, requestParams);
-      const labelOptionsIndex = data.formItemsFinish.findIndex((d) => d.prop === 'labelId');
+      const labels = await queryLabelsApi(data.datasetId, requestParams)
+      const labelOptionsIndex = data.formItemsFinish.findIndex(
+        (d) => d.prop === 'labelId',
+      )
       // 用于筛选功能
       data.formItemsFinish[labelOptionsIndex].options = labels.map((item) => {
         return {
           label: item.name,
           value: item.id,
-        };
-      });
-      return labels || [];
-    };
+        }
+      })
+      return labels || []
+    }
 
     const updateLabels = async () => {
-      data.labels = await queryLabels();
+      data.labels = await queryLabels()
       data.categoryId2Name = data.labels.reduce(
         (acc, item) =>
           Object.assign(acc, {
@@ -492,38 +521,38 @@ export default {
               color: item.color,
             },
           }),
-        {}
-      );
-    };
+        {},
+      )
+    }
 
     // 新建标签
     const createLabel = (labelParams = {}) => {
       return createLabelApi(data.datasetId, labelParams).then(() => {
-        updateLabels();
-        Message.success('标签创建成功');
-      });
-    };
+        updateLabels()
+        Message.success('标签创建成功')
+      })
+    }
 
     setCountInfo().then(() => {
       if (data.countInfo.unfinished === 0 && data.countInfo.finished !== 0) {
-        data.lastTabName = 'finished';
-        data.queryParams.status = data.statusMap[data.lastTabName];
+        data.lastTabName = 'finished'
+        data.queryParams.status = data.statusMap[data.lastTabName]
       }
-      query();
-    });
+      query()
+    })
     // 获取详情
-    queryDatasetInfo();
+    queryDatasetInfo()
     // 获取标签
-    updateLabels();
+    updateLabels()
 
     watch(
       () => data.datasetId,
       (next) => {
         if (isStatus(next, 'IMPORTING')) {
-          setTimeout(queryDatasetInfo, 3000);
+          setTimeout(queryDatasetInfo, 3000)
         }
-      }
-    );
+      },
+    )
 
     return {
       ...toRefs(data),
@@ -549,9 +578,9 @@ export default {
       handleFilter,
       onRefresh,
       createLabel,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .audio-classify-tab {

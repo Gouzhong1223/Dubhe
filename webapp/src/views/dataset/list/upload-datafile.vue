@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-dialog
@@ -46,7 +40,9 @@
         <el-form-item
           label="视频帧间隔"
           prop="frameInterval"
-          :rules="[{ required: true, message: '请输入有效的帧间隔', trigger: 'blur' }]"
+          :rules="[
+            { required: true, message: '请输入有效的帧间隔', trigger: 'blur' },
+          ]"
         >
           <el-input-number v-model="state.form.frameInterval" :min="1" />
         </el-form-item>
@@ -78,14 +74,20 @@
         :percentage="state.uploadStatus === 'exception' ? 0 : 100"
         :status="state.uploadStatus"
       />
-      <div v-if="state.uploadStatus === 'exception'" class="app-result-subtitle mt-10">
+      <div
+        v-if="state.uploadStatus === 'exception'"
+        class="app-result-subtitle mt-10"
+      >
         {{ state.error.message }}
       </div>
     </div>
     <div slot="footer">
       <div v-show="state.uploadStep === 0">
         <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" :loading="state.loading" @click="uploadSubmit('fileUploadForm')"
+        <el-button
+          type="primary"
+          :loading="state.loading"
+          @click="uploadSubmit('fileUploadForm')"
           >开始上传</el-button
         >
       </div>
@@ -101,22 +103,22 @@
   </el-dialog>
 </template>
 <script>
-import { last } from 'lodash';
+import { last } from 'lodash'
 
-import { reactive, watch, computed, nextTick } from '@vue/composition-api';
-import { toFixed } from '@/utils';
-import UploadInline from '@/components/UploadForm/inline';
+import { reactive, watch, computed, nextTick } from '@vue/composition-api'
+import { Message } from 'element-ui'
+import { toFixed } from '@/utils'
+import UploadInline from '@/components/UploadForm/inline'
 import {
   getFileFromMinIO,
   withDimensionFile,
   trackUploadProps,
   dataTypeCodeMap,
-} from '@/views/dataset/util';
-import { submit, submitVideo } from '@/api/preparation/datafile';
-import { Message } from 'element-ui';
+} from '@/views/dataset/util'
+import { submit, submitVideo } from '@/api/preparation/datafile'
 
 // 每次最多上传的文件数量
-const MAX_FILE_COUNT = 200;
+const MAX_FILE_COUNT = 200
 
 export default {
   name: 'UploadDataFile',
@@ -141,8 +143,8 @@ export default {
     },
   },
   setup(props, context) {
-    const defaultFrameInterval = 5;
-    const { closeUploadDataFile } = props;
+    const defaultFrameInterval = 5
+    const { closeUploadDataFile } = props
     const state = reactive({
       uploadKey: 1,
       row: {},
@@ -162,42 +164,42 @@ export default {
       error: null, // 上传错误
       // 上传步数
       steps: [],
-    });
+    })
 
     // 上传包括图片和视频
     const uploader = async (datasetId, files) => {
       // 文件上传
       if (state.isImage || state.isText || state.isAudio) {
-        return submit(datasetId, files);
+        return submit(datasetId, files)
       }
       return submitVideo(datasetId, {
         frameInterval: state.form.frameInterval,
         url: files[0].url,
-      });
-    };
+      })
+    }
 
     // 上传视频时不显示实时进度
     const format = (percentage) => {
-      return percentage <= 100 ? `${percentage}%` : ``;
-    };
+      return percentage <= 100 ? `${percentage}%` : ``
+    }
 
     // 上传失败
     const uploadError = (err) => {
-      state.loading = false;
-      Message.error({ message: err.message || '上传失败', duration: 1000 });
-    };
+      state.loading = false
+      Message.error({ message: err.message || '上传失败', duration: 1000 })
+    }
 
     // 上传成功
     const uploadSuccess = (res) => {
       // 文本已经同步过，不需要再同步
-      if (state.isText) return;
+      if (state.isText) return
       // 视频上传完毕
       if (state.isVideo) {
-        state.percentage = 100;
+        state.percentage = 100
       }
-      const files = getFileFromMinIO(res);
+      const files = getFileFromMinIO(res)
       // 自动标注完成时 导入 提示信息不同
-      const successMessage = '上传文件成功';
+      const successMessage = '上传文件成功'
       if (files.length > 0) {
         uploader(state.row.id, files)
           .then(() => {
@@ -206,8 +208,8 @@ export default {
               uploadStatus: 'success',
               uploadStep: 2,
               title: '上传成功',
-            });
-            Message.success({ message: successMessage, duration: 1000 });
+            })
+            Message.success({ message: successMessage, duration: 1000 })
           })
           .catch((err) => {
             Object.assign(state, {
@@ -216,73 +218,84 @@ export default {
               uploadStatus: 'exception',
               uploadStep: 2,
               title: '上传失败',
-            });
-          });
+            })
+          })
       }
-    };
+    }
 
     // 确定上传
     const uploadSubmit = (formName) => {
       // 判断选中文件数量再去调接口
       if (context.refs[formName].formRef.lenOfFileList === 0) {
-        Message.error({ message: '文件不能为空', duration: 1000 });
-        return;
+        Message.error({ message: '文件不能为空', duration: 1000 })
+        return
       }
-      state.loading = true;
-      context.refs[formName].uploadSubmit((resolved, fileList, resolveFiles) => {
-        // 按阶段最大值取模（针对文本分批同步）
-        const mod = fileList.length % MAX_FILE_COUNT;
-        const intSteps = (fileList.length - mod) / MAX_FILE_COUNT;
-        const steps = Array.from({ length: intSteps }, (_, i) => (i + 1) * MAX_FILE_COUNT);
-        if (mod) {
-          steps.push((last(steps) || 0) + mod);
-        }
-        Object.assign(state, {
-          uploadStep: 1,
-          title: '上传中',
-          steps,
-        });
-
-        // eslint-disable-next-line func-names
-        nextTick(function() {
-          // 只针对文本做分批上传
-          if (state.isText) {
-            state.steps.forEach((step, i) => {
-              if (step === resolved) {
-                const prevStep = i === 0 ? 0 : state.steps[i - 1];
-                // 分批同步文件
-                const stepFiles = getFileFromMinIO(resolveFiles.slice(prevStep, step));
-                uploader(state.row.id, stepFiles).then(() => {
-                  // 最后一步同步
-                  if (i === state.steps.length - 1) {
-                    Object.assign(state, {
-                      loading: false,
-                      uploadStatus: 'success',
-                      uploadStep: 2,
-                      title: '上传成功',
-                    });
-                    Message.success({ message: '上传文件成功', duration: 1000 });
-                  }
-                });
-              }
-            });
+      state.loading = true
+      context.refs[formName].uploadSubmit(
+        (resolved, fileList, resolveFiles) => {
+          // 按阶段最大值取模（针对文本分批同步）
+          const mod = fileList.length % MAX_FILE_COUNT
+          const intSteps = (fileList.length - mod) / MAX_FILE_COUNT
+          const steps = Array.from(
+            { length: intSteps },
+            (_, i) => (i + 1) * MAX_FILE_COUNT,
+          )
+          if (mod) {
+            steps.push((last(steps) || 0) + mod)
           }
+          Object.assign(state, {
+            uploadStep: 1,
+            title: '上传中',
+            steps,
+          })
 
-          state.percentage = state.percentage > 100 ? 100 : toFixed(resolved / fileList.length);
-        });
-      });
-    };
+          // eslint-disable-next-line func-names
+          nextTick(function() {
+            // 只针对文本做分批上传
+            if (state.isText) {
+              state.steps.forEach((step, i) => {
+                if (step === resolved) {
+                  const prevStep = i === 0 ? 0 : state.steps[i - 1]
+                  // 分批同步文件
+                  const stepFiles = getFileFromMinIO(
+                    resolveFiles.slice(prevStep, step),
+                  )
+                  uploader(state.row.id, stepFiles).then(() => {
+                    // 最后一步同步
+                    if (i === state.steps.length - 1) {
+                      Object.assign(state, {
+                        loading: false,
+                        uploadStatus: 'success',
+                        uploadStep: 2,
+                        title: '上传成功',
+                      })
+                      Message.success({
+                        message: '上传文件成功',
+                        duration: 1000,
+                      })
+                    }
+                  })
+                }
+              })
+            }
+
+            state.percentage =
+              state.percentage > 100 ? 100 : toFixed(resolved / fileList.length)
+          })
+        },
+      )
+    }
 
     const handleClose = () => {
-      closeUploadDataFile();
+      closeUploadDataFile()
       Object.assign(state, {
         uploadStep: 0,
         uploadKey: state.uploadKey + 1,
         percentage: 0,
         uploadStatus: undefined,
         error: null,
-      });
-    };
+      })
+    }
 
     const buildDataParams = (type) => {
       const dataParamMap = {
@@ -318,42 +331,44 @@ export default {
           title: '导入视频',
           accept: '.mp4,.avi,.mkv,.mov,.webm,.wmv',
         },
-      };
-      return dataParamMap[type] || {};
-    };
+      }
+      return dataParamMap[type] || {}
+    }
 
     const optionCreateProps = computed(() => {
-      if (!state.row) return {};
+      if (!state.row) return {}
       const props = {
         params: {
           datasetId: state.row.id,
-          objectPath: `dataset/${state.row.id}/${state.isVideo ? 'video' : 'origin'}`, // 图片/视频对象存储路径
+          objectPath: `dataset/${state.row.id}/${
+            state.isVideo ? 'video' : 'origin'
+          }`, // 图片/视频对象存储路径
         },
-      };
+      }
       const baseImgProps = {
         transformFile: withDimensionFile,
         hash: true,
-      };
+      }
       if (state.isText || state.isAudio) {
         Object.assign(props, {
           dataType: 'text',
           hash: true, // 支持同名文件上传
-        });
+        })
       }
       if (state.isText) {
         Object.assign(props, {
           acceptSize: 0.1, // Mb 为单位
           acceptSizeFormat: (size) => `${size * 1000} kb`,
-        });
+        })
       }
       if (state.isImage) {
-        Object.assign(props, baseImgProps);
+        Object.assign(props, baseImgProps)
       }
       if (state.isVideo) {
-        Object.assign(props, baseImgProps, trackUploadProps);
+        Object.assign(props, baseImgProps, trackUploadProps)
       }
-      return props;
-    });
+      return props
+    })
 
     // 监测选中导入的列数据变化
     watch(
@@ -361,11 +376,11 @@ export default {
       (next) => {
         Object.assign(state, {
           row: { ...state.row, ...next },
-        });
-        const nextParams = buildDataParams(state.row.dataType);
-        Object.assign(state, nextParams);
-      }
-    );
+        })
+        const nextParams = buildDataParams(state.row.dataType)
+        Object.assign(state, nextParams)
+      },
+    )
 
     return {
       state,
@@ -376,7 +391,7 @@ export default {
       withDimensionFile,
       uploadSuccess,
       uploadError,
-    };
+    }
   },
-};
+}
 </script>

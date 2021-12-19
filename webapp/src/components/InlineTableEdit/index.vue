@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <ValidationObserver ref="observerRef">
@@ -44,8 +38,8 @@
   </ValidationObserver>
 </template>
 <script>
-import Vue from 'vue';
-import { reactive, ref, watch } from '@vue/composition-api';
+import Vue from 'vue'
+import { reactive, ref, watch } from '@vue/composition-api'
 
 export default {
   name: 'Edit',
@@ -74,55 +68,56 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { valueBy } = props;
-    const observerRef = ref(null);
-    const inputRef = ref(null);
+    const { valueBy } = props
+    const observerRef = ref(null)
+    const inputRef = ref(null)
 
     const state = reactive({
       visible: false,
       value: props.row[valueBy] || '',
-    });
+    })
 
     const handleCancel = () => {
       Object.assign(state, {
         visible: false,
         value: '',
-      });
-      observerRef.value.reset();
-    };
+      })
+      observerRef.value.reset()
+    }
 
     // 编辑标注名称
     const handleOk = () => {
       observerRef.value.validate().then((success) => {
         if (!success) {
-          return;
+          return
         }
         // 判断是否发生过变更
         if (String(state.value) !== String(props.row[valueBy])) {
-          ctx.emit('handleOk', state.value, props.row);
+          ctx.emit('handleOk', state.value, props.row)
         }
-        handleCancel();
-      });
-    };
+        handleCancel()
+      })
+    }
 
     const onShow = () => {
       // onShow 的时候重置
-      state.value = props.row[valueBy];
+      state.value = props.row[valueBy]
       Vue.nextTick(() => {
         const input =
-          (inputRef && inputRef.value.$refs.input) || (inputRef && inputRef.value.$refs.textarea);
-        input && input.focus();
-      });
-    };
+          (inputRef && inputRef.value.$refs.input) ||
+          (inputRef && inputRef.value.$refs.textarea)
+        input && input.focus()
+      })
+    }
 
     watch(
       () => props.row,
       (next) => {
         if (next) {
-          state.value = next[valueBy];
+          state.value = next[valueBy]
         }
-      }
-    );
+      },
+    )
 
     return {
       props,
@@ -132,7 +127,7 @@ export default {
       handleOk,
       handleCancel,
       onShow,
-    };
+    }
   },
-};
+}
 </script>

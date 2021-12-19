@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 // 创建标签组
 export function add(data) {
@@ -23,7 +23,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 编辑标签组
@@ -32,7 +32,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup/${data.id}`,
     method: 'put',
     data,
-  });
+  })
 }
 
 // 删除标签组
@@ -41,7 +41,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 // 复制标签组
@@ -50,7 +50,7 @@ export function copy(data) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup/copy`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 将普通标签组转为预置标签组
@@ -59,7 +59,7 @@ export function convertPreset(data) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup/convertPreset`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 标签组列表分页查询
@@ -68,7 +68,7 @@ export function list(params) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup/query`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 标签组列表的简况查询 用于详情页选择标签组列举
@@ -77,7 +77,7 @@ export function getLabelGroupList(params) {
     url: `/${API_MODULE_NAME.DATA}/labelGroup/getList`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 获取标签组详情
@@ -85,7 +85,7 @@ export function getLabelGroupDetail(id) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/labelGroup/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function importLabelGroup(form) {
@@ -93,7 +93,7 @@ export function importLabelGroup(form) {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-  });
+  })
 }
 
-export default { list, add, del, edit };
+export default { list, add, del, edit }

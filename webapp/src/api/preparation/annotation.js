@@ -14,47 +14,47 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function batchFinishAnnotation(data, datasetId) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/files/${datasetId}/annotations`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function delAnnotation(id) {
-  const delData = { datasetId: id };
+  const delData = { datasetId: id }
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/files/annotations`,
     method: 'delete',
     data: delData,
-  });
+  })
 }
 
 export function track(id) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/files/annotations/auto/track/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function autoAnnotate(ids) {
-  const data = { datasetIds: ids };
+  const data = { datasetIds: ids }
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/files/annotations/auto`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function annotateStatus(id) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${id}`,
     method: 'get',
-  });
+  })
 }
 
 // 发布版本
@@ -63,5 +63,5 @@ export function publish(data = {}) {
     url: `/${API_MODULE_NAME.DATA}/datasets/versions`,
     method: 'post',
     data,
-  });
+  })
 }

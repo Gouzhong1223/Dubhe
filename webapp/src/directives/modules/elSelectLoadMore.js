@@ -16,12 +16,14 @@
 
 export default {
   bind(el, binding) {
-    const dropdownWrap = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap');
+    const dropdownWrap = el.querySelector(
+      '.el-select-dropdown .el-select-dropdown__wrap',
+    )
     // eslint-disable-next-line func-names
     dropdownWrap.addEventListener('scroll', function() {
       if (this.scrollHeight - this.scrollTop <= this.clientHeight + 10) {
-        binding.value();
+        binding.value()
       }
-    });
+    })
   },
-};
+}

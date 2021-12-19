@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/users`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ADMIN}/users`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -38,7 +38,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ADMIN}/users`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 export function edit(data) {
@@ -46,7 +46,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ADMIN}/users`,
     method: 'put',
     data,
-  });
+  })
 }
 
 // 根据用户名模糊搜索用户列表
@@ -54,7 +54,7 @@ export function findByNickName() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/users/findByNickName`,
     method: 'get',
-  });
+  })
 }
 
 // 获取用户配置信息
@@ -63,7 +63,7 @@ export function getUserConfig(userId) {
     url: `/${API_MODULE_NAME.ADMIN}/users/getUserConfig`,
     method: 'get',
     params: { userId },
-  });
+  })
 }
 
 // 更改用户配置信息
@@ -72,7 +72,7 @@ export function submitUserConfig(data) {
     url: `/${API_MODULE_NAME.ADMIN}/users/setUserConfig`,
     method: 'put',
     data,
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

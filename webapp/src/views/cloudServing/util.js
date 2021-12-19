@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import { memNormalize } from '@/utils';
+import { memNormalize } from '@/utils'
 
 export const SERVING_STATUS_ENUM = {
   EXCEPTION: '0',
@@ -23,14 +23,14 @@ export const SERVING_STATUS_ENUM = {
   STOP: '3',
   COMPLETED: '4',
   UNKNOWN: '5',
-};
+}
 
 export const ONLINE_SERVING_STATUS_MAP = {
   [SERVING_STATUS_ENUM.IN_DEPLOYMENT]: { name: '部署中', tagMap: '' },
   [SERVING_STATUS_ENUM.WORKING]: { name: '运行中', tagMap: 'success' },
   [SERVING_STATUS_ENUM.STOP]: { name: '已停止', tagMap: 'info' },
   [SERVING_STATUS_ENUM.EXCEPTION]: { name: '运行失败', tagMap: 'danger' },
-};
+}
 
 export const BATCH_SERVING_STATUS_MAP = {
   [SERVING_STATUS_ENUM.IN_DEPLOYMENT]: { name: '部署中', tagMap: '' },
@@ -39,103 +39,103 @@ export const BATCH_SERVING_STATUS_MAP = {
   [SERVING_STATUS_ENUM.EXCEPTION]: { name: '运行失败', tagMap: 'danger' },
   [SERVING_STATUS_ENUM.COMPLETED]: { name: '运行完成', tagMap: 'success' },
   [SERVING_STATUS_ENUM.UNKNOWN]: { name: '未知', tagMap: 'info' },
-};
+}
 
 export const ONLINE_SERVING_TYPE = {
   HTTP: 0,
   GRPC: 1,
-};
+}
 
 export const serviceTypeMap = {
   [ONLINE_SERVING_TYPE.HTTP]: 'HTTP 模式',
   [ONLINE_SERVING_TYPE.GRPC]: 'GRPC 模式',
-};
+}
 
 export function map2Array(obj) {
-  const result = [];
+  const result = []
   if (typeof obj !== 'object' || obj === null) {
-    return result;
+    return result
   }
   for (const key of Object.keys(obj)) {
     result.push({
       name: key,
       type: obj[key],
-    });
+    })
   }
-  return result;
+  return result
 }
 
 export function numFormatter(num) {
-  return num < 10000 ? `${num}` : `${Math.round(num / 1000) / 10}万`;
+  return num < 10000 ? `${num}` : `${Math.round(num / 1000) / 10}万`
 }
 
 function getResponseBody(xhr) {
-  const response = xhr.response || xhr.responseText;
+  const response = xhr.response || xhr.responseText
   try {
-    return JSON.parse(response);
+    return JSON.parse(response)
   } catch (e) {
-    return response;
+    return response
   }
 }
 
 // 自定义了上传方法，用于支持多文件上传预测
 export function upload(options) {
-  const xhr = new XMLHttpRequest();
-  const formData = new FormData();
+  const xhr = new XMLHttpRequest()
+  const formData = new FormData()
   for (const file of options.fileList) {
-    formData.append(options.uploadName, file, file.name);
+    formData.append(options.uploadName, file, file.name)
   }
 
   if (xhr.upload && options.onUploadProgress) {
     xhr.upload.onprogress = function progress(e) {
       if (e.total > 0) {
-        e.percent = (e.loaded / e.total) * 100;
+        e.percent = (e.loaded / e.total) * 100
       }
-      options.onUploadProgress(e);
-    };
+      options.onUploadProgress(e)
+    }
   }
 
   // eslint-disable-next-line consistent-return
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4) {
-      const response = getResponseBody(xhr);
+      const response = getResponseBody(xhr)
       if (xhr.status < 200 || xhr.status >= 300) {
-        const error = new Error(response.msg || '未知错误');
-        return options.onUploadError(error);
+        const error = new Error(response.msg || '未知错误')
+        return options.onUploadError(error)
       }
-      options.onUploadSuccess(response);
+      options.onUploadSuccess(response)
     }
-  };
+  }
 
-  xhr.open('post', options.requestUrl, true);
-  xhr.send(formData);
-  return xhr;
+  xhr.open('post', options.requestUrl, true)
+  xhr.send(formData)
+  return xhr
 }
 
 export function cpuFormatter(num, unit) {
   // 如果单位为空，则直接以“核”为单位展示，否则以 m 为单位展示
   if (!unit) {
-    return `${num}核`;
+    return `${num}核`
   }
   if (unit === 'n') {
-    num /= 1e6;
-    unit = 'm';
+    num /= 1e6
+    unit = 'm'
   }
   if (unit === 'm') {
-    return `${Math.round(num * 10) / 10}m`;
+    return `${Math.round(num * 10) / 10}m`
   }
   // 如果单位不为 核、m、n 其中的一个，则直接返回格式
-  return num + unit;
+  return num + unit
 }
 
 export function memFormatter(num, unit) {
-  return `${Math.round(memNormalize(num, unit) * 10) / 10} Gi`;
+  return `${Math.round(memNormalize(num, unit) * 10) / 10} Gi`
 }
 
-export const batchServingProgressColor = [{ color: '#67c23a', percentage: 100 }];
+export const batchServingProgressColor = [{ color: '#67c23a', percentage: 100 }]
 
 export function getPollId() {
-  return new Date().getTime();
+  return new Date().getTime()
 }
 
 /**
@@ -145,9 +145,9 @@ export function getPollId() {
  * @returns 解析后的字符串
  */
 export function parseObj(target, separator = '; ') {
-  if (!(target instanceof Object)) return '';
+  if (!(target instanceof Object)) return ''
   return Object.keys(target)
     .filter((key) => target[key] !== null || target[key] !== '')
     .map((key) => `${key}: ${target[key]}`)
-    .join(separator);
+    .join(separator)
 }

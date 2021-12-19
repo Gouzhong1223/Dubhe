@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import { isNil } from 'lodash';
-import { reactive, watch, ref } from '@vue/composition-api';
+import { isNil } from 'lodash'
+import { reactive, watch, ref } from '@vue/composition-api'
 
 const BaseModal = {
   name: 'BaseModal',
@@ -60,34 +60,34 @@ const BaseModal = {
     },
   },
   setup(props, ctx) {
-    const dialogRef = ref(null);
+    const dialogRef = ref(null)
     const state = reactive({
       sVisible: !isNil(props.visible) ? props.visible : false,
-    });
+    })
 
     const handleCancel = (e) => {
-      ctx.emit('cancel', e);
-      ctx.emit('change', false);
-    };
+      ctx.emit('cancel', e)
+      ctx.emit('change', false)
+    }
 
     const handleOk = (e) => {
-      ctx.emit('ok', e);
-    };
+      ctx.emit('ok', e)
+    }
 
     const handleClose = (e) => {
       // 这里只针对状态变更进行控制，只转发 element close 事件
-      ctx.emit('close', e);
-      ctx.emit('change', false);
-    };
+      ctx.emit('close', e)
+      ctx.emit('change', false)
+    }
 
     watch(
       () => props.visible,
       (next) => {
         Object.assign(state, {
           sVisible: next,
-        });
-      }
-    );
+        })
+      },
+    )
 
     return {
       state,
@@ -95,7 +95,7 @@ const BaseModal = {
       handleCancel,
       handleClose,
       handleOk,
-    };
+    }
   },
   render() {
     const renderFooter = () => {
@@ -118,10 +118,10 @@ const BaseModal = {
             </el-button>
           )}
         </div>
-      );
-    };
+      )
+    }
     // footer
-    const footer = this.$slots.footer || renderFooter();
+    const footer = this.$slots.footer || renderFooter()
 
     const dialogProps = {
       props: {
@@ -136,15 +136,15 @@ const BaseModal = {
         // 转发 el-dialog 事件
         ...this.$listeners,
       },
-    };
+    }
 
     return (
       <el-dialog {...dialogProps} ref="dialogRef">
         {this.$slots.default}
         <div slot="footer">{footer}</div>
       </el-dialog>
-    );
+    )
   },
-};
+}
 
-export default BaseModal;
+export default BaseModal

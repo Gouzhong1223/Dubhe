@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import { computed, reactive } from '@vue/composition-api';
-import { isNil } from 'lodash';
+import { computed, reactive } from '@vue/composition-api'
+import { isNil } from 'lodash'
 
 /**
  * 使用 hooks 提供对分页信息工作的代理，提高分页功能易用度
@@ -29,36 +29,36 @@ export function usePagination(options = {}) {
     layout: 'total, prev, pager, next, sizes',
     pageSizes: [10, 20, 50],
     ...options.pageAttrs,
-  });
+  })
 
   // 用于动态更新分页属性
   const setPageAttrs = (attr) => {
-    Object.assign(pageAttrs, attr);
-  };
+    Object.assign(pageAttrs, attr)
+  }
 
   // 用于记录分页信息
   const pagination = reactive({
     total: 0,
     pageSize: options.pageSize || 10,
     currentPage: 0,
-  });
+  })
 
   // 更新分页信息，传入字段与现前后端约定一致
   const setPagination = (pageInfo) => {
-    const info = {};
-    !isNil(pageInfo.total) && (info.total = pageInfo.total);
-    !isNil(pageInfo.size) && (info.pageSize = pageInfo.size);
-    !isNil(pageInfo.current) && (info.currentPage = pageInfo.current);
-    Object.assign(pagination, info);
-  };
+    const info = {}
+    !isNil(pageInfo.total) && (info.total = pageInfo.total)
+    !isNil(pageInfo.size) && (info.pageSize = pageInfo.size)
+    !isNil(pageInfo.current) && (info.currentPage = pageInfo.current)
+    Object.assign(pagination, info)
+  }
 
   // 同时携带了分页信息以及其他属性的 attrs 对象
   const mergedPageAttrs = computed(() => {
     return {
       ...pageAttrs,
       ...pagination,
-    };
-  });
+    }
+  })
 
   return {
     pageAttrs,
@@ -67,5 +67,5 @@ export function usePagination(options = {}) {
 
     setPageAttrs,
     setPagination,
-  };
+  }
 }

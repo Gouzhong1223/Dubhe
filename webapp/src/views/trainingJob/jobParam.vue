@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div>
@@ -26,7 +20,13 @@
       @sort-change="crud.sortChange"
       @row-click="onRowClick"
     >
-      <el-table-column prop="id" label="ID" width="80" sortable="custom" fixed />
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="80"
+        sortable="custom"
+        fixed
+      />
       <el-table-column prop="paramName" label="任务模板名称" fixed />
       <el-table-column prop="algorithmName" label="算法名称" />
       <el-table-column prop="dataSourceName" label="数据集来源" />
@@ -51,7 +51,10 @@
             @click.stop="goTraining(scope.row)"
             >创建训练任务</el-button
           >
-          <el-button :id="`doEdit_` + scope.$index" type="text" @click.stop="doEdit(scope.row)"
+          <el-button
+            :id="`doEdit_` + scope.$index"
+            type="text"
+            @click.stop="doEdit(scope.row)"
             >编辑</el-button
           >
           <el-button
@@ -100,13 +103,16 @@
 </template>
 
 <script>
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import pagination from '@crud/Pagination';
-import crudParams, { del as deleteParams, edit as editParams } from '@/api/trainingJob/params';
-import BaseModal from '@/components/BaseModal';
-import DropdownHeader from '@/components/DropdownHeader';
-import JobForm from '@/components/Training/jobForm';
-import jobDetail from './components/jobDetail';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import pagination from '@crud/Pagination'
+import crudParams, {
+  del as deleteParams,
+  edit as editParams,
+} from '@/api/trainingJob/params'
+import BaseModal from '@/components/BaseModal'
+import DropdownHeader from '@/components/DropdownHeader'
+import JobForm from '@/components/Training/jobForm'
+import jobDetail from './components/jobDetail'
 
 export default {
   name: 'JobParam',
@@ -127,7 +133,7 @@ export default {
           add: '创建',
         },
       },
-    });
+    })
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -145,34 +151,34 @@ export default {
       filterParams: {
         resourcesPoolType: undefined,
       },
-    };
+    }
   },
   computed: {
     resourcesPoolTypeList() {
-      const arr = [{ label: '全部', value: null }];
+      const arr = [{ label: '全部', value: null }]
       for (const key in this.resourcesPoolTypeMap) {
-        arr.push({ label: this.resourcesPoolTypeMap[key], value: key });
+        arr.push({ label: this.resourcesPoolTypeMap[key], value: key })
       }
-      return arr;
+      return arr
     },
   },
   methods: {
     toQuery(params) {
-      this.crud.query = { ...params };
-      this.crud.toQuery();
+      this.crud.query = { ...params }
+      this.crud.toQuery()
     },
     filter(column, value) {
-      this.filterParams[column] = value || undefined;
-      this.crud.query[column] = value;
-      this.crud.refresh();
+      this.filterParams[column] = value || undefined
+      this.crud.query[column] = value
+      this.crud.refresh()
     },
     // handle 操作
     onRowClick(itemObj) {
-      this.selectItemObj = itemObj;
-      this.drawer = true;
+      this.selectItemObj = itemObj
+      this.drawer = true
     },
     handleClose(done) {
-      done();
+      done()
     },
     // link
     goTraining(paramsDataObj) {
@@ -183,45 +189,47 @@ export default {
           from: 'param',
           paramsInfo: paramsDataObj,
         },
-      });
+      })
     },
     toEdit() {
-      this.$refs.form.save();
+      this.$refs.form.save()
     },
     async getForm(form) {
-      const params = { ...form };
-      this.loading = true;
+      const params = { ...form }
+      this.loading = true
       await editParams(params).finally(() => {
-        this.loading = false;
-      });
+        this.loading = false
+      })
       this.$message({
         message: '任务修改成功',
         type: 'success',
-      });
-      this.showDialog = false;
-      this.crud.refresh();
+      })
+      this.showDialog = false
+      this.crud.refresh()
     },
     // op
     doEdit(paramsDataObj) {
-      this.reFresh = false;
+      this.reFresh = false
       this.$nextTick(async () => {
-        this.showDialog = true;
+        this.showDialog = true
         this.$nextTick(() => {
-          this.$refs.form.initForm(paramsDataObj);
-        });
-        this.reFresh = true;
-      });
+          this.$refs.form.initForm(paramsDataObj)
+        })
+        this.reFresh = true
+      })
     },
     async doDelete(id) {
-      this.$confirm('此操作将永久删除该任务模板配置, 是否继续?', '请确认').then(async () => {
-        await deleteParams({ ids: [id] });
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        await this.crud.refresh();
-      });
+      this.$confirm('此操作将永久删除该任务模板配置, 是否继续?', '请确认').then(
+        async () => {
+          await deleteParams({ ids: [id] })
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          await this.crud.refresh()
+        },
+      )
     },
   },
-};
+}
 </script>

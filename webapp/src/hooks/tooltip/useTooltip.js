@@ -15,47 +15,47 @@
  */
 
 // tooltip hook，用于管理 tooltip 位置
-import { reactive } from '@vue/composition-api';
-import { getBounding } from '@/utils';
+import { reactive } from '@vue/composition-api'
+import { getBounding } from '@/utils'
 
-const assert = require('assert');
+const assert = require('assert')
 
 function useTooltip() {
   const state = reactive({
     visible: false,
     position: {},
     data: null,
-  });
+  })
 
   function showTooltip(data, event, options = {}) {
-    assert(options.el, 'options.el is required');
-    const { clientX, clientY } = event;
-    const bounding = getBounding(options.el);
-    const x = clientX - bounding.left;
-    const y = clientY - bounding.top;
-    let position = {};
+    assert(options.el, 'options.el is required')
+    const { clientX, clientY } = event
+    const bounding = getBounding(options.el)
+    const x = clientX - bounding.left
+    const y = clientY - bounding.top
+    let position = {}
 
     if (typeof options.position === 'function') {
-      position = options.position({ x, y, bounding });
+      position = options.position({ x, y, bounding })
     } else {
-      if (x < bounding.width / 2) position.left = x + 12;
-      else position.right = bounding.width - x + 12;
+      if (x < bounding.width / 2) position.left = x + 12
+      else position.right = bounding.width - x + 12
 
-      if (y < bounding.height / 2) position.top = y - 12;
-      else position.bottom = bounding.height - y - 12;
+      if (y < bounding.height / 2) position.top = y - 12
+      else position.bottom = bounding.height - y - 12
     }
 
     Object.assign(state, {
       visible: true,
       position,
       data,
-    });
+    })
   }
 
   function keepTooltipVisible() {
     Object.assign(state, {
       visible: true,
-    });
+    })
   }
 
   function hideTooltip() {
@@ -63,7 +63,7 @@ function useTooltip() {
       visible: false,
       position: {},
       data: null,
-    });
+    })
   }
 
   return {
@@ -71,7 +71,7 @@ function useTooltip() {
     keepTooltipVisible,
     showTooltip,
     hideTooltip,
-  };
+  }
 }
 
-export default useTooltip;
+export default useTooltip

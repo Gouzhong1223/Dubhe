@@ -14,9 +14,9 @@
  * =============================================================
  */
 
-import { isRef } from '@vue/composition-api';
+import { isRef } from '@vue/composition-api'
 
 // todo: 目前 composition-api 还不支持导出，后续移除
 export function unref(ref) {
-  return isRef(ref) ? ref.value : ref;
+  return isRef(ref) ? ref.value : ref
 }

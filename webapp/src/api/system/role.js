@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/roles`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 获取所有的Role
@@ -30,7 +30,7 @@ export function getAll() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/roles/all`,
     method: 'get',
-  });
+  })
 }
 
 export function add(data) {
@@ -38,14 +38,14 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ADMIN}/roles`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function get(id) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/roles/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function del(ids) {
@@ -53,7 +53,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ADMIN}/roles`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 export function edit(data) {
@@ -61,7 +61,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ADMIN}/roles`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function editMenu(data) {
@@ -69,7 +69,7 @@ export function editMenu(data) {
     url: `/${API_MODULE_NAME.ADMIN}/roles/menu`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function editOperations(data) {
@@ -77,7 +77,7 @@ export function editOperations(data) {
     url: `/${API_MODULE_NAME.ADMIN}/roles/auth`,
     method: 'put',
     data,
-  });
+  })
 }
 
-export default { list, add, edit, del, get, editMenu };
+export default { list, add, edit, del, get, editMenu }

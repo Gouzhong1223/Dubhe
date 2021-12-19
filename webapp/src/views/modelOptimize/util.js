@@ -19,13 +19,13 @@ export const OPTIMIZE_ALGORITHM_TYPE_ENUM = {
   PRUNE: 0, // 剪枝
   DISTILL: 1, // 蒸馏
   QUNTIFICAT: 2, // 量化
-};
+}
 
 export const OPTIMIZE_ALGORITHM_TYPE_MAP = {
   [OPTIMIZE_ALGORITHM_TYPE_ENUM.PRUNE]: '剪枝',
   [OPTIMIZE_ALGORITHM_TYPE_ENUM.DISTILL]: '蒸馏',
   [OPTIMIZE_ALGORITHM_TYPE_ENUM.QUNTIFICAT]: '量化',
-};
+}
 
 export const OPTIMIZE_STATUS_ENUM = {
   WAITING: '-1',
@@ -33,7 +33,7 @@ export const OPTIMIZE_STATUS_ENUM = {
   FINISHED: '1',
   CANCELED: '2',
   FAILED: '3',
-};
+}
 
 export const OPTIMIZE_STATUS_MAP = {
   [OPTIMIZE_STATUS_ENUM.WAITING]: { name: '待处理' },
@@ -41,24 +41,24 @@ export const OPTIMIZE_STATUS_MAP = {
   [OPTIMIZE_STATUS_ENUM.FINISHED]: { name: '已完成', tagMap: 'success' },
   [OPTIMIZE_STATUS_ENUM.CANCELED]: { name: '已取消', tagMap: 'info' },
   [OPTIMIZE_STATUS_ENUM.FAILED]: { name: '执行失败', tagMap: 'danger' },
-};
+}
 
-export const OPTIIMZE_ALGORITHM_USAGE_NAME = '模型优化';
+export const OPTIIMZE_ALGORITHM_USAGE_NAME = '模型优化'
 
 export const RESULT_NAME_MAP = {
   accuracy: '准确度',
   reasoningTime: '推理速度',
   modelSize: '模型大小',
-};
+}
 
 export const RESULT_STATUS_ENUM = {
   NAGATIVE: '-1',
   SAME: '0',
   POSITIVE: '1',
-};
+}
 
 export const RESULT_STATUS_MAP = {
   [RESULT_STATUS_ENUM.NAGATIVE]: 'decline',
   [RESULT_STATUS_ENUM.SAME]: '',
   [RESULT_STATUS_ENUM.POSITIVE]: 'promote',
-};
+}

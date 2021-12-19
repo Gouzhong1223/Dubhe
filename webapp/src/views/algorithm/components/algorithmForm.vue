@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
@@ -41,16 +35,39 @@
         show-word-limit
       />
     </el-form-item>
-    <el-form-item v-if="isAdmin && !isFork && !isServing" label="算法来源" prop="algorithmSource">
-      <el-radio-group v-model="form.algorithmSource" @change="onAlgorithmSourceChange">
-        <el-radio :label="ALGORITHM_RESOURCE_ENUM.CUSTOM" border class="mr-0">我的算法</el-radio>
-        <el-radio :label="ALGORITHM_RESOURCE_ENUM.PRESET" border>预置算法</el-radio>
+    <el-form-item
+      v-if="isAdmin && !isFork && !isServing"
+      label="算法来源"
+      prop="algorithmSource"
+    >
+      <el-radio-group
+        v-model="form.algorithmSource"
+        @change="onAlgorithmSourceChange"
+      >
+        <el-radio :label="ALGORITHM_RESOURCE_ENUM.CUSTOM" border class="mr-0"
+          >我的算法</el-radio
+        >
+        <el-radio :label="ALGORITHM_RESOURCE_ENUM.PRESET" border
+          >预置算法</el-radio
+        >
       </el-radio-group>
     </el-form-item>
-    <el-form-item v-show="!isFork && !isServing" label="支持推理" prop="inference">
-      <el-switch id="inference" v-model="form.inference" @change="onInferenceChange" />
+    <el-form-item
+      v-show="!isFork && !isServing"
+      label="支持推理"
+      prop="inference"
+    >
+      <el-switch
+        id="inference"
+        v-model="form.inference"
+        @change="onInferenceChange"
+      />
     </el-form-item>
-    <el-form-item v-show="!form.inference" label="模型类别" prop="algorithmUsage">
+    <el-form-item
+      v-show="!form.inference"
+      label="模型类别"
+      prop="algorithmUsage"
+    >
       <el-select
         id="algorithmUsage"
         v-model="form.algorithmUsage"
@@ -77,7 +94,12 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item v-show="formType !== 'fork'" ref="codeDirRef" label="上传代码包" prop="codeDir">
+    <el-form-item
+      v-show="formType !== 'fork'"
+      ref="codeDirRef"
+      label="上传代码包"
+      prop="codeDir"
+    >
       <upload-inline
         ref="uploadRef"
         action="fakeApi"
@@ -104,7 +126,12 @@
         @onSetProgress="onSetProgress"
       />
     </el-form-item>
-    <template v-if="form.algorithmSource === ALGORITHM_RESOURCE_ENUM.PRESET && !form.inference">
+    <template
+      v-if="
+        form.algorithmSource === ALGORITHM_RESOURCE_ENUM.PRESET &&
+          !form.inference
+      "
+    >
       <el-form-item ref="imageTag" label="镜像选择" prop="imageTag">
         <el-select
           id="imageName"
@@ -115,7 +142,12 @@
           filterable
           @change="onImageNameChange"
         >
-          <el-option v-for="item in imageNameList" :key="item" :label="item" :value="item" />
+          <el-option
+            v-for="item in imageNameList"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
         </el-select>
         <el-select
           id="imageTag"
@@ -154,18 +186,28 @@
     <el-form-item v-show="!form.inference" label="文件输出" prop="isTrainOut">
       <el-switch id="isTrainOut" v-model="form.isTrainOut" />
     </el-form-item>
-    <el-form-item v-show="!form.inference" label="可视化日志" prop="isVisualizedLog">
+    <el-form-item
+      v-show="!form.inference"
+      label="可视化日志"
+      prop="isVisualizedLog"
+    >
       <el-switch id="isVisualizedLog" v-model="form.isVisualizedLog" />
     </el-form-item>
     <div class="ts-tip">
       <ol v-show="!form.inference">
         <li>请确保代码中包含“train_model_out”参数用于接收训练的模型输出路径</li>
-        <li>如需传入训练数据集，请确保代码中包含“data_url”参数用于传输训练数据集路径</li>
-        <li>如需传入验证数据集，请确保代码中包含“val_data_url”参数用于传输验证数据集路径</li>
+        <li>
+          如需传入训练数据集，请确保代码中包含“data_url”参数用于传输训练数据集路径
+        </li>
+        <li>
+          如需传入验证数据集，请确保代码中包含“val_data_url”参数用于传输验证数据集路径
+        </li>
         <li>
           如需断点续训或加载已有模型，请确保代码中包含“model_load_dir”参数用于接收训练模型路径
         </li>
-        <li>如需文件输出，请确保代码中包含“train_out”参数用于接收文件输出路径</li>
+        <li>
+          如需文件输出，请确保代码中包含“train_out”参数用于接收文件输出路径
+        </li>
         <li>
           如需训练过程可视化，请确保代码中包含“train_visualized_log”参数用于接收训练的可视化日志路径，目前仅支持
           OneFlow 框架
@@ -179,15 +221,17 @@
         </li>
       </ol>
       <span v-show="form.inference">
-        推理脚本模板详见<el-link type="primary" target="_blank" :href="docUrl">文档</el-link>
+        推理脚本模板详见<el-link type="primary" target="_blank" :href="docUrl"
+          >文档</el-link
+        >
       </span>
     </div>
   </el-form>
 </template>
 
 <script>
-import { computed, reactive, ref, toRefs } from '@vue/composition-api';
-import { Message } from 'element-ui';
+import { computed, reactive, ref, toRefs } from '@vue/composition-api'
+import { Message } from 'element-ui'
 
 import {
   validateNameWithHyphen,
@@ -196,19 +240,19 @@ import {
   invalidFileNameChar,
   defaultProcessColors,
   ALGORITHM_RESOURCE_ENUM,
-} from '@/utils';
-import UploadInline from '@/components/UploadForm/inline';
-import UploadProgress from '@/components/UploadProgress';
-import RunParamForm from '@/components/Training/runParamForm';
-import { useMapGetters } from '@/hooks';
-import { algorithmConfig } from '@/config';
+} from '@/utils'
+import UploadInline from '@/components/UploadForm/inline'
+import UploadProgress from '@/components/UploadProgress'
+import RunParamForm from '@/components/Training/runParamForm'
+import { useMapGetters } from '@/hooks'
+import { algorithmConfig } from '@/config'
 import {
   list as getAlgoUsages,
   add as addAlgoUsage,
   del as deleteAlgoUsage,
-} from '@/api/algorithm/algorithmUsage';
-import { getImageNameList, getImageTagList } from '@/api/trainingImage';
-import { IMAGE_PROJECT_TYPE } from '@/views/trainingJob/utils';
+} from '@/api/algorithm/algorithmUsage'
+import { getImageNameList, getImageTagList } from '@/api/trainingImage'
+import { IMAGE_PROJECT_TYPE } from '@/views/trainingJob/utils'
 
 const defaultForm = {
   id: null,
@@ -228,7 +272,7 @@ const defaultForm = {
   isVisualizedLog: true,
   inference: false,
   fork: false,
-};
+}
 
 export default {
   name: 'AlgorithmForm',
@@ -255,31 +299,31 @@ export default {
       uploadParams: {
         objectPath: null, // 对象存储路径
       },
-    });
+    })
     // store
-    const { user, isAdmin } = useMapGetters(['user', 'isAdmin']);
+    const { user, isAdmin } = useMapGetters(['user', 'isAdmin'])
     // computed
-    const isFork = computed(() => props.formType === 'fork');
-    const isServing = computed(() => props.formType === 'serving');
-    const status = computed(() => (state.progress === 100 ? 'success' : null));
+    const isFork = computed(() => props.formType === 'fork')
+    const isServing = computed(() => props.formType === 'serving')
+    const status = computed(() => (state.progress === 100 ? 'success' : null))
     const docUrl = computed(() => {
-      return `${process.env.VUE_APP_DOCS_URL}module/cloud-serving/online-deployment/online-create`;
-    });
+      return `${process.env.VUE_APP_DOCS_URL}module/cloud-serving/online-deployment/online-create`
+    })
 
     // 表单引用
-    const formRef = ref(null);
-    const uploadRef = ref(null);
-    const codeDirRef = ref(null);
-    const runParamCompRef = ref(null);
+    const formRef = ref(null)
+    const uploadRef = ref(null)
+    const codeDirRef = ref(null)
+    const runParamCompRef = ref(null)
     // 表单
     const form = reactive({
       ...defaultForm,
       runParams: {},
-    });
+    })
     const assignForm = (newForm = {}) => {
-      Object.assign(form, newForm);
-    };
-    let runParamObj = {};
+      Object.assign(form, newForm)
+    }
+    let runParamObj = {}
     // rules
     const rules = {
       algorithmName: [
@@ -298,7 +342,9 @@ export default {
           trigger: ['blur', 'change'],
         },
       ],
-      algorithmSource: [{ required: true, message: '请选择算法来源', trigger: 'change' }],
+      algorithmSource: [
+        { required: true, message: '请选择算法来源', trigger: 'change' },
+      ],
       codeDir: [
         {
           required: true,
@@ -306,7 +352,7 @@ export default {
           trigger: ['blur', 'manual'],
         },
       ],
-    };
+    }
 
     // 表单列表数据
     // 算法用途
@@ -316,146 +362,157 @@ export default {
         current: 1,
         size: 1000,
       }).then((res) => {
-        state.algorithmUsageList = res.result;
-      });
-    };
+        state.algorithmUsageList = res.result
+      })
+    }
     const createAlgorithmUsage = async (auxInfo) => {
-      await addAlgoUsage({ auxInfo });
-      getAlgorithmUsages();
-    };
+      await addAlgoUsage({ auxInfo })
+      getAlgorithmUsages()
+    }
     const delAlgorithmUsage = async (usage) => {
-      await deleteAlgoUsage({ ids: [usage.id] });
+      await deleteAlgoUsage({ ids: [usage.id] })
       if (form.algorithmUsage === usage.auxInfo) {
-        form.algorithmUsage = null;
+        form.algorithmUsage = null
       }
-      getAlgorithmUsages();
-    };
+      getAlgorithmUsages()
+    }
     // 镜像选择
     // 获取镜像版本列表
     const getImageTags = async (imageName, keepValue = false) => {
       state.imageTagList = await getImageTagList({
         projectType: IMAGE_PROJECT_TYPE.TRAIN,
         imageName,
-      });
-      if (keepValue && form.imageTag && !state.imageTagList.includes(form.imageTag)) {
-        Message.warning('原有镜像版本不存在，请重新选择');
-        form.imageTag = null;
+      })
+      if (
+        keepValue &&
+        form.imageTag &&
+        !state.imageTagList.includes(form.imageTag)
+      ) {
+        Message.warning('原有镜像版本不存在，请重新选择')
+        form.imageTag = null
       }
-    };
+    }
     // 获取镜像名列表
     const getImageNames = async (keepValue = false) => {
-      state.imageNameList = await getImageNameList({ projectTypes: [IMAGE_PROJECT_TYPE.TRAIN] });
+      state.imageNameList = await getImageNameList({
+        projectTypes: [IMAGE_PROJECT_TYPE.TRAIN],
+      })
       if (!keepValue || !form.imageName) {
-        form.imageTag = null;
+        form.imageTag = null
       } else if (!state.imageNameList.includes(form.imageName)) {
-        Message.warning('原有镜像不存在，请重新选择');
-        form.imageName = form.imageTag = null;
+        Message.warning('原有镜像不存在，请重新选择')
+        form.imageName = form.imageTag = null
       } else {
-        getImageTags(form.imageName, true);
+        getImageTags(form.imageName, true)
       }
-    };
+    }
 
     // Handler
     const onAlgorithmSourceChange = () => {
-      form.runCommand = null;
-      runParamObj = {};
-    };
+      form.runCommand = null
+      runParamObj = {}
+    }
     const onInferenceChange = () => {
-      uploadRef.value.formRef.reset();
-      form.codeDir = null;
-    };
+      uploadRef.value.formRef.reset()
+      form.codeDir = null
+    }
     const onAlgorithmUsageChange = (value) => {
-      const usageRes = state.algorithmUsageList.find((usage) => usage.auxInfo === value);
+      const usageRes = state.algorithmUsageList.find(
+        (usage) => usage.auxInfo === value,
+      )
       if (value && !usageRes) {
-        createAlgorithmUsage(value);
+        createAlgorithmUsage(value)
       }
-    };
+    }
     const onImageNameChange = (imageName) => {
-      form.imageTag = null;
+      form.imageTag = null
       if (imageName) {
-        getImageTags(imageName);
-        return;
+        getImageTags(imageName)
+        return
       }
-      state.imageTagList = [];
-    };
+      state.imageTagList = []
+    }
     const updateRunParams = (params) => {
-      runParamObj = params;
-    };
+      runParamObj = params
+    }
     // 上传事件处理
     const updateObjectPath = () => {
-      state.uploadParams.objectPath = `upload-temp/${user.id}/${getUniqueId()}`;
-    };
+      state.uploadParams.objectPath = `upload-temp/${user.id}/${getUniqueId()}`
+    }
     const onFileRemove = () => {
-      form.codeDir = null;
-      state.uploading = false;
-      codeDirRef.value.validate('manual');
-    };
+      form.codeDir = null
+      state.uploading = false
+      codeDirRef.value.validate('manual')
+    }
     const uploadStart = (files) => {
-      updateObjectPath();
-      [state.uploading, state.size, state.progress] = [true, files.size, 0];
-    };
+      updateObjectPath()
+      ;[state.uploading, state.size, state.progress] = [true, files.size, 0]
+    }
     const onSetProgress = (val) => {
-      state.progress += val;
-    };
+      state.progress += val
+    }
     const uploadSuccess = (res) => {
-      state.progress = 100;
+      state.progress = 100
       setTimeout(() => {
-        state.uploading = false;
-      }, 1000);
+        state.uploading = false
+      }, 1000)
       if (state.uploading) {
-        form.codeDir = res[0].data.objectName;
-        codeDirRef.value.validate('manual');
+        form.codeDir = res[0].data.objectName
+        codeDirRef.value.validate('manual')
       }
-    };
+    }
     const uploadError = () => {
-      Message.error('上传文件失败');
-      state.uploading = false;
-    };
+      Message.error('上传文件失败')
+      state.uploading = false
+    }
 
     // 入口方法
     const initForm = (newForm = {}) => {
-      assignForm(newForm);
-      getAlgorithmUsages();
-      updateObjectPath();
+      assignForm(newForm)
+      getAlgorithmUsages()
+      updateObjectPath()
       // 只能 Fork 为我的算法，因此不需要获取镜像列表
       if (!isFork.value) {
-        getImageNames(true);
+        getImageNames(true)
       }
-    };
+    }
     // 重置表单
     const resetForm = () => {
       assignForm({
         ...defaultForm,
         runParams: {},
-      });
-      uploadRef.value.formRef.reset();
-    };
+      })
+      uploadRef.value.formRef.reset()
+    }
     // 表单验证
     const validate = (resolve, reject) => {
-      let valid = true;
+      let valid = true
       formRef.value.validate((isValid) => {
-        valid = valid && isValid;
-      });
-      if (form.algorithmSource === ALGORITHM_RESOURCE_ENUM.PRESET && !form.inference) {
-        const runParamValid = runParamCompRef.value.validate();
+        valid = valid && isValid
+      })
+      if (
+        form.algorithmSource === ALGORITHM_RESOURCE_ENUM.PRESET &&
+        !form.inference
+      ) {
+        const runParamValid = runParamCompRef.value.validate()
         if (!runParamValid) {
-          Message.warning('运行参数不合法');
+          Message.warning('运行参数不合法')
         } else {
-          form.runParams = { ...runParamObj };
+          form.runParams = { ...runParamObj }
         }
-        valid = valid && runParamValid;
+        valid = valid && runParamValid
       }
       if (valid) {
         if (typeof resolve === 'function') {
-          return resolve(form);
+          return resolve(form)
         }
-        return true;
+        return true
       }
       if (typeof reject === 'function') {
-        return reject(form);
+        return reject(form)
       }
-      return false;
-    };
+      return false
+    }
 
     return {
       ALGORITHM_RESOURCE_ENUM,
@@ -494,9 +551,9 @@ export default {
       initForm,
       resetForm,
       validate,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

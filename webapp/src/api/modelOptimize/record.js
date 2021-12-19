@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/taskInstance`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function del(data) {
@@ -30,7 +30,7 @@ export function del(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/taskInstance`,
     method: 'delete',
     data,
-  });
+  })
 }
 
 export function getInstance(params) {
@@ -38,7 +38,7 @@ export function getInstance(params) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/taskInstance/detail`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function cancel(data) {
@@ -46,7 +46,7 @@ export function cancel(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/taskInstance/cancel`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function resubmit(data) {
@@ -54,5 +54,5 @@ export function resubmit(data) {
     url: `/${API_MODULE_NAME.MODEL_OPTIMIZE}/taskInstance/resubmit`,
     method: 'post',
     data,
-  });
+  })
 }

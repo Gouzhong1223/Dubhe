@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 // 获取数据集对应的 studyInstanceUID 和 seriesInstanceUID
 export function getCaseInfo(datasetId) {
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/detail/${datasetId}`,
     method: 'get',
-  });
+  })
 }
 
 // 获取自动标注详情
@@ -30,23 +30,23 @@ export const queryAutoResult = (datasetId) => {
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/getAuto/${datasetId}`,
     method: 'get',
-  });
-};
+  })
+}
 
 // 获取手动标注详情
 export const queryManualResult = (datasetId) => {
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/getFinished/${datasetId}`,
     method: 'get',
-  });
-};
+  })
+}
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 数据集详情
@@ -54,7 +54,7 @@ export function detail(id) {
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/${id}`,
     method: 'get',
-  });
+  })
 }
 
 // 创建数据集
@@ -63,7 +63,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 保存标注
@@ -72,7 +72,7 @@ export function save(data) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/annotation/save`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 上传文件
@@ -84,16 +84,16 @@ export function upload(datasetId, params) {
       id: datasetId,
       dataMedicineFileCreateList: params,
     },
-  });
+  })
 }
 
 export function del(ids) {
-  const delData = { ids };
+  const delData = { ids }
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical`,
     method: 'delete',
     data: delData,
-  });
+  })
 }
 
 export function editDataset(data) {
@@ -101,7 +101,7 @@ export function editDataset(data) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/${data.medicalId}`,
     method: 'put',
     data,
-  });
+  })
 }
 
 // 导入自定义数据集
@@ -110,16 +110,16 @@ export function addCustomDataset(data) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/custom`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function autoAnnotate(id) {
-  const data = { medicalId: id };
+  const data = { medicalId: id }
   return request({
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/annotation/auto`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 查询数据集状态
@@ -128,7 +128,7 @@ export function queryDatasetsProgress(params) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/annotation/schedule`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 保存病灶信息
@@ -137,7 +137,7 @@ export function saveLesions(medicalId, data) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/lesion/${medicalId}`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 查询病灶信息
@@ -146,7 +146,7 @@ export function queryLesions(medicalId, params) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/lesion/${medicalId}`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 删除病灶信息
@@ -155,7 +155,7 @@ export function deleteLesion(id) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/lesion`,
     method: 'delete',
     data: { id },
-  });
+  })
 }
 
 // 修改病灶信息
@@ -164,7 +164,7 @@ export function updateLesion(id) {
     url: `/${API_MODULE_NAME.DCM}/datasets/medical/lesion`,
     method: 'put',
     data: { id },
-  });
+  })
 }
 
-export default { list, add, del };
+export default { list, add, del }

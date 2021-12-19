@@ -1,10 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
-Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
-You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
-required by applicable law or agreed to in writing, software * distributed under the License is
-distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. * See the License for the specific language governing permissions and * limitations under
-the License. * ============================================================= */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div style="height: 100%">
@@ -18,7 +20,10 @@ the License. * ============================================================= */
       >
         <h2 class="register-title">凌波智能人工智能平台</h2>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="registerForm.username" placeholder="请输入用户名" />
+          <el-input
+            v-model="registerForm.username"
+            placeholder="请输入用户名"
+          />
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="registerForm.phone" placeholder="请输入手机号" />
@@ -33,10 +38,18 @@ the License. * ============================================================= */
           </el-radio-group>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="registerForm.email" auto-complete="on" placeholder="请输入邮箱" />
+          <el-input
+            v-model="registerForm.email"
+            auto-complete="on"
+            placeholder="请输入邮箱"
+          />
         </el-form-item>
         <el-form-item label="邮箱验证码" prop="code">
-          <el-input v-model="registerForm.code" style="width: 50%" placeholder="请输入验证码" />
+          <el-input
+            v-model="registerForm.code"
+            style="width: 50%"
+            placeholder="请输入验证码"
+          />
           <el-button
             :loading="codeLoading"
             style="width: 48%; padding: 8px 0"
@@ -46,14 +59,24 @@ the License. * ============================================================= */
           >
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="registerForm.password" type="password" placeholder="请输入密码" />
+          <el-input
+            v-model="registerForm.password"
+            type="password"
+            placeholder="请输入密码"
+          />
         </el-form-item>
         <el-form-item label="确认密码" prop="pass">
-          <el-input v-model="registerForm.pass" type="password" placeholder="请再次输入密码" />
+          <el-input
+            v-model="registerForm.pass"
+            type="password"
+            placeholder="请再次输入密码"
+          />
         </el-form-item>
         <el-form-item>
           <div class="go-login fr">
-            已有账号?<el-button type="text" @click="$router.replace({ path: '/login' })"
+            已有账号?<el-button
+              type="text"
+              @click="$router.replace({ path: '/login' })"
               >去登录</el-button
             >
           </div>
@@ -72,11 +95,11 @@ the License. * ============================================================= */
 </template>
 
 <script>
-import { validateName, validateAccount, validEmail } from '@/utils/validate';
-import { encrypt } from '@/utils/rsaEncrypt';
-import { getCodeBySentEmail, registerUser } from '@/api/auth';
-import LoginPublic from '@/components/LoginPublic';
-import { loginConfig } from '@/config';
+import { validateName, validateAccount, validEmail } from '@/utils/validate'
+import { encrypt } from '@/utils/rsaEncrypt'
+import { getCodeBySentEmail, registerUser } from '@/api/auth'
+import LoginPublic from '@/components/LoginPublic'
+import { loginConfig } from '@/config'
 
 const defaultForm = {
   username: '',
@@ -87,7 +110,7 @@ const defaultForm = {
   password: '',
   sex: 1,
   pass: '',
-};
+}
 
 export default {
   name: 'Register',
@@ -97,13 +120,13 @@ export default {
   data() {
     const validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'));
+        callback(new Error('请再次输入密码'))
       } else if (value !== this.registerForm.password) {
-        callback(new Error('两次输入密码不一致!'));
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       buttonName: '发送邮箱验证码',
       isDisabled: false,
@@ -136,7 +159,9 @@ export default {
           },
         ],
         sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
-        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }],
+        code: [
+          { required: true, trigger: 'change', message: '验证码不能为空' },
+        ],
         password: [
           { required: true, trigger: 'blur', message: '密码不能为空' },
           {
@@ -152,55 +177,55 @@ export default {
         ],
       },
       loading: false,
-    };
+    }
   },
   beforeRouteEnter(to, from, next) {
     if (!loginConfig.allowRegister) {
-      next('/login');
-      return;
+      next('/login')
+      return
     }
-    next();
+    next()
   },
   methods: {
     sendCode() {
       if (!validEmail(this.registerForm.email)) {
-        this.$message.warning('请先输入正确邮箱地址');
-        return;
+        this.$message.warning('请先输入正确邮箱地址')
+        return
       }
-      this.codeLoading = true;
-      this.buttonName = '发送中';
+      this.codeLoading = true
+      this.buttonName = '发送中'
       const codeData = {
         email: this.registerForm.email,
         type: 1,
-      };
+      }
       getCodeBySentEmail(codeData)
         .then(() => {
           this.$message({
             showClose: true,
             message: '发送成功，验证码有效期5分钟',
             type: 'success',
-          });
-          this.codeLoading = false;
-          this.isDisabled = true;
-          this.buttonName = `${(this.time -= 1)}秒`;
+          })
+          this.codeLoading = false
+          this.isDisabled = true
+          this.buttonName = `${(this.time -= 1)}秒`
           this.timer = window.setInterval(() => {
-            this.buttonName = `${this.time}秒`;
-            this.time -= 1;
+            this.buttonName = `${this.time}秒`
+            this.time -= 1
             if (this.time < 0) {
-              this.buttonName = '重新发送';
-              this.time = 60;
-              this.isDisabled = false;
-              window.clearInterval(this.timer);
+              this.buttonName = '重新发送'
+              this.time = 60
+              this.isDisabled = false
+              window.clearInterval(this.timer)
             }
-          }, 1000);
+          }, 1000)
         })
         .catch((err) => {
-          this.codeLoading = false;
+          this.codeLoading = false
           this.$message({
             message: err.message,
             type: 'error',
-          });
-        });
+          })
+        })
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -213,41 +238,41 @@ export default {
             code: this.registerForm.code,
             password: encrypt(this.registerForm.password),
             sex: this.registerForm.sex,
-          };
+          }
           registerUser(formData)
             .then(() => {
-              this.loading = false;
-              this.resetForm();
+              this.loading = false
+              this.resetForm()
               this.$notify({
                 title: '注册成功',
                 type: 'success',
                 duration: 1500,
-              });
-              this.$router.replace({ path: '/login' });
+              })
+              this.$router.replace({ path: '/login' })
             })
             .catch((err) => {
-              this.loading = false;
+              this.loading = false
               this.$message({
                 message: err.message,
                 type: 'error',
-              });
-            });
-          return true;
+              })
+            })
+          return true
         }
-        return false;
-      });
+        return false
+      })
     },
     resetForm() {
-      this.dialog = false;
-      this.$refs.registerForm.resetFields();
-      window.clearInterval(this.timer);
-      this.time = 60;
-      this.buttonName = '发送验证码';
-      this.isDisabled = false;
-      this.registerForm = { ...defaultForm };
+      this.dialog = false
+      this.$refs.registerForm.resetFields()
+      window.clearInterval(this.timer)
+      this.time = 60
+      this.buttonName = '发送验证码'
+      this.isDisabled = false
+      this.registerForm = { ...defaultForm }
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

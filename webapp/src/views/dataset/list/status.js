@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import { datasetStatusMap } from '../util';
+import { datasetStatusMap } from '../util'
 
 export default {
   name: 'DatasetStatus',
   functional: true,
   render(h, { data, props }) {
-    const { statusList, filterByDatasetStatus, datasetStatusFilter } = props;
-    const iconClass = ['el-icon-arrow-down', 'el-icon--right'];
-    const textClass = datasetStatusFilter === 'all' ? null : 'primary';
+    const { statusList, filterByDatasetStatus, datasetStatusFilter } = props
+    const iconClass = ['el-icon-arrow-down', 'el-icon--right']
+    const textClass = datasetStatusFilter === 'all' ? null : 'primary'
     const columnProps = {
       ...data,
       scopedSlots: {
@@ -42,14 +42,14 @@ export default {
                     >
                       {item.label}
                     </el-dropdown-item>
-                  );
+                  )
                 })}
               </el-dropdown-menu>
             </el-dropdown>
-          );
+          )
         },
         default: ({ row }) => {
-          const status = datasetStatusMap[row.status] || {};
+          const status = datasetStatusMap[row.status] || {}
           const colorProps = !status.type &&
             status.bgColor && {
               props: {
@@ -59,17 +59,17 @@ export default {
                 color: status.color,
                 borderColor: status.bgColor,
               },
-            };
-          const statusName = row.dataType === 100 ? '导入完成' : status.name;
+            }
+          const statusName = row.dataType === 100 ? '导入完成' : status.name
           return (
             <el-tag type={status.type} {...colorProps}>
               {statusName}
             </el-tag>
-          );
+          )
         },
       },
-    };
+    }
 
-    return h('el-table-column', columnProps);
+    return h('el-table-column', columnProps)
   },
-};
+}

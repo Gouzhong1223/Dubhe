@@ -14,7 +14,12 @@
  * =============================================================
  */
 
-import { K8S_BUSINESS_LABEL_MAP, memFormatter, K8S_BUSINESS_LABEL_ENUM, emitter } from '@/utils';
+import {
+  K8S_BUSINESS_LABEL_MAP,
+  memFormatter,
+  K8S_BUSINESS_LABEL_ENUM,
+  emitter,
+} from '@/utils'
 
 // 获取资源信息列定义列表
 export const getResourceInfoColumns = ({ type }) => {
@@ -24,7 +29,7 @@ export const getResourceInfoColumns = ({ type }) => {
       prop: 'businessLabel',
       minWidth: '170px',
       formatter(value) {
-        return K8S_BUSINESS_LABEL_MAP[value] || value;
+        return K8S_BUSINESS_LABEL_MAP[value] || value
       },
     },
     {
@@ -60,63 +65,63 @@ export const getResourceInfoColumns = ({ type }) => {
       label: '内存占用',
       prop: 'podMemory',
       formatter: (value) => {
-        const targetUnit = value >= 1024 ? 'Gi' : 'Mi';
-        return memFormatter(value, 'Mi', targetUnit);
+        const targetUnit = value >= 1024 ? 'Gi' : 'Mi'
+        return memFormatter(value, 'Mi', targetUnit)
       },
     },
     {
       label: '状态',
       prop: 'status',
     },
-  ];
-};
+  ]
+}
 
 // 资源监控到资源页面跳转方法
 // 针对已经在当前页面，无法通过 push 进行页面刷新的情况，通过事件来触发，需要各模块手动添加支持
 // router 实例由调用方提供
 function jumpToNotebook({ taskName }, router) {
-  emitter.emit('jumpToNotebook', taskName);
+  emitter.emit('jumpToNotebook', taskName)
   router.push({
     name: 'Notebook',
     params: {
       noteBookName: taskName,
     },
-  });
+  })
 }
 function jumpToTraining({ taskId }, router) {
-  emitter.emit('jumpToTrainingDetail', taskId);
+  emitter.emit('jumpToTrainingDetail', taskId)
   router.push({
     name: 'JobDetail',
     query: { id: taskId },
-  });
+  })
 }
 function jumpToModelOptimize({ taskId }, router) {
-  emitter.emit('jumpToModelOptimizeRecord', taskId);
+  emitter.emit('jumpToModelOptimizeRecord', taskId)
   router.push({
     name: 'ModelOptRecord',
     query: { taskId },
-  });
+  })
 }
 function jumpToServing({ taskId }, router) {
-  emitter.emit('jumpToServingDetail', taskId);
+  emitter.emit('jumpToServingDetail', taskId)
   router.push({
     name: 'CloudServingDetail',
     query: { id: taskId },
-  });
+  })
 }
 function jumpToBatchServing({ taskId }, router) {
-  emitter.emit('jumpToBatchServingDetail', taskId);
+  emitter.emit('jumpToBatchServingDetail', taskId)
   router.push({
     name: 'BatchServingDetail',
     query: { id: taskId },
-  });
+  })
 }
 function jumpToTerminal({ taskName }, router) {
-  emitter.emit('jumpToTerminalRemote', taskName);
+  emitter.emit('jumpToTerminalRemote', taskName)
   router.push({
     name: 'TerminalRemote',
     hash: `#${taskName}`,
-  });
+  })
 }
 
 // 跳转方法集合 Map
@@ -127,4 +132,4 @@ export const jumpFuncMap = {
   [K8S_BUSINESS_LABEL_ENUM.SERVING]: jumpToServing,
   [K8S_BUSINESS_LABEL_ENUM.BATCH_SERVING]: jumpToBatchServing,
   [K8S_BUSINESS_LABEL_ENUM.TERMINAL]: jumpToTerminal,
-};
+}

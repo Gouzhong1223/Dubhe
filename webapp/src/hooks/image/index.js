@@ -15,40 +15,40 @@
  */
 
 // image hook，用于在标注页面根据图片加载状态、尺寸进行定位、展示
-import { reactive } from '@vue/composition-api';
+import { reactive } from '@vue/composition-api'
 
 export function useImage() {
   const state = reactive({
     width: 0,
     height: 0,
     loaded: false,
-  });
+  })
 
   const resetImg = () => {
     Object.assign(state, {
       width: 0,
       height: 0,
       loaded: false,
-    });
-  };
+    })
+  }
 
   const setImg = (src) => {
-    const img = new Image();
-    resetImg();
+    const img = new Image()
+    resetImg()
     img.onload = () => {
       Object.assign(state, {
         width: img.width,
         height: img.height,
         loaded: true,
-      });
-    };
+      })
+    }
 
-    img.src = src;
-  };
+    img.src = src
+  }
 
   return {
     imgInfo: state,
     setImg,
     resetImg,
-  };
+  }
 }

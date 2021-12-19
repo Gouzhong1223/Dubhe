@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
@@ -38,7 +32,11 @@
       />
     </el-form-item>
     <el-divider />
-    <el-form-item label="权限选择" class="is-required" :error="permissionErrorMsg">
+    <el-form-item
+      label="权限选择"
+      class="is-required"
+      :error="permissionErrorMsg"
+    >
       <el-tree
         ref="permissionTreeRef"
         :data="permissionList"
@@ -52,22 +50,22 @@
 </template>
 
 <script>
-import { computed, nextTick, reactive, ref, toRefs } from '@vue/composition-api';
+import { computed, nextTick, reactive, ref, toRefs } from '@vue/composition-api'
 
-import { getPermissionTree } from '@/api/system/permission';
-import { checkLeafNode, validateNameWithHyphen } from '@/utils';
+import { getPermissionTree } from '@/api/system/permission'
+import { checkLeafNode, validateNameWithHyphen } from '@/utils'
 
 export default {
   name: 'AuthCodeForm',
   setup() {
     // refs
-    const formRef = ref(null);
-    const permissionTreeRef = ref(null);
+    const formRef = ref(null)
+    const permissionTreeRef = ref(null)
 
     const state = reactive({
       permissionList: [],
       permissionValid: true,
-    });
+    })
 
     // form
     const defaultForm = {
@@ -75,8 +73,8 @@ export default {
       authCode: null,
       description: null,
       permissions: [],
-    };
-    const form = reactive({ ...defaultForm });
+    }
+    const form = reactive({ ...defaultForm })
     const rules = {
       authCode: [
         { required: true, message: '请输入权限组名称', trigger: 'blur' },
@@ -86,70 +84,72 @@ export default {
           trigger: ['blur', 'change'],
         },
       ],
-      description: [{ max: 255, message: '长度在255个字符以内', trigger: 'blur' }],
-    };
+      description: [
+        { max: 255, message: '长度在255个字符以内', trigger: 'blur' },
+      ],
+    }
 
     // 权限数据
     const getPermissions = async () => {
-      state.permissionList = await getPermissionTree();
-    };
+      state.permissionList = await getPermissionTree()
+    }
     const permissionLeafNodeIdList = computed(() => {
-      return checkLeafNode(state.permissionList, []).map((p) => p.id);
-    });
+      return checkLeafNode(state.permissionList, []).map((p) => p.id)
+    })
     // 校验是否勾选权限，并给 form 赋值
     const validatePermission = () => {
       form.permissions = permissionTreeRef.value
         .getCheckedKeys()
-        .concat(permissionTreeRef.value.getHalfCheckedKeys());
-      state.permissionValid = form.permissions.length > 0;
-      return state.permissionValid;
-    };
+        .concat(permissionTreeRef.value.getHalfCheckedKeys())
+      state.permissionValid = form.permissions.length > 0
+      return state.permissionValid
+    }
     const permissionErrorMsg = computed(() => {
-      if (state.permissionValid) return null;
-      return '至少选择一个操作权限';
-    });
+      if (state.permissionValid) return null
+      return '至少选择一个操作权限'
+    })
     const onPermissonCheck = () => {
-      validatePermission();
-    };
+      validatePermission()
+    }
 
     const initForm = (originForm = {}) => {
       Object.keys(form).forEach((key) => {
-        form[key] = originForm[key] || defaultForm[key];
-      });
+        form[key] = originForm[key] || defaultForm[key]
+      })
       nextTick(async () => {
-        await getPermissions();
+        await getPermissions()
         permissionTreeRef.value.setCheckedKeys(
           form.permissions
             .map((p) => p.id)
-            .filter((p) => permissionLeafNodeIdList.value.includes(p))
-        );
-      });
-    };
+            .filter((p) => permissionLeafNodeIdList.value.includes(p)),
+        )
+      })
+    }
     const validate = (resolve, reject) => {
       formRef.value.validate((isValid) => {
-        const valid = validatePermission() && isValid;
+        const valid = validatePermission() && isValid
         if (valid) {
           if (typeof resolve === 'function') {
-            return resolve(form);
+            return resolve(form)
           }
-          return true;
+          return true
         }
         if (typeof reject === 'function') {
-          return reject(form);
+          return reject(form)
         }
-        return false;
-      });
-    };
+        return false
+      })
+    }
     const clearValidate = () => {
-      formRef.value.clearValidate();
-    };
+      formRef.value.clearValidate()
+    }
     const resetForm = () => {
-      initForm();
-      clearValidate();
-    };
+      initForm()
+      clearValidate()
+    }
 
     // created
-    getPermissions();
+    getPermissions()
 
     return {
       formRef,
@@ -168,7 +168,7 @@ export default {
       resetForm,
 
       permissionLeafNodeIdList,
-    };
+    }
   },
-};
+}
 </script>

@@ -15,10 +15,10 @@
  */
 
 // 多系列数据 tooltip 公共展示组件
-import cx from 'classnames';
+import cx from 'classnames'
 
-import { identity } from '@/utils';
-import './style.scss';
+import { identity } from '@/utils'
+import './style.scss'
 
 export default {
   name: 'TableTooltip',
@@ -53,7 +53,7 @@ export default {
     },
   },
   render(h, context) {
-    const { props } = context;
+    const { props } = context
     const {
       className,
       keys,
@@ -63,11 +63,11 @@ export default {
       valueAccessor,
       showIcon,
       data,
-    } = props;
-    if (!keys.length) return null;
+    } = props
+    if (!keys.length) return null
     const klass = cx('tt-wrapper', {
       [className]: !!className,
-    });
+    })
     return (
       <div class={klass}>
         {title && (
@@ -80,18 +80,24 @@ export default {
             icon: {
               backgroundColor: colorScale ? colorScale(key) : '',
             },
-          };
+          }
           return (
             <div key={key} class="tooltip-item-row">
               <div class="tooltip-item-label">
-                {!!showIcon && <span class="tooltip-item-icon" style={style.icon} />}
-                <span class="tooltip-item-key">{keyAccessor(key, idx, data)}：</span>
+                {!!showIcon && (
+                  <span class="tooltip-item-icon" style={style.icon} />
+                )}
+                <span class="tooltip-item-key">
+                  {keyAccessor(key, idx, data)}：
+                </span>
               </div>
-              <div class="tooltip-item-text">{valueAccessor(key, idx, data)}</div>
+              <div class="tooltip-item-text">
+                {valueAccessor(key, idx, data)}
+              </div>
             </div>
-          );
+          )
         })}
       </div>
-    );
+    )
   },
-};
+}

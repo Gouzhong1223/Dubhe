@@ -23,7 +23,7 @@ export const NOTEBOOK_STATUS_ENUM = {
   STOPPING: 4, // 停止中
   DELETING: 5, // 删除中
   ERROR: 6, // 运行异常
-};
+}
 
 // NOTEBOOK 状态匹配
 export const NOTEBOOK_STATUS_MAP = {
@@ -33,13 +33,15 @@ export const NOTEBOOK_STATUS_MAP = {
   [NOTEBOOK_STATUS_ENUM.STOPPING]: { name: '停止中', tagMap: 'info' },
   [NOTEBOOK_STATUS_ENUM.DELETING]: { name: '删除中', tagMap: 'info' },
   [NOTEBOOK_STATUS_ENUM.ERROR]: { name: '运行异常', tagMap: 'danger' },
-};
+}
 
 // 判断一条记录是否为 RUNNING 状态但是没有 url
-export const isNoUrlRunning = (item) => item.status === NOTEBOOK_STATUS_ENUM.RUNNING && !item.url;
+export const isNoUrlRunning = (item) =>
+  item.status === NOTEBOOK_STATUS_ENUM.RUNNING && !item.url
 
 // 判断一条记录是否为 RUNNING 状态并且带有 url
-export const isRunning = (item) => item.status === NOTEBOOK_STATUS_ENUM.RUNNING && item.url;
+export const isRunning = (item) =>
+  item.status === NOTEBOOK_STATUS_ENUM.RUNNING && item.url
 
 // 判断一条记录是否需要轮询
 // 启动中、停止中、删除中需要轮询
@@ -51,5 +53,5 @@ export const needPoll = (item) => {
       NOTEBOOK_STATUS_ENUM.STOPPING,
       NOTEBOOK_STATUS_ENUM.DELETING,
     ].includes(item.status) || isNoUrlRunning(item)
-  );
-};
+  )
+}

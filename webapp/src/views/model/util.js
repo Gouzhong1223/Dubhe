@@ -17,34 +17,34 @@
 export function generateNumArrValidator({ count, min, max, emptyMsg }) {
   return function numberArrayValidater(rule, value, callback) {
     if (!value) {
-      return callback(new Error(emptyMsg || '值不能为空'));
+      return callback(new Error(emptyMsg || '值不能为空'))
     }
     try {
-      const arr = JSON.parse(value);
+      const arr = JSON.parse(value)
       if (arr.length !== count) {
-        return callback(new Error(`数组需要有 ${count} 个成员`));
+        return callback(new Error(`数组需要有 ${count} 个成员`))
       }
       if (min !== undefined && arr.find((value) => value < min)) {
-        return callback(new Error(`数组成员不能小于 ${min}`));
+        return callback(new Error(`数组成员不能小于 ${min}`))
       }
       if (max !== undefined && arr.find((value) => value > max)) {
-        return callback(new Error(`数组成员不能大于 ${max}`));
+        return callback(new Error(`数组成员不能大于 ${max}`))
       }
-      return callback();
+      return callback()
     } catch {
-      return callback(new Error('不是有效的 JSON 数组'));
+      return callback(new Error('不是有效的 JSON 数组'))
     }
-  };
+  }
 }
 
 // 模型炼知暂只支持 PyTorch 模型，暂固定于前端
-export const atlasFrameTypeList = [{ label: 'PyTorch', value: '3' }];
+export const atlasFrameTypeList = [{ label: 'PyTorch', value: '3' }]
 
 // 模型炼知暂只支持 PyTorch 模型，暂固定于前端
-export const atlasModelTypeList = [{ label: 'PyTorch PTH', value: '8' }];
+export const atlasModelTypeList = [{ label: 'PyTorch PTH', value: '8' }]
 
 // TensorFlow 框架类型字典值，用于由前端判断是否支持模型转换
-export const TF_FRAME_TYPE = 2;
+export const TF_FRAME_TYPE = 2
 
 // SavedModel 模型格式字典值，用于由前端判断是否支持模型转换
-export const SAVED_MODEL_MODEL_TYPE = 1;
+export const SAVED_MODEL_MODEL_TYPE = 1

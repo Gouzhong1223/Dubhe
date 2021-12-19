@@ -14,21 +14,39 @@
  * =============================================================
  */
 
-const HOSTNAME = `${window.location.origin}/`;
+const HOSTNAME = `${window.location.origin}/`
 // const IMGURl = HOSTNAME
-const IMGURl = `${process.env.VUE_APP_BASE_API}/visual`;
+const IMGURl = `${process.env.VUE_APP_BASE_API}/visual`
 const CATEGORY = [
   ['GRAPH', 'Graphs', 'GraphsPanel', '模型结构', 'icon-moxingjiegou_1'],
   ['SCALAR', 'Scalars', 'ScalarsPanel', '标量数据', 'icon-biaoliangshuju1'],
   ['MEDIA', 'Medias', 'MediasPanel', '媒体数据', 'icon-meitishuju_1'],
-  ['STATISTIC', 'Statistics', 'StatisticsPanel', '统计分析', 'icon-tongjifenxi_1'],
-  ['EMBEDDING', 'Embeddings', 'EmbeddingsPanel', '降维分析', 'icon-jiangweifenxi_1'],
+  [
+    'STATISTIC',
+    'Statistics',
+    'StatisticsPanel',
+    '统计分析',
+    'icon-tongjifenxi_1',
+  ],
+  [
+    'EMBEDDING',
+    'Embeddings',
+    'EmbeddingsPanel',
+    '降维分析',
+    'icon-jiangweifenxi_1',
+  ],
   ['FEATURE', 'Features', 'FeaturesPanel', '特征分析', 'icon-feature'],
   ['ROC', 'ROCs', 'ROCsPanel', '评测曲线', 'icon-roc'],
-  ['HYPERPARM', 'Hyperparms', 'HyperparmsPanel', '超参分析', 'icon-chaocanfenxi_1'],
+  [
+    'HYPERPARM',
+    'Hyperparms',
+    'HyperparmsPanel',
+    '超参分析',
+    'icon-chaocanfenxi_1',
+  ],
   ['EXCEPTION', 'Exception', 'ExceptionPanel', '异常检测', 'icon-yichang3'],
   ['CUSTOM', 'Customs', 'CustomsPanel', '用户定制', 'icon-yonghudingzhi_1'],
-];
+]
 const CATEGORYORDER = [
   'graph',
   'scalar',
@@ -40,7 +58,7 @@ const CATEGORYORDER = [
   'hyperparm',
   'exception',
   'custom',
-];
+]
 const RUNFILESHOWFlAG = {
   graph: 0,
   scalar: 1,
@@ -52,6 +70,6 @@ const RUNFILESHOWFlAG = {
   hyperparm: 0,
   exception: 1,
   custom: 2,
-};
+}
 
-export default { HOSTNAME, CATEGORY, CATEGORYORDER, RUNFILESHOWFlAG, IMGURl };
+export default { HOSTNAME, CATEGORY, CATEGORYORDER, RUNFILESHOWFlAG, IMGURl }

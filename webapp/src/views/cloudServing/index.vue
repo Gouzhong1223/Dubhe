@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="cloud-serving-container" class="app-container">
@@ -43,12 +37,27 @@
       highlight-current-row
       @sort-change="crud.sortChange"
     >
-      <el-table-column prop="id" label="ID" sortable="custom" width="80px" fixed />
-      <el-table-column prop="name" label="服务名称" min-width="120px" show-overflow-tooltip fixed>
+      <el-table-column
+        prop="id"
+        label="ID"
+        sortable="custom"
+        width="80px"
+        fixed
+      />
+      <el-table-column
+        prop="name"
+        label="服务名称"
+        min-width="120px"
+        show-overflow-tooltip
+        fixed
+      >
         <template slot-scope="scope">
-          <el-link class="name-col" type="primary" @click="goDetail(scope.row.id)">{{
-            scope.row.name
-          }}</el-link>
+          <el-link
+            class="name-col"
+            type="primary"
+            @click="goDetail(scope.row.id)"
+            >{{ scope.row.name }}</el-link
+          >
         </template>
       </el-table-column>
       <el-table-column
@@ -76,12 +85,26 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="progress" label="运行节点数/总节点数" width="180px" align="center">
+      <el-table-column
+        prop="progress"
+        label="运行节点数/总节点数"
+        width="180px"
+        align="center"
+      >
         <template slot-scope="scope">
-          <span>{{ scope.row.runningNode || 0 }}/{{ scope.row.totalNode || 0 }}</span>
+          <span
+            >{{ scope.row.runningNode || 0 }}/{{
+              scope.row.totalNode || 0
+            }}</span
+          >
         </template>
       </el-table-column>
-      <el-table-column prop="progress" label="调用失败次数/总次数" width="180px" align="center">
+      <el-table-column
+        prop="progress"
+        label="调用失败次数/总次数"
+        width="180px"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ getCallCount(scope.row) }}</span>
         </template>
@@ -99,7 +122,12 @@
           <span>{{ serviceTypeMap[scope.row.type] }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" sortable="custom" min-width="160px">
+      <el-table-column
+        prop="createTime"
+        label="创建时间"
+        sortable="custom"
+        min-width="160px"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -132,7 +160,11 @@
             >删除</el-button
           >
           <el-dropdown>
-            <el-button type="text" style="margin-left: 10px;" @click.stop="() => {}">
+            <el-button
+              type="text"
+              style="margin-left: 10px;"
+              @click.stop="() => {}"
+            >
               更多<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
@@ -140,13 +172,17 @@
                 :disabled="!canPredict(scope.row.status)"
                 @click.native="doPredict(scope.row.id)"
               >
-                <el-button :disabled="!canPredict(scope.row.status)" type="text">预测</el-button>
+                <el-button :disabled="!canPredict(scope.row.status)" type="text"
+                  >预测</el-button
+                >
               </el-dropdown-item>
               <el-dropdown-item
                 :disabled="!canEdit(scope.row.status)"
                 @click.native="doRollback(scope.row.id)"
               >
-                <el-button :disabled="!canEdit(scope.row.status)" type="text">回滚</el-button>
+                <el-button :disabled="!canEdit(scope.row.status)" type="text"
+                  >回滚</el-button
+                >
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -160,18 +196,18 @@
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { debounce } from 'throttle-debounce';
-import { mapActions } from 'vuex';
+import { debounce } from 'throttle-debounce'
+import { mapActions } from 'vuex'
 
-import { list, start, stop, del as deleteServing } from '@/api/cloudServing';
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import DropdownHeader from '@/components/DropdownHeader';
-import MsgPopover from '@/components/MsgPopover';
-import cdOperation from '@crud/CD.operation';
-import rrOperation from '@crud/RR.operation';
-import pagination from '@crud/Pagination';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import cdOperation from '@crud/CD.operation'
+import rrOperation from '@crud/RR.operation'
+import pagination from '@crud/Pagination'
+import MsgPopover from '@/components/MsgPopover'
+import DropdownHeader from '@/components/DropdownHeader'
+import { list, start, stop, del as deleteServing } from '@/api/cloudServing'
 
-import { Constant, generateMap } from '@/utils';
+import { Constant, generateMap } from '@/utils'
 
 import {
   SERVING_STATUS_ENUM,
@@ -179,14 +215,14 @@ import {
   ONLINE_SERVING_TYPE,
   serviceTypeMap,
   numFormatter,
-} from './util';
+} from './util'
 
 // 搜索用字段
 const defaultQuery = {
   name: null,
   status: null,
   type: null,
-};
+}
 
 export default {
   name: 'CloudServing',
@@ -210,7 +246,7 @@ export default {
           add: '创建在线服务',
         },
       },
-    });
+    })
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -221,82 +257,82 @@ export default {
       serviceTypeMap,
 
       defaultSort: {},
-    };
+    }
   },
   computed: {
     currentPage() {
-      return this.$store.state.cloudServing.onlineServingPage;
+      return this.$store.state.cloudServing.onlineServingPage
     },
     currentSort() {
-      return this.$store.state.cloudServing.onlineServingSort;
+      return this.$store.state.cloudServing.onlineServingSort
     },
     serviceStatusList() {
-      const list = [{ label: '全部', value: null }];
+      const list = [{ label: '全部', value: null }]
       Object.keys(this.statusNameMap).forEach((status) => {
-        list.push({ label: this.statusNameMap[status], value: status });
-      });
-      return list;
+        list.push({ label: this.statusNameMap[status], value: status })
+      })
+      return list
     },
     servingTypeList() {
-      const arr = [{ label: '全部', value: null }];
+      const arr = [{ label: '全部', value: null }]
       for (const key in this.serviceTypeMap) {
-        arr.push({ label: this.serviceTypeMap[key], value: key });
+        arr.push({ label: this.serviceTypeMap[key], value: key })
       }
-      return arr;
+      return arr
     },
     statusNameMap() {
-      return generateMap(ONLINE_SERVING_STATUS_MAP, 'name');
+      return generateMap(ONLINE_SERVING_STATUS_MAP, 'name')
     },
     statusTagMap() {
-      return generateMap(ONLINE_SERVING_STATUS_MAP, 'tagMap');
+      return generateMap(ONLINE_SERVING_STATUS_MAP, 'tagMap')
     },
   },
   beforeRouteEnter(to, from, next) {
     const goFirstPage = (vm) => {
-      vm.pageEnter(false);
-    };
+      vm.pageEnter(false)
+    }
 
     const goPreviousPage = (vm) => {
-      vm.pageEnter(true);
-    };
+      vm.pageEnter(true)
+    }
 
     // 如果不是从表单页、详情页返回到列表页的，页码重置为 1
     if (!['CloudServingForm', 'CloudServingDetail'].includes(from.name)) {
-      next(goFirstPage);
-      return;
+      next(goFirstPage)
+      return
     }
     if (from.name === 'CloudServingForm') {
       // 从表单页返回时，如果表单页不是在线服务，页码重置为 1
-      const { type } = from.query;
+      const { type } = from.query
       if (type !== 'onlineServing') {
-        next(goFirstPage);
-        return;
+        next(goFirstPage)
+        return
       }
-      const { formType } = to.params;
+      const { formType } = to.params
       // 如果是新增服务，页码重置为 1
       if (formType === 'add') {
-        next(goFirstPage);
-        return;
+        next(goFirstPage)
+        return
       }
-      const { sort } = from.params;
+      const { sort } = from.params
       // 当从表单页直接返回 或者 原本使用 ID 排序时，保留排序状态
       if (formType === undefined || sort === 'id') {
-        next(goPreviousPage);
-        return;
+        next(goPreviousPage)
+        return
       }
-      next(goFirstPage);
-      return;
+      next(goFirstPage)
+      return
     }
     // 从详情页返回时保留页码和排序状态
-    next(goPreviousPage);
+    next(goPreviousPage)
   },
   mounted() {
-    this.refetch = debounce(1000, this.getServices);
-    this.doStartDebounce = debounce(1000, this.doStart);
-    this.doStopDebounce = debounce(1000, this.doStop);
+    this.refetch = debounce(1000, this.getServices)
+    this.doStartDebounce = debounce(1000, this.doStart)
+    this.doStopDebounce = debounce(1000, this.doStop)
   },
   beforeDestroy() {
-    this.keepPoll = false;
+    this.keepPoll = false
   },
   methods: {
     ...mapActions({
@@ -306,18 +342,21 @@ export default {
 
     pageEnter(keepPageSort) {
       if (keepPageSort) {
-        this.crud.page.current = this.currentPage;
-        const { sort, order } = this.currentSort;
+        this.crud.page.current = this.currentPage
+        const { sort, order } = this.currentSort
         // 修改 table 的排序信息
-        this.defaultSort = { prop: sort, order: Constant.tableSortMap2Element[order] };
+        this.defaultSort = {
+          prop: sort,
+          order: Constant.tableSortMap2Element[order],
+        }
         // 修改 crud 的排序信息
-        this.crud.sort = sort;
-        this.crud.order = order;
+        this.crud.sort = sort
+        this.crud.order = order
       }
-      this.getServices();
+      this.getServices()
     },
     async getServices() {
-      await this.crud.refresh();
+      await this.crud.refresh()
     },
     // Handlers
     onToAdd() {
@@ -331,16 +370,16 @@ export default {
           sort: this.crud.sort,
           order: this.crud.order,
         },
-      });
+      })
     },
     onResetQuery() {
-      this.localQuery = { ...defaultQuery };
+      this.localQuery = { ...defaultQuery }
     },
     goDetail(id) {
       this.$router.push({
         name: 'CloudServingDetail',
         query: { id },
-      });
+      })
     },
     async doEdit(id) {
       this.$router.push({
@@ -355,7 +394,7 @@ export default {
           sort: this.crud.sort,
           order: this.crud.order,
         },
-      });
+      })
     },
     doPredict(id) {
       this.$router.push({
@@ -364,39 +403,41 @@ export default {
         params: {
           target: 'predict',
         },
-      });
+      })
     },
     async doStart(service) {
-      const result = await start(service.id);
+      const result = await start(service.id)
       this.$message({
         message: '启动成功',
         type: 'success',
-      });
-      const { status } = result;
-      service.status = status;
+      })
+      const { status } = result
+      service.status = status
       if (this.needPoll(status)) {
-        this.refetch();
+        this.refetch()
       }
     },
     async doStop(id) {
-      const result = await stop(id);
+      const result = await stop(id)
       this.$message({
         message: '停止成功',
         type: 'success',
-      });
+      })
       if (this.needPoll(result.status)) {
-        this.refetch();
+        this.refetch()
       }
     },
     doDelete(id) {
-      this.$confirm('此操作将删除该服务, 是否继续?', '请确认').then(async () => {
-        await deleteServing(id);
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.getServices();
-      });
+      this.$confirm('此操作将删除该服务, 是否继续?', '请确认').then(
+        async () => {
+          await deleteServing(id)
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.getServices()
+        },
+      )
     },
     doRollback(id) {
       this.$router.push({
@@ -405,23 +446,26 @@ export default {
         params: {
           target: 'deployment',
         },
-      });
+      })
     },
 
     // Crud Hooks
     [CRUD.HOOK.beforeRefresh]() {
-      this.crud.query = { ...this.localQuery };
+      this.crud.query = { ...this.localQuery }
     },
     [CRUD.HOOK.afterRefresh]() {
-      this.updatePage(this.crud.page.current);
+      this.updatePage(this.crud.page.current)
       this.updateSort({
         sort: this.crud.sort,
         order: this.crud.order,
-      });
-      if (this.keepPoll && this.crud.data.some((service) => this.needPoll(service.status))) {
+      })
+      if (
+        this.keepPoll &&
+        this.crud.data.some((service) => this.needPoll(service.status))
+      ) {
         setTimeout(() => {
-          this.refetch();
-        }, 1000);
+          this.refetch()
+        }, 1000)
       }
     },
 
@@ -429,41 +473,64 @@ export default {
     numFormatter,
     getCallCount(service) {
       if (service.type === ONLINE_SERVING_TYPE.GRPC) {
-        return '-/-';
+        return '-/-'
       }
-      return `${numFormatter(service.failNum) || 0}/${numFormatter(service.totalNum) || 0}`;
+      return `${numFormatter(service.failNum) || 0}/${numFormatter(
+        service.totalNum,
+      ) || 0}`
     },
     filter(column, value) {
-      this.localQuery[column] = value;
-      this.crud.toQuery();
+      this.localQuery[column] = value
+      this.crud.toQuery()
     },
     needPoll(status) {
       return (
-        [SERVING_STATUS_ENUM.WORKING, SERVING_STATUS_ENUM.IN_DEPLOYMENT].indexOf(status) !== -1
-      );
+        [
+          SERVING_STATUS_ENUM.WORKING,
+          SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+        ].indexOf(status) !== -1
+      )
     },
     canEdit(status) {
-      return [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(status) !== -1;
+      return (
+        [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(
+          status,
+        ) !== -1
+      )
     },
     canPredict(status) {
-      return SERVING_STATUS_ENUM.WORKING === status;
+      return SERVING_STATUS_ENUM.WORKING === status
     },
     canStart(status) {
-      return [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(status) !== -1;
+      return (
+        [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(
+          status,
+        ) !== -1
+      )
     },
     canStop(status) {
       return (
-        [SERVING_STATUS_ENUM.IN_DEPLOYMENT, SERVING_STATUS_ENUM.WORKING].indexOf(status) !== -1
-      );
+        [
+          SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+          SERVING_STATUS_ENUM.WORKING,
+        ].indexOf(status) !== -1
+      )
     },
     canDelete(status) {
-      return [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(status) !== -1;
+      return (
+        [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.STOP].indexOf(
+          status,
+        ) !== -1
+      )
     },
     showMessage(status) {
-      return [SERVING_STATUS_ENUM.EXCEPTION, SERVING_STATUS_ENUM.IN_DEPLOYMENT].includes(status);
+      return [
+        SERVING_STATUS_ENUM.EXCEPTION,
+        SERVING_STATUS_ENUM.IN_DEPLOYMENT,
+      ].includes(status)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

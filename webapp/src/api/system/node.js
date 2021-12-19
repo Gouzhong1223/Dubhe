@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function getNodes(params) {
   return request({
     url: `/${API_MODULE_NAME.K8S}/node/findAllNode`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 创建资源隔离
@@ -31,7 +31,7 @@ export function addNodeIsolation(data) {
     url: `/${API_MODULE_NAME.K8S}/node/isolation`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 移除资源隔离
@@ -40,5 +40,5 @@ export function removeNodeIsolation(nodeNames) {
     url: `/${API_MODULE_NAME.K8S}/node/isolation`,
     method: 'delete',
     data: { nodeNames },
-  });
+  })
 }

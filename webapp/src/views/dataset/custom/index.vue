@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -26,7 +20,9 @@
           <div class="flex flex-between">
             <div>已选 {{ state.selections.length }} 项</div>
             <div>
-              <el-button type="text" @click="cancelSelection">取消选择</el-button>
+              <el-button type="text" @click="cancelSelection"
+                >取消选择</el-button
+              >
               <el-popconfirm
                 title="删除后不可恢复，可能会影响数据集使用，继续请确定"
                 @onConfirm="doDelete(state.selections)"
@@ -50,7 +46,10 @@
       </div>
     </el-card>
     <!-- 表格内容 -->
-    <el-card v-loading="state.loading" :body-style="{ padding: '10px 20px 20px 20px' }">
+    <el-card
+      v-loading="state.loading"
+      :body-style="{ padding: '10px 20px 20px 20px' }"
+    >
       <div
         slot="header"
         class="flex flex-between flex-vertical-align"
@@ -59,7 +58,10 @@
         <div class="flex flex-vertical-align">
           <div>/&nbsp;&nbsp;</div>
           <el-breadcrumb :key="state.breadcrumbKey" separator="/">
-            <el-breadcrumb-item v-for="path in state.pathList" :key="path.depth">
+            <el-breadcrumb-item
+              v-for="path in state.pathList"
+              :key="path.depth"
+            >
               <a @click="handlePathClick(path)">{{ path.name }}</a>
             </el-breadcrumb-item>
           </el-breadcrumb>
@@ -75,7 +77,11 @@
             />
           </el-tooltip>
           <el-tooltip effect="dark" content="切换布局" placement="top">
-            <el-button style="padding: 8px;" class="with-border" @click="changeMode">
+            <el-button
+              style="padding: 8px;"
+              class="with-border"
+              @click="changeMode"
+            >
               <IconFont :type="state.listMode ? 'viewlist' : 'icon'" />
             </el-button>
           </el-tooltip>
@@ -92,7 +98,10 @@
         <template #name="scope">
           <div class="vm">
             <span v-if="scope.row.browser === ''">
-              <IconFont :type="getIcon(scope.row.ext)" style="font-size: 18px;" />
+              <IconFont
+                :type="getIcon(scope.row.ext)"
+                style="font-size: 18px;"
+              />
               <el-tooltip :open-delay="1000">
                 <div slot="content">{{ scope.row.name }}</div>
                 <div class="ellipsis mb-10 mx-10 di">
@@ -101,7 +110,10 @@
               </el-tooltip>
             </span>
             <a v-else class="primary" @click="goDetail(scope.row)">
-              <IconFont :type="getIcon(scope.row.ext)" style="font-size: 18px;" />
+              <IconFont
+                :type="getIcon(scope.row.ext)"
+                style="font-size: 18px;"
+              />
               <el-tooltip :open-delay="1000">
                 <div slot="content">{{ scope.row.name }}</div>
                 <div class="ellipsis mb-10 mx-10 di">
@@ -186,27 +198,31 @@
         class="flex flex-between"
         style="padding: 20px; margin-bottom: 20px;"
       >
-        <TextEditor :loading="state.showTxtLoading" :txt="state.txt" class="my-auto f1" />
+        <TextEditor
+          :loading="state.showTxtLoading"
+          :txt="state.txt"
+          class="my-auto f1"
+        />
       </div>
     </BaseModal>
   </div>
 </template>
 
 <script>
-import { reactive, computed, watch, ref, onMounted } from '@vue/composition-api';
-import { Message } from 'element-ui';
+import { reactive, computed, watch, ref, onMounted } from '@vue/composition-api'
+import { Message } from 'element-ui'
 
-import BaseModal from '@/components/BaseModal';
-import BaseTable from '@/components/BaseTable';
-import InfoAlert from '@/components/InfoAlert';
-import TextEditor from '@/components/textEditor';
-import { fileSizeFormatter } from '@/utils';
-import UploadInline from '@/components/UploadForm/inline';
-import { minioBaseUrl } from '@/utils/minIO';
-import { getCustomFileList } from '@/api/preparation/datafile';
+import BaseModal from '@/components/BaseModal'
+import BaseTable from '@/components/BaseTable'
+import InfoAlert from '@/components/InfoAlert'
+import TextEditor from '@/components/textEditor'
+import { fileSizeFormatter } from '@/utils'
+import UploadInline from '@/components/UploadForm/inline'
+import { minioBaseUrl } from '@/utils/minIO'
+import { getCustomFileList } from '@/api/preparation/datafile'
 
-import { getFileType, getIcon } from '../util';
-import GridTable from './GridTable';
+import { getFileType, getIcon } from '../util'
+import GridTable from './GridTable'
 
 export default {
   name: 'CustomList',
@@ -219,11 +235,11 @@ export default {
     GridTable,
   },
   setup(props, ctx) {
-    const { $route } = ctx.root;
-    const { params = {} } = $route;
-    const listRef = ref(null);
-    const uploadRef = ref(null);
-    const gridTableRef = ref(null);
+    const { $route } = ctx.root
+    const { params = {} } = $route
+    const listRef = ref(null)
+    const uploadRef = ref(null)
+    const gridTableRef = ref(null)
     const columns = [
       {
         prop: 'selections',
@@ -253,9 +269,9 @@ export default {
         sortable: true,
         type: 'time',
       },
-    ];
-    const defaultDir = 'versionFile/V0001';
-    const defaultPrefix = `dataset/${params.datasetId}/${defaultDir}`; // 自定义数据集脚本导入的默认路径
+    ]
+    const defaultDir = 'versionFile/V0001'
+    const defaultPrefix = `dataset/${params.datasetId}/${defaultDir}` // 自定义数据集脚本导入的默认路径
 
     const state = reactive({
       disableImport: false,
@@ -281,37 +297,37 @@ export default {
       txt: '',
       pageNum: 1,
       total: 0,
-    });
+    })
 
     const changeMode = () => {
-      state.listMode = !state.listMode;
-      state.selections = [];
-    };
+      state.listMode = !state.listMode
+      state.selections = []
+    }
 
     const buildFileUrl = (row) =>
-      `${minioBaseUrl}/${defaultPrefix}/${state.currentPrefix}${row.name}`;
+      `${minioBaseUrl}/${defaultPrefix}/${state.currentPrefix}${row.name}`
 
     const previewFile = async (row) => {
-      state.showModal = true;
-      const fileUrl = buildFileUrl(row);
+      state.showModal = true
+      const fileUrl = buildFileUrl(row)
       if (row.fileType === 'img') {
         Object.assign(state, {
           modalType: 'img',
           picFileUrl: fileUrl,
-        });
+        })
       }
       if (row.fileType === 'txt') {
         Object.assign(state, {
           modalType: 'txt',
           showTxtLoading: true,
-        });
-        const result = await fetch(fileUrl).then((res) => res.text());
+        })
+        const result = await fetch(fileUrl).then((res) => res.text())
         Object.assign(state, {
           txt: result,
           showTxtLoading: false,
-        });
+        })
       }
-    };
+    }
 
     const closeModal = () => {
       Object.assign(state, {
@@ -320,13 +336,13 @@ export default {
         fileUrl: '',
         modalType: '',
         txt: '',
-      });
-    };
+      })
+    }
 
     const modalTitle = computed(() => {
-      const title = state.modalType === 'img' ? '图片' : '文本';
-      return `查看${title}`;
-    });
+      const title = state.modalType === 'img' ? '图片' : '文本'
+      return `查看${title}`
+    })
 
     // 分页查询当前路径下的文件列表
     const getFilesByApi = async (prefix, pageNum = 1, pageSize = 30) =>
@@ -335,34 +351,34 @@ export default {
         filePath: `/${defaultDir}/${prefix}`,
         pageSize,
         pageNum,
-      });
+      })
 
     // 默认不递归，只查找当前路径下的文件
     const getFiles = async (prefix, recursive = false) =>
-      window.minioClient.listObjects(`${defaultPrefix}/${prefix}`, recursive);
+      window.minioClient.listObjects(`${defaultPrefix}/${prefix}`, recursive)
 
     // 更新根目录子文件的统计数量
     const updateFileCount = async () => {
-      const totalData = await getFiles(state.currentPrefix, true);
-      state.fileCount = totalData.length;
-    };
+      const totalData = await getFiles(state.currentPrefix, true)
+      state.fileCount = totalData.length
+    }
 
     // 路径跳转
     const handlePathClick = (path) => {
-      state.pathList.length = path.depth;
+      state.pathList.length = path.depth
       Object.assign(state, {
         breadcrumbKey: path.depth,
         currentPrefix: path.prefix,
-      });
-    };
+      })
+    }
 
     // 数据刷新
     const updateDataFromApi = (rawData) => {
-      const { rows, pageNum, total } = rawData;
+      const { rows, pageNum, total } = rawData
       Object.assign(state, {
         pageNum,
         total,
-      });
+      })
       const listData = rows?.map((d) => {
         if (d.dir) {
           return {
@@ -372,181 +388,188 @@ export default {
             fileType: 'dir',
             lastModified: '-',
             browser: 'inside',
-          };
+          }
         }
         // 对非文件夹类型的数据进行处理
-        const nameArr = d.name.split('.');
-        let ext = nameArr.length > 1 ? nameArr[nameArr.length - 1].toLowerCase() : '-';
+        const nameArr = d.name.split('.')
+        let ext =
+          nameArr.length > 1 ? nameArr[nameArr.length - 1].toLowerCase() : '-'
         // 过滤一些文件名包含（.数字）的文件
         // eslint-disable-next-line no-restricted-globals
-        if (!isNaN(ext)) ext = '-';
+        if (!isNaN(ext)) ext = '-'
         return {
           name: d.name,
           size: d.size,
           ext,
           fileType: getFileType(ext),
           lastModified: d.lastModified,
-          browser: ['jpg', 'txt', 'png', 'bmp', 'jpeg'].includes(ext) ? 'preview' : '',
-        };
-      });
+          browser: ['jpg', 'txt', 'png', 'bmp', 'jpeg'].includes(ext)
+            ? 'preview'
+            : '',
+        }
+      })
       Object.assign(state, {
         data: listData || [],
-      });
-    };
+      })
+    }
 
     // 手动刷新
     const handleRefresh = async () => {
-      state.loading = true;
-      const rawData = await getFilesByApi(state.currentPrefix);
-      updateDataFromApi(rawData);
-      state.loading = false;
-      updateFileCount();
-    };
+      state.loading = true
+      const rawData = await getFilesByApi(state.currentPrefix)
+      updateDataFromApi(rawData)
+      state.loading = false
+      updateFileCount()
+    }
 
     // 页码跳转
     const handleCurrentChange = async (pageNum) => {
-      state.loading = true;
-      const rawData = await getFilesByApi(state.currentPrefix, pageNum);
-      updateDataFromApi(rawData);
-      state.loading = false;
-    };
+      state.loading = true
+      const rawData = await getFilesByApi(state.currentPrefix, pageNum)
+      updateDataFromApi(rawData)
+      state.loading = false
+    }
 
     // 清空上传表单
     const resetUpload = () => {
-      state.uploading = false;
-      uploadRef.value.formRef.reset();
-    };
+      state.uploading = false
+      uploadRef.value.formRef.reset()
+    }
 
     const toggleUploadFile = (visible = false) => {
-      state.uploadFileVisible = visible;
-      !visible && resetUpload();
-    };
+      state.uploadFileVisible = visible
+      !visible && resetUpload()
+    }
 
     // 点击进入下一级文件夹或者对可预览文件进行展示
     const goDetail = (row) => {
       if (row.browser === 'inside') {
-        const { pathList } = state;
-        const pathLength = pathList.length;
+        const { pathList } = state
+        const pathLength = pathList.length
         const path = {
           name: row.name,
           prefix: `${pathList[pathLength - 1].prefix}${row.name}/`,
           depth: `${pathLength + 1}`,
-        };
-        pathList.push(path);
+        }
+        pathList.push(path)
         Object.assign(state, {
           currentPrefix: `${state.currentPrefix}${row.name}/`,
           pathList,
           pageNum: 1,
-        });
+        })
       } else if (row.browser === 'preview') {
-        previewFile(row);
+        previewFile(row)
       }
-    };
+    }
 
     const cancelSelection = () => {
       if (state.listMode) {
-        listRef.value.$refs.table.clearSelection();
+        listRef.value.$refs.table.clearSelection()
       } else {
-        gridTableRef.value.clearSelection();
+        gridTableRef.value.clearSelection()
       }
-      state.selections = [];
-    };
+      state.selections = []
+    }
 
     // 删除文件夹
     const doRemoveDir = async (dir) => {
       // 获取所有嵌套的子文件，删除所有子文件就是删除该文件夹
-      const rawNestedSelections = await getFiles(`${state.currentPrefix}${dir.name}/`, true);
+      const rawNestedSelections = await getFiles(
+        `${state.currentPrefix}${dir.name}/`,
+        true,
+      )
       return Promise.all(
         rawNestedSelections.map((d) => {
-          return window.minioClient.removeObject(`${d.name}`);
-        })
-      );
-    };
+          return window.minioClient.removeObject(`${d.name}`)
+        }),
+      )
+    }
 
     // 批量删除操作
     const doDelete = (selections) => {
-      state.loading = true;
+      state.loading = true
       Promise.all(
         selections.map((d) => {
           if (d.ext === 'dir') {
-            return doRemoveDir(d);
+            return doRemoveDir(d)
           }
           return window.minioClient.removeObject(
-            `${defaultPrefix}/${state.currentPrefix}${d.name}`
-          );
-        })
+            `${defaultPrefix}/${state.currentPrefix}${d.name}`,
+          )
+        }),
       )
         .then(() => {
-          Message.success('删除成功');
-          handleRefresh();
-          cancelSelection();
+          Message.success('删除成功')
+          handleRefresh()
+          cancelSelection()
         })
         .catch((err) => {
-          Message.error('删除失败');
-          console.error(err);
-          state.loading = false;
-        });
-    };
+          Message.error('删除失败')
+          console.error(err)
+          state.loading = false
+        })
+    }
 
     const countInfoTxt = computed(() => {
-      return `全部（${state.fileCount}）`;
-    });
+      return `全部（${state.fileCount}）`
+    })
 
     // 上传参数
     const uploadParams = computed(() => {
-      const suffix = state.currentPrefix === '' ? '' : `/${state.currentPrefix.slice(0, -1)}`;
-      return { objectPath: `${defaultPrefix}${suffix}` };
-    });
+      const suffix =
+        state.currentPrefix === '' ? '' : `/${state.currentPrefix.slice(0, -1)}`
+      return { objectPath: `${defaultPrefix}${suffix}` }
+    })
 
     const uploadSuccess = () => {
-      Message.success('上传成功');
-      toggleUploadFile();
-      resetUpload();
-      handleRefresh();
-    };
+      Message.success('上传成功')
+      toggleUploadFile()
+      resetUpload()
+      handleRefresh()
+    }
 
     const uploadError = (err) => {
-      console.error(err);
-      Message.error(err.message || '上传文件失败');
-      state.uploading = false;
-    };
+      console.error(err)
+      Message.error(err.message || '上传文件失败')
+      state.uploading = false
+    }
 
     const handleSubmit = () => {
-      state.uploading = true;
-      uploadRef.value.uploadSubmit();
-    };
+      state.uploading = true
+      uploadRef.value.uploadSubmit()
+    }
 
     const onSelectionChange = (selections) => {
-      state.selections = selections;
-    };
+      state.selections = selections
+    }
 
     const buildBackground = (url) => {
       return {
         backgroundImage: `url("${url}")`,
         width: `600px`,
         height: `300px`,
-      };
-    };
+      }
+    }
 
     watch(
       () => state.currentPrefix,
       async (next) => {
-        state.loading = true;
+        state.loading = true
         setTimeout(async () => {
-          const rawData = await getFilesByApi(next);
-          updateDataFromApi(rawData);
-          state.loading = false;
-          cancelSelection();
-        }, 300);
+          const rawData = await getFilesByApi(next)
+          updateDataFromApi(rawData)
+          state.loading = false
+          cancelSelection()
+        }, 300)
       },
       {
         immediate: true,
-      }
-    );
+      },
+    )
 
     onMounted(() => {
-      updateFileCount();
-    });
+      updateFileCount()
+    })
 
     return {
       listRef,
@@ -573,9 +596,9 @@ export default {
       buildBackground,
       buildFileUrl,
       getIcon,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

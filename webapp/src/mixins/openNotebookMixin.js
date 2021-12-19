@@ -14,13 +14,13 @@
  * =============================================================
  */
 
-import { createNotebook, getNotebookAddress } from '@/api/development/notebook';
+import { createNotebook, getNotebookAddress } from '@/api/development/notebook'
 
 export const OPEN_NOTEBOOK_HOOKS = {
   OPENED: 'onNotebookOpened',
   GET_INFO_ERR: 'onGetInfoErr',
   START: 'onNotebokOpenStart',
-};
+}
 
 export default {
   data() {
@@ -28,19 +28,19 @@ export default {
       askNotebookInfoLoading: false,
       keepAskAddress: false,
       notebookNotifyInstance: null,
-    };
+    }
   },
   computed: {
     openNotebookLoading() {
       // 需要注意的是两个布尔值不是连续的，中间会有一个 gap
-      return this.askNotebookInfoLoading || this.keepAskAddress;
+      return this.askNotebookInfoLoading || this.keepAskAddress
     },
   },
   beforeDestroy() {
-    this.keepAskAddress = false;
+    this.keepAskAddress = false
     if (this.notebookNotifyInstance) {
-      this.notebookNotifyInstance.close();
-      this.notebookNotifyInstance = null;
+      this.notebookNotifyInstance.close()
+      this.notebookNotifyInstance = null
     }
   },
   methods: {
@@ -51,71 +51,71 @@ export default {
      */
     async editAlgorithm(algorithmId, algorithmCodeDir) {
       if (!algorithmId) {
-        this.$message.warning('没有算法ID');
-        return;
+        this.$message.warning('没有算法ID')
+        return
       }
       if (!algorithmCodeDir) {
-        this.$message.warning('没有算法路径');
-        return;
+        this.$message.warning('没有算法路径')
+        return
       }
 
       if (this.askNotebookInfoLoading) {
-        return;
+        return
       }
-      this.callHook(OPEN_NOTEBOOK_HOOKS.START);
+      this.callHook(OPEN_NOTEBOOK_HOOKS.START)
       this.notebookNotifyInstance = this.$notify({
         title: '正在启动 Notebook',
         message: '正在启动 Notebook，请稍等',
         iconClass: 'el-icon-loading',
         duration: 0,
-      });
-      this.askNotebookInfoLoading = true;
+      })
+      this.askNotebookInfoLoading = true
       const notebookInfo = await createNotebook(1, {
         sourceId: algorithmId,
         sourceFilePath: algorithmCodeDir,
       }).finally(() => {
-        this.askNotebookInfoLoading = false;
-      });
+        this.askNotebookInfoLoading = false
+      })
       if (notebookInfo.status === 0 && notebookInfo.url) {
-        this.openNotebook(notebookInfo.url);
+        this.openNotebook(notebookInfo.url)
       } else {
-        this.keepAskAddress = true;
-        this.getNotebookAddress(notebookInfo.id);
+        this.keepAskAddress = true
+        this.getNotebookAddress(notebookInfo.id)
       }
     },
     // 根据 Notebook ID 获取 Notebook 地址
     getNotebookAddress(id) {
       if (!this.keepAskAddress) {
-        return;
+        return
       }
       getNotebookAddress(id)
         .then((url) => {
           if (url) {
-            this.openNotebook(url);
+            this.openNotebook(url)
           } else {
             setTimeout(() => {
-              this.getNotebookAddress(id);
-            }, 1000);
+              this.getNotebookAddress(id)
+            }, 1000)
           }
         })
         .catch((err) => {
-          this.keepAskAddress = false;
-          throw new Error(err);
-        });
+          this.keepAskAddress = false
+          throw new Error(err)
+        })
     },
     // 根据 Notebook 地址打开页面，同时跳转算法管理页
     openNotebook(url) {
-      window.open(url);
-      this.$message.success('Notebook已启动.');
-      this.callHook(OPEN_NOTEBOOK_HOOKS.OPENED);
+      window.open(url)
+      this.$message.success('Notebook已启动.')
+      this.callHook(OPEN_NOTEBOOK_HOOKS.OPENED)
     },
     stopOpenNotebook() {
-      this.keepAskAddress = this.askNotebookInfoLoading = false;
+      this.keepAskAddress = this.askNotebookInfoLoading = false
     },
     callHook(hook) {
       if (typeof this[hook] === 'function') {
-        this[hook]();
+        this[hook]()
       }
     },
   },
-};
+}

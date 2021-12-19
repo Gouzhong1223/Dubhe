@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <PrismEditor
@@ -24,14 +18,14 @@
   />
 </template>
 <script>
-import { computed, ref } from '@vue/composition-api';
-import { PrismEditor } from 'vue-prism-editor';
-import 'vue-prism-editor/dist/prismeditor.min.css';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
+import { computed, ref } from '@vue/composition-api'
+import { PrismEditor } from 'vue-prism-editor'
+import 'vue-prism-editor/dist/prismeditor.min.css'
+import { highlight, languages } from 'prismjs/components/prism-core'
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-javascript'
 
-import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/themes/prism-tomorrow.css'
 
 export default {
   name: 'Editor',
@@ -44,21 +38,21 @@ export default {
     event: 'change',
   },
   setup(props, ctx) {
-    const editorRef = ref(null);
-    const attrs = computed(() => ctx.attrs);
+    const editorRef = ref(null)
+    const attrs = computed(() => ctx.attrs)
     const highlighter = (code) => {
-      return highlight(code, languages.js);
-    };
-    const getValue = () => editorRef.value.codeData;
+      return highlight(code, languages.js)
+    }
+    const getValue = () => editorRef.value.codeData
 
     const handleChange = (value) => {
-      ctx.emit('change', value);
-    };
+      ctx.emit('change', value)
+    }
 
     const listeners = computed(() => ({
       ...ctx.listeners,
       input: handleChange,
-    }));
+    }))
 
     return {
       attrs,
@@ -66,9 +60,9 @@ export default {
       highlighter,
       editorRef,
       getValue,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .code-editor {

@@ -31,4 +31,4 @@ export default {
     exception_hist: '/api/exception_hist',
     exception_box: '/api/exception_box',
   },
-};
+}

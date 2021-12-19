@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div>
@@ -24,17 +18,35 @@
       highlight-current-row
       @sort-change="crud.sortChange"
     >
-      <el-table-column prop="trainId" label="ID" sortable="custom" width="80" fixed />
+      <el-table-column
+        prop="trainId"
+        label="ID"
+        sortable="custom"
+        width="80"
+        fixed
+      />
       <el-table-column prop="trainName" label="名称" min-width="160" fixed>
         <template slot-scope="scope">
-          <el-link type="primary" @click="goDetail('detail', scope.row.trainId)">{{
-            scope.row.trainName
-          }}</el-link>
+          <el-link
+            type="primary"
+            @click="goDetail('detail', scope.row.trainId)"
+            >{{ scope.row.trainName }}</el-link
+          >
         </template>
       </el-table-column>
       <el-table-column prop="versionNum" label="现有版本数目" min-width="160" />
-      <el-table-column prop="runtime" label="训练时长" sortable="custom" min-width="160" />
-      <el-table-column v-if="isAllTrain" prop="trainStatus" label="状态" width="160">
+      <el-table-column
+        prop="runtime"
+        label="训练时长"
+        sortable="custom"
+        min-width="160"
+      />
+      <el-table-column
+        v-if="isAllTrain"
+        prop="trainStatus"
+        label="状态"
+        width="160"
+      >
         <template #header>
           <dropdown-header
             title="状态"
@@ -49,7 +61,12 @@
           }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" sortable="custom" width="160">
+      <el-table-column
+        prop="createTime"
+        label="创建时间"
+        sortable="custom"
+        width="160"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -81,12 +98,15 @@
 </template>
 
 <script>
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import pagination from '@crud/Pagination';
-import crudJob, { stop as stopJob, del as deleteJob } from '@/api/trainingJob/job';
-import DropdownHeader from '@/components/DropdownHeader';
-import { generateMap } from '@/utils';
-import { TRAINING_STATUS_MAP } from './utils';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import pagination from '@crud/Pagination'
+import crudJob, {
+  stop as stopJob,
+  del as deleteJob,
+} from '@/api/trainingJob/job'
+import DropdownHeader from '@/components/DropdownHeader'
+import { generateMap } from '@/utils'
+import { TRAINING_STATUS_MAP } from './utils'
 
 export default {
   name: 'Job',
@@ -105,7 +125,7 @@ export default {
           add: '创建训练任务',
         },
       },
-    });
+    })
   },
   mixins: [presenter(), header(), crud()],
   props: {
@@ -124,23 +144,23 @@ export default {
       statusNameMap: generateMap(TRAINING_STATUS_MAP, 'name'),
       statusTagMap: generateMap(TRAINING_STATUS_MAP, 'tagMap'),
       statusFlagMap: generateMap(TRAINING_STATUS_MAP, 'statusMap'),
-    };
+    }
   },
   computed: {
     jobStatusList() {
-      const list = [{ label: '全部', value: null }];
+      const list = [{ label: '全部', value: null }]
       Object.keys(this.statusNameMap).forEach((status) => {
-        list.push({ label: this.statusNameMap[status], value: status });
-      });
-      return list;
+        list.push({ label: this.statusNameMap[status], value: status })
+      })
+      return list
     },
   },
   methods: {
     toQuery(params) {
-      this.crud.query = { ...params };
+      this.crud.query = { ...params }
       this.$nextTick(() => {
-        this.crud.refresh();
-      });
+        this.crud.refresh()
+      })
     },
     // link
     goDetail(type = 'add', id = null) {
@@ -149,39 +169,43 @@ export default {
         name: 'JobDetail',
         query: { type, id },
         params: { currentPage: this.crud.page.current },
-      });
+      })
     },
     // op
     doStop(id) {
-      this.$confirm('此操作将停止该任务下所有版本, 是否继续?', '请确认').then(async () => {
-        const params = {
-          trainId: id,
-        };
-        await stopJob(params);
-        this.$message({
-          message: '停止成功',
-          type: 'success',
-        });
-        this.crud.refresh();
-      });
+      this.$confirm('此操作将停止该任务下所有版本, 是否继续?', '请确认').then(
+        async () => {
+          const params = {
+            trainId: id,
+          }
+          await stopJob(params)
+          this.$message({
+            message: '停止成功',
+            type: 'success',
+          })
+          this.crud.refresh()
+        },
+      )
     },
     doDelete(id) {
-      this.$confirm('此操作将删除该任务及所有版本, 是否继续?', '请确认').then(async () => {
-        const params = {
-          trainId: id,
-        };
-        await deleteJob(params);
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.crud.refresh();
-      });
+      this.$confirm('此操作将删除该任务及所有版本, 是否继续?', '请确认').then(
+        async () => {
+          const params = {
+            trainId: id,
+          }
+          await deleteJob(params)
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.crud.refresh()
+        },
+      )
     },
     filterByStatus(status) {
-      this.crud.query.trainStatus = status;
-      this.crud.refresh();
+      this.crud.query.trainStatus = status
+      this.crud.refresh()
     },
   },
-};
+}
 </script>

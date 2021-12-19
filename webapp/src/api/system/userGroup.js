@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/group`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ADMIN}/group`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ADMIN}/group`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(id) {
@@ -46,7 +46,7 @@ export function del(id) {
     url: `/${API_MODULE_NAME.ADMIN}/group`,
     method: 'delete',
     data: { ids: [id] },
-  });
+  })
 }
 
 export function getUserListByGroup(groupId) {
@@ -54,7 +54,7 @@ export function getUserListByGroup(groupId) {
     url: `/${API_MODULE_NAME.ADMIN}/group/byGroupId`,
     method: 'get',
     params: { groupId },
-  });
+  })
 }
 
 export function deleteUserFromGroup(userIds, groupId) {
@@ -62,14 +62,14 @@ export function deleteUserFromGroup(userIds, groupId) {
     url: `/${API_MODULE_NAME.ADMIN}/group/deleteUser`,
     method: 'delete',
     data: { groupId, userIds },
-  });
+  })
 }
 
 export function getUngroupedUsers() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/group/findUser`,
     method: 'get',
-  });
+  })
 }
 
 // 更新用户组成员列表
@@ -78,7 +78,7 @@ export function updateGroupUsers(data) {
     url: `/${API_MODULE_NAME.ADMIN}/group/updateUser`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 批量激活/锁定用户组成员
@@ -87,7 +87,7 @@ export function updateUserState(groupId, enabled) {
     url: `/${API_MODULE_NAME.ADMIN}/group/userState`,
     method: 'put',
     data: { groupId, enabled },
-  });
+  })
 }
 
 // 批量修改用户组成员角色
@@ -96,7 +96,7 @@ export function updateUserRoles(groupId, roleIds) {
     url: `/${API_MODULE_NAME.ADMIN}/group/userRoles`,
     method: 'put',
     data: { groupId, roleIds },
-  });
+  })
 }
 
 // 批量删除用户组成员
@@ -105,5 +105,5 @@ export function deleteGroupUsers(groupId) {
     url: `/${API_MODULE_NAME.ADMIN}/group/delete`,
     method: 'delete',
     data: { groupId },
-  });
+  })
 }

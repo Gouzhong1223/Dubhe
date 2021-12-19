@@ -19,28 +19,28 @@ export const moduleMap = {
   1: 'notebook',
   2: 'train',
   3: 'serving',
-};
+}
 
 const resourcesPoolTypeMap = {
   0: 'CPU',
   1: 'GPU',
-};
+}
 
 const dropdownList = (map) => {
-  const list = Object.keys(map).map((d) => ({ label: map[d], value: d }));
-  list.unshift({ label: '全部', value: null });
-  return list;
-};
+  const list = Object.keys(map).map((d) => ({ label: map[d], value: d }))
+  list.unshift({ label: '全部', value: null })
+  return list
+}
 
 function validateString(rule, value, callback) {
   if (value === '' || value == null) {
-    callback();
+    callback()
   } else if (!(/^[^\s]+.*[^\s]+$/.test(value) || /^[^\s]$/.test(value))) {
-    callback(new Error('首尾不能是空格'));
+    callback(new Error('首尾不能是空格'))
   } else if (!/^[\u4E00-\u9FA5A-Za-z0-9_-\s]+$/.test(value)) {
-    callback(new Error('仅支持字母、数字、汉字、空格、英文横杠和下划线'));
+    callback(new Error('仅支持字母、数字、汉字、空格、英文横杠和下划线'))
   } else {
-    callback();
+    callback()
   }
 }
 
@@ -63,7 +63,7 @@ export const queryFormItems = [
     btnType: 'primary',
     func: 'query',
   },
-];
+]
 
 export function getColumns({ doEdit, doDelete }) {
   return [
@@ -123,7 +123,7 @@ export function getColumns({ doEdit, doDelete }) {
         },
       ],
     },
-  ];
+  ]
 }
 
 export const rules = {
@@ -144,12 +144,20 @@ export const rules = {
   ],
   memNum: [
     { required: true, message: '请输入内存大小', trigger: 'blur' },
-    { pattern: /^[+]{0,1}(\d+)$/, message: '内存大小不能小于0', trigger: 'blur' },
+    {
+      pattern: /^[+]{0,1}(\d+)$/,
+      message: '内存大小不能小于0',
+      trigger: 'blur',
+    },
     { type: 'number', message: '所填必须为数字' },
   ],
   workspaceRequest: [
     { required: true, message: '请定义工作空间的存储配额', trigger: 'blur' },
-    { pattern: /^[+]{0,1}(\d+)$/, message: '存储配额不能小于0', trigger: 'blur' },
+    {
+      pattern: /^[+]{0,1}(\d+)$/,
+      message: '存储配额不能小于0',
+      trigger: 'blur',
+    },
     { type: 'number', message: '所填必须为数字' },
   ],
-};
+}

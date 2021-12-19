@@ -14,33 +14,33 @@
  * =============================================================
  */
 
-import { reactive } from '@vue/composition-api';
+import { reactive } from '@vue/composition-api'
 
 function useDraw() {
   const state = reactive({
     start: undefined,
     end: undefined,
     isDrawing: false,
-  });
+  })
 
   function onDrawStart({ x, y }) {
     Object.assign(state, {
       start: { x, y },
       isDrawing: true,
       end: undefined,
-    });
+    })
   }
 
   function onDrawMove({ x, y }) {
     Object.assign(state, {
       end: { x, y },
-    });
+    })
   }
 
   function onDrawEnd() {
     Object.assign(state, {
       isDrawing: false,
-    });
+    })
   }
 
   function onDrawReset() {
@@ -48,7 +48,7 @@ function useDraw() {
       start: undefined,
       end: undefined,
       isDrawing: false,
-    });
+    })
   }
 
   return {
@@ -57,7 +57,7 @@ function useDraw() {
     onDrawMove,
     onDrawEnd,
     onDrawReset,
-  };
+  }
 }
 
-export default useDraw;
+export default useDraw

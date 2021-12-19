@@ -14,17 +14,17 @@
  * =============================================================
  */
 
-import Layout from '@/layout/index';
-import { Scalars, ScalarsPanel } from '@/views/visual/Visual/scalars';
-import { Medias, MediasPanel } from '@/views/visual/Visual/medias';
-import { Graphs, GraphsPanel } from '@/views/visual/Visual/graphs';
-import { Hyperparms, HyperparmsPanel } from '@/views/visual/Visual/hyperparms';
-import { Features, FeaturesPanel } from '@/views/visual/Visual/features';
-import { Customs, CustomsPanel } from '@/views/visual/Visual/customs';
-import { Statistics, StatisticsPanel } from '@/views/visual/Visual/statistics';
-import { ROCs, ROCsPanel } from '@/views/visual/Visual/rocs';
-import { Embeddings, EmbeddingsPanel } from '@/views/visual/Visual/embeddings';
-import { Exception, ExceptionPanel } from '@/views/visual/Visual/exception';
+import Layout from '@/layout/index'
+import { Scalars, ScalarsPanel } from '@/views/visual/Visual/scalars'
+import { Medias, MediasPanel } from '@/views/visual/Visual/medias'
+import { Graphs, GraphsPanel } from '@/views/visual/Visual/graphs'
+import { Hyperparms, HyperparmsPanel } from '@/views/visual/Visual/hyperparms'
+import { Features, FeaturesPanel } from '@/views/visual/Visual/features'
+import { Customs, CustomsPanel } from '@/views/visual/Visual/customs'
+import { Statistics, StatisticsPanel } from '@/views/visual/Visual/statistics'
+import { ROCs, ROCsPanel } from '@/views/visual/Visual/rocs'
+import { Embeddings, EmbeddingsPanel } from '@/views/visual/Visual/embeddings'
+import { Exception, ExceptionPanel } from '@/views/visual/Visual/exception'
 
 const constantRoutes = [
   {
@@ -167,6 +167,6 @@ const constantRoutes = [
       },
     ],
   },
-];
+]
 
-export default constantRoutes;
+export default constantRoutes

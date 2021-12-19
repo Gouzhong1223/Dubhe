@@ -1,22 +1,18 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="info-table-action-cell">
-    <el-button v-if="!isCurrent" type="text" @click="setCurrent">设置为当前版本</el-button>
+    <el-button v-if="!isCurrent" type="text" @click="setCurrent"
+      >设置为当前版本</el-button
+    >
     <el-popover placement="top" width="200" trigger="click">
       <div>
         <TableTooltip
@@ -43,11 +39,20 @@
         <el-dropdown-item v-if="!isCurrent" @click.native="deleteItem">
           <el-button type="text">删除</el-button>
         </el-dropdown-item>
-        <el-dropdown-item v-click-once :disabled="publishing" @click.native="download(row)">
+        <el-dropdown-item
+          v-click-once
+          :disabled="publishing"
+          @click.native="download(row)"
+        >
           <el-button v-if="!publishing" type="text">
             导出
           </el-button>
-          <el-tooltip v-else content="文件生成中，请稍后" placement="top" :open-delay="400">
+          <el-tooltip
+            v-else
+            content="文件生成中，请稍后"
+            placement="top"
+            :open-delay="400"
+          >
             <el-button class="disabled-button" type="text">
               导出
             </el-button>
@@ -65,10 +70,10 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
-import { Message, MessageBox } from 'element-ui';
+import { computed } from '@vue/composition-api'
+import { Message, MessageBox } from 'element-ui'
 
-import { toFixed, downloadZipFromObjectPath } from '@/utils';
+import { toFixed, downloadZipFromObjectPath } from '@/utils'
 import {
   datasetStatusMap,
   isPublishDataset,
@@ -77,11 +82,15 @@ import {
   showOfRecord,
   isCustomDataset,
   annotationCodeMap,
-} from '@/views/dataset/util';
-import { toggleVersion, deleteVersion, shiftOfRecord } from '@/api/preparation/dataset';
-import { TableTooltip } from '@/hooks/tooltip';
+} from '@/views/dataset/util'
+import {
+  toggleVersion,
+  deleteVersion,
+  shiftOfRecord,
+} from '@/api/preparation/dataset'
+import { TableTooltip } from '@/hooks/tooltip'
 
-const annotationByCode = annotationBy('code');
+const annotationByCode = annotationBy('code')
 
 export default {
   name: 'Actions',
@@ -97,28 +106,31 @@ export default {
     showConvert: Function,
   },
   setup(props, ctx) {
-    const { actions, showConvert } = props;
-    const { $router } = ctx.root;
+    const { actions, showConvert } = props
+    const { $router } = ctx.root
 
     // 发布中
-    const publishing = computed(() => isPublishDataset(props.row));
-    const isCurrent = computed(() => !!props.row.isCurrent);
+    const publishing = computed(() => isPublishDataset(props.row))
+    const isCurrent = computed(() => !!props.row.isCurrent)
     const isPreset = computed(
-      () => props.row.presetFlag && props.row.dataType !== dataTypeCodeMap.CUSTOM
-    );
-    const isOfRecord = computed(() => props.row.isOfRecord);
-    const isCustom = computed(() => isCustomDataset(props.row));
-    const title = computed(() => `${props.row.name}(${props.row.versionName})`);
+      () =>
+        props.row.presetFlag && props.row.dataType !== dataTypeCodeMap.CUSTOM,
+    )
+    const isOfRecord = computed(() => props.row.isOfRecord)
+    const isCustom = computed(() => isCustomDataset(props.row))
+    const title = computed(() => `${props.row.name}(${props.row.versionName})`)
 
     const calculate = (vo = {}) => {
-      const { finished, unfinished, autoFinished, finishAutoTrack } = vo;
-      const allFinished = finished + autoFinished + finishAutoTrack;
-      if (allFinished === 0) return 0;
-      const total = allFinished + unfinished;
-      return `${toFixed(allFinished / total)}%`;
-    };
+      const { finished, unfinished, autoFinished, finishAutoTrack } = vo
+      const allFinished = finished + autoFinished + finishAutoTrack
+      if (allFinished === 0) return 0
+      const total = allFinished + unfinished
+      return `${toFixed(allFinished / total)}%`
+    }
 
-    const progressCount = props.row.progressVO ? calculate(props.row.progressVO) : '--';
+    const progressCount = props.row.progressVO
+      ? calculate(props.row.progressVO)
+      : '--'
 
     const list = {
       status: {
@@ -127,21 +139,26 @@ export default {
       },
       fileCount: { label: '文件数量', value: props.row.fileCount },
       progressVO: { label: '标注进度', value: progressCount },
-    };
+    }
 
     const gotoDetail = () => {
-      const { annotateType } = props.row;
+      const { annotateType } = props.row
       if (isCustomDataset(props.row)) {
-        const customUrlPrefix = annotationByCode(annotationCodeMap.CUSTOM, 'urlPrefix');
+        const customUrlPrefix = annotationByCode(
+          annotationCodeMap.CUSTOM,
+          'urlPrefix',
+        )
         $router.push({
           path: `/data/datasets/${customUrlPrefix}/${props.row.datasetId}`,
-        });
-        return false;
+        })
+        return false
       }
-      const urlPrefix = annotationByCode(annotateType, 'urlPrefix');
-      $router.push({ path: `/data/datasets/${urlPrefix}/${props.row.datasetId}` });
-      return false;
-    };
+      const urlPrefix = annotationByCode(annotateType, 'urlPrefix')
+      $router.push({
+        path: `/data/datasets/${urlPrefix}/${props.row.datasetId}`,
+      })
+      return false
+    }
 
     // 设置为当前版本
     const setCurrent = () => {
@@ -149,10 +166,10 @@ export default {
         datasetId: props.row.datasetId,
         versionName: props.row.versionName,
       }).then(() => {
-        actions.refresh();
-        Message.success('切换版本成功');
-      });
-    };
+        actions.refresh()
+        Message.success('切换版本成功')
+      })
+    }
 
     const deleteItem = () => {
       MessageBox.confirm('是否要删除此版本?', '请确认', {
@@ -164,44 +181,48 @@ export default {
           datasetId: props.row.datasetId,
           versionName: props.row.versionName,
         }).then(() => {
-          actions.refresh();
-          Message.success('删除版本成功');
-        });
-      });
-    };
+          actions.refresh()
+          Message.success('删除版本成功')
+        })
+      })
+    }
 
     const download = (row) => {
-      const prefixUrl = `dataset/${row.datasetId}/versionFile/${row.versionName}`;
-      return downloadZipFromObjectPath(prefixUrl, `${row.datasetId}_${row.versionName}.zip`, {
-        fileName: (file) => file.name.replace(`${prefixUrl}/`, ''),
-        filter: (result) => {
-          // 自定义数据集没有固定目录结构，直接下载即可
-          if (isCustomDataset(row)) return result;
-          return result.filter((item) => {
-            return ['annotation', 'origin'].some((str) =>
-              item.name.startsWith(`${prefixUrl}/${str}`)
-            );
-          });
+      const prefixUrl = `dataset/${row.datasetId}/versionFile/${row.versionName}`
+      return downloadZipFromObjectPath(
+        prefixUrl,
+        `${row.datasetId}_${row.versionName}.zip`,
+        {
+          fileName: (file) => file.name.replace(`${prefixUrl}/`, ''),
+          filter: (result) => {
+            // 自定义数据集没有固定目录结构，直接下载即可
+            if (isCustomDataset(row)) return result
+            return result.filter((item) => {
+              return ['annotation', 'origin'].some((str) =>
+                item.name.startsWith(`${prefixUrl}/${str}`),
+              )
+            })
+          },
         },
-      });
-    };
+      )
+    }
 
     const convert = (row) => {
-      return showConvert(row);
-    };
+      return showConvert(row)
+    }
 
     const onShiftOfRecord = () => {
       shiftOfRecord({
         datasetId: props.row.datasetId,
         versionName: props.row.versionName,
       }).then(() => {
-        actions.refresh();
-        Message.success('开始生成OFRecord');
-      });
-    };
+        actions.refresh()
+        Message.success('开始生成OFRecord')
+      })
+    }
 
-    const valueAccessor = (key, idx, data) => data[key].value || '--';
-    const keyAccessor = (key, idx, data) => data[key].label;
+    const valueAccessor = (key, idx, data) => data[key].value || '--'
+    const keyAccessor = (key, idx, data) => data[key].label
 
     return {
       publishing,
@@ -221,9 +242,9 @@ export default {
       download,
       onShiftOfRecord,
       showOfRecord,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 .tooltip-item-row {

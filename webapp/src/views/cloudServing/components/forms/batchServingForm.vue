@@ -1,21 +1,21 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
-  <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="model-config-wrapper">
+  <el-form
+    ref="form"
+    :model="form"
+    :rules="rules"
+    label-width="120px"
+    class="model-config-wrapper"
+  >
     <BatchUploadDialog
       ref="imgUploadDialog"
       action="fackApi"
@@ -26,7 +26,12 @@
       @close="onUploadClose"
     />
     <el-form-item label="服务名称" prop="name">
-      <el-input ref="nameInput" v-model.trim="form.name" maxlength="32" show-word-limit />
+      <el-input
+        ref="nameInput"
+        v-model.trim="form.name"
+        maxlength="32"
+        show-word-limit
+      />
     </el-form-item>
     <el-form-item label="服务描述" prop="description">
       <el-input
@@ -39,13 +44,21 @@
     </el-form-item>
     <el-divider />
     <el-form-item label="模型类型" prop="modelResource">
-      <el-radio-group v-model="form.modelResource" @change="onModelResourceChange">
+      <el-radio-group
+        v-model="form.modelResource"
+        @change="onModelResourceChange"
+      >
         <el-radio border :label="0" class="mr-0 w-150">我的模型</el-radio>
         <el-radio border :label="1" class="w-150">预训练模型</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item ref="modelBranchId" prop="modelBranchId" label="模型">
-      <el-select v-model="form.modelId" placeholder="请选择模型" filterable @change="onModelChange">
+      <el-select
+        v-model="form.modelId"
+        placeholder="请选择模型"
+        filterable
+        @change="onModelChange"
+      >
         <el-option
           v-for="model in modelList"
           :key="model.id"
@@ -110,7 +123,12 @@
         filterable
         @change="onImageNameChange"
       >
-        <el-option v-for="item in imageNameList" :key="item" :label="item" :value="item" />
+        <el-option
+          v-for="item in imageNameList"
+          :key="item"
+          :label="item"
+          :value="item"
+        />
       </el-select>
       <el-select
         v-model="form.imageTag"
@@ -135,7 +153,10 @@
       :error="inputPathErrorMsg"
     >
       <el-button @click="onUploadDialogClick">上传图片</el-button>
-      <i v-if="!isAdd || uploaded" class="el-icon-circle-check success f18 vm" />
+      <i
+        v-if="!isAdd || uploaded"
+        class="el-icon-circle-check success f18 vm"
+      />
       <el-tooltip
         v-if="!isAdd"
         class="item"
@@ -156,13 +177,20 @@
       @updateRunParams="updateDeployParams"
     />
     <el-form-item label="节点类型" prop="resourcesPoolType">
-      <el-radio-group v-model="form.resourcesPoolType" @change="onNodeTypeChange">
+      <el-radio-group
+        v-model="form.resourcesPoolType"
+        @change="onNodeTypeChange"
+      >
         <el-radio border :label="0" class="mr-0 w-150">CPU</el-radio>
         <el-radio border :label="1" class="w-150">GPU</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="节点规格" prop="resourcesPoolSpecs">
-      <el-select v-model="form.resourcesPoolSpecs" placeholder="请选择节点规格" filterable>
+      <el-select
+        v-model="form.resourcesPoolSpecs"
+        placeholder="请选择节点规格"
+        filterable
+      >
         <el-option
           v-for="specs in specsList"
           :key="specs.id"
@@ -195,22 +223,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import { getUniqueId, invalidFileNameChar, RESOURCES_MODULE_ENUM } from '@/utils';
-import { getServingModel } from '@/api/model/model';
-import { list as getModelVersions } from '@/api/model/modelVersion';
-import { getImageNameList, getImageTagList } from '@/api/trainingImage';
-import { getInferenceAlgorithm, add as addAlgorithm } from '@/api/algorithm/algorithm';
-import { list as getSpecsNames } from '@/api/system/resources';
-import { validateNameWithHyphen } from '@/utils/validate';
-import { IMAGE_PROJECT_TYPE } from '@/views/trainingJob/utils';
+import {
+  getUniqueId,
+  invalidFileNameChar,
+  RESOURCES_MODULE_ENUM,
+} from '@/utils'
+import { getServingModel } from '@/api/model/model'
+import { list as getModelVersions } from '@/api/model/modelVersion'
+import { getImageNameList, getImageTagList } from '@/api/trainingImage'
+import {
+  getInferenceAlgorithm,
+  add as addAlgorithm,
+} from '@/api/algorithm/algorithm'
+import { list as getSpecsNames } from '@/api/system/resources'
+import { validateNameWithHyphen } from '@/utils/validate'
+import { IMAGE_PROJECT_TYPE } from '@/views/trainingJob/utils'
 
-import RunParamForm from '@/components/Training/runParamForm';
-import BaseModal from '@/components/BaseModal';
-import AlgorithmForm from '@/views/algorithm/components/algorithmForm';
+import RunParamForm from '@/components/Training/runParamForm'
+import BaseModal from '@/components/BaseModal'
+import AlgorithmForm from '@/views/algorithm/components/algorithmForm'
 
-import BatchUploadDialog from './batchUploadDialog';
+import BatchUploadDialog from './batchUploadDialog'
 
 const defaultForm = {
   id: null,
@@ -228,7 +263,7 @@ const defaultForm = {
   deployParams: {}, // 部署动态参数
   useScript: false, // 是否使用自定义推理脚本
   algorithmId: null, // 脚本 ID
-};
+}
 
 export default {
   name: 'BatchServingForm',
@@ -279,12 +314,12 @@ export default {
             trigger: 'manual',
             validator: (rule, value, callback) => {
               if (this.isPresetModel && !this.form.modelId) {
-                callback(new Error('请选择模型'));
+                callback(new Error('请选择模型'))
               }
               if (!this.isPresetModel && !this.form.modelBranchId) {
-                callback(new Error('请选择模型及版本'));
+                callback(new Error('请选择模型及版本'))
               }
-              callback();
+              callback()
             },
           },
         ],
@@ -322,232 +357,240 @@ export default {
       // 创建算法表单
       algorithmFormVisible: false,
       algorithmFormSubmitting: false,
-    };
+    }
   },
   computed: {
     ...mapGetters(['user']),
     isAdd() {
-      return this.formType === 'add';
+      return this.formType === 'add'
     },
     isFork() {
-      return this.formType === 'fork';
+      return this.formType === 'fork'
     },
     isPresetModel() {
-      return this.form.modelResource === 1;
+      return this.form.modelResource === 1
     },
     inputPathErrorMsg() {
-      return this.inputPathValid ? null : '请先上传图片';
+      return this.inputPathValid ? null : '请先上传图片'
     },
     scriptErrMsg() {
-      return this.scriptValid ? '' : '请选择自定义推理脚本';
+      return this.scriptValid ? '' : '请选择自定义推理脚本'
     },
     // 批量上传图片的路径
     uploadParams() {
       return {
         objectPath: this.form.inputPath,
-      };
+      }
     },
   },
   methods: {
     // Getters
     async getModels(modelResource, keepValue = false) {
-      this.modelList = await getServingModel(modelResource);
+      this.modelList = await getServingModel(modelResource)
 
       // 修改时需要保留原服务的模型
       if (!keepValue || !this.form.modelId) {
-        this.form.modelBranchId = null;
+        this.form.modelBranchId = null
       } else {
-        const model = this.modelList.find((model) => model.id === this.form.modelId);
+        const model = this.modelList.find(
+          (model) => model.id === this.form.modelId,
+        )
         if (!model) {
-          this.$message.warning('原有模型不存在或不支持部署，请重新选择');
-          this.form.modelId = this.form.modelBranchId = null;
-          return;
+          this.$message.warning('原有模型不存在或不支持部署，请重新选择')
+          this.form.modelId = this.form.modelBranchId = null
+          return
         }
         if (modelResource === 0) {
-          this.getModelVersions(model.id, true);
+          this.getModelVersions(model.id, true)
         }
       }
     },
     async getModelVersions(parentId, keepValue = false) {
-      const data = await getModelVersions({ parentId, current: 1, size: 500 });
-      this.modelVersionList = data.result;
+      const data = await getModelVersions({ parentId, current: 1, size: 500 })
+      this.modelVersionList = data.result
 
       // 修改时需要保留原服务的模型版本
       if (keepValue && this.form.modelBranchId) {
         const version = this.modelVersionList.find(
-          (version) => version.id === this.form.modelBranchId
-        );
+          (version) => version.id === this.form.modelBranchId,
+        )
         if (!version) {
-          this.form.modelBranchId = null;
-          this.$message.warning('原有模型版本不存在，请重新选择');
+          this.form.modelBranchId = null
+          this.$message.warning('原有模型版本不存在，请重新选择')
         }
       }
     },
 
     clearValidateField(fieldName) {
-      this.$refs[fieldName].clearValidate();
+      this.$refs[fieldName].clearValidate()
     },
     validateField(fieldName, trigger = 'manual') {
-      this.$refs[fieldName].validate(trigger);
+      this.$refs[fieldName].validate(trigger)
     },
     // Handlers
     onModelResourceChange(modelResource) {
-      this.form.modelId = this.form.modelBranchId = null;
-      this.getModels(modelResource);
-      this.clearValidateField('modelBranchId');
+      this.form.modelId = this.form.modelBranchId = null
+      this.getModels(modelResource)
+      this.clearValidateField('modelBranchId')
     },
     onModelChange(modelId) {
-      this.form.modelId = modelId;
+      this.form.modelId = modelId
       if (this.isPresetModel) {
-        this.validateField('modelBranchId');
+        this.validateField('modelBranchId')
       } else {
-        this.getModelVersions(modelId);
-        this.form.modelBranchId = null;
+        this.getModelVersions(modelId)
+        this.form.modelBranchId = null
       }
     },
     onModelVersionChange() {
-      this.validateField('modelBranchId');
+      this.validateField('modelBranchId')
     },
     onUploadSuccess() {
-      this.uploaded = true;
-      this.inputPathValid = true;
+      this.uploaded = true
+      this.inputPathValid = true
     },
     onUploadClose() {
-      this.inputPathValid = !this.isAdd || this.uploaded;
+      this.inputPathValid = !this.isAdd || this.uploaded
     },
     async onNodeTypeChange() {
-      this.getSpecList();
+      this.getSpecList()
     },
     async validate(resolve, reject) {
-      let valid = true;
+      let valid = true
       const validCallback = (isValid) => {
-        valid = valid && isValid;
-      };
+        valid = valid && isValid
+      }
       // el-form 表单校验
-      this.$refs.form.validate(validCallback);
+      this.$refs.form.validate(validCallback)
       // 自定义校验
       // 创建批量服务时，必须要求先上传图片
-      this.inputPathValid = !this.isAdd || this.uploaded;
-      valid = valid && this.inputPathValid;
-      valid = this.validateScript() && valid;
+      this.inputPathValid = !this.isAdd || this.uploaded
+      valid = valid && this.inputPathValid
+      valid = this.validateScript() && valid
       if (valid) {
         // 提交表单时，在表单中增加 节点规格 的 JSON 配置
         const selectedSpecs = this.specsList.find(
-          (specs) => specs.specsName === this.form.resourcesPoolSpecs
-        );
+          (specs) => specs.specsName === this.form.resourcesPoolSpecs,
+        )
         if (selectedSpecs) {
-          const { cpuNum, gpuNum, memNum, workspaceRequest } = selectedSpecs;
+          const { cpuNum, gpuNum, memNum, workspaceRequest } = selectedSpecs
           const specsJson = {
             cpuNum: cpuNum * 1000,
             gpuNum,
             memNum,
             workspaceRequest: `${workspaceRequest}M`,
-          };
-          this.form.poolSpecsInfo = JSON.stringify(specsJson);
+          }
+          this.form.poolSpecsInfo = JSON.stringify(specsJson)
         }
         // deployParams 赋值
-        this.form.deployParams = { ...this.deployParams };
-        resolve && resolve(this.form);
+        this.form.deployParams = { ...this.deployParams }
+        resolve && resolve(this.form)
       } else {
-        reject && reject();
+        reject && reject()
       }
     },
 
     initForm(originForm, formType = 'add') {
       // 获取初始表单对象或空对象作为初始表单
-      const form = originForm || Object.create(null);
+      const form = originForm || Object.create(null)
       // formType 赋值
-      this.formType = formType;
+      this.formType = formType
 
       // 根据表单的字段，将初始表单的对应字段赋值到表单上，若字段不存在则使用默认值
       Object.keys(this.form).forEach((key) => {
-        form[key] && (this.form[key] = form[key]);
-      });
+        form[key] && (this.form[key] = form[key])
+      })
       // deployParam 变量单独赋值，如果初始表单不包含这个字段，则赋值空对象，避免对象引用问题
-      this.form.deployParams = form.deployParams || Object.create(null);
+      this.form.deployParams = form.deployParams || Object.create(null)
 
       // 如果是 fork 表单则 name 增加后缀
-      formType === 'fork' && (this.form.name += '-Fork');
+      formType === 'fork' && (this.form.name += '-Fork')
 
       // 获取模型列表和镜像列表
-      this.getModels(this.form.modelResource, true);
-      this.getImageNames(true);
-      this.getAlgorithms(true);
-      this.getSpecList(true);
+      this.getModels(this.form.modelResource, true)
+      this.getImageNames(true)
+      this.getAlgorithms(true)
+      this.getSpecList(true)
 
       // 如果 inputPath 不存在，则更新 inputPath
       if (!this.form.inputPath) {
-        this.updateObjectPath();
+        this.updateObjectPath()
       }
 
       // 渲染完成后清空表单验证，避免初始值导致表单错误提示
       this.$nextTick(() => {
-        this.$refs.form.clearValidate();
-      });
+        this.$refs.form.clearValidate()
+      })
     },
     resetForm() {
-      this.form = { ...defaultForm };
+      this.form = { ...defaultForm }
       // 清空 deployParams
-      this.form.deployParams = Object.create(null);
+      this.form.deployParams = Object.create(null)
       this.$nextTick(() => {
-        this.clearValidate();
-      });
+        this.clearValidate()
+      })
     },
     clearValidate(...args) {
-      return this.$refs.form.clearValidate.apply(this, args);
+      return this.$refs.form.clearValidate.apply(this, args)
     },
     updateObjectPath() {
-      this.form.inputPath = `serving/input/${this.user.id}/${getUniqueId()}`;
+      this.form.inputPath = `serving/input/${this.user.id}/${getUniqueId()}`
     },
     onUploadDialogClick() {
-      this.$refs.imgUploadDialog.show();
+      this.$refs.imgUploadDialog.show()
     },
 
     // 自定义推理脚本
     // 获取自定义推理脚本列表
     getAlgorithms(keepValue = false) {
       getInferenceAlgorithm().then((res) => {
-        this.algorithmList = res;
+        this.algorithmList = res
 
         if (keepValue && this.form.algorithmId) {
-          if (!this.algorithmList.some((algorithm) => algorithm.id === this.form.algorithmId)) {
-            this.$message.warning('原有算法不存在，请重新选择');
-            this.form.algorithmId = null;
+          if (
+            !this.algorithmList.some(
+              (algorithm) => algorithm.id === this.form.algorithmId,
+            )
+          ) {
+            this.$message.warning('原有算法不存在，请重新选择')
+            this.form.algorithmId = null
           }
         }
-      });
+      })
     },
     onUseScriptChange(useScript) {
-      this.form.algorithmId = null;
-      !useScript && this.validateScript();
+      this.form.algorithmId = null
+      !useScript && this.validateScript()
     },
     goCreateAlgorithm() {
-      this.algorithmFormVisible = true;
+      this.algorithmFormVisible = true
       this.$nextTick(() => {
         this.$refs.algorithmForm.initForm({
           inference: true,
-        });
-      });
+        })
+      })
     },
     validateScript() {
       if (!this.form.useScript) {
-        this.scriptValid = true;
+        this.scriptValid = true
       } else {
-        this.scriptValid = this.form.algorithmId !== null;
+        this.scriptValid = this.form.algorithmId !== null
       }
-      return this.scriptValid;
+      return this.scriptValid
     },
 
     // 镜像选择
     async getImageNames(keepValue = false) {
-      this.imageNameList = await getImageNameList({ projectTypes: [IMAGE_PROJECT_TYPE.TRAIN] });
+      this.imageNameList = await getImageNameList({
+        projectTypes: [IMAGE_PROJECT_TYPE.TRAIN],
+      })
       if (!keepValue || !this.form.imageName) {
-        this.form.imageTag = null;
+        this.form.imageTag = null
       } else if (!this.imageNameList.includes(this.form.imageName)) {
-        this.$message.warning('原有镜像不存在，请重新选择');
-        this.form.imageName = this.form.imageTag = null;
+        this.$message.warning('原有镜像不存在，请重新选择')
+        this.form.imageName = this.form.imageTag = null
       } else {
-        this.getImageTags(this.form.imageName, true);
+        this.getImageTags(this.form.imageName, true)
       }
     },
     // 获取镜像版本列表
@@ -555,43 +598,47 @@ export default {
       this.imageTagList = await getImageTagList({
         projectType: IMAGE_PROJECT_TYPE.TRAIN,
         imageName,
-      });
+      })
       if (keepValue && this.form.imageTag) {
-        if (!this.imageTagList.some((image) => image.imageTag === this.form.imageTag)) {
-          this.$message.warning('原有镜像版本不存在，请重新选择');
-          this.form.imageTag = null;
+        if (
+          !this.imageTagList.some(
+            (image) => image.imageTag === this.form.imageTag,
+          )
+        ) {
+          this.$message.warning('原有镜像版本不存在，请重新选择')
+          this.form.imageTag = null
         }
       }
     },
     onImageNameChange(imageName) {
-      this.form.imageTag = null;
+      this.form.imageTag = null
       if (imageName) {
-        this.getImageTags(imageName);
-        return;
+        this.getImageTags(imageName)
+        return
       }
-      this.imageTagList = [];
+      this.imageTagList = []
     },
 
     // 自定义运行参数
     updateDeployParams(params) {
-      this.deployParams = params;
+      this.deployParams = params
     },
 
     // 上传自定义推理脚本
     onDialogClose() {
       setTimeout(() => {
-        this.$refs.algorithmForm.resetForm();
-      }, 700);
+        this.$refs.algorithmForm.resetForm()
+      }, 700)
     },
     onSubmitForm() {
       this.$refs.algorithmForm.validate(async (form) => {
-        this.algorithmFormSubmitting = true;
-        [this.form.algorithmId] = await addAlgorithm(form).finally(() => {
-          this.algorithmFormSubmitting = false;
-        });
-        this.algorithmFormVisible = false;
-        this.getAlgorithms(true);
-      });
+        this.algorithmFormSubmitting = true
+        ;[this.form.algorithmId] = await addAlgorithm(form).finally(() => {
+          this.algorithmFormSubmitting = false
+        })
+        this.algorithmFormVisible = false
+        this.getAlgorithms(true)
+      })
     },
 
     // 获取节点规格列表
@@ -603,24 +650,26 @@ export default {
           current: 1,
           size: 500,
         })
-      ).result;
+      ).result
       if (!keepValue || !this.form.resourcesPoolSpecs) {
         if (this.specsList.length) {
           // 默认选择第一个节点
-          this.form.resourcesPoolSpecs = this.specsList[0].specsName;
+          this.form.resourcesPoolSpecs = this.specsList[0].specsName
         }
       } else if (
-        !this.specsList.find((specs) => specs.specsName === this.form.resourcesPoolSpecs)
+        !this.specsList.find(
+          (specs) => specs.specsName === this.form.resourcesPoolSpecs,
+        )
       ) {
-        this.$message.warning('原有资源规格不存在，请重新选择');
+        this.$message.warning('原有资源规格不存在，请重新选择')
         if (this.specsList.length) {
           // 默认选择第一个节点
-          this.form.resourcesPoolSpecs = this.specsList[0].specsName;
+          this.form.resourcesPoolSpecs = this.specsList[0].specsName
         }
       }
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

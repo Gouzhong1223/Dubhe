@@ -13,15 +13,15 @@
  * limitations under the License.
  * =============================================================
  */
-import { api_version, api_prefix } from '../../config';
-import { findMatchRule, isURL } from './util';
+import { api_version, api_prefix } from '../../config'
+import { findMatchRule, isURL } from './util'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const url = require('url');
+const url = require('url')
 
-const { VUE_APP_DATA_API, VUE_APP_VISUAL_API, VUE_APP_BASE_API } = process.env;
+const { VUE_APP_DATA_API, VUE_APP_VISUAL_API, VUE_APP_BASE_API } = process.env
 
-const fullPrefix = `${api_prefix}/${api_version}`;
+const fullPrefix = `${api_prefix}/${api_version}`
 
 // 路由访问规则配置，最后一个为默认访问配置
 const rules = [
@@ -36,12 +36,12 @@ const rules = [
   {
     host: url.resolve(VUE_APP_BASE_API, fullPrefix),
   },
-];
+]
 
 const mapper = (pathname) => {
-  if (isURL(pathname)) return undefined;
-  const rule = findMatchRule(rules)(pathname);
-  return rule.host;
-};
+  if (isURL(pathname)) return undefined
+  const rule = findMatchRule(rules)(pathname)
+  return rule.host
+}
 
-export default mapper;
+export default mapper

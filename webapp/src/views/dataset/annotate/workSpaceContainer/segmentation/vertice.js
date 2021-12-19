@@ -14,11 +14,11 @@
  * =============================================================
  */
 
-import cx from 'classnames';
-import { isFunction } from 'lodash';
-import { noop } from '@/utils';
-import Drag from '@/components/Drag';
-import { defaultColor } from '@/views/dataset/util';
+import cx from 'classnames'
+import { isFunction } from 'lodash'
+import { noop } from '@/utils'
+import Drag from '@/components/Drag'
+import { defaultColor } from '@/views/dataset/util'
 
 export default {
   name: 'Vertice',
@@ -60,29 +60,30 @@ export default {
     offset: Function,
   },
   setup(props) {
-    const { handleChange } = props;
+    const { handleChange } = props
     const dragEnd = (drag, event, options = {}) => {
-      const { prevState } = options;
+      const { prevState } = options
       // fix 双击触发移动选框
-      if (!prevState.isMoving || (prevState.dx === 0 && prevState.dy === 0)) return;
+      if (!prevState.isMoving || (prevState.dx === 0 && prevState.dy === 0))
+        return
       handleChange('UPDATE_POINT', {
         drag,
         index: props.index,
         shape: props.shape,
-      });
-    };
+      })
+    }
 
     const dragMove = (drag) => {
       handleChange('MOVE_POINT', {
         drag,
         index: props.index,
         shape: props.shape,
-      });
-    };
+      })
+    }
     return {
       dragEnd,
       dragMove,
-    };
+    }
   },
   render() {
     const {
@@ -97,13 +98,13 @@ export default {
       fillOpacity,
       handlePointClick,
       offset,
-    } = this;
+    } = this
 
     const handleClick = (event) => {
-      event.stopPropagation();
-      event.preventDefault();
-      handlePointClick(this.index, this.shape, event);
-    };
+      event.stopPropagation()
+      event.preventDefault()
+      handlePointClick(this.index, this.shape, event)
+    }
 
     const dragProps = {
       props: {
@@ -113,9 +114,9 @@ export default {
         width: stageWidth,
         height: stageHeight,
       },
-    };
+    }
 
-    const pos = isFunction(offset) ? offset(position) : position;
+    const pos = isFunction(offset) ? offset(position) : position
 
     return (
       <g class={cx(`vertice-group cp`, className)}>
@@ -141,10 +142,10 @@ export default {
                 onMousemove={draggable ? drag.dragMove : noop}
                 onMouseup={draggable ? drag.dragEnd : noop}
               ></circle>
-            );
+            )
           }}
         </Drag>
       </g>
-    );
+    )
   },
-};
+}

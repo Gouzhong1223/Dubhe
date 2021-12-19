@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-import Vue from 'vue';
-import { isEmpty } from 'lodash';
-import { h, reactive, watch } from '@vue/composition-api';
+import Vue from 'vue'
+import { isEmpty } from 'lodash'
+import { h, reactive, watch } from '@vue/composition-api'
 
-import { mergeProps, inBoundary } from '@/utils';
-import Drag from '@/components/Drag';
-import { BrushHandle, BrushCorner } from '@/components/svg';
-import Bbox from './bbox';
+import { mergeProps, inBoundary } from '@/utils'
+import Drag from '@/components/Drag'
+import { BrushHandle, BrushCorner } from '@/components/svg'
+import Bbox from './bbox'
 
 export default {
   name: 'BboxWrapper',
@@ -75,11 +75,11 @@ export default {
       onBrushHandleEnd,
       setCurAnnotation,
       getZoom,
-    } = props;
+    } = props
 
     function getExtent() {
-      const { data = {} } = props.annotate;
-      const { extent = {} } = data;
+      const { data = {} } = props.annotate
+      const { extent = {} } = data
       return {
         extent,
         start: {
@@ -90,7 +90,7 @@ export default {
           x: extent.x1,
           y: extent.y1,
         },
-      };
+      }
     }
 
     const state = reactive({
@@ -98,40 +98,40 @@ export default {
       drag: undefined,
       bounds: { x0: 0, x1: bounds.width, y0: 0, y1: bounds.height },
       ...getExtent(),
-    });
+    })
 
     const updateBrush = (updater, callback) => {
-      const newState = updater(state);
+      const newState = updater(state)
       Vue.nextTick(() => {
-        Object.assign(state, newState);
+        Object.assign(state, newState)
         if (typeof callback === 'function') {
-          callback(state);
+          callback(state)
         }
-      });
-    };
+      })
+    }
 
     // handler 拖拽事件
     const updateBrushHandler = (updater) => {
       updateBrush(updater, (state) => {
         if (typeof onBrushHandleChange === 'function') {
-          onBrushHandleChange(state, props.annotate);
+          onBrushHandleChange(state, props.annotate)
         }
-      });
-    };
+      })
+    }
 
     // handler 拖拽结束
     const updateBrushHandlerEnd = (updater) => {
       updateBrush(updater, (state) => {
         if (typeof onBrushHandleEnd === 'function') {
-          onBrushHandleEnd(state, props.annotate);
+          onBrushHandleEnd(state, props.annotate)
         }
-      });
-    };
+      })
+    }
 
     const handles = () => {
-      const { handleSize } = props;
-      const { x, y, width, height } = offset(props.annotate);
-      const handleOffset = handleSize / 2;
+      const { handleSize } = props
+      const { x, y, width, height } = offset(props.annotate)
+      const handleOffset = handleSize / 2
 
       return {
         top: {
@@ -158,13 +158,13 @@ export default {
           height: height + handleSize,
           width: handleSize,
         },
-      };
-    };
+      }
+    }
 
     const corners = () => {
-      const { handleSize } = props;
-      const { x, y, width, height } = offset(props.annotate);
-      const handleOffset = handleSize / 2;
+      const { handleSize } = props
+      const { x, y, width, height } = offset(props.annotate)
+      const handleOffset = handleSize / 2
 
       return {
         topLeft: {
@@ -183,47 +183,47 @@ export default {
           x: x + width - handleOffset,
           y: y + height - handleOffset,
         },
-      };
-    };
+      }
+    }
 
     const brushHandlerStart = () => {
-      setCurAnnotation(props.annotate);
-    };
+      setCurAnnotation(props.annotate)
+    }
 
     const selectionDragStart = (drag) => {
       const start = {
         x: drag.x + drag.dx,
         y: drag.y + drag.dy,
-      };
-      const end = { ...start };
+      }
+      const end = { ...start }
       const transformState = {
         start,
         end,
-      };
+      }
 
       // 回调
       if (typeof onDragStart === 'function') {
-        onDragStart(transformState, props.annotate);
+        onDragStart(transformState, props.annotate)
       }
-    };
+    }
 
     const selectionDragMove = (drag) => {
-      const { zoom } = getZoom();
+      const { zoom } = getZoom()
       updateBrush(
         (prevBrush) => {
-          const { x: x0, y: y0 } = prevBrush.start;
-          const { x: x1, y: y1 } = prevBrush.end;
+          const { x: x0, y: y0 } = prevBrush.start
+          const { x: x1, y: y1 } = prevBrush.end
           // 位置比较计算
-          const _scale = zoom * scale;
+          const _scale = zoom * scale
           const validDx =
             drag.dx > 0
               ? Math.min(drag.dx / _scale, prevBrush.bounds.x1 - x1)
-              : Math.max(drag.dx / _scale, prevBrush.bounds.x0 - x0);
+              : Math.max(drag.dx / _scale, prevBrush.bounds.x0 - x0)
 
           const validDy =
             drag.dy > 0
               ? Math.min(drag.dy / _scale, prevBrush.bounds.y1 - y1)
-              : Math.max(drag.dy / _scale, prevBrush.bounds.y0 - y0);
+              : Math.max(drag.dy / _scale, prevBrush.bounds.y0 - y0)
           return {
             ...prevBrush,
             isBrushing: true,
@@ -239,20 +239,20 @@ export default {
               validDx,
               validDy,
             },
-          };
+          }
         },
         (nextState) => {
           if (typeof onDragMove === 'function') {
-            onDragMove(nextState, props.annotate);
+            onDragMove(nextState, props.annotate)
           }
-        }
-      );
-    };
+        },
+      )
+    }
 
     const selectionDragEnd = (state, event, options = {}) => {
-      const { prevState } = options;
+      const { prevState } = options
       // fix 双击触发移动选框
-      if (!prevState.isMoving) return;
+      if (!prevState.isMoving) return
       updateBrush(
         (prevBrush) => {
           const nextBrush = {
@@ -268,18 +268,18 @@ export default {
               x: Math.max(prevBrush.extent.x0, prevBrush.extent.x1),
               y: Math.max(prevBrush.extent.y0, prevBrush.extent.y1),
             },
-          };
+          }
 
-          return nextBrush;
+          return nextBrush
         },
         (nextState) => {
           // 回调
           if (typeof onDragEnd === 'function') {
-            onDragEnd(nextState, props.annotate);
+            onDragEnd(nextState, props.annotate)
           }
-        }
-      );
-    };
+        },
+      )
+    }
 
     watch(
       () => props.bounds,
@@ -287,10 +287,10 @@ export default {
         if (!isEmpty(next)) {
           Object.assign(state, {
             bounds: { x0: 0, x1: bounds.width, y0: 0, y1: bounds.height },
-          });
+          })
         }
-      }
-    );
+      },
+    )
 
     return {
       state,
@@ -304,14 +304,21 @@ export default {
       selectionDragStart,
       selectionDragMove,
       selectionDragEnd,
-    };
+    }
   },
   render(h) {
-    const { annotate = {}, scale, brush, handleSize, transformer, currentAnnotationId } = this;
-    const handles = this.handles();
-    const corners = this.corners();
+    const {
+      annotate = {},
+      scale,
+      brush,
+      handleSize,
+      transformer,
+      currentAnnotationId,
+    } = this
+    const handles = this.handles()
+    const corners = this.corners()
 
-    const pos = this.offset(annotate);
+    const pos = this.offset(annotate)
 
     const bboxProps = {
       props: {
@@ -321,7 +328,7 @@ export default {
         transformer,
         currentAnnotationId,
       },
-    };
+    }
 
     const dragProps = {
       props: {
@@ -332,21 +339,22 @@ export default {
         width: this.svg.width,
         height: this.svg.height,
       },
-    };
+    }
 
     return (
       <Drag {...dragProps} key={annotate.id}>
         {(draw) => {
           const style = {
-            pointerEvents: brush.isBrushing || this.state.activeHandle ? 'none' : 'all',
-          };
+            pointerEvents:
+              brush.isBrushing || this.state.activeHandle ? 'none' : 'all',
+          }
           const _props = mergeProps(bboxProps, {
             props: { ...draw, brush: this.state },
             style,
-          });
+          })
 
           const Handles = Object.keys(handles).map((handleKey) => {
-            const handle = handles[handleKey];
+            const handle = handles[handleKey]
             return (
               <BrushHandle
                 key={`handle-${handleKey}`}
@@ -360,11 +368,11 @@ export default {
                 updateBrushEnd={this.updateBrushHandlerEnd}
                 getZoom={this.getZoom}
               />
-            );
-          });
+            )
+          })
 
           const Corners = Object.keys(corners).map((cornerKey) => {
-            const corner = corners[cornerKey];
+            const corner = corners[cornerKey]
 
             return (
               <BrushCorner
@@ -385,8 +393,8 @@ export default {
                 updateBrushEnd={this.updateBrushHandlerEnd}
                 getZoom={this.getZoom}
               />
-            );
-          });
+            )
+          })
 
           return (
             <g>
@@ -400,7 +408,7 @@ export default {
                   onMouseleave={(event) => {
                     // 超出边界判断
                     if (!inBoundary(event, event.target)) {
-                      draw.dragEnd();
+                      draw.dragEnd()
                     }
                   }}
                   style={{
@@ -412,9 +420,9 @@ export default {
               <g class="bbox-handles-group">{Handles}</g>
               <g class="bbox-corners-group">{Corners}</g>
             </g>
-          );
+          )
         }}
       </Drag>
-    );
+    )
   },
-};
+}

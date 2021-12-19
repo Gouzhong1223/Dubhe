@@ -14,11 +14,11 @@
  * =============================================================
  */
 
-import cx from 'classnames';
-import { isNil } from 'lodash';
-import { chroma } from '@/utils';
+import cx from 'classnames'
+import { isNil } from 'lodash'
+import { chroma } from '@/utils'
 
-import { defaultColor, defaultFill } from '@/views/dataset/util';
+import { defaultColor, defaultFill } from '@/views/dataset/util'
 
 export default {
   name: 'Bbox',
@@ -42,8 +42,8 @@ export default {
     imgRef: HTMLImageElement,
   },
   render(h, context) {
-    const { props } = context;
-    const { style } = context.data;
+    const { props } = context
+    const { style } = context.data
     const {
       annotate = {},
       currentAnnotationId,
@@ -53,23 +53,23 @@ export default {
       brush,
       transformer,
       ...rest // does this work?
-    } = props;
-    const { data = {} } = annotate;
-    const { bbox, color } = data;
+    } = props
+    const { data = {} } = annotate
+    const { bbox, color } = data
 
-    if (isNil(bbox)) return null;
+    if (isNil(bbox)) return null
 
-    const bgColor = color || defaultFill;
+    const bgColor = color || defaultFill
 
-    const isActive = currentAnnotationId === annotate.id;
-    const colorAlpha = isActive ? 0.4 : 0.1;
+    const isActive = currentAnnotationId === annotate.id
+    const colorAlpha = isActive ? 0.4 : 0.1
 
-    const fill = chroma(bgColor).alpha(colorAlpha);
+    const fill = chroma(bgColor).alpha(colorAlpha)
 
-    let transform = null;
+    let transform = null
     // 匹配当前标注
     if (annotate.id === transformer.id) {
-      transform = `translate(${transformer.dx}, ${transformer.dy})`;
+      transform = `translate(${transformer.dx}, ${transformer.dy})`
     }
 
     return (
@@ -95,6 +95,6 @@ export default {
           {...rest}
         />
       </g>
-    );
+    )
   },
-};
+}

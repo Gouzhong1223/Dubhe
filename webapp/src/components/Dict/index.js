@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Dict from './Dict';
+import Dict from './Dict'
 
 const install = (Vue) => {
   Vue.mixin({
@@ -23,23 +23,23 @@ const install = (Vue) => {
         const dict = {
           dict: {},
           label: {},
-        };
+        }
         return {
           dict,
-        };
+        }
       }
-      return {};
+      return {}
     },
     created() {
       if (this.$options.dicts instanceof Array) {
         new Dict(this.dict).init(this.$options.dicts, () => {
           this.$nextTick(() => {
-            this.$emit('dictReady');
-          });
-        });
+            this.$emit('dictReady')
+          })
+        })
       }
     },
-  });
-};
+  })
+}
 
-export default { install };
+export default { install }

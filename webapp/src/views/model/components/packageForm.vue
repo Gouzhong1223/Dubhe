@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -68,40 +62,73 @@
     </el-form-item>
     <el-divider content-position="left">输入</el-divider>
     <el-form-item label="图像尺寸" prop="size">
-      <el-input v-model.number="form.size" placeholder="请输入图像尺寸" class="w-200" />
+      <el-input
+        v-model.number="form.size"
+        placeholder="请输入图像尺寸"
+        class="w-200"
+      />
     </el-form-item>
     <el-form-item label="均一化范围" prop="range" class="is-required">
-      <el-input v-model.trim="form.range" placeholder="请输入均一化范围" class="w-200" />
+      <el-input
+        v-model.trim="form.range"
+        placeholder="请输入均一化范围"
+        class="w-200"
+      />
     </el-form-item>
     <el-form-item label="色彩空间" prop="space">
-      <el-input v-model.trim="form.space" disabled placeholder="请输入色彩空间" class="w-200" />
-      <el-tooltip effect="dark" content="炼知模型仅支持 RGB 格式的数据集" placement="top">
+      <el-input
+        v-model.trim="form.space"
+        disabled
+        placeholder="请输入色彩空间"
+        class="w-200"
+      />
+      <el-tooltip
+        effect="dark"
+        content="炼知模型仅支持 RGB 格式的数据集"
+        placement="top"
+      >
         <i class="el-icon-warning-outline primary f18 v-text-top" />
       </el-tooltip>
     </el-form-item>
     <el-divider content-position="left">归一化</el-divider>
     <el-form-item label="均值" prop="mean" class="is-required">
-      <el-input v-model.trim="form.mean" placeholder="请输入均值" class="w-200" />
+      <el-input
+        v-model.trim="form.mean"
+        placeholder="请输入均值"
+        class="w-200"
+      />
     </el-form-item>
     <el-form-item label="方差" prop="std" class="is-required">
-      <el-input v-model.trim="form.std" placeholder="请输入方差" class="w-200" />
+      <el-input
+        v-model.trim="form.std"
+        placeholder="请输入方差"
+        class="w-200"
+      />
     </el-form-item>
     <el-divider content-position="left">Entry Args</el-divider>
     <el-form-item label="预训练模型" prop="entryPretrained">
       <el-switch v-model="form.entryPretrained" />
     </el-form-item>
     <el-form-item label="分类数量" prop="entryNumClasses">
-      <el-input v-model.number="form.entryNumClasses" placeholder="请输入分类数量" class="w-200" />
+      <el-input
+        v-model.number="form.entryNumClasses"
+        placeholder="请输入分类数量"
+        class="w-200"
+      />
     </el-form-item>
     <el-divider content-position="left">Other Metadata</el-divider>
     <el-form-item label="分类数量" prop="otherNumClasses">
-      <el-input v-model.number="form.otherNumClasses" placeholder="请输入分类数量" class="w-200" />
+      <el-input
+        v-model.number="form.otherNumClasses"
+        placeholder="请输入分类数量"
+        class="w-200"
+      />
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import { generateNumArrValidator } from '../util';
+import { generateNumArrValidator } from '../util'
 
 const defaultForm = {
   id: null,
@@ -119,7 +146,7 @@ const defaultForm = {
   entryPretrained: true, // 是否为预训练模型
   entryNumClasses: null, // 分类数量
   otherNumClasses: null, // OtherMetadata 里的分类数量
-};
+}
 
 export default {
   name: 'PackageForm',
@@ -128,12 +155,40 @@ export default {
     return {
       form: { ...defaultForm },
       rules: {
-        entryName: [{ required: true, message: '请选择入口函数', trigger: 'manual' }],
-        name: [{ required: true, message: '请输入模型名称', trigger: ['blur', 'change'] }],
-        dataset: [{ required: true, message: '请输入数据集名称', trigger: ['blur', 'change'] }],
-        task: [{ required: true, message: '请选择任务类型', trigger: 'manual' }],
-        url: [{ required: true, message: '请输入模型地址', trigger: ['blur', 'change'] }],
-        size: [{ required: true, message: '请输入图像尺寸', trigger: ['blur', 'change'] }],
+        entryName: [
+          { required: true, message: '请选择入口函数', trigger: 'manual' },
+        ],
+        name: [
+          {
+            required: true,
+            message: '请输入模型名称',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        dataset: [
+          {
+            required: true,
+            message: '请输入数据集名称',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        task: [
+          { required: true, message: '请选择任务类型', trigger: 'manual' },
+        ],
+        url: [
+          {
+            required: true,
+            message: '请输入模型地址',
+            trigger: ['blur', 'change'],
+          },
+        ],
+        size: [
+          {
+            required: true,
+            message: '请输入图像尺寸',
+            trigger: ['blur', 'change'],
+          },
+        ],
         range: [
           {
             validator: generateNumArrValidator({
@@ -145,67 +200,91 @@ export default {
             trigger: 'blur',
           },
         ],
-        space: [{ required: true, message: '请输入色彩空间', trigger: ['blur', 'change'] }],
+        space: [
+          {
+            required: true,
+            message: '请输入色彩空间',
+            trigger: ['blur', 'change'],
+          },
+        ],
         mean: [
           {
-            validator: generateNumArrValidator({ count: 3, emptyMsg: '请输入均值' }),
+            validator: generateNumArrValidator({
+              count: 3,
+              emptyMsg: '请输入均值',
+            }),
             trigger: 'blur',
           },
         ],
         std: [
           {
-            validator: generateNumArrValidator({ count: 3, emptyMsg: '请输入方差' }),
+            validator: generateNumArrValidator({
+              count: 3,
+              emptyMsg: '请输入方差',
+            }),
             trigger: 'blur',
           },
         ],
         entryPretrained: [
-          { required: true, message: '请选择是否为预训练模型', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '请选择是否为预训练模型',
+            trigger: ['blur', 'change'],
+          },
         ],
         entryNumClasses: [
-          { required: true, message: '请输入分类数量', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '请输入分类数量',
+            trigger: ['blur', 'change'],
+          },
         ],
         otherNumClasses: [
-          { required: true, message: '请输入分类数量', trigger: ['blur', 'change'] },
+          {
+            required: true,
+            message: '请输入分类数量',
+            trigger: ['blur', 'change'],
+          },
         ],
       },
-    };
+    }
   },
   methods: {
     initForm(id) {
       // 该表单只获取 id 值，无需编辑
-      this.form.id = id;
+      this.form.id = id
     },
     resetForm() {
-      this.form = { ...defaultForm };
+      this.form = { ...defaultForm }
       this.$nextTick(() => {
-        this.clearValidate();
-      });
+        this.clearValidate()
+      })
     },
     validate(resolve, reject) {
-      let valid = true;
+      let valid = true
       this.$refs.form.validate((isValid) => {
-        valid = valid && isValid;
-      });
+        valid = valid && isValid
+      })
 
       if (valid) {
-        const data = { ...this.form };
+        const data = { ...this.form }
         // 把数组字符串解析为数组，JSON 有效性在表单校验时进行
-        data.range = JSON.parse(data.range);
-        data.mean = JSON.parse(data.mean);
-        data.std = JSON.parse(data.std);
-        resolve && resolve(data);
+        data.range = JSON.parse(data.range)
+        data.mean = JSON.parse(data.mean)
+        data.std = JSON.parse(data.std)
+        resolve && resolve(data)
       } else {
-        reject && reject(this.form);
+        reject && reject(this.form)
       }
     },
     validateField(field) {
-      this.$refs[field].validate('manual');
+      this.$refs[field].validate('manual')
     },
     clearValidate() {
-      this.$refs.form.clearValidate();
+      this.$refs.form.clearValidate()
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

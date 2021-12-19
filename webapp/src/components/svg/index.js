@@ -14,5 +14,5 @@
  * =============================================================
  */
 
-export { default as Group } from './group';
-export * from './brush';
+export { default as Group } from './group'
+export * from './brush'

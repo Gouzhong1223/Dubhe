@@ -1,21 +1,26 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
-Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
-You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
-required by applicable law or agreed to in writing, software * distributed under the License is
-distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. * See the License for the specific language governing permissions and * limitations under
-the License. * ============================================================= */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="dwv-content">
     <p>欢迎使用凌波智能医疗影像标注工具！</p>
     <p>
       在这里，你可以通过上传标准
-      <el-link href="https://www.dicomstandard.org/" target="_blank">DICOM</el-link>
+      <el-link href="https://www.dicomstandard.org/" target="_blank"
+        >DICOM</el-link
+      >
       文件就能实现随时随地进行医疗影像查询、阅片、智能识别、影像标注等常见操作。系统还提供了一些标准工具对影像文件进行操作，包括滚动浏览，缩放/拖拽，窗宽/窗位，对比，预设窗口等工具。
     </p>
     <p>
-      所有 DICOM 标签都可以点击「查看标签」按钮进行查询，你可以指定搜索条件对信息进行过滤。
+      所有 DICOM
+      标签都可以点击「查看标签」按钮进行查询，你可以指定搜索条件对信息进行过滤。
     </p>
     <p>下列工具定义了与用户操作相关的产品交互行为：</p>
     <el-collapse v-model="activeNames" accordion>
@@ -71,7 +76,10 @@ the License. * ============================================================= */
       <el-collapse-item title="更多（More）" name="More">
         <div class="ml-40">
           <el-collapse v-model="activeSubNames" accordion>
-            <el-collapse-item title="标注精度（AnnotationPrecision）" name="AnnotationPrecision">
+            <el-collapse-item
+              title="标注精度（AnnotationPrecision）"
+              name="AnnotationPrecision"
+            >
               <div>设置自动标注生成路径的显示精度</div>
               <div>精度可调范围为1%~100%，手动标注结果不支持调节。</div>
               <div>100%时显示算法生成的所有标注点。</div>
@@ -89,9 +97,9 @@ export default {
     return {
       activeNames: ['Scroll'],
       activeSubNames: [],
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .dwv-content {

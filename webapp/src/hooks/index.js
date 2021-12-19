@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-export * from './brush';
-export * from './zoom';
-export * from './tooltip';
-export * from './image';
-export * from './draw';
-export * from './utils';
-export * from './mapGetters';
-export * from './dict';
-export * from './localStorage';
-export * from './pagination';
-export * from './sort';
+export * from './brush'
+export * from './zoom'
+export * from './tooltip'
+export * from './image'
+export * from './draw'
+export * from './utils'
+export * from './mapGetters'
+export * from './dict'
+export * from './localStorage'
+export * from './pagination'
+export * from './sort'

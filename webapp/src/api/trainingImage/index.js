@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.IMAGE}/ptImage/info`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage/uploadImage`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -46,7 +46,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage`,
     method: 'delete',
     data: ids,
-  });
+  })
 }
 
 export function getImageNameList(params) {
@@ -54,7 +54,7 @@ export function getImageNameList(params) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage/imageNameList`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getImageTagList(params) {
@@ -62,7 +62,7 @@ export function getImageTagList(params) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function setPrecast(params) {
@@ -70,14 +70,14 @@ export function setPrecast(params) {
     url: `/${API_MODULE_NAME.IMAGE}/ptImage/imageResource`,
     method: 'put',
     params,
-  });
+  })
 }
 
 export function getTerminalImageList() {
   return request({
     url: `/${API_MODULE_NAME.IMAGE}/ptImage/terminalImageList`,
     method: 'get',
-  });
+  })
 }
 
-export default { list, add, edit };
+export default { list, add, edit }

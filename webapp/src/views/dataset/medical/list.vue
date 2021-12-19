@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -62,7 +56,11 @@
       </cdOperation>
     </div>
     <div class="mb-10 flex flex-between">
-      <el-tabs :value="activePanel" class="eltabs-inlineblock" @tab-click="handlePanelClick">
+      <el-tabs
+        :value="activePanel"
+        class="eltabs-inlineblock"
+        @tab-click="handlePanelClick"
+      >
         <el-tab-pane label="我的数据集" name="0" />
         <el-tab-pane label="预置数据集" name="2" />
       </el-tabs>
@@ -75,7 +73,10 @@
             @click="onResetFresh"
           />
         </el-tooltip>
-        <TenantSelector :datasetListType="datasetListType" style="margin: 0 3px 10px 10px;" />
+        <TenantSelector
+          :datasetListType="datasetListType"
+          style="margin: 0 3px 10px 10px;"
+        />
       </div>
     </div>
     <!--表格渲染-->
@@ -87,8 +88,20 @@
       @selection-change="crud.selectionChangeHandler"
       @sort-change="crud.sortChange"
     >
-      <el-table-column fixed type="selection" min-width="40" :selectable="canSelect" />
-      <el-table-column fixed prop="id" width="88" label="ID" sortable="custom" align="left">
+      <el-table-column
+        fixed
+        type="selection"
+        min-width="40"
+        :selectable="canSelect"
+      />
+      <el-table-column
+        fixed
+        prop="id"
+        width="88"
+        label="ID"
+        sortable="custom"
+        align="left"
+      >
         <template slot-scope="scope">
           <span>
             {{ scope.row.id }}
@@ -105,9 +118,12 @@
         class-name="dataset-name-col"
       >
         <template slot-scope="scope">
-          <el-link class="mr-10 name-col" type="primary" @click="goDetail(scope.row)">{{
-            scope.row.name
-          }}</el-link>
+          <el-link
+            class="mr-10 name-col"
+            type="primary"
+            @click="goDetail(scope.row)"
+            >{{ scope.row.name }}</el-link
+          >
           <Edit
             class="edit-icon"
             :row="scope.row"
@@ -132,7 +148,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="progress" min-width="200" label="进度" align="left">
+      <el-table-column
+        prop="progress"
+        min-width="200"
+        label="进度"
+        align="left"
+      >
         <template slot-scope="scope">
           <div v-if="scope.row.progress !== null" class="flex progress-wrap">
             <i v-show="scope.row.pollIng" class="el-icon-loading" />
@@ -159,7 +180,12 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="patientID" width="160" label="PatientID" align="left">
+      <el-table-column
+        prop="patientID"
+        width="160"
+        label="PatientID"
+        align="left"
+      >
         <template slot-scope="scope">
           <span>
             {{ scope.row.patientID }}
@@ -173,7 +199,11 @@
         align="left"
       >
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.studyInstanceUID" enterable placement="top">
+          <el-tooltip
+            :content="scope.row.studyInstanceUID"
+            enterable
+            placement="top"
+          >
             <div class="ellipsis" style=" display: inline-block; width: 100%;">
               {{ scope.row.studyInstanceUID }}
             </div>
@@ -187,7 +217,11 @@
         align="left"
       >
         <template slot-scope="scope">
-          <el-tooltip :content="scope.row.seriesInstanceUID" enterable placement="top">
+          <el-tooltip
+            :content="scope.row.seriesInstanceUID"
+            enterable
+            placement="top"
+          >
             <div class="ellipsis" style=" display: inline-block; width: 100%;">
               {{ scope.row.seriesInstanceUID }}
             </div>
@@ -211,7 +245,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="bodyPartExamined" min-width="150" label="BodyPart" align="left">
+      <el-table-column
+        prop="bodyPartExamined"
+        min-width="150"
+        label="BodyPart"
+        align="left"
+      >
         <template slot="header">
           <dropdown-header
             title="BodyPart"
@@ -262,19 +301,19 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
-import { mapState } from 'vuex';
-import { isNil, findKey } from 'lodash';
+import { Message } from 'element-ui'
+import { mapState } from 'vuex'
+import { isNil, findKey } from 'lodash'
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import cdOperation from '@crud/CD.operation'
 import crudDataset, {
   autoAnnotate,
   queryDatasetsProgress,
   editDataset,
-} from '@/api/preparation/medical';
-import CRUD, { presenter, header, form, crud } from '@crud/crud';
-import rrOperation from '@crud/RR.operation';
-import cdOperation from '@crud/CD.operation';
-import datePickerMixin from '@/mixins/datePickerMixin';
-import DropdownHeader from '@/components/DropdownHeader';
+} from '@/api/preparation/medical'
+import datePickerMixin from '@/mixins/datePickerMixin'
+import DropdownHeader from '@/components/DropdownHeader'
 
 import {
   isStatus,
@@ -282,12 +321,12 @@ import {
   getDatasetType,
   isIncludeStatus,
   isPresetDataset,
-} from '@/views/dataset/util';
+} from '@/views/dataset/util'
 
-import Edit from '@/components/InlineTableEdit';
-import { toFixed, isEqualByProp } from '@/utils';
-import { TableTooltip } from '@/hooks/tooltip';
-import store from '@/store';
+import Edit from '@/components/InlineTableEdit'
+import { toFixed, isEqualByProp } from '@/utils'
+import { TableTooltip } from '@/hooks/tooltip'
+import store from '@/store'
 
 import {
   medicalProgressMap,
@@ -296,13 +335,13 @@ import {
   medicalStatusMap,
   medicalAnnotationMap,
   medicalFirstLevelCodeMap,
-} from './constant';
-import CreateDataset from './create-dataset';
-import TenantSelector from '../components/tenant';
-import Status from './status';
-import Action from './action';
-import EditDataset from './edit-dataset';
-import '../style/list.scss';
+} from './constant'
+import CreateDataset from './create-dataset'
+import TenantSelector from '../components/tenant'
+import Status from './status'
+import Action from './action'
+import EditDataset from './edit-dataset'
+import '../style/list.scss'
 
 const defaultForm = {
   id: null,
@@ -313,7 +352,7 @@ const defaultForm = {
   modality: null,
   bodyPartExamined: null,
   type: 0,
-};
+}
 
 export default {
   name: 'MedicalDataset',
@@ -332,11 +371,11 @@ export default {
   beforeRouteEnter(to, from, next) {
     // 拦截非医学场景
     if (getDatasetType() !== 1) {
-      next('/data/datasets');
+      next('/data/datasets')
     } else {
       // 正常跳转，并将导航高亮切换为数据集管理
-      to.meta.activeMenu = '/data/datasets';
-      next();
+      to.meta.activeMenu = '/data/datasets'
+      next()
     }
   },
   cruds() {
@@ -347,7 +386,7 @@ export default {
         add: false,
       },
       queryOnPresenterCreated: false,
-    });
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud(), datePickerMixin],
   data() {
@@ -366,54 +405,56 @@ export default {
       progressKeys: Object.keys(medicalProgressMap),
       datasetStatusMap,
       autoTimer: {}, // 自动标注定时器
-    };
+    }
   },
   computed: {
     ...mapState({
       activePanel: (state) => {
-        return String(state.dataset.activePanelMedical);
+        return String(state.dataset.activePanelMedical)
       },
     }),
     isNil() {
-      return isNil;
+      return isNil
     },
     localQuery() {
       return {
         type: this.activePanel || 0,
-      };
+      }
     },
     // 区分预置数据集和普通数据集操作权限
     operationProps() {
-      return isPresetDataset(this.activePanel) ? { disabled: true } : undefined;
+      return isPresetDataset(this.activePanel) ? { disabled: true } : undefined
     },
     annotateTypeList() {
       // 原始标注列表
-      const rawAnnotateTypeList = Object.keys(medicalFirstLevelCodeMap).map((d) => ({
-        label: medicalFirstLevelCodeMap[d].name,
-        value: Number(d),
-      }));
-      return [{ label: '全部', value: null }].concat(rawAnnotateTypeList);
+      const rawAnnotateTypeList = Object.keys(medicalFirstLevelCodeMap).map(
+        (d) => ({
+          label: medicalFirstLevelCodeMap[d].name,
+          value: Number(d),
+        }),
+      )
+      return [{ label: '全部', value: null }].concat(rawAnnotateTypeList)
     },
     modalityList() {
       const rawModalityList = Object.keys(modalityMap).map((d) => ({
         label: modalityMap[d],
         value: d,
-      }));
-      return [{ label: 'ALL', value: null }].concat(rawModalityList);
+      }))
+      return [{ label: 'ALL', value: null }].concat(rawModalityList)
     },
     bodyPartList() {
       const rawBodyPartList = Object.keys(bodyPartMap).map((d) => ({
         label: bodyPartMap[d],
         value: d,
-      }));
-      return [{ label: 'ALL', value: null }].concat(rawBodyPartList);
+      }))
+      return [{ label: 'ALL', value: null }].concat(rawBodyPartList)
     },
     statusList() {
       const rawStatusList = Object.keys(medicalStatusMap).map((d) => ({
         label: medicalStatusMap[d].name,
         value: Number(d),
-      }));
-      return [{ label: '全部', value: 'all' }].concat(rawStatusList);
+      }))
+      return [{ label: '全部', value: 'all' }].concat(rawStatusList)
     },
   },
   watch: {
@@ -427,49 +468,51 @@ export default {
           prev.some((d) => d.pollIng))
       ) {
         // 获取自动标注状态列表的结果
-        const autoList = next.filter((d) => isStatus(d, 'AUTO_ANNOTATING'));
+        const autoList = next.filter((d) => isStatus(d, 'AUTO_ANNOTATING'))
 
         Promise.all(
           autoList.map((row) => {
             // vue hack, 初始化状态
-            this.$set(row, 'pollIng', true);
-            return this.poll(row, datasetStatusMap[row.status]?.status);
-          })
-        );
+            this.$set(row, 'pollIng', true)
+            return this.poll(row, datasetStatusMap[row.status]?.status)
+          }),
+        )
       }
     },
   },
   created() {
-    this.crud.toQuery();
+    this.crud.toQuery()
   },
   beforeDestroy() {
-    Object.keys(this.autoTimer).forEach((key) => clearTimeout(this.autoTimer[key]));
+    Object.keys(this.autoTimer).forEach((key) =>
+      clearTimeout(this.autoTimer[key]),
+    )
   },
   methods: {
     keyAccessor: (key) => medicalProgressMap[key],
     valueAccessor: (key, idx, data) => data[key],
     [CRUD.HOOK.beforeRefresh]() {
-      this.crud.query = { ...this.query, ...this.localQuery };
+      this.crud.query = { ...this.query, ...this.localQuery }
     },
     [CRUD.HOOK.afterRefresh]() {
-      const { data } = this.crud;
-      this.queryRowProgress(data.map((d) => d.id));
+      const { data } = this.crud
+      this.queryRowProgress(data.map((d) => d.id))
     },
     canSelect(row) {
-      return !(row.pollIng || isStatus(row, 'AUTO_ANNOTATING'));
+      return !(row.pollIng || isStatus(row, 'AUTO_ANNOTATING'))
     },
     handleEditDatasetName(name, row) {
       const editForm = {
         medicalId: row.id,
         name,
-      };
+      }
       editDataset(editForm).then(() => {
-        this.crud.status.edit = CRUD.STATUS.NORMAL;
-        this.$set(row, 'name', editForm.name);
+        this.crud.status.edit = CRUD.STATUS.NORMAL
+        this.$set(row, 'name', editForm.name)
         if (row.pollIng) {
-          this.poll(row, datasetStatusMap[row.status]?.status);
+          this.poll(row, datasetStatusMap[row.status]?.status)
         }
-      });
+      })
     },
     handleEditDataset(data, row) {
       const editForm = {
@@ -477,185 +520,185 @@ export default {
         name: data.name,
         remark: data.remark,
         type: 0,
-      };
+      }
       return editDataset(editForm)
         .then(() => {
           this.$message({
             message: '数据集修改成功',
             type: 'success',
-          });
+          })
         })
         .finally(() => {
-          this.editRow = null;
-          this.toggleEdit();
-          this.onResetFresh();
-        });
+          this.editRow = null
+          this.toggleEdit()
+          this.onResetFresh()
+        })
     },
     // 查看标注
     async goDetail(row) {
       if (isStatus(row, 'AUTO_ANNOTATING')) {
-        return Message.error('数据集当前状态不能进行查看');
+        return Message.error('数据集当前状态不能进行查看')
       }
       this.$router.push({
         path: `/data/datasets/medical/viewer/${row.id}`,
-      });
-      return null;
+      })
+      return null
     },
     // 开始自动标注
     autoAnnotate(row) {
-      this.$set(row, 'pollIng', true); // 新增响应式变量，并设置禁用操作台按钮
+      this.$set(row, 'pollIng', true) // 新增响应式变量，并设置禁用操作台按钮
       return autoAnnotate(row.id)
         .then(() => {
           this.$message({
             message: '自动标注任务开始',
             type: 'success',
-          });
+          })
           // 启动自动标注轮询
-          this.poll(row, 'AUTO_ANNOTATING');
+          this.poll(row, 'AUTO_ANNOTATING')
         })
         .catch((e) => {
-          row.pollIng = false;
+          row.pollIng = false
           this.$message({
             message: e.message || '自动标注任务失败',
             type: 'error',
-          });
-        });
+          })
+        })
     },
     // 进度条颜色
     progressFill(status) {
       const fillMap = {
         AUTO_ANNOTATING: '#52C41A',
-      };
-      if (fillMap[status]) return fillMap[status];
-      return '#52C41A';
+      }
+      if (fillMap[status]) return fillMap[status]
+      return '#52C41A'
     },
     handlePanelClick(tab) {
-      this.onResetQuery();
-      store.dispatch('dataset/togglePanelMedical', Number(tab.name));
+      this.onResetQuery()
+      store.dispatch('dataset/togglePanelMedical', Number(tab.name))
       Object.assign(this.localQuery, {
         type: Number(tab.name),
-      });
-      this.crud.refresh();
+      })
+      this.crud.refresh()
     },
     // 导入自定义数据集表单显隐切换
     toggleImport() {
-      this.importVisible = !this.importVisible;
+      this.importVisible = !this.importVisible
     },
     handleClose() {
-      this.importVisible = false;
+      this.importVisible = false
     },
     // 修改数据集表单显隐切换
     toggleEdit(row) {
-      this.editVisible = !this.editVisible;
-      this.editRow = row;
+      this.editVisible = !this.editVisible
+      this.editRow = row
     },
     handleEditClose() {
-      this.editVisible = false;
+      this.editVisible = false
     },
     onResetQuery() {
       // 重置查询条件
-      this.query = {};
-      this.crud.order = null;
-      this.crud.sort = null;
-      this.crud.params = {};
-      this.crud.page.current = 1;
+      this.query = {}
+      this.crud.order = null
+      this.crud.sort = null
+      this.crud.params = {}
+      this.crud.page.current = 1
       // 重置表格的排序和筛选条件
-      this.modality = null;
-      this.bodyPartExamined = null;
-      this.datasetStatusFilter = 'all';
-      this.$refs.table.clearSort();
+      this.modality = null
+      this.bodyPartExamined = null
+      this.datasetStatusFilter = 'all'
+      this.$refs.table.clearSort()
     },
     onResetFresh() {
-      this.onResetQuery();
-      this.crud.refresh();
+      this.onResetQuery()
+      this.crud.refresh()
     },
     // 将进度条单独拆分
     queryRowProgress(ids) {
-      if (ids.length === 0) return;
+      if (ids.length === 0) return
       queryDatasetsProgress({ ids }).then((res) => {
         const nextData = this.crud.data.map((d) => {
-          const rowProgress = res[d.id] || null;
-          return { ...d, progress: rowProgress };
-        });
+          const rowProgress = res[d.id] || null
+          return { ...d, progress: rowProgress }
+        })
 
         Object.assign(this.crud, {
           data: nextData,
-        });
-      });
+        })
+      })
     },
     getProgress(row) {
-      let percent = 0;
+      let percent = 0
       if (!isNil(row.progress)) {
         const total =
           row.progress.autoFinished +
           row.progress.finished +
           row.progress.unfinished +
-          row.progress.manualAnnotating;
+          row.progress.manualAnnotating
         if (total !== 0) {
-          percent = (row.progress.autoFinished + row.progress.finished) / total;
+          percent = (row.progress.autoFinished + row.progress.finished) / total
         }
       } else if (isIncludeStatus(row, ['AUTO_ANNOTATED', 'ANNOTATED'])) {
-        percent = 1;
+        percent = 1
       }
-      return toFixed(percent, 2, 0);
+      return toFixed(percent, 2, 0)
     },
     getProgressData(progress) {
       return !isNil(progress)
         ? progress
-        : { unfinished: 0, finished: 0, autoFinished: 0, manualAnnotating: 0 };
+        : { unfinished: 0, finished: 0, autoFinished: 0, manualAnnotating: 0 }
     },
     filter(column, value) {
-      this[column] = value;
-      this.crud.params[column] = value;
-      this.crud.page.current = 1;
-      this.crud.toQuery();
+      this[column] = value
+      this.crud.params[column] = value
+      this.crud.page.current = 1
+      this.crud.toQuery()
     },
     datasetStatusFilter2Type(filter) {
-      if (filter === 'all') return null;
-      return filter;
+      if (filter === 'all') return null
+      return filter
     },
     filterByDatasetStatus(command) {
       if (command === this.datasetStatusFilter) {
-        return;
+        return
       }
-      this.datasetStatusFilter = command;
-      this.crud.params.status = this.datasetStatusFilter2Type(command);
-      this.crud.page.current = 1;
-      this.crud.refresh();
+      this.datasetStatusFilter = command
+      this.crud.params.status = this.datasetStatusFilter2Type(command)
+      this.crud.page.current = 1
+      this.crud.refresh()
     },
     parseAnnotateType(row, column, cellValue) {
-      return (medicalAnnotationMap[cellValue] || {}).parentName || '';
+      return (medicalAnnotationMap[cellValue] || {}).parentName || ''
     },
     parseModality(row, column, cellValue = 0) {
-      return modalityMap[cellValue];
+      return modalityMap[cellValue]
     },
     parseBodyPartExamined(row, column, cellValue = 0) {
-      return bodyPartMap[cellValue];
+      return bodyPartMap[cellValue]
     },
     // 轮询状态
     poll(row, type, options = {}) {
-      return this.setTime(row, 0, { type, callback: options.callback });
+      return this.setTime(row, 0, { type, callback: options.callback })
     },
     setTime(row, times, { type, callback }) {
       // 轮询事件超过 5 min，失败
       if (times > 100) {
-        this.autoTimer[row.id] && clearTimeout(this.autoTimer[row.id]);
-        row.pollIng = false;
-        return Promise.reject(new Error('更新数据集状态超时'));
+        this.autoTimer[row.id] && clearTimeout(this.autoTimer[row.id])
+        row.pollIng = false
+        return Promise.reject(new Error('更新数据集状态超时'))
       }
 
       return this.datasetPoll(row, type).then(() => {
         if (row.pollIng) {
-          this.autoTimer[row.id] && clearTimeout(this.autoTimer[row.id]);
+          this.autoTimer[row.id] && clearTimeout(this.autoTimer[row.id])
           this.autoTimer[row.id] = setTimeout(() => {
-            this.setTime(row, times + 1, { type, callback });
-          }, 3000);
+            this.setTime(row, times + 1, { type, callback })
+          }, 3000)
         }
         // 回调
         if (typeof callback === 'function') {
-          callback(row);
+          callback(row)
         }
-      });
+      })
     },
     // 数据集轮询进度
     datasetPoll(row, type) {
@@ -663,21 +706,23 @@ export default {
       if (type === 'AUTO_ANNOTATING') {
         // 自动标注中
         return queryDatasetsProgress({ ids: row.id }).then((res) => {
-          row.progress = res[row.id]; // 更新最新自动标注进度
+          row.progress = res[row.id] // 更新最新自动标注进度
           if (res[row.id].unfinished !== 0) {
-            row.pollIng = true;
-            row.status = findKey(datasetStatusMap, { status: 'AUTO_ANNOTATING' }); // 更新标注状态
+            row.pollIng = true
+            row.status = findKey(datasetStatusMap, {
+              status: 'AUTO_ANNOTATING',
+            }) // 更新标注状态
           } else {
-            row.pollIng = false;
-            row.status = findKey(datasetStatusMap, { status: 'AUTO_ANNOTATED' }); // 更新标注状态
-            return Promise.resolve(row);
+            row.pollIng = false
+            row.status = findKey(datasetStatusMap, { status: 'AUTO_ANNOTATED' }) // 更新标注状态
+            return Promise.resolve(row)
           }
-          return null;
-        });
+          return null
+        })
       }
       // 异常兼容
-      return Promise.reject(new Error(`数据集 ${row.id} 查询错误`));
+      return Promise.reject(new Error(`数据集 ${row.id} 查询错误`))
     },
   },
-};
+}
 </script>

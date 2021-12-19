@@ -14,11 +14,11 @@
  * =============================================================
  */
 
-import { reactive, ref } from '@vue/composition-api';
-import { dictDetail } from '@/api/user';
+import { reactive, ref } from '@vue/composition-api'
+import { dictDetail } from '@/api/user'
 
 // 字典数据缓存
-const cache = {};
+const cache = {}
 
 /**
  * 使用字典名列表获取字典
@@ -26,55 +26,55 @@ const cache = {};
  */
 export function useDicts(names) {
   // 根据 names 初始化字典和标签对象
-  const dicts = {};
-  const labels = {};
+  const dicts = {}
+  const labels = {}
   names.forEach((name) => {
-    dicts[name] = null;
-    labels[name] = null;
-  });
+    dicts[name] = null
+    labels[name] = null
+  })
 
   // 生成响应式字典和标签对象
-  const reactiveDicts = reactive(dicts);
-  const reactiveLabels = reactive(labels);
+  const reactiveDicts = reactive(dicts)
+  const reactiveLabels = reactive(labels)
 
   // 字典数据处理
   const handleData = (data) => {
-    Object.assign(reactiveDicts, { [data.name]: data.dictDetails });
-    const labelResult = {};
+    Object.assign(reactiveDicts, { [data.name]: data.dictDetails })
+    const labelResult = {}
     data.dictDetails.forEach((detail) => {
-      labelResult[detail.value] = detail.label;
-    });
-    Object.assign(reactiveLabels, { [data.name]: labelResult });
-  };
+      labelResult[detail.value] = detail.label
+    })
+    Object.assign(reactiveLabels, { [data.name]: labelResult })
+  }
 
-  const ps = [];
+  const ps = []
   names.forEach((dict) => {
     // 如果存在缓存数据，则直接添加到数组中
     if (cache[dict]) {
-      handleData(cache[dict]);
-      return;
+      handleData(cache[dict])
+      return
     }
     ps.push(
       dictDetail(dict).then((data) => {
-        handleData(data);
+        handleData(data)
         // 同一页面多个组件同时请求同一字典时，只有第一个返回的数据才会写入缓存
         if (!cache[dict]) {
-          cache[dict] = data;
+          cache[dict] = data
         }
-      })
-    );
-  });
+      }),
+    )
+  })
 
   // 字典请求完成标志
-  const dictReadyFlag = ref(false);
+  const dictReadyFlag = ref(false)
 
   Promise.all(ps).then(() => {
-    dictReadyFlag.value = true;
-  });
+    dictReadyFlag.value = true
+  })
 
   return {
     dicts: reactiveDicts,
     labels: reactiveLabels,
     dictReadyFlag,
-  };
+  }
 }

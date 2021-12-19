@@ -16,7 +16,9 @@
         </div>
       </div>
       <el-input :value="state.form.fileType" class="dn" />
-      <div class="el-form-item__tip"><el-link>没有数据？查看并下载预置模板</el-link></div>
+      <div class="el-form-item__tip">
+        <el-link>没有数据？查看并下载预置模板</el-link>
+      </div>
     </el-form-item>
     <el-form-item label="上传文件" prop="file">
       <upload-inline
@@ -36,12 +38,12 @@
   </div>
 </template>
 <script>
-import Vue from 'vue';
-import { computed, ref } from '@vue/composition-api';
-import cx from 'classnames';
+import Vue from 'vue'
+import { computed, ref } from '@vue/composition-api'
+import cx from 'classnames'
 
-import UploadInline from '@/components/UploadForm/inline';
-import { tableUploadProps } from '@/views/dataset/util';
+import UploadInline from '@/components/UploadForm/inline'
+import { tableUploadProps } from '@/views/dataset/util'
 
 export default {
   name: 'UploaderTable',
@@ -58,45 +60,49 @@ export default {
     loading: Boolean,
   },
   setup(props, ctx) {
-    const { setForm, validateField } = props;
-    const fileUploadForm = ref(null);
+    const { setForm, validateField } = props
+    const fileUploadForm = ref(null)
 
     const getImageKlass = (item) =>
       cx(`image-select-item item-${item}`, {
         'is-active': item === props.state.form.fileType,
-      });
+      })
 
     const selectFileType = (item) => {
-      if (item === props.state.form.fileType) return;
-      setForm({ fileType: item, file: null });
-    };
+      if (item === props.state.form.fileType) return
+      setForm({ fileType: item, file: null })
+    }
 
     const preview = () => {
       props.tableForm.validate((isValid) => {
-        if (!isValid) return;
-        ctx.emit('preview', props.state.form.file.raw, props.state.form.fileType);
-      });
-    };
+        if (!isValid) return
+        ctx.emit(
+          'preview',
+          props.state.form.file.raw,
+          props.state.form.fileType,
+        )
+      })
+    }
 
     const fileChange = (file) => {
-      setForm({ file });
+      setForm({ file })
       Vue.nextTick(() => {
-        validateField('file');
-      });
-    };
+        validateField('file')
+      })
+    }
 
     const fileRemove = () => {
-      setForm({ file: null });
-    };
+      setForm({ file: null })
+    }
 
     const uploadOptions = computed(() => {
-      const accept = props.state.form.fileType === 'csv' ? '.csv' : '.xls,.xlsx';
+      const accept = props.state.form.fileType === 'csv' ? '.csv' : '.xls,.xlsx'
       return {
         ...tableUploadProps,
         accept,
         hash: true,
-      };
-    });
+      }
+    })
 
     return {
       uploadOptions,
@@ -106,7 +112,7 @@ export default {
       fileChange,
       fileRemove,
       fileUploadForm,
-    };
+    }
   },
-};
+}
 </script>

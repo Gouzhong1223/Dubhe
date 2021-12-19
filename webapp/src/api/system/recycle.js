@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/recycleTask`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function del(ids) {
@@ -30,7 +30,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ADMIN}/recycleTask`,
     method: 'delete',
     data: { recycleTaskIdList: ids },
-  });
+  })
 }
 
 export function restoreTask(params) {
@@ -38,14 +38,14 @@ export function restoreTask(params) {
     url: `/${API_MODULE_NAME.ADMIN}/recycleTask`,
     method: 'put',
     params,
-  });
+  })
 }
 
 export function getRecycleModuleMap() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/recycleTask/recycleModuleMap`,
     method: 'get',
-  });
+  })
 }
 
-export default { list, del };
+export default { list, del }

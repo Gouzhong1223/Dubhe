@@ -1,44 +1,56 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
     <!-- 创建资源独占 -->
     <div class="py-4">
-      <el-button type="primary" icon="el-icon-plus" round @click="doCreateIsolation()"
+      <el-button
+        type="primary"
+        icon="el-icon-plus"
+        round
+        @click="doCreateIsolation()"
         >创建资源独占</el-button
       >
     </div>
     <!--表格渲染-->
-    <el-table ref="table" v-loading="loading" :data="nodeList" highlight-current-row>
+    <el-table
+      ref="table"
+      v-loading="loading"
+      :data="nodeList"
+      highlight-current-row
+    >
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-table :data="scope.row.pods">
             <el-table-column prop="podName" label="POD" show-overflow-tooltip />
             <el-table-column prop="status" label="状态" align="center">
-              <template slot-scope="props">{{ dict.label.pods_status[props.row.status] }}</template>
+              <template slot-scope="props">{{
+                dict.label.pods_status[props.row.status]
+              }}</template>
             </el-table-column>
             <el-table-column label="CPU" align="center">
               <template slot-scope="props">{{ props.row.podCpu }}</template>
             </el-table-column>
             <el-table-column label="内存" align="center">
-              <template slot-scope="props">{{ props.row.podMemory | parseMemory }}</template>
+              <template slot-scope="props">{{
+                props.row.podMemory | parseMemory
+              }}</template>
             </el-table-column>
             <el-table-column prop="podCard" label="GPU" align="center" />
-            <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip width="160">
+            <el-table-column
+              prop="createTime"
+              label="创建时间"
+              show-overflow-tooltip
+              width="160"
+            >
               <template slot-scope="props">
                 <span>{{ parseTime(props.row.podCreateTime) }}</span>
               </template>
@@ -55,9 +67,13 @@
       <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.warning">
-            {{ dict.label.node_warning[scope.row.warning] || scope.row.warning }}
+            {{
+              dict.label.node_warning[scope.row.warning] || scope.row.warning
+            }}
           </span>
-          <span v-else> {{ dict.label.node_status[scope.row.status] || scope.row.status }} </span>
+          <span v-else>
+            {{ dict.label.node_status[scope.row.status] || scope.row.status }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="CPU (使用中 / 总数)" align="center">
@@ -69,7 +85,8 @@
           </el-tooltip>
         </template>
         <template slot-scope="scope"
-          >{{ scope.row.nodeCpu }} / {{ scope.row.totalNodeCpu * 1000 }}m</template
+          >{{ scope.row.nodeCpu }} /
+          {{ scope.row.totalNodeCpu * 1000 }}m</template
         >
       </el-table-column>
       <el-table-column label="内存 (使用中 / 总数)" align="center">
@@ -93,7 +110,10 @@
       <el-table-column prop="ip" label="IP" width="210" />
       <el-table-column label="操作" width="120px">
         <template #default="scope">
-          <el-button v-if="!scope.row.isolation" type="text" @click="doCreateIsolation(scope.row)"
+          <el-button
+            v-if="!scope.row.isolation"
+            type="text"
+            @click="doCreateIsolation(scope.row)"
             >资源独占</el-button
           >
           <el-button v-else type="text" @click="doRemoveIsolation(scope.row)"
@@ -146,7 +166,12 @@
             placeholder="请选择节点"
             @change="validateField('nodeNames')"
           >
-            <el-option v-for="node of openNodeNameList" :key="node" :label="node" :value="node" />
+            <el-option
+              v-for="node of openNodeNameList"
+              :key="node"
+              :label="node"
+              :value="node"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -155,10 +180,14 @@
 </template>
 
 <script>
-import { parseTime } from '@/utils';
-import { getNodes, addNodeIsolation, removeNodeIsolation } from '@/api/system/node';
-import { findByNickName } from '@/api/system/user';
-import BaseModal from '@/components/BaseModal';
+import { parseTime } from '@/utils'
+import {
+  getNodes,
+  addNodeIsolation,
+  removeNodeIsolation,
+} from '@/api/system/node'
+import { findByNickName } from '@/api/system/user'
+import BaseModal from '@/components/BaseModal'
 
 export default {
   name: 'Node',
@@ -170,7 +199,7 @@ export default {
     parseMemory(value) {
       return value.substring(0, value.indexOf('Mi')) > 1024
         ? `${(value.substring(0, value.indexOf('Mi')) / 1024).toFixed(2)}Gi`
-        : value;
+        : value
     },
   },
   data() {
@@ -205,95 +234,102 @@ export default {
       filterList: [],
       userList: [],
       page: 1,
-    };
+    }
   },
   computed: {
     openNodeNameList() {
-      return this.nodeList.filter((node) => !node.isolation).map((node) => node.name);
+      return this.nodeList
+        .filter((node) => !node.isolation)
+        .map((node) => node.name)
     },
   },
   created() {
-    this.getNodes();
+    this.getNodes()
   },
   methods: {
     parseTime,
     async getNodes() {
-      this.loading = true;
+      this.loading = true
       getNodes()
         .then((res) => {
-          this.nodeList = res;
+          this.nodeList = res
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     async onIsolationOpen() {
-      this.userAllList = await findByNickName();
-      this.filterList = this.userAllList;
-      this.getUserList();
+      this.userAllList = await findByNickName()
+      this.filterList = this.userAllList
+      this.getUserList()
     },
     getUserList() {
       // 下拉分页每页为10条数据
-      const limit = 10;
-      if (!this.filterList.length || this.userList.length === this.filterList.length) {
-        return;
+      const limit = 10
+      if (
+        !this.filterList.length ||
+        this.userList.length === this.filterList.length
+      ) {
+        return
       }
       this.userList = this.userList.concat(
-        this.filterList.slice((this.page - 1) * limit, this.page * limit)
-      );
-      this.page += 1;
+        this.filterList.slice((this.page - 1) * limit, this.page * limit),
+      )
+      this.page += 1
     },
     filterUserName(username) {
       this.filterList = username
-        ? this.userAllList.filter((item) => item.username.indexOf(username) !== -1)
-        : this.userAllList;
-      this.page = 1;
-      this.userList = [];
-      this.getUserList();
+        ? this.userAllList.filter(
+            (item) => item.username.indexOf(username) !== -1,
+          )
+        : this.userAllList
+      this.page = 1
+      this.userList = []
+      this.getUserList()
     },
     doCreateIsolation(node) {
       if (node) {
-        this.isolationForm.nodeNames = [node.name];
+        this.isolationForm.nodeNames = [node.name]
       }
-      this.isolationVisible = true;
+      this.isolationVisible = true
     },
     doRemoveIsolation(node) {
       this.$confirm('此操作将会移除该节点的资源独占', '请确认').then(() => {
         removeNodeIsolation([node.name]).then(() => {
-          this.$message.success('资源独占已移除');
-          this.getNodes();
-        });
-      });
+          this.$message.success('资源独占已移除')
+          this.getNodes()
+        })
+      })
     },
     onIsolationSubmit() {
       this.$refs.isolationForm.validate((valid) => {
         if (valid) {
-          this.isolationSubmitting = true;
+          this.isolationSubmitting = true
           addNodeIsolation(this.isolationForm)
             .then(() => {
-              this.getNodes();
-              this.$message.success('资源独占创建成功');
-              this.isolationVisible = false;
+              this.getNodes()
+              this.$message.success('资源独占创建成功')
+              this.isolationVisible = false
             })
             .finally(() => {
-              this.isolationSubmitting = false;
-            });
+              this.isolationSubmitting = false
+            })
         }
-      });
+      })
     },
     onIsolationClose() {
       this.isolationForm = {
         userId: null,
         nodeNames: [],
-      };
-      this.userList = [];
-      this.filterList = [];
-      this.page = 1;
-      this.$refs.isolationForm.clearValidate();
+      }
+      this.userList = []
+      this.filterList = []
+      this.page = 1
+      this.$refs.isolationForm.clearValidate()
     },
     validateField(field) {
-      this.$refs[field].validate('manual');
+      this.$refs[field].validate('manual')
     },
   },
-};
+}
 </script>

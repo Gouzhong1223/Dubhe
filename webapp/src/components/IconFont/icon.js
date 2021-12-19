@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import { h } from '@vue/composition-api';
-import { svgBaseProps } from './utils';
+import { h } from '@vue/composition-api'
+import { svgBaseProps } from './utils'
 
 const Icon = {
   name: 'Icon',
@@ -28,7 +28,7 @@ const Icon = {
         attrs: {
           ...svgBaseProps,
         },
-      };
+      }
       return h(
         'svg',
         {
@@ -38,24 +38,24 @@ const Icon = {
           },
           ...svgProps,
         },
-        ctx.slots.default()
-      );
-    };
+        ctx.slots.default(),
+      )
+    }
 
     // 事件
     const iProps = {
       on: ctx.listeners,
-    };
+    }
 
     return {
       renderInnerNode,
       iProps,
-    };
+    }
   },
   render() {
-    const { iProps } = this;
-    return <i {...iProps}>{this.renderInnerNode()}</i>;
+    const { iProps } = this
+    return <i {...iProps}>{this.renderInnerNode()}</i>
   },
-};
+}
 
-export default Icon;
+export default Icon

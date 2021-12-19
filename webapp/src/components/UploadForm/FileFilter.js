@@ -16,7 +16,7 @@
 
 export default class FileFilter {
   constructor(judge, message) {
-    this.judge = judge;
-    this.message = message;
+    this.judge = judge
+    this.message = message
   }
 }

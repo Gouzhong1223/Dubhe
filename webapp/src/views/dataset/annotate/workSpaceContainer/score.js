@@ -14,13 +14,13 @@
  * =============================================================
  */
 
-import { isNil } from 'lodash';
-import { addSuffix, colorByLuminance, chroma } from '@/utils';
+import { isNil } from 'lodash'
+import { addSuffix, colorByLuminance, chroma } from '@/utils'
 
-import { defaultColor } from '@/views/dataset/util';
+import { defaultColor } from '@/views/dataset/util'
 
 // 分数最小宽度
-const MinWidth = 48;
+const MinWidth = 48
 
 export default {
   name: 'Score',
@@ -33,34 +33,34 @@ export default {
     currentAnnotationId: String,
   },
   render(h, context) {
-    const { props } = context;
-    const { annotate = {}, offset, transformer, brush } = props;
+    const { props } = context
+    const { annotate = {}, offset, transformer, brush } = props
 
-    const { data = {}, id } = annotate;
-    const { bbox, color = defaultColor, score = 1 } = data;
+    const { data = {}, id } = annotate
+    const { bbox, color = defaultColor, score = 1 } = data
 
     // 当前在拖拽中不展示
-    if (props.currentAnnotationId === id && brush.isBrushing) return null;
+    if (props.currentAnnotationId === id && brush.isBrushing) return null
 
-    if (isNil(bbox)) return null;
-    const pos = offset(props.annotate);
+    if (isNil(bbox)) return null
+    const pos = offset(props.annotate)
 
     const style = {
       width: addSuffix(pos.width),
       left: addSuffix(pos.x + Math.min((pos.width - MinWidth) / 2, 0)),
       top: addSuffix(Math.max(pos.y - 30, 0)),
       minWidth: addSuffix(MinWidth),
-    };
+    }
 
     // 匹配当前标注
     if (annotate.id === transformer.id) {
-      style.transform = `translate(${transformer.dx}px, ${transformer.dy}px)`;
+      style.transform = `translate(${transformer.dx}px, ${transformer.dy}px)`
     }
 
     const boxStyle = {
       backgroundColor: chroma(color).alpha(0.8),
       color: colorByLuminance(color),
-    };
+    }
 
     return (
       <div class="annotation-score-row tc" style={style}>
@@ -69,6 +69,6 @@ export default {
           <span class="unit">分</span>
         </span>
       </div>
-    );
+    )
   },
-};
+}

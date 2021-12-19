@@ -17,11 +17,11 @@
 export const findMatchRule = (rules) => {
   return (pathname) => {
     return rules.find(({ match }) => {
-      return match instanceof RegExp ? match.test(pathname) : true;
-    });
-  };
-};
+      return match instanceof RegExp ? match.test(pathname) : true
+    })
+  }
+}
 
 export const isURL = (path) => {
-  return path.startsWith('http://') || path.startsWith('https://');
-};
+  return path.startsWith('http://') || path.startsWith('https://')
+}
