@@ -57,6 +57,11 @@ public class CourseDetailDTO {
     private LocalDateTime lastStudyTime;
 
     /**
+     * 课程首图链接
+     */
+    private String fileUrl;
+
+    /**
      * 是否完成 0-未完成 1-完成
      */
     private Integer done;
