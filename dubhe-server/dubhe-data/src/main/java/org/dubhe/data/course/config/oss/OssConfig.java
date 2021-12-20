@@ -28,7 +28,7 @@ public class OssConfig {
     private String accessKeyId;
     @Value("${aliyun.oss.accessKeySecret}")
     private String accessKeySecret;
-    @Value("${aliyun.oss.bucketName}")
+    @Value("${aliyun.oss.ossBucketName}")
     private String bucketName;
     @Value("${aliyun.oss.filehost}")
     private String filehost;
