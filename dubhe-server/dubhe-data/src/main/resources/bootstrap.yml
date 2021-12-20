@@ -42,10 +42,10 @@ spring:
 
 aliyun:
   oss:
-    endpoint: oss-cn-chengdu.aliyuncs.com # oss对外服务的访问域名
+    endpoint: oss-cn-shanghai.aliyuncs.com # oss对外服务的访问域名
     accessKeyId: LTAI4G4gRbiU3j9QPDMTukWh # 访问身份验证中用到用户标识
     accessKeySecret: 5qcNOO1kuXnZOXoBpE5tQPcC4qQrt7 # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
-    bucketName: g-youcode # oss的存储空间
+    bucketName: g-youcode-shanghai # oss的存储空间
     filehost: dubhe-course
 
 #mybatis-plus配置控制台打印完整带参数SQL语句
