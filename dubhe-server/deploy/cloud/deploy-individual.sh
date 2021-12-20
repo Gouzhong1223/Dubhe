@@ -3,7 +3,7 @@
 source $(cd $(dirname ${BASH_SOURCE[0]}); pwd )/../../deploy-base.sh
 
 #网关暴露端口
-GATEWAY_NODE_PORT=8800
+GATEWAY_NODE_PORT=30323
 #模块列表
 MODULES=${@:3}
 

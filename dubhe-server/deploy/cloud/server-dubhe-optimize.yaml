@@ -55,6 +55,7 @@ spec:
           value: "dubhe-optimize-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
         - name: JVM_PARAM
           value: "-Xms1024m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-optimize-dump.hprof"
+        command: ["/bin/sh","-c","java -Xms1024m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-optimize-dump.hprof -jar /dubhe/dubhe-optimize-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
         ports:
         - containerPort: 8899
         - containerPort: 5005
