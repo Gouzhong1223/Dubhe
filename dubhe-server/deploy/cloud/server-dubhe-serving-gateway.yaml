@@ -48,27 +48,27 @@ spec:
     spec:
       serviceAccountName: dubhe-serving-gateway
       containers:
-        - name: dubhe-serving-gateway
-          image: harbor.dubhe.com/dubhe/dubhe-spring-cloud-k8s:env-value
-          imagePullPolicy: Always
-          env:
-            - name: JAR_BALL
-              value: "dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
-            - name: JVM_PARAM
-              value: "-Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof"
-            command: ["/bin/sh","-c","java -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof -jar /dubhe/dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
-          ports:
-            - containerPort: 8081
-            - containerPort: 5505
-          volumeMounts:
-            - mountPath: "fsPath"
-              name: "fs-volume"
-              readOnly: false
-            - mountPath: "containerLogPath"
-              name: "log-volume"
-              readOnly: false
-            - name: "dockersock"
-              mountPath: "/var/run/docker.sock"
+      - name: dubhe-serving-gateway
+        image: harbor.dubhe.com/dubhe/dubhe-spring-cloud-k8s:env-value
+        imagePullPolicy: Always
+        env:
+          - name: JAR_BALL
+            value: "dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
+          - name: JVM_PARAM
+            value: "-Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof"
+          command: ["/bin/sh","-c","java -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof -jar /dubhe/dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
+        ports:
+        - containerPort: 8081
+        - containerPort: 5505
+        volumeMounts:
+          - mountPath: "fsPath"
+            name: "fs-volume"
+            readOnly: false
+          - mountPath: "containerLogPath"
+            name: "log-volume"
+            readOnly: false
+          - name: "dockersock"
+            mountPath: "/var/run/docker.sock"
       volumes:
         - name: "fs-volume"
           hostPath:
