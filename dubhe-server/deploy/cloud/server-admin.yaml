@@ -14,6 +14,7 @@ spec:
   ports:
   - port: 8870
     name: http
+    nodePort: 30325
   selector:
     app: admin
 ---

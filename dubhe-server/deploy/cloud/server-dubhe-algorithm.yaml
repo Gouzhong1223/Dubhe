@@ -14,6 +14,7 @@ spec:
   ports:
   - port: 8889
     name: http
+    nodePort: 30328
   selector:
     app: dubhe-algorithm
 ---

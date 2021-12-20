@@ -14,6 +14,7 @@ spec:
   ports:
   - port: 8821
     name: http
+    nodePort: 30332
   selector:
     app: dubhe-measure
 ---

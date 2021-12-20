@@ -14,6 +14,7 @@ spec:
   ports:
   - port: 8822
     name: http
+    nodePort: 30331
   selector:
     app: dubhe-image
 ---

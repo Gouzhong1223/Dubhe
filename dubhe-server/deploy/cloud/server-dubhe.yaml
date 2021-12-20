@@ -94,6 +94,7 @@ spec:
   ports:
   - port: 8866
     name: http
+    nodePort: 30327
   selector:
     app: auth
 ---
