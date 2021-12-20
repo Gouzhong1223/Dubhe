@@ -22,13 +22,7 @@ update_gateway_node_port() {
 }
 #部署服务
 deploy_k8s_app() {
-  echo "start deploy ${MODULES}"
-  kubectl create ns dubhe-${ENV}
-  for i in ${MODULES}
-  do
-    echo "kubectl apply -f "server-${i}.yaml" -n dubhe-${ENV}"
-    cd ${SOURCE_CODE_PATH}/deploy/cloud && kubectl apply -f "server-${i}.yaml" -n dubhe-${ENV}
-  done
+  bash /Dubhe/dubhe-server/deploy/cloud/deploy_cloud.sh
 }
 
 delete_k8s_app
