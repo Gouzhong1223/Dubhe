@@ -12,11 +12,11 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8081
-      name: http
-      nodePort: 30848
-    - port: 5005
-      name: debug
+  - port: 8081
+    name: http
+    nodePort: 30848
+  - port: 5005
+    name: debug
   selector:
     app: dubhe-serving-gateway
 ---
@@ -52,11 +52,11 @@ spec:
         image: harbor.dubhe.com/dubhe/dubhe-spring-cloud-k8s:env-value
         imagePullPolicy: Always
         env:
-          - name: JAR_BALL
-            value: "dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
-          - name: JVM_PARAM
-            value: "-Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof"
-          command: ["/bin/sh","-c","java -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof -jar /dubhe/dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
+        - name: JAR_BALL
+          value: "dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
+        - name: JVM_PARAM
+          value: "-Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof"
+        command: ["/bin/sh","-c","java -Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/dubhe-serving-gateway-dump.hprof -jar /dubhe/dubhe-serving-gateway-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
         ports:
         - containerPort: 8081
         - containerPort: 5505
