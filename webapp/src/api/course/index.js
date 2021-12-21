@@ -1,7 +1,10 @@
 import request from '@/utils/request'
 
+const baseURL = 'http://139.224.44.245:8001/api/v1'
+
 function upload(file) {
-  return request.post('/course/file/upload', {
+  return request.post('data/course/file/upload', {
+    baseURL,
     headers: { 'Content-Type': 'multipart/form-data' },
     data: file,
   })
@@ -11,29 +14,36 @@ function upload(file) {
  * 课程分类
  * */
 function getCourseType() {
-  return request.get('/courseType/getAllCourseTypes')
+  return request.get('data/courseType/getAllCourseTypes', { baseURL })
 }
 
-function createCourseType(data) {
+function createCourseType(courseTypeName) {
+  const form = new FormData()
+  form.append('courseTypeName', courseTypeName)
   return request({
-    url: `/courseType/createCourseType`,
+    url: `data/courseType/createCourseType`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    },
     method: 'post',
-    data,
+    data: form,
+    baseURL,
   })
 }
 
 function removeCourseType(id) {
-  return request.delete(`/courseType/deleteCourseType/${id}`)
+  return request.delete(`data/courseType/deleteCourseType/${id}`, { baseURL })
 }
 
 function updateCourseType(id, name) {
   return request({
-    url: '/courseType/updateCourseType',
+    url: 'data/courseType/updateCourseType',
     method: 'put',
     data: {
       courseTypeId: id,
       courseTypeName: name,
     },
+    baseURL,
   })
 }
 
@@ -41,19 +51,24 @@ function updateCourseType(id, name) {
  * 课程管理
  */
 function getCourseList() {
-  return request.get('/course/listAllCourses')
+  return request.get('data/course/listAllCourses', { baseURL })
 }
 
 function updateCourse(data) {
-  return request.put('/course/updateCourse', { data })
+  return request.put('data/course/updateCourse', { data, baseURL })
 }
 
 function removeCourse(courseId) {
-  return request.delete(`/course/updateCourse/${courseId}`)
+  return request.delete(`data/course/updateCourse/${courseId}`, { baseURL })
 }
 
 function createCourse(data) {
-  return request.post('/course/createCourse', { data })
+  return request({
+    url: 'data/course/createCourse',
+    method: 'post',
+    data,
+    baseURL,
+  })
 }
 
 /**
@@ -61,25 +76,34 @@ function createCourse(data) {
  */
 // 获取所有课程章节
 function getChapterList(courseId) {
-  return request.get(`/chapter/listAllCourseChapter/${courseId}`)
+  return request.get(`data/chapter/listAllCourseChapter/${courseId}`, {
+    baseURL,
+  })
 }
 
 // 查看(学习)章节详情
 function getChapterDetail(chapterId, courseId) {
-  return request.get(`/chapter/studyCourseChapter/${chapterId}/${courseId}`)
+  return request.get(
+    `data/chapter/studyCourseChapter/${chapterId}/${courseId}`,
+    {
+      baseURL,
+    },
+  )
 }
 
 // 更新章节信息
 function updateChapter(data) {
-  return request.put(`/chapter/updateCourseChapter`, { data })
+  return request.put(`data/chapter/updateCourseChapter`, { data, baseURL })
 }
 
 function removeChapter(chapterId) {
-  return request.delete(`/chapter/deleteCourseChapter/${chapterId}`)
+  return request.delete(`data/chapter/deleteCourseChapter/${chapterId}`, {
+    baseURL,
+  })
 }
 
 function createChapter(data) {
-  return request.post(`/chapter/createCourseChapter`, { data })
+  return request.post(`data/chapter/createCourseChapter`, { data, baseURL })
 }
 
 export default {

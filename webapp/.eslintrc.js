@@ -26,7 +26,7 @@ module.exports = {
   rules: {
     'vue/require-default-prop': 'off',
     'vue/attribute-hyphenation': 'off',
-    'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+    'no-console': 0,
     'no-param-reassign': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',

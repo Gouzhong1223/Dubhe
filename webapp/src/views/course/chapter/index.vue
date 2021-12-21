@@ -1,5 +1,5 @@
 <template>
-  <div class="course-list"></div>
+  <div class="chapter"></div>
 </template>
 
 <script>
