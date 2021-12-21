@@ -9,12 +9,7 @@ MODULES=${@:3}
 
 #删除服务
 delete_k8s_app() {
-  echo "start delete ${MODULES}"
-  for i in ${MODULES}
-  do
-    echo "kubectl delete -f "server-${i}.yaml" -n dubhe-${ENV}"
-    cd ${SOURCE_CODE_PATH}/deploy/cloud && kubectl delete -f "server-${i}.yaml" -n dubhe-${ENV}
-  done
+  bash /Dubhe/dubhe-server/deploy/cloud/delete_cloud.sh
 }
 #配置gateway端口
 update_gateway_node_port() {
