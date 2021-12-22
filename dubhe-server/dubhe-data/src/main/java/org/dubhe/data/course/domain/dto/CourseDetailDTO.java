@@ -65,4 +65,9 @@ public class CourseDetailDTO {
      * 是否完成 0-未完成 1-完成
      */
     private Integer done;
+
+    /**
+     * 状态码
+     */
+    private Integer status;
 }
