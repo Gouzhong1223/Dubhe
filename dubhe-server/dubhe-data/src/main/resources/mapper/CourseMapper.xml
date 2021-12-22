@@ -14,11 +14,12 @@
         <result column="coverImage" jdbcType="VARCHAR" property="coverImage"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="createUserId" jdbcType="BIGINT" property="createUserId"/>
+        <result column="coverImageId" jdbcType="BIGINT" property="coverImageId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, `name`, `type`, introduction, totalChapters, createTime, updateTime, coverImage,
-        `status`, createUserId
+        `status`, createUserId, coverImageId
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -38,10 +39,12 @@
         <!--@mbg.generated-->
         insert into course (`name`, `type`, introduction,
                             totalChapters, createTime, updateTime,
-                            coverImage, `status`, createUserId)
+                            coverImage, `status`, createUserId,
+                            coverImageId)
         values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT}, #{introduction,jdbcType=VARCHAR},
                 #{totalChapters,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-                #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT})
+                #{coverImage,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createUserId,jdbcType=BIGINT},
+                #{coverImageId,jdbcType=BIGINT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.dubhe.data.course.domain.Course"
             useGeneratedKeys="true">
@@ -75,6 +78,9 @@
             <if test="createUserId != null">
                 createUserId,
             </if>
+            <if test="coverImageId != null">
+                coverImageId,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null and name != ''">
@@ -103,6 +109,9 @@
             </if>
             <if test="createUserId != null">
                 #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="coverImageId != null">
+                #{coverImageId,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -137,6 +146,9 @@
             <if test="createUserId != null">
                 createUserId = #{createUserId,jdbcType=BIGINT},
             </if>
+            <if test="coverImageId != null">
+                coverImageId = #{coverImageId,jdbcType=BIGINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -151,7 +163,8 @@
             updateTime    = #{updateTime,jdbcType=TIMESTAMP},
             coverImage    = #{coverImage,jdbcType=VARCHAR},
             `status`      = #{status,jdbcType=INTEGER},
-            createUserId  = #{createUserId,jdbcType=BIGINT}
+            createUserId  = #{createUserId,jdbcType=BIGINT},
+            coverImageId  = #{coverImageId,jdbcType=BIGINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
 

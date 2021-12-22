@@ -87,5 +87,10 @@ public class Course implements Serializable {
     @ApiModelProperty(value = "创建者 ID")
     private Long createUserId;
 
+    /**
+     * 首图 ID
+     */
+    @ApiModelProperty(value = "首图 ID")
+    private Long coverImageId;
     private static final long serialVersionUID = 1L;
 }

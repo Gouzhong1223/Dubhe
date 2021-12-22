@@ -70,4 +70,9 @@ public class CourseDetailDTO {
      * 状态码
      */
     private Integer status;
+
+    /**
+     * 首图 ID
+     */
+    private Long coverImageId;
 }

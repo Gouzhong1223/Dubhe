@@ -142,6 +142,7 @@ public class CourseServiceImpl implements CourseService {
             courseDetailDTO.setDone(courseSchedule.getDone());
             courseDetailDTO.setFileUrl(course.getCoverImage());
             courseDetailDTO.setStatus(course.getStatus());
+            courseDetailDTO.setCoverImageId(course.getCoverImageId());
         } else {
             // 如果没有学习记录则将进度相关变量设置为默认值
             courseDetailDTO.setFinishChapter(DEFAULT_FINISH_CHAPTER);
@@ -151,6 +152,7 @@ public class CourseServiceImpl implements CourseService {
             courseDetailDTO.setDone(DEFAULT_DONE);
             courseDetailDTO.setFileUrl(course.getCoverImage());
             courseDetailDTO.setStatus(course.getStatus());
+            courseDetailDTO.setCoverImageId(course.getCoverImageId());
         }
         return courseDetailDTO;
     }
@@ -161,7 +163,13 @@ public class CourseServiceImpl implements CourseService {
         if (courseFile == null) {
             return new DataResponseBody(ResponseCode.ERROR, "封面图 ID 不存在!");
         }
-        Course courseRecord = new Course(null, courseCreateDTO.getCourseName(), courseCreateDTO.getCourseTypeId(), courseCreateDTO.getIntroduction(), DEFAULT_TOTAL_CHAPTER, LocalDateTime.now(), LocalDateTime.now(), courseFile.getUrl(), DEFAULT_COURSE_STATUS, userContextService.getCurUserId());
+        Course courseRecord = new Course(null, courseCreateDTO.getCourseName(),
+                courseCreateDTO.getCourseTypeId(), courseCreateDTO.getIntroduction(),
+                DEFAULT_TOTAL_CHAPTER, LocalDateTime.now(),
+                LocalDateTime.now(), courseFile.getUrl(),
+                DEFAULT_COURSE_STATUS,
+                userContextService.getCurUserId(),
+                courseFile.getId());
         courseMapper.insertSelective(courseRecord);
         LogUtil.info(LogEnum.COURSE, "新增课程:" + courseRecord);
         return new DataResponseBody<>(courseRecord);
