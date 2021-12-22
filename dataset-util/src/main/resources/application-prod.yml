@@ -35,7 +35,7 @@ suffix:
 # ES服务地址及端口
 es:
   host: 127.0.0.1
-  serverPort: 9200
-  transportPort: 9300
+  serverPort: 32321
+  transportPort: 32321
   clusterName: kubernetes-logging
   index: dataset_text
