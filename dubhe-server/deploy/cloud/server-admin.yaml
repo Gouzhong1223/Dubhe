@@ -16,7 +16,7 @@ spec:
     name: http
     nodePort: 30325
   - port: 5005
-      name: debug
+    name: debug
   selector:
     app: admin
 ---
@@ -56,7 +56,7 @@ spec:
           value: "admin-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=env-value"
         - name: JVM_PARAM
           value: "-Xms1024m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/admin-dump.hprof"
-        command: ["/bin/sh","-c","java -Xms1024m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/gateway-dump.hprof -jar /dubhe/admin-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
+        command: ["/bin/sh","-c","java -Xms1024m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=containerLogPath/gateway-dump.hprof  -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar /dubhe/admin-0.0.1-SNAPSHOT-exec.jar  --spring.profiles.active=prod"]
         ports:
         - containerPort: 8870
         volumeMounts:

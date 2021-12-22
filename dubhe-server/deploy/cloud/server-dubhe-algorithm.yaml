@@ -16,7 +16,7 @@ spec:
     name: http
     nodePort: 30328
   - port: 5005
-      name: debug
+    name: debug
   selector:
     app: dubhe-algorithm
 ---

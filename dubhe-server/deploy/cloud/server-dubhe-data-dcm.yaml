@@ -16,7 +16,7 @@ spec:
     name: http
     nodePort: 30338
   - port: 5005
-      name: debug
+    name: debug
   selector:
     app: dubhe-data-dcm
 ---
