@@ -91,7 +91,7 @@ public class CourseServiceImpl implements CourseService {
 
             // 根据课程类型 ID 查询 Course
             List<Course> courses;
-            if (curUser.getNickName().equals("admin")) {
+            if (curUser.getNickName().equals("系统管理员")) {
                 // 管理员能看到所有课程
                 courses = courseMapper.selectAllByType(e.getId());
             } else {
