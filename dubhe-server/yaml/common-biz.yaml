@@ -118,6 +118,8 @@ feign:
 # 开启httpclient
   httpclient:
     enabled: true
+    connection-timeout: 10000
+    connection-timer-repeat: 10000
   okhttp:
     enabled: false
 
