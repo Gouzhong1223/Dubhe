@@ -44,6 +44,14 @@ public class CourseChapterController {
         return courseChapterService.listAllCourseChapter(courseId);
     }
 
+    @GetMapping("listAllCourseChapterA")
+    @ApiOperation("管理员获取所有课程章节")
+    @PreAuthorize(Permissions.COURSE_CHAPTER_UPDATE)
+    DataResponseBody listAllCourseChapterA() {
+        return courseChapterService.listAllCourseChapterA();
+    }
+
+
     @GetMapping("studyCourseChapter/{courseId}/{chapterId}")
     @ApiOperation("学习章节")
     @PreAuthorize(Permissions.COURSE_CHAPTER)

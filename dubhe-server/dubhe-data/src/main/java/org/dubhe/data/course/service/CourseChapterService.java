@@ -56,4 +56,10 @@ public interface CourseChapterService {
      * @return DataResponseBody
      */
     DataResponseBody deleteCourseChapter(Long courseChapterId);
+
+    /**
+     * 管理员获取所有的课程章节
+     * @return
+     */
+    DataResponseBody listAllCourseChapterA();
 }

@@ -1,13 +1,17 @@
 package org.dubhe.data.course.service.impl;
 
+import org.dubhe.biz.base.context.UserContext;
 import org.dubhe.biz.base.service.UserContextService;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
+import org.dubhe.biz.permission.base.BaseService;
 import org.dubhe.data.course.dao.*;
 import org.dubhe.data.course.domain.*;
 import org.dubhe.data.course.domain.dto.CourseChapterCreateDTO;
 import org.dubhe.data.course.domain.dto.CourseChapterDetailDTO;
 import org.dubhe.data.course.domain.dto.CourseChapterUpdateDTO;
+import org.dubhe.data.course.domain.dto.admin.ACourseDetailDTO;
+import org.dubhe.data.course.domain.dto.admin.ACourseTypeDetailDTO;
 import org.dubhe.data.course.service.CourseChapterService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +41,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     private final CourseScheduleMapper courseScheduleMapper;
     private final CourseMapper courseMapper;
     private final CourseUserScheduleMapper courseUserScheduleMapper;
+    private final CourseTypeMapper courseTypeMapper;
 
     public CourseChapterServiceImpl(CourseChapterScheduleMapper courseChapterScheduleMapper,
                                     UserContextService userContextService,
@@ -44,7 +49,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                                     CourseFileMapper courseFileMapper,
                                     CourseScheduleMapper courseScheduleMapper,
                                     CourseMapper courseMapper,
-                                    CourseUserScheduleMapper courseUserScheduleMapper) {
+                                    CourseUserScheduleMapper courseUserScheduleMapper,
+                                    CourseTypeMapper courseTypeMapper) {
         this.courseChapterScheduleMapper = courseChapterScheduleMapper;
         this.userContextService = userContextService;
         this.courseChapterMapper = courseChapterMapper;
@@ -52,6 +58,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         this.courseScheduleMapper = courseScheduleMapper;
         this.courseMapper = courseMapper;
         this.courseUserScheduleMapper = courseUserScheduleMapper;
+        this.courseTypeMapper = courseTypeMapper;
     }
 
     @Override
@@ -196,6 +203,37 @@ public class CourseChapterServiceImpl implements CourseChapterService {
 
         // 返回
         return DataResponseFactory.success();
+    }
+
+    @Override
+    public DataResponseBody listAllCourseChapterA() {
+        // 获取当前用户
+        UserContext curUser = userContextService.getCurUser();
+        // 判断是否管理员
+        if (!BaseService.isAdmin(curUser)) {
+            return DataResponseFactory.failed("非管理员不能调用此接口!");
+        }
+        // 获取所有课程分类
+        List<CourseType> courseTypes = courseTypeMapper.selectAll();
+        // 构造结果集
+        ArrayList<ACourseTypeDetailDTO> resultList = new ArrayList<>();
+        courseTypes.forEach(courseType -> {
+            ACourseTypeDetailDTO aCourseTypeDetailDTO = new ACourseTypeDetailDTO();
+            aCourseTypeDetailDTO.setCourseType(courseType);
+            // 根据课程分类查询所有的课程
+            List<Course> courses = courseMapper.selectAllByType(courseType.getId());
+            ArrayList<ACourseDetailDTO> aCourseDetailDTOS = new ArrayList<>();
+            courses.forEach(course -> {
+                ACourseDetailDTO aCourseDetailDTO = new ACourseDetailDTO();
+                aCourseDetailDTO.setCourse(course);
+                // 根据课程 ID 查询所有的章节
+                List<CourseChapter> courseChapters = courseChapterMapper.selectAllByCourseId(course.getId());
+                aCourseDetailDTO.setCourseChapters(courseChapters);
+                aCourseDetailDTOS.add(aCourseDetailDTO);
+            });
+            aCourseTypeDetailDTO.setACourseDetailDTOS(aCourseDetailDTOS);
+        });
+        return DataResponseFactory.success(resultList);
     }
 
     /**
