@@ -2,7 +2,7 @@
 cd /Dubhe/dubhe-server
 host_ip=`hostname -I  |awk '{print $1}'`
 change_ip=${change_ip:-${host_ip}}
-file=(`tree -fai . |grep .yaml`)
+file=(`tree -fai . |grep .yml`)
 cat /root/.kube/config > common-k8s/src/main/resources/kubeconfig
 
 sed -i 's/validateJupyterUrl(url)/url/g' common-k8s/src/main/java/org/dubhe/k8s/api/impl/PodApiImpl.java
