@@ -18,6 +18,9 @@ update_gateway_node_port() {
 #部署服务
 deploy_k8s_app() {
   bash /Dubhe/dubhe-server/deploy/cloud/deploy_cloud.sh
+  cd /Dubhe/dubhe-server/deploy/cloud/
+  kubectl delete -f server-admin.yaml -n dubhe-prod
+  kubectl delete -f server-auth.yaml -n dubhe-prod
 }
 
 delete_k8s_app
