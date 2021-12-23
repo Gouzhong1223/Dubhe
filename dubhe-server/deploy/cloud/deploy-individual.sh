@@ -22,11 +22,15 @@ deploy_k8s_app() {
   kubectl delete -f server-admin.yaml -n dubhe-prod
   kubectl delete -f server-auth.yaml -n dubhe-prod
 }
+update_java_config(){
+  bash /Dubhe/dubhe-server/deploy/cloud/change_config.sh
+}
 
 delete_k8s_app
 delete_old_image
 update_k8s_yaml
 update_gateway_node_port
+update_java_config
 mvn_build
 build_image
 push_image

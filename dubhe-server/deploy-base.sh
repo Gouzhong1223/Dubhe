@@ -36,6 +36,8 @@ mvn_build() {
   # -T 1C 每核心打包一个工程
 	# -Dmaven.test.skip=true 跳过测试代码的编译
 	# -Dmaven.compile.fork=true 多线程编译
+	cd /Dubhe
+	git pull
 	cd ${SOURCE_CODE_PATH} && mvn clean compile package -T 1C -Dmaven.test.skip=true -Dmaven.compile.fork=true
 }
 
