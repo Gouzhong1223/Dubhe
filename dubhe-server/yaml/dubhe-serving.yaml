@@ -9,7 +9,7 @@ serving:
   gpu-image: harbor.dubhe.com/serving/serving-gpu:base
   cpu-image: harbor.dubhe.com/serving/serving-cpu:base
   sourcePath: "/serving/dubhe_serving"
-  gateway-uri-postfix: .apitest.dubhe.ai
+  gateway-uri-postfix: .serving.youcode123.com
   onlineRootPath: "/serving/deployment/"
   batchRootPath: "/serving/batch/"
   group: serving_test_group
@@ -17,7 +17,7 @@ serving:
   crtPath: "/server_test.crt"
   pod-http-port: 5000
   pod-grpc-port: 5000
-  
+
 # 可匿名访问路径
 security:
   permitAll:

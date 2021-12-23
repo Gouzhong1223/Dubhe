@@ -34,7 +34,7 @@ management:
 
 serving:
   gateway:
-    postfixUrl: .apitest.dubhe.ai
+    postfixUrl: .serving.youcode123.com
     token:
       secret-key: 1n3512x
       expire-seconds: 108000
