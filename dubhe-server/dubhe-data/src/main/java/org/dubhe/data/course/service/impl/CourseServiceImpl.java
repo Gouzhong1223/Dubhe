@@ -7,6 +7,7 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
 import org.dubhe.biz.log.enums.LogEnum;
 import org.dubhe.biz.log.utils.LogUtil;
+import org.dubhe.biz.permission.base.BaseService;
 import org.dubhe.data.course.dao.*;
 import org.dubhe.data.course.domain.Course;
 import org.dubhe.data.course.domain.CourseFile;
@@ -91,7 +92,7 @@ public class CourseServiceImpl implements CourseService {
 
             // 根据课程类型 ID 查询 Course
             List<Course> courses;
-            if (curUser.getNickName().equals("系统管理员")) {
+            if (BaseService.isAdmin(curUser)) {
                 // 管理员能看到所有课程
                 courses = courseMapper.selectAllByType(e.getId());
             } else {
