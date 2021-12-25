@@ -367,7 +367,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         courseChapterDetailDTO.setCourseId(e.getCourseId());
         // 设置文件 URL
         courseChapterDetailDTO.setFileUrl(courseFile.getUrl());
-
+        // 设置章节文件 ID
+        courseChapterDetailDTO.setFileId(courseFile.getId());
         // 判断用户是否有学习记录
         if (courseChapterSchedule == null) {
             // 没有学习记录

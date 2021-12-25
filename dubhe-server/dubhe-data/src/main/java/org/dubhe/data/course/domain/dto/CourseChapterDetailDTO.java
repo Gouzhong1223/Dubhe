@@ -63,4 +63,9 @@ public class CourseChapterDetailDTO {
      * 文件 URL
      */
     private String fileUrl;
+
+    /**
+     * 章节文件 ID
+     */
+    private Long fileId;
 }
