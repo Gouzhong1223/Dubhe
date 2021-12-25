@@ -4,6 +4,8 @@ import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.data.course.domain.dto.CourseChapterCreateDTO;
 import org.dubhe.data.course.domain.dto.CourseChapterUpdateDTO;
 
+import java.util.List;
+
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
@@ -59,7 +61,16 @@ public interface CourseChapterService {
 
     /**
      * 管理员获取所有的课程章节
+     *
      * @return
      */
     DataResponseBody listAllCourseChapterA();
+
+    /**
+     * 批量上传课程章节
+     *
+     * @param courseChapterCreateDTOS 上传信息
+     * @return DataResponseBody
+     */
+    DataResponseBody batchCreateCourseChapters(List<CourseChapterCreateDTO> courseChapterCreateDTOS);
 }

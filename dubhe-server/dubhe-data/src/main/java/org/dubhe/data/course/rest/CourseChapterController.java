@@ -2,6 +2,7 @@ package org.dubhe.data.course.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.dubhe.biz.base.constant.Permissions;
 import org.dubhe.biz.base.vo.DataResponseBody;
 import org.dubhe.biz.dataresponse.factory.DataResponseFactory;
@@ -11,6 +12,8 @@ import org.dubhe.data.course.service.CourseChapterService;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author : Gouzhong
@@ -67,6 +70,16 @@ public class CourseChapterController {
     @PreAuthorize(Permissions.COURSE_CHAPTER_CREATE)
     public DataResponseBody createCourseChapter(@RequestBody @Validate CourseChapterCreateDTO courseChapterCreateDTO) {
         return courseChapterService.createCourseChapter(courseChapterCreateDTO);
+    }
+
+    @PostMapping("batchCreateCourseChapters")
+    @ApiOperation("批量上传课程章节")
+    @PreAuthorize(Permissions.COURSE_CHAPTER_CREATE)
+    public DataResponseBody batchCreateCourseChapters(@RequestBody @Validate List<CourseChapterCreateDTO> courseChapterCreateDTOS) {
+        if (CollectionUtils.isEmpty(courseChapterCreateDTOS)) {
+            return DataResponseFactory.failed("章节列表不能为空!");
+        }
+        return courseChapterService.batchCreateCourseChapters(courseChapterCreateDTOS);
     }
 
     @PutMapping("updateCourseChapter")

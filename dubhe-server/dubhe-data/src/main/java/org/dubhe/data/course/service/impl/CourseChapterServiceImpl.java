@@ -232,8 +232,15 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                 aCourseDetailDTOS.add(aCourseDetailDTO);
             });
             aCourseTypeDetailDTO.setACourseDetailDTOS(aCourseDetailDTOS);
+            resultList.add(aCourseTypeDetailDTO);
         });
         return DataResponseFactory.success(resultList);
+    }
+
+    @Override
+    public DataResponseBody batchCreateCourseChapters(List<CourseChapterCreateDTO> courseChapterCreateDTOS) {
+        courseChapterCreateDTOS.forEach(this::createCourseChapter);
+        return DataResponseFactory.success();
     }
 
     /**
