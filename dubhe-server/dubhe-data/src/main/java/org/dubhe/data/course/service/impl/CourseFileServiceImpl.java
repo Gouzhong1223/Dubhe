@@ -73,7 +73,7 @@ public class CourseFileServiceImpl implements CourseFileService {
             String url = uploadResult.get("url");
             String uri = uploadResult.get("uri");
 
-            courseFileRecord = new CourseFile(null, file.getName(), contentType, url, LocalDateTime.now(), LocalDateTime.now(), uri);
+            courseFileRecord = new CourseFile(null, file.getOriginalFilename(), contentType, url, LocalDateTime.now(), LocalDateTime.now(), uri);
             courseFileMapper.insertSelective(courseFileRecord);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
