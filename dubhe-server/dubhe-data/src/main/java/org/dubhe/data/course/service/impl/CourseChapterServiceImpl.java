@@ -369,17 +369,15 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         courseChapterDetailDTO.setFileUrl(courseFile.getUrl());
         // 设置章节文件 ID
         courseChapterDetailDTO.setFileId(courseFile.getId());
+        courseChapterDetailDTO.setCreateTime(e.getCreateTime());
+        courseChapterDetailDTO.setUpdateTime(e.getUpdateTime());
         // 判断用户是否有学习记录
         if (courseChapterSchedule == null) {
             // 没有学习记录
             courseChapterDetailDTO.setLearned(0);
-            courseChapterDetailDTO.setCreateTime(null);
-            courseChapterDetailDTO.setUpdateTime(null);
         } else {
             // 有学习记录
             courseChapterDetailDTO.setLearned(1);
-            courseChapterDetailDTO.setCreateTime(e.getCreateTime());
-            courseChapterDetailDTO.setUpdateTime(e.getUpdateTime());
         }
         return courseChapterDetailDTO;
     }
