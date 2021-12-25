@@ -68,4 +68,9 @@ public class CourseChapterDetailDTO {
      * 章节文件 ID
      */
     private Long fileId;
+
+    /**
+     * 章节文件名称
+     */
+    private String fileName;
 }

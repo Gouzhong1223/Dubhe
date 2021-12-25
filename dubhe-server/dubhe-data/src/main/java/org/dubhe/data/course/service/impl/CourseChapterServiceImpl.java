@@ -371,6 +371,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         courseChapterDetailDTO.setFileId(courseFile.getId());
         courseChapterDetailDTO.setCreateTime(e.getCreateTime());
         courseChapterDetailDTO.setUpdateTime(e.getUpdateTime());
+        courseChapterDetailDTO.setFileName(courseFile.getName());
         // 判断用户是否有学习记录
         if (courseChapterSchedule == null) {
             // 没有学习记录
