@@ -1,18 +1,10 @@
 import request from '@/utils/request'
 
-const baseURL = 'http://139.224.44.245:8001/api/v1'
-
-function upload(file) {
-  return request.post('data/course/file/upload', {
-    baseURL,
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data: file,
-  })
-}
+const baseURL = process.env.COURSE_URL
 
 /**
  * 课程分类
- * */
+ */
 function getCourseType() {
   return request.get('data/courseType/getAllCourseTypes', { baseURL })
 }
@@ -55,7 +47,12 @@ function getCourseList() {
 }
 
 function updateCourse(data) {
-  return request.put('data/course/updateCourse', { data, baseURL })
+  return request({
+    url: 'data/course/updateCourse',
+    method: 'post',
+    data,
+    baseURL,
+  })
 }
 
 function removeCourse(courseId) {
@@ -93,7 +90,12 @@ function getChapterDetail(chapterId, courseId) {
 
 // 更新章节信息
 function updateChapter(data) {
-  return request.put(`data/chapter/updateCourseChapter`, { data, baseURL })
+  return request({
+    url: `data/chapter/updateCourseChapter`,
+    method: 'put',
+    data,
+    baseURL,
+  })
 }
 
 function removeChapter(chapterId) {
@@ -103,11 +105,15 @@ function removeChapter(chapterId) {
 }
 
 function createChapter(data) {
-  return request.post(`data/chapter/createCourseChapter`, { data, baseURL })
+  return request({
+    url: `data/chapter/createCourseChapter`,
+    method: 'post',
+    data,
+    baseURL,
+  })
 }
 
 export default {
-  upload,
   courseType: {
     get: getCourseType,
     remove: removeCourseType,
