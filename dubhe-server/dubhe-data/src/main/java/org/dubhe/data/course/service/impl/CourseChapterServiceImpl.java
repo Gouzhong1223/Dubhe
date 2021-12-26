@@ -189,6 +189,9 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                 // 如果总章节-1 之后用户的学习章节和总章节一样就将学习进度完结
                 courseSchedule.setSchedule(100);
                 courseSchedule.setDone(1);
+            } else {
+                courseSchedule.setSchedule((int) (((float) courseSchedule.getLearnedChapterNum() / (float) courseSchedule.getTotalChapterNum()) * 100));
+                courseSchedule.setDone(0);
             }
             courseScheduleMapper.updateByPrimaryKeySelective(courseSchedule);
         });
@@ -290,6 +293,8 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         courseSchedules.forEach(e -> {
             e.setTotalChapterNum(e.getTotalChapterNum() + 1);
             e.setSchedule((int) (((float) e.getLearnedChapterNum() / (float) e.getTotalChapterNum()) * 100));
+            // 新增一个章节之后 done 重新置为 0
+            e.setDone(0);
             courseScheduleMapper.updateByPrimaryKeySelective(e);
         });
         courseMapper.updateByPrimaryKeySelective(course);
@@ -311,6 +316,9 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                     LocalDateTime.now(), course.getTotalChapters(),
                     1, (int) (((float) 1 / (float) course.getTotalChapters()) * 100),
                     0, courseId, userId);
+            if (Objects.equals(course.getTotalChapters(), courseSchedule.getLearnedChapterNum())) {
+                courseSchedule.setDone(1);
+            }
             // 第一次学习就应该插入记录
             courseScheduleMapper.insertSelective(courseSchedule);
         } else {
