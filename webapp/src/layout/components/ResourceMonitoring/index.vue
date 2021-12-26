@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="resource-monitoring-wrapper">
@@ -36,75 +30,93 @@
 </template>
 
 <script>
-import { computed, onUnmounted, ref } from '@vue/composition-api';
+import { computed, onUnmounted, ref } from '@vue/composition-api'
 
-import { emitter, WEB_SOCKET_TOPIC_ENUM, memFormatter, sendMsg, isSocketOpen } from '@/utils';
-import UserResourceMonitor from '@/components/UserResourceMonitor';
+import {
+  emitter,
+  WEB_SOCKET_TOPIC_ENUM,
+  memFormatter,
+  sendMsg,
+  isSocketOpen,
+} from '@/utils'
+import UserResourceMonitor from '@/components/UserResourceMonitor'
 
 const useGetResourceInfo = () => {
-  const resourceInfo = ref(null);
+  const resourceInfo = ref(null)
 
   // 基础信息展示
   const baseInfo = computed(() => {
     if (!resourceInfo.value) {
-      return '暂无监控信息';
+      return '暂无监控信息'
     }
-    const { usedCpu, hardCpu, usedGpu, hardGpu, usedMemory, hardMemory } = resourceInfo.value;
+    const {
+      usedCpu,
+      hardCpu,
+      usedGpu,
+      hardGpu,
+      usedMemory,
+      hardMemory,
+    } = resourceInfo.value
     return `当前资源占用量 —— CPU: ${usedCpu}核 / ${hardCpu}核  GPU: ${usedGpu}卡 / ${hardGpu}卡  内存: ${memFormatter(
-      usedMemory
-    )} / ${memFormatter(hardMemory)}`;
-  });
+      usedMemory,
+    )} / ${memFormatter(hardMemory)}`
+  })
 
   const updateResource = (resource) => {
-    resourceInfo.value = resource;
-  };
+    resourceInfo.value = resource
+  }
 
   // 监听事件
-  emitter.on(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR, updateResource);
+  emitter.on(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR, updateResource)
   onUnmounted(() => {
-    emitter.off(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR, updateResource);
-  });
+    emitter.off(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR, updateResource)
+  })
 
   // 向连接发送一个空请求，表示已经准备好接收数据
   if (isSocketOpen()) {
-    sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR);
+    sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR)
   } else {
     emitter.on('socketOpen', () => {
-      sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR);
-    });
+      sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR)
+    })
   }
 
-  const refreshing = ref(false);
+  const refreshing = ref(false)
   const onRefresh = () => {
-    refreshing.value = true;
-    sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR);
+    refreshing.value = true
+    sendMsg(WEB_SOCKET_TOPIC_ENUM.RESOURCE_MONITOR)
     setTimeout(() => {
-      refreshing.value = false;
-    }, 1000);
-  };
+      refreshing.value = false
+    }, 1000)
+  }
 
   return {
     resourceInfo,
     baseInfo,
     onRefresh,
     refreshing,
-  };
-};
+  }
+}
 
 export default {
   name: 'ResourceMonitoring',
   components: { UserResourceMonitor },
   setup() {
-    const { resourceInfo, baseInfo, onRefresh, refreshing } = useGetResourceInfo();
+    const {
+      resourceInfo,
+      baseInfo,
+      onRefresh,
+      refreshing,
+    } = useGetResourceInfo()
 
     return {
       baseInfo,
       resourceInfo,
       onRefresh,
       refreshing,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

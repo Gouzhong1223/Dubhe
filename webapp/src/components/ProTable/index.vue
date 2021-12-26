@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="pro-table-container">
@@ -53,7 +47,12 @@
       />
     </el-tabs>
     <slot name="header-refresh">
-      <el-tooltip v-if="showRefresh" effect="dark" content="刷新" placement="top">
+      <el-tooltip
+        v-if="showRefresh"
+        effect="dark"
+        content="刷新"
+        placement="top"
+      >
         <el-button
           class="with-border fr mr-10"
           style="padding: 8px;"
@@ -87,16 +86,22 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, toRefs, watch } from '@vue/composition-api';
-import { MessageBox } from 'element-ui';
+import {
+  computed,
+  onMounted,
+  reactive,
+  toRefs,
+  watch,
+} from '@vue/composition-api'
+import { MessageBox } from 'element-ui'
 
-import BaseTable from '@/components/BaseTable';
-import { Constant } from '@/utils';
-import { usePagination } from '@/hooks';
+import BaseTable from '@/components/BaseTable'
+import { Constant } from '@/utils'
+import { usePagination } from '@/hooks'
 
-import ProTableHeader from './header';
+import ProTableHeader from './header'
 
-const defaultSlots = ['left', 'betweenOps', 'right', 'header-refresh'];
+const defaultSlots = ['left', 'betweenOps', 'right', 'header-refresh']
 
 export default {
   name: 'ProTable',
@@ -191,8 +196,10 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { formItems, paginationAttrs, deleteDisabled, columns } = toRefs(props);
-    const { listRequest, delRequest } = props;
+    const { formItems, paginationAttrs, deleteDisabled, columns } = toRefs(
+      props,
+    )
+    const { listRequest, delRequest } = props
 
     // data
     const state = reactive({
@@ -202,66 +209,69 @@ export default {
       selectedRows: [], // 表格多选行
       loading: false, // 表格 loading 状态
       queryObj: {}, // 其他查询对象
-    });
+    })
 
     // 搜索
-    let defaultFormModel;
+    let defaultFormModel
     const setQuery = (query = {}) => {
-      Object.assign(state.queryFormModel, query);
-    };
+      Object.assign(state.queryFormModel, query)
+    }
     watch(
       () => formItems.value,
       (items) => {
-        const newModel = {};
+        const newModel = {}
         items.forEach((item) => {
           // 不添加没有 prop 属性的表单项，如按钮
-          item.prop && (newModel[item.prop] = undefined);
-        });
-        defaultFormModel = newModel;
+          item.prop && (newModel[item.prop] = undefined)
+        })
+        defaultFormModel = newModel
         // 根据表单项获取并赋值 query 对象
-        state.queryFormModel = { ...defaultFormModel };
+        state.queryFormModel = { ...defaultFormModel }
       },
       {
         immediate: true,
-      }
-    );
+      },
+    )
 
     // Tabs
     const showTabs = computed(() => {
-      return props.tabs.length > 0;
-    });
+      return props.tabs.length > 0
+    })
     if (showTabs.value) {
-      state.activeTab = props.tabs[0].name; // 默认打开第一个 tab
+      state.activeTab = props.tabs[0].name // 默认打开第一个 tab
     }
     const onTabClick = () => {
-      ctx.emit('tab-change', state.activeTab);
-    };
+      ctx.emit('tab-change', state.activeTab)
+    }
 
     // 分页 & 数据
     const { mergedPageAttrs, pagination, setPagination } = usePagination({
       ...paginationAttrs.value,
-    });
+    })
 
     // 排序
     const sortInfo = reactive({
       sort: null,
       order: null,
-    });
+    })
     const setSort = (sort = {}) => {
-      Object.assign(sortInfo, sort);
-    };
+      Object.assign(sortInfo, sort)
+    }
 
     // 数据请求
     const refresh = async (queryObj) => {
       if (typeof listRequest === 'function') {
-        state.loading = true;
-        const { currentPage, pageSize } = pagination;
+        state.loading = true
+        const { currentPage, pageSize } = pagination
         // 清除空的查询参数
         Object.keys(state.queryFormModel).forEach((key) => {
-          if (state.queryFormModel[key] === '' || state.queryFormModel[key] === null) {
-            state.queryFormModel[key] = undefined;
+          if (
+            state.queryFormModel[key] === '' ||
+            state.queryFormModel[key] === null
+          ) {
+            state.queryFormModel[key] = undefined
           }
-        });
+        })
         const { page, result } = await listRequest({
           ...state.queryFormModel,
           current: currentPage,
@@ -272,53 +282,53 @@ export default {
           ...props.listOptions,
           ...queryObj,
         }).finally(() => {
-          state.loading = false;
-        });
+          state.loading = false
+        })
         // 如果当前非第一页，且总数据量已经小于或等于上一页能展示的所有数据，那么重新请求上一页的数据
         if (page.current > 1 && page.total <= page.size * (page.current - 1)) {
-          refresh({ current: currentPage - 1 });
-          return;
+          refresh({ current: currentPage - 1 })
+          return
         }
-        setPagination(page);
-        state.data = result;
+        setPagination(page)
+        state.data = result
       }
-    };
+    }
     // 数据查询
     const query = (queryObj = {}) => {
       setPagination({
         current: 1,
-      });
-      refresh(queryObj);
-    };
+      })
+      refresh(queryObj)
+    }
     // 查询重置
     const resetQuery = () => {
-      setQuery(defaultFormModel);
-      query();
-    };
+      setQuery(defaultFormModel)
+      query()
+    }
 
     const onSizeChange = (size) => {
       setPagination({
         size,
         current: 1,
-      });
-      query();
-    };
+      })
+      query()
+    }
     const onPageChange = (page) => {
       setPagination({
         current: page,
-      });
-      refresh();
-    };
+      })
+      refresh()
+    }
     const onSortChange = ({ prop, order }) => {
       setSort({
         sort: order && prop,
         order: order && Constant.tableSortMap[order],
-      });
-      query();
-    };
+      })
+      query()
+    }
     const onSelectionChange = (selections) => {
-      state.selectedRows = selections;
-    };
+      state.selectedRows = selections
+    }
 
     // 列定义预处理
     const mergedColumns = computed(() => {
@@ -326,66 +336,66 @@ export default {
         // 为下拉表头绑定默认查询方法
         if (column.dropdownList && typeof column.func !== 'function') {
           column.func = (value) => {
-            state.queryObj[column.prop] = value;
-            query();
-          };
+            state.queryObj[column.prop] = value
+            query()
+          }
         }
-        return column;
-      });
-    });
+        return column
+      })
+    })
 
     // 配置一个 funcObj 来提供查询和重置方法
-    const funcObj = { query, resetQuery };
+    const funcObj = { query, resetQuery }
     const mergedFormItems = computed(() => {
       return formItems.value.map((item) => {
-        const copyItem = { ...item };
+        const copyItem = { ...item }
         if (item.func in funcObj) {
-          const func = funcObj[item.func];
-          copyItem.func = () => func();
+          const func = funcObj[item.func]
+          copyItem.func = () => func()
         }
         if (item.change in funcObj) {
-          const func = funcObj[item.change];
-          copyItem.change = () => func();
+          const func = funcObj[item.change]
+          copyItem.change = () => func()
         }
-        return copyItem;
-      });
-    });
+        return copyItem
+      })
+    })
 
     // 表格插槽
     const slotLeft = computed(() => {
       return Object.keys(ctx.slots)
         .filter((name) => !defaultSlots.includes(name))
-        .map((name) => ({ name }));
-    });
+        .map((name) => ({ name }))
+    })
 
     // 创建按钮
     const onCreate = () => {
-      ctx.emit('add');
-    };
+      ctx.emit('add')
+    }
     // 删除按钮
     const onDelete = async () => {
       if (typeof delRequest === 'function') {
-        const ids = state.selectedRows.map((row) => row[props.idField]);
+        const ids = state.selectedRows.map((row) => row[props.idField])
         await MessageBox.confirm(`确认删除选中的${ids.length}条数据?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
-        });
-        await delRequest({ ids });
-        refresh();
+        })
+        await delRequest({ ids })
+        refresh()
       }
-      ctx.emit('delete', state.selectedRows);
-    };
+      ctx.emit('delete', state.selectedRows)
+    }
     const mergedDeleteDisabled = computed(() => {
-      return deleteDisabled.value || state.selectedRows.length === 0;
-    });
+      return deleteDisabled.value || state.selectedRows.length === 0
+    })
     // 刷新按钮
     const onRefresh = () => {
-      refresh();
-    };
+      refresh()
+    }
 
     // 渲染后调用一次查询
-    onMounted(query);
+    onMounted(query)
 
     return {
       state,
@@ -414,7 +424,7 @@ export default {
       mergedFormItems,
 
       slotLeft,
-    };
+    }
   },
-};
+}
 </script>

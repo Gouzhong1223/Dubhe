@@ -15,15 +15,15 @@
  */
 
 /* eslint-disable no-unreachable */
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.ATLAS}/ptMeasure`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -31,7 +31,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ATLAS}/ptMeasure`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -39,7 +39,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ATLAS}/ptMeasure`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -47,7 +47,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ATLAS}/ptMeasure`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 export function getGraphs(name) {
@@ -55,5 +55,5 @@ export function getGraphs(name) {
     url: `/${API_MODULE_NAME.ATLAS}/ptMeasure/byName`,
     method: 'get',
     params: { name },
-  });
+  })
 }

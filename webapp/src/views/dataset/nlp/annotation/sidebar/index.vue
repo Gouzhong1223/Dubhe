@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form label-position="top" @submit.native.prevent>
@@ -22,7 +16,11 @@
     <el-form-item label="标注类型" style="margin-bottom: 0;">
       <div style="margin-top: -10px;">{{ annotationType }}</div>
     </el-form-item>
-    <el-form-item v-if="showLabelGroupName" label="标签组" style="margin-bottom: 0;">
+    <el-form-item
+      v-if="showLabelGroupName"
+      label="标签组"
+      style="margin-bottom: 0;"
+    >
       <div style="margin-top: -10px;">
         <el-tooltip placement="top" :content="datasetInfo.labelGroupName">
           <span class="vm dib ellipsis" style="max-width: 60%;"
@@ -50,13 +48,13 @@
   </el-form>
 </template>
 <script>
-import { isNil } from 'lodash';
-import { computed } from '@vue/composition-api';
-import { annotationBy, annotationCodeMap } from '@/views/dataset/util';
+import { isNil } from 'lodash'
+import { computed } from '@vue/composition-api'
+import { annotationBy, annotationCodeMap } from '@/views/dataset/util'
 
-import LabelList from './labelList';
+import LabelList from './labelList'
 
-const annotationByCode = annotationBy('code');
+const annotationByCode = annotationBy('code')
 
 export default {
   name: 'TextLabelList',
@@ -71,26 +69,31 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { TEXTSEGMENTATION, SPEECHRECOGNITION } = annotationCodeMap;
-    const attrs = computed(() => ctx.attrs);
-    const listeners = computed(() => ctx.listeners);
-    const annotationType = computed(() => annotationByCode(props.datasetInfo.annotateType, 'name'));
+    const { TEXTSEGMENTATION, SPEECHRECOGNITION } = annotationCodeMap
+    const attrs = computed(() => ctx.attrs)
+    const listeners = computed(() => ctx.listeners)
+    const annotationType = computed(() =>
+      annotationByCode(props.datasetInfo.annotateType, 'name'),
+    )
     const showLabelList = computed(
-      () => ![TEXTSEGMENTATION, SPEECHRECOGNITION].includes(props.datasetInfo.annotateType)
-    );
+      () =>
+        ![TEXTSEGMENTATION, SPEECHRECOGNITION].includes(
+          props.datasetInfo.annotateType,
+        ),
+    )
     // 不是中文分词且标签组存在时显示标签组名称
     const showLabelGroupName = computed(
       () =>
         !(props.datasetInfo.annotateType === TEXTSEGMENTATION) &&
-        !isNil(props.datasetInfo.labelGroupId)
-    );
+        !isNil(props.datasetInfo.labelGroupId),
+    )
     return {
       attrs,
       listeners,
       annotationType,
       showLabelGroupName,
       showLabelList,
-    };
+    }
   },
-};
+}
 </script>

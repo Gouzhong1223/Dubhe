@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function getMenusTree() {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/menus/tree`,
     method: 'get',
-  });
+  })
 }
 
 export function list(params) {
@@ -29,7 +29,7 @@ export function list(params) {
     url: `/${API_MODULE_NAME.ADMIN}/menus`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -37,7 +37,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.ADMIN}/menus`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -45,7 +45,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.ADMIN}/menus`,
     method: 'delete',
     data: { ids },
-  });
+  })
 }
 
 export function edit(data) {
@@ -53,7 +53,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.ADMIN}/menus`,
     method: 'put',
     data,
-  });
+  })
 }
 
-export default { list, add, edit, del, getMenusTree };
+export default { list, add, edit, del, getMenusTree }

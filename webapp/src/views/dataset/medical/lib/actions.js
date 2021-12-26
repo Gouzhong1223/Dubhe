@@ -13,8 +13,8 @@
  * limitations under the License.
  * =============================================================
  */
-import { noop } from '@/utils';
-import { genDrawingFromAnnotations } from './index';
+import { noop } from '@/utils'
+import { genDrawingFromAnnotations } from './index'
 
 export const defaultWlPresets = {
   SoftTissue: {
@@ -37,7 +37,7 @@ export const defaultWlPresets = {
     wc: 40,
     ww: 80,
   },
-};
+}
 
 // 可绘制形状配置
 export const drawOptions = {
@@ -47,7 +47,7 @@ export const drawOptions = {
   Roi: {
     name: '自定义',
   },
-};
+}
 
 const actions = [
   {
@@ -100,23 +100,23 @@ const actions = [
     icon: 'body',
     options: defaultWlPresets,
   },
-];
+]
 
 export const viewerCommands = {
   Hidden: (app, updateState) => {
     updateState({
       showInfo: false,
-    });
+    })
   },
   Visible: (app, updateState) => {
     updateState({
       showInfo: true,
-    });
+    })
   },
   Reset: (app, updateState) => {
-    app.resetDisplay();
+    app.resetDisplay()
     updateState((state) => {
-      const prevOverlayInfo = state.overlayInfo;
+      const prevOverlayInfo = state.overlayInfo
       return {
         wlPreset: '',
         shape: '',
@@ -125,44 +125,46 @@ export const viewerCommands = {
           ...prevOverlayInfo,
           zoom: { scale: 1 },
         },
-      };
-    });
+      }
+    })
   },
   SetWlPreset: (app, updateState, tool) => {
     updateState({
       wlPreset: tool.value,
-    });
-    const wl = defaultWlPresets[tool.value];
-    app.getViewController().setWindowLevel(wl.wc, wl.ww);
+    })
+    const wl = defaultWlPresets[tool.value]
+    app.getViewController().setWindowLevel(wl.wc, wl.ww)
   },
   SetPrecision: (app, updateState, tool, state) => {
     updateState({
       precision: tool.precision,
-    });
-    const { autoAnnotationIds } = state;
-    const drawLayer = app.getDrawController().getDrawLayer();
-    const posGroups = drawLayer.getChildren();
-    const kGroups = [];
+    })
+    const { autoAnnotationIds } = state
+    const drawLayer = app.getDrawController().getDrawLayer()
+    const posGroups = drawLayer.getChildren()
+    const kGroups = []
 
     // 遍历所有的posGroups，并提供匹配的形状groups
     posGroups.forEach((group) => {
-      const subGroups = group.getChildren((node) => autoAnnotationIds.includes(node.id()));
-      kGroups.push(subGroups);
-    });
+      const subGroups = group.getChildren((node) =>
+        autoAnnotationIds.includes(node.id()),
+      )
+      kGroups.push(subGroups)
+    })
 
     for (let i = 0; i < kGroups.length; i += 1) {
-      app.getDrawController().deleteDrawGroup(kGroups[i], noop, noop);
+      app.getDrawController().deleteDrawGroup(kGroups[i], noop, noop)
     }
 
     const { drawings, drawingsDetails, drawingIds } = genDrawingFromAnnotations(
       JSON.parse(tool.annotations),
-      tool.precision
-    );
-    app.setDrawings(drawings, drawingsDetails);
+      tool.precision,
+    )
+    app.setDrawings(drawings, drawingsDetails)
     updateState({
       autoAnnotationIds: drawingIds,
-    });
+    })
   },
-};
+}
 
-export default actions;
+export default actions

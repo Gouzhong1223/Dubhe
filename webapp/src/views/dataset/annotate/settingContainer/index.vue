@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="workspace-settings">
@@ -29,13 +23,17 @@
         style="margin-bottom: 0;"
       >
         <div style="margin-top: -10px;">
-          <span class="vm">{{ state.datasetInfo.value.labelGroupName }} &nbsp;</span>
+          <span class="vm"
+            >{{ state.datasetInfo.value.labelGroupName }} &nbsp;</span
+          >
           <el-link
             target="_blank"
             type="primary"
             :underline="false"
             class="vm"
-            :href="`/data/labelgroup/detail?id=${state.datasetInfo.value.labelGroupId}`"
+            :href="
+              `/data/labelgroup/detail?id=${state.datasetInfo.value.labelGroupId}`
+            "
           >
             查看详情
           </el-link>
@@ -90,24 +88,30 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
-import { inject, watch, reactive, onMounted, computed } from '@vue/composition-api';
+import { Message } from 'element-ui'
+import {
+  inject,
+  watch,
+  reactive,
+  onMounted,
+  computed,
+} from '@vue/composition-api'
 
-import { getAutoLabels, editLabel } from '@/api/preparation/datalabel';
+import { getAutoLabels, editLabel } from '@/api/preparation/datalabel'
 import {
   labelsSymbol,
   labelGroupTypeMap,
   annotationBy,
   isPresetDataset,
-} from '@/views/dataset/util';
+} from '@/views/dataset/util'
 
-import SelectLabel from './selectLabel';
-import LabelList from './labelList';
-import Annotations from './annotations';
-import Enhance from './enhance';
-import Footer from './footer';
+import SelectLabel from './selectLabel'
+import LabelList from './labelList'
+import Annotations from './annotations'
+import Enhance from './enhance'
+import Footer from './footer'
 
-const annotationByCode = annotationBy('code');
+const annotationByCode = annotationBy('code')
 
 export default {
   name: 'SettingContainer',
@@ -131,74 +135,76 @@ export default {
     annotationType: String,
   },
   setup(props) {
-    const { createLabel, updateState, queryLabels, annotationType } = props;
+    const { createLabel, updateState, queryLabels, annotationType } = props
     const api = reactive({
       selectedLabel: undefined,
       newLabel: undefined,
       newLabelColor: undefined,
       currentAnnotationId: props.state.currentAnnotationId || undefined,
-    });
+    })
     // 当前所有标签信息
-    const labels = inject(labelsSymbol);
+    const labels = inject(labelsSymbol)
 
-    const annotations = computed(() => props.state[annotationType].value);
+    const annotations = computed(() => props.state[annotationType].value)
 
     const annotationTypeName = computed(() =>
-      annotationByCode(props.state.datasetInfo.value.annotateType, 'name')
-    );
+      annotationByCode(props.state.datasetInfo.value.annotateType, 'name'),
+    )
 
     // 更新标签
     const refreshLabel = async () => {
-      const nextLabels = await queryLabels();
+      const nextLabels = await queryLabels()
       // 更新全局 provide
       updateState({
         labels: nextLabels,
-      });
-    };
+      })
+    }
 
     // 编辑标签
     const edit = (labelId, data) => {
-      return editLabel(labelId, data).then(refreshLabel);
-    };
+      return editLabel(labelId, data).then(refreshLabel)
+    }
 
     // 选择系统预置标签
     const handleLabelSelect = (value) => {
-      api.selectedLabel = api.systemLabels.find((d) => d.value === value)?.label;
+      api.selectedLabel = api.systemLabels.find((d) => d.value === value)?.label
       if (api.selectedLabel) {
         if (labels.value.findIndex((d) => d.name === api.selectedLabel) > -1) {
-          Message.warning(`当前数据集已存在标签[${api.selectedLabel}]`);
-          api.selectedLabel = undefined;
-          return;
+          Message.warning(`当前数据集已存在标签[${api.selectedLabel}]`)
+          api.selectedLabel = undefined
+          return
         }
         createLabel({ name: api.selectedLabel }).then(() => {
-          Message.success(`标签[${api.selectedLabel}]创建成功`);
-          api.selectedLabel = undefined;
-          refreshLabel();
-        });
+          Message.success(`标签[${api.selectedLabel}]创建成功`)
+          api.selectedLabel = undefined
+          refreshLabel()
+        })
       } else {
-        Message.warning('请选择标签');
+        Message.warning('请选择标签')
       }
-    };
+    }
 
     // 新建自定义标签
     const handleLabelCreate = (id, form) => {
-      api.newLabel = form.name;
-      api.newLabelColor = form.color;
+      api.newLabel = form.name
+      api.newLabelColor = form.color
       if (api.newLabel) {
         if (labels.value.findIndex((d) => d.name === api.newLabel) > -1) {
-          Message.warning(`当前数据集已存在标签[${api.newLabel}]`);
-          return;
+          Message.warning(`当前数据集已存在标签[${api.newLabel}]`)
+          return
         }
-        createLabel({ name: api.newLabel, color: api.newLabelColor }).then(() => {
-          Message.success(`标签[${api.newLabel}]创建成功`);
-          api.newLabel = undefined;
-          api.newLabelColor = undefined;
-          refreshLabel();
-        });
+        createLabel({ name: api.newLabel, color: api.newLabelColor }).then(
+          () => {
+            Message.success(`标签[${api.newLabel}]创建成功`)
+            api.newLabel = undefined
+            api.newLabelColor = undefined
+            refreshLabel()
+          },
+        )
       } else {
-        Message.warning('请选择标签');
+        Message.warning('请选择标签')
       }
-    };
+    }
 
     const getSystemLabel = () => {
       getAutoLabels(labelGroupTypeMap.VISUAL.value).then((res) => {
@@ -207,54 +213,56 @@ export default {
           label: item.name,
           color: item.color,
           chosen: false,
-        }));
+        }))
         Object.assign(api, {
           systemLabels: labelsObj,
-        });
-      });
-    };
+        })
+      })
+    }
 
     const toggleShowScore = (val) => {
       updateState({
         showScore: val,
-      });
-    };
+      })
+    }
 
     const toggleShowTag = (val) => {
       const newState = {
         showTag: val,
-      };
+      }
       // 视频跟踪模式下标签和标注 Id 互斥
       if (!!val && !!props.isTrack) {
-        newState.showId = false;
+        newState.showId = false
       }
-      updateState(newState);
-    };
+      updateState(newState)
+    }
 
     const toggleShowId = (val) => {
       const newState = {
         showId: val,
-      };
+      }
       // 视频跟踪模式下标签和标注 Id 互斥
       if (!!val && !!props.isTrack) {
-        newState.showTag = false;
+        newState.showTag = false
       }
-      updateState(newState);
-    };
+      updateState(newState)
+    }
 
     // 预置数据集不支持新建标签
-    const showAddLabel = computed(() => !isPresetDataset(props.state.datasetInfo.value.type));
+    const showAddLabel = computed(
+      () => !isPresetDataset(props.state.datasetInfo.value.type),
+    )
 
     watch(
       () => props.state.currentAnnotationId,
       (next) => {
-        api.currentAnnotationId = next || undefined;
-      }
-    );
+        api.currentAnnotationId = next || undefined
+      },
+    )
 
     onMounted(() => {
-      getSystemLabel();
-    });
+      getSystemLabel()
+    })
 
     return {
       api,
@@ -268,9 +276,9 @@ export default {
       showAddLabel,
       annotations,
       annotationTypeName,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 .workspace-settings {

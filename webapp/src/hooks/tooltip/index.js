@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-export { default as useTooltip } from './useTooltip';
-export { default as TooltipContainer } from './TooltipContainer';
-export { default as BasicTooltip } from './BasicTooltip';
-export { default as TableTooltip } from './tableTooltip';
+export { default as useTooltip } from './useTooltip'
+export { default as TooltipContainer } from './TooltipContainer'
+export { default as BasicTooltip } from './BasicTooltip'
+export { default as TableTooltip } from './tableTooltip'

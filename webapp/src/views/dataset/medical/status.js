@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import { medicalStatusMap } from './constant';
+import { medicalStatusMap } from './constant'
 
 export default {
   name: 'DatasetStatus',
   functional: true,
   render(h, { data, props }) {
-    const { statusList, filterByDatasetStatus, datasetStatusFilter } = props;
-    const iconClass = ['el-icon-arrow-down', 'el-icon--right'];
-    const textClass = datasetStatusFilter === 'all' ? null : 'primary';
+    const { statusList, filterByDatasetStatus, datasetStatusFilter } = props
+    const iconClass = ['el-icon-arrow-down', 'el-icon--right']
+    const textClass = datasetStatusFilter === 'all' ? null : 'primary'
     const columnProps = {
       ...data,
       scopedSlots: {
@@ -42,14 +42,14 @@ export default {
                     >
                       {item.label}
                     </el-dropdown-item>
-                  );
+                  )
                 })}
               </el-dropdown-menu>
             </el-dropdown>
-          );
+          )
         },
         default: ({ row }) => {
-          const status = medicalStatusMap[row.status] || {};
+          const status = medicalStatusMap[row.status] || {}
           const colorProps = !status.type &&
             status.bgColor && {
               props: {
@@ -59,16 +59,16 @@ export default {
                 color: status.color,
                 borderColor: status.bgColor,
               },
-            };
+            }
           return (
             <el-tag type={status.type} {...colorProps}>
               {status.name}
             </el-tag>
-          );
+          )
         },
       },
-    };
+    }
 
-    return h('el-table-column', columnProps);
+    return h('el-table-column', columnProps)
   },
-};
+}

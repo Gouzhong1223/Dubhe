@@ -1,23 +1,21 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div v-loading="loading" class="audio-cards">
     <ul class="audio-cards__wrapper">
-      <li v-for="(item, index) in dataAudiosLocal" :key="item.id" class="audio-cards__item">
+      <li
+        v-for="(item, index) in dataAudiosLocal"
+        :key="item.id"
+        class="audio-cards__item"
+      >
         <div @mouseenter="onMouseEnter(item)" @mouseleave="onMouseLeave(item)">
           <el-card class="audio-cards__card">
             <WaveSurfer mini :height="70" :url="item.url" />
@@ -39,7 +37,10 @@
               {{ audioLabelTag[item.id]['text'] }}
             </el-tag>
             <!-- 已选标记 -->
-            <el-checkbox v-show="showOption(item.id)" :label="item.id" class="audio-checkbox"
+            <el-checkbox
+              v-show="showOption(item.id)"
+              :label="item.id"
+              class="audio-checkbox"
               >&nbsp;</el-checkbox
             >
             <div :title="item.name" class="auido-cards__row">
@@ -53,9 +54,14 @@
 </template>
 
 <script>
-import { computed, set, ref } from '@vue/composition-api';
-import { fileCodeMap, findKey, isStatus, annotationCodeMap } from '@/views/dataset/util';
-import WaveSurfer from '@/components/WaveSurfer';
+import { computed, set, ref } from '@vue/composition-api'
+import {
+  fileCodeMap,
+  findKey,
+  isStatus,
+  annotationCodeMap,
+} from '@/views/dataset/util'
+import WaveSurfer from '@/components/WaveSurfer'
 
 export default {
   name: 'AudioCards',
@@ -83,66 +89,72 @@ export default {
       UNANNOTATED: { text: '未标注', color: '#FFFFFF' },
       AUTO_ANNOTATED: { text: '自动', color: '#468CFF' },
       MANUAL_ANNOTATED: { text: '人工', color: '#FF9943' },
-    };
-    const hover = ref(null);
-    const dataAudiosLocal = computed(() => props.dataAudios || []);
+    }
+    const hover = ref(null)
+    const dataAudiosLocal = computed(() => props.dataAudios || [])
     const audioLabelTag = computed(() => {
-      const labelTag = {};
+      const labelTag = {}
       try {
         dataAudiosLocal.value.forEach((item) => {
-          const statusInfo = audioStatusMap[findKey(item.status, fileCodeMap)];
-          const annotation = JSON.parse(item.annotation);
-          let categoryName = {};
-          let tagColor = '#db2a2a';
-          if (statusInfo && Array.isArray(annotation) && annotation.length > 0) {
+          const statusInfo = audioStatusMap[findKey(item.status, fileCodeMap)]
+          const annotation = JSON.parse(item.annotation)
+          let categoryName = {}
+          let tagColor = '#db2a2a'
+          if (
+            statusInfo &&
+            Array.isArray(annotation) &&
+            annotation.length > 0
+          ) {
             if (props.audioType === annotationCodeMap.AUDIOCLASSIFY) {
-              const categoryId = annotation[0].category_id;
-              categoryName = props.categoryId2Name[categoryId] || {};
-            } else if (props.audioType === annotationCodeMap.SPEECHRECOGNITION) {
-              categoryName.name = '语音识别完成';
+              const categoryId = annotation[0].category_id
+              categoryName = props.categoryId2Name[categoryId] || {}
+            } else if (
+              props.audioType === annotationCodeMap.SPEECHRECOGNITION
+            ) {
+              categoryName.name = '语音识别完成'
             }
-            tagColor = statusInfo.color;
+            tagColor = statusInfo.color
           }
-          const divider = categoryName.name && `| ${categoryName.name}`;
+          const divider = categoryName.name && `| ${categoryName.name}`
           labelTag[item.id] = {
             text: `${statusInfo.text} ${divider}`,
             color: tagColor,
-          };
-        });
+          }
+        })
       } catch (err) {
-        console.error(err);
-        throw err;
+        console.error(err)
+        throw err
       }
-      return labelTag;
-    });
+      return labelTag
+    })
 
     const goDetail = (index) => {
-      ctx.emit('goDetail', index);
-    };
+      ctx.emit('goDetail', index)
+    }
 
     const onMouseEnter = (audioObj) => {
-      set(audioObj, 'isHover', true);
-      hover.value = audioObj;
-    };
+      set(audioObj, 'isHover', true)
+      hover.value = audioObj
+    }
 
     const onMouseLeave = (audioObj) => {
       if (audioObj.isHover) {
-        set(audioObj, 'isHover', false);
-        hover.value = null;
+        set(audioObj, 'isHover', false)
+        hover.value = null
       }
-    };
+    }
 
     const isHover = (id) => {
-      return hover.value?.id === id;
-    };
+      return hover.value?.id === id
+    }
 
     const hasSelected = (id) => {
-      return props.selectedId.find((i) => id === i);
-    };
+      return props.selectedId.find((i) => id === i)
+    }
 
     const showOption = (id) => {
-      return isHover(id) || hasSelected(id);
-    };
+      return isHover(id) || hasSelected(id)
+    }
 
     return {
       dataAudiosLocal,
@@ -152,9 +164,9 @@ export default {
       onMouseLeave,
       isStatus,
       showOption,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 @import '~@/assets/styles/mixin.scss';

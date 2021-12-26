@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(data) {
@@ -46,7 +46,7 @@ export function del(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo`,
     method: 'delete',
     data,
-  });
+  })
 }
 
 export function getModelByResource(modelResource, packaged) {
@@ -54,7 +54,7 @@ export function getModelByResource(modelResource, packaged) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo/byResource`,
     method: 'get',
     params: { modelResource, packaged },
-  });
+  })
 }
 
 export function packageAtlasModel(data) {
@@ -62,7 +62,7 @@ export function packageAtlasModel(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo/package`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function getServingModel(modelResource) {
@@ -70,7 +70,7 @@ export function getServingModel(modelResource) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo/servingModel`,
     method: 'get',
     params: { modelResource },
-  });
+  })
 }
 
 export function addOptimizeModel(data) {
@@ -78,7 +78,7 @@ export function addOptimizeModel(data) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo/uploadModel`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 获取框架与模型格式之间的对应关系
@@ -86,7 +86,7 @@ export function getModelTypeMap() {
   return request({
     url: `/${API_MODULE_NAME.MODEL}/ptModelType`,
     method: 'get',
-  });
+  })
 }
 
 // 获取模型格式与模型文件后缀之间的对应关系
@@ -95,7 +95,7 @@ export function getModelSuffix(params) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelSuffix`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 根据模型 ID 查询模型信息
@@ -104,7 +104,7 @@ export function getModelById(id) {
     url: `/${API_MODULE_NAME.MODEL}/ptModelInfo/byModelId`,
     method: 'get',
     params: { id },
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="ts-drawer">
@@ -38,11 +32,15 @@
     <el-row class="row">
       <el-col v-if="item.delayCreateCountDown > 0" :span="12">
         <div class="label">延迟启动</div>
-        <div class="text">剩余 {{ item.delayCreateCountDown | minute2Time }}</div>
+        <div class="text">
+          剩余 {{ item.delayCreateCountDown | minute2Time }}
+        </div>
       </el-col>
       <el-col v-if="item.delayDeleteCountDown > 0" :span="12">
         <div class="label">训练停止</div>
-        <div class="text">剩余 {{ item.delayDeleteCountDown | minute2Time }}</div>
+        <div class="text">
+          剩余 {{ item.delayDeleteCountDown | minute2Time }}
+        </div>
       </el-col>
     </el-row>
     <el-dialog
@@ -85,27 +83,29 @@
 </template>
 
 <script>
-import { RESOURCES_POOL_TYPE_ENUM } from '@/utils';
-import { getJobDetail, getPods } from '@/api/trainingJob/job';
-import PodMonitor from '@/components/PodMonitor';
+import { RESOURCES_POOL_TYPE_ENUM } from '@/utils'
+import { getJobDetail, getPods } from '@/api/trainingJob/job'
+import PodMonitor from '@/components/PodMonitor'
 
-import JobDetail from './jobDetail';
+import JobDetail from './jobDetail'
 
 export default {
   name: 'JobDrawer',
   components: { JobDetail, PodMonitor },
   filters: {
     minute2Time(totalMinutes) {
-      let remainMinutes = totalMinutes || 0;
+      let remainMinutes = totalMinutes || 0
 
-      const days = Math.floor(totalMinutes / 1440);
-      remainMinutes %= 1440;
+      const days = Math.floor(totalMinutes / 1440)
+      remainMinutes %= 1440
 
-      const hours = Math.floor(remainMinutes / 60);
-      remainMinutes %= 60;
+      const hours = Math.floor(remainMinutes / 60)
+      remainMinutes %= 60
 
       // eslint-disable-next-line prefer-template
-      return `${days ? days + '天' : ''}${hours ? hours + '小时' : ''}${remainMinutes}分钟`;
+      return `${days ? days + '天' : ''}${
+        hours ? hours + '小时' : ''
+      }${remainMinutes}分钟`
     },
   },
   data() {
@@ -117,61 +117,64 @@ export default {
       selectedPod: [],
       keepCountDown: false,
       metricsVisible: false,
-    };
+    }
   },
   methods: {
     countDown() {
       if (this.keepCountDown) {
         setTimeout(() => {
-          this.getJobDetail(this.item.id);
-          this.countDown();
-        }, 60000);
+          this.getJobDetail(this.item.id)
+          this.countDown()
+        }, 60000)
       }
     },
     async onOpen(jobId) {
-      this.getPodList(jobId);
-      await this.getJobDetail(jobId);
-      if (this.item.delayCreateCountDown > 0 || this.item.delayDeleteCountDown > 0) {
-        this.keepCountDown = true;
-        this.countDown();
+      this.getPodList(jobId)
+      await this.getJobDetail(jobId)
+      if (
+        this.item.delayCreateCountDown > 0 ||
+        this.item.delayDeleteCountDown > 0
+      ) {
+        this.keepCountDown = true
+        this.countDown()
       }
     },
     async getJobDetail(jobId) {
-      this.item = await getJobDetail(jobId);
+      this.item = await getJobDetail(jobId)
     },
     async getPodList(jobId) {
-      this.podList = await getPods(jobId);
+      this.podList = await getPods(jobId)
     },
     onSelectedPodChange() {
       this.$nextTick(() => {
-        this.$refs.podMonitor.init();
-      });
+        this.$refs.podMonitor.init()
+      })
     },
     checkMetrics() {
       if (this.item.k8sNamespace && this.item.jobName) {
-        this.metricsVisible = true;
+        this.metricsVisible = true
       } else {
-        this.$message.warning('命名空间或资源名称为空，无法查看监控信息');
+        this.$message.warning('命名空间或资源名称为空，无法查看监控信息')
       }
     },
     onMetricsDialogOpened() {
-      this.podList.length && (this.selectedPod = [this.podList[0].podName]);
+      this.podList.length && (this.selectedPod = [this.podList[0].podName])
       this.$nextTick(() => {
-        this.$refs.podMonitor.init();
-      });
+        this.$refs.podMonitor.init()
+      })
     },
     onMetricsDialogClose() {
-      this.$refs.podMonitor.stop();
-      this.selectedPod = []; // 弹窗关闭时清空所选节点列表
+      this.$refs.podMonitor.stop()
+      this.selectedPod = [] // 弹窗关闭时清空所选节点列表
     },
     onClose() {
-      this.keepCountDown = false;
+      this.keepCountDown = false
     },
     onCheckLog() {
-      this.$emit('show-log', this.item);
+      this.$emit('show-log', this.item)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

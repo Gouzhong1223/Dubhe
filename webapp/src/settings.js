@@ -64,4 +64,4 @@ module.exports = {
    * 用户社区
    */
   Community: 'http://www.aiiaos.cn/index.php?s=/forum/index/forum/id/45.html',
-};
+}

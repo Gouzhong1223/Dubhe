@@ -16,14 +16,14 @@
 
 // store 相关的公共方法
 
-import store from '@/store';
+import store from '@/store'
 
 // 是否具有某个权限
 export function hasPermission(permission) {
-  return store.getters.permissions.includes(permission);
+  return store.getters.permissions.includes(permission)
 }
 
 // 获取用户配置项的值
 export function getUserConfig(configName) {
-  return store.getters.userConfig[configName];
+  return store.getters.userConfig[configName]
 }

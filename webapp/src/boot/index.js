@@ -14,11 +14,11 @@
  * =============================================================
  */
 
-import './errorHandle';
-import { initWebSocket } from '@/utils';
+import './errorHandle'
+import { initWebSocket } from '@/utils'
 
-const allSettled = require('promise.allsettled');
+const allSettled = require('promise.allsettled')
 
-allSettled.shim();
+allSettled.shim()
 
-initWebSocket();
+initWebSocket()

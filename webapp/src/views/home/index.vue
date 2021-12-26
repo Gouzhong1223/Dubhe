@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="index-content">
@@ -21,7 +15,12 @@
         <img src="@/assets/images/dubhe-logo.svg" width="60" alt="logo" />
       </div>
       <div class="index-avatar">
-        <img :src="user.avatar" :alt="user.nickName" :title="user.nickName" class="user-avatar" />
+        <img
+          :src="user.avatar"
+          :alt="user.nickName"
+          :title="user.nickName"
+          class="user-avatar"
+        />
       </div>
     </div>
     <div class="index-plate">
@@ -44,7 +43,11 @@
           :hoverurl="item.hoverurl"
           :title="item.title"
         />
-        <div class="image-model yuanshi" :class="transition ? 'image-moxing' : ''" @click="openMA">
+        <div
+          class="image-model yuanshi"
+          :class="transition ? 'image-moxing' : ''"
+          @click="openMA"
+        >
           <el-popover
             placement="top"
             content="炼知平台是由模型知识驱动的深度学习定制平台。平台内置了丰富的预训练模型库和多属性模型关系图谱，覆盖分类、分割、深度估计等常见视觉任务，并通过灵活可配的知识重组技术为用户提供简单易用的模型定制能力。"
@@ -55,7 +58,11 @@
           </el-popover>
           <span class="title">模型炼知框架</span>
         </div>
-        <div class="image-model yuanshi" :class="transition ? 'image-depth' : ''" @click="openDL">
+        <div
+          class="image-model yuanshi"
+          :class="transition ? 'image-depth' : ''"
+          @click="openDL"
+        >
           <el-popover
             placement="top"
             content="深度学习平台面向AI模型生产的生命周期，提供了包括数据处理(数据集管理、智能标注和数据增强)、算法开发、模型训练和模型管理等功能，方便用户一站式构建AI算法。"
@@ -68,7 +75,9 @@
         </div>
       </div>
       <div class="index-mask">
-        <div style="width: 100%; height: 100%; background: #fff; opacity: 0.8;"></div>
+        <div
+          style="width: 100%; height: 100%; background: #fff; opacity: 0.8;"
+        ></div>
       </div>
       <div class="plate-center">
         <img src="@/assets/images/home/zhongjian .png" />
@@ -78,16 +87,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { getToken } from '@/utils/auth';
+import { mapGetters } from 'vuex'
+import { getToken } from '@/utils/auth'
 
-import gift from '@/assets/images/home/gift.png';
-import giftHover from '@/assets/images/home/gift-hover.png';
-import gift2 from '@/assets/images/home/gif2.png';
-import giftHover2 from '@/assets/images/home/gift2-hover.png';
-import gift3 from '@/assets/images/home/gift3.png';
-import giftHover3 from '@/assets/images/home/gift3-hover.png';
-import ImagePublic from './imagePublic';
+import gift from '@/assets/images/home/gift.png'
+import giftHover from '@/assets/images/home/gift-hover.png'
+import gift2 from '@/assets/images/home/gif2.png'
+import giftHover2 from '@/assets/images/home/gift2-hover.png'
+import gift3 from '@/assets/images/home/gift3.png'
+import giftHover3 from '@/assets/images/home/gift3-hover.png'
+import ImagePublic from './imagePublic'
 
 export default {
   name: 'DubheIndex',
@@ -131,30 +140,32 @@ export default {
         },
       ],
       transition: false,
-    };
+    }
   },
   computed: {
     ...mapGetters(['user']),
   },
   mounted() {
     this.timer = setTimeout(() => {
-      this.transition = true;
-    }, 500);
+      this.transition = true
+    }, 500)
     this.$once('hook:beforeDestroy', () => {
-      clearTimeout(this.timer);
-      this.timer = null;
-    });
+      clearTimeout(this.timer)
+      this.timer = null
+    })
   },
   methods: {
     openMA() {
-      const url = `${process.env.VUE_APP_ATLAS_HOST}/#/login?token=${getToken()}`;
-      window.open(url, '_blank');
+      const url = `${
+        process.env.VUE_APP_ATLAS_HOST
+      }/#/login?token=${getToken()}`
+      window.open(url, '_blank')
     },
     openDL() {
-      window.open('/', '_blank');
+      window.open('/', '_blank')
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -326,7 +337,8 @@ export default {
       left: 0;
       width: 100%;
       height: 21%;
-      background: url('../../assets/images/home/circle-bottom.png') no-repeat center top;
+      background: url('../../assets/images/home/circle-bottom.png') no-repeat
+        center top;
       background-size: 56.8%;
     }
   }

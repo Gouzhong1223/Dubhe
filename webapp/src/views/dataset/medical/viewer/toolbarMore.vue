@@ -1,21 +1,19 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
-  <div v-if="showMore" class="ToolbarButton more usn rel" :active="state.isOpen ? 'true' : 'false'">
+  <div
+    v-if="showMore"
+    class="ToolbarButton more usn rel"
+    :active="state.isOpen ? 'true' : 'false'"
+  >
     <div v-click-outside="onClickOutside" @click="toggleDropdown">
       <IconFont type="more" />
       <div>
@@ -38,10 +36,10 @@
   </div>
 </template>
 <script>
-import { isStatus } from '@/views/dataset/util';
-import { reactive, computed } from '@vue/composition-api';
-import vClickOutside from 'v-click-outside';
-import { isNil } from 'lodash';
+import { reactive, computed } from '@vue/composition-api'
+import vClickOutside from 'v-click-outside'
+import { isNil } from 'lodash'
+import { isStatus } from '@/views/dataset/util'
 
 export default {
   name: 'ToolbarMore',
@@ -58,13 +56,13 @@ export default {
     const state = reactive({
       isOpen: false,
       precision: props.precision,
-    });
+    })
     const toggleDropdown = (open) => {
-      const toggle = isNil(open) ? !state.isOpen : open;
+      const toggle = isNil(open) ? !state.isOpen : open
       Object.assign(state, {
         isOpen: toggle,
-      });
-    };
+      })
+    }
 
     // 更新 precision
     const updatePrecision = () => {
@@ -73,25 +71,25 @@ export default {
           command: 'SetPrecision',
           precision: state.precision,
           annotations: props.annotations,
-        });
+        })
       }
-    };
+    }
 
     const onClickOutside = (event) => {
       // 如果点击的是非工具栏项目
       if (!event.target.closest('.more')) {
-        toggleDropdown(false);
+        toggleDropdown(false)
       }
-      updatePrecision();
-    };
+      updatePrecision()
+    }
 
     const formatTooltip = (val) => {
-      return String((val * 100).toFixed(0)).concat('%');
-    };
+      return String((val * 100).toFixed(0)).concat('%')
+    }
 
     const showMore = computed(() => {
-      return isStatus(props, 'AUTO_ANNOTATED');
-    });
+      return isStatus(props, 'AUTO_ANNOTATED')
+    })
 
     return {
       state,
@@ -100,9 +98,9 @@ export default {
       updatePrecision,
       formatTooltip,
       showMore,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 @import '~@/assets/styles/mixin.scss';

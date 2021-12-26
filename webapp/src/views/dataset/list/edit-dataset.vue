@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <BaseModal
@@ -24,9 +18,17 @@
   >
     <el-form ref="form" :model="state.model" :rules="rules" label-width="100px">
       <el-form-item label="数据集名称" prop="name">
-        <el-input v-model="state.model.name" placeholder="数据集名称不能超过50字" maxlength="50" />
+        <el-input
+          v-model="state.model.name"
+          placeholder="数据集名称不能超过50字"
+          maxlength="50"
+        />
       </el-form-item>
-      <el-form-item v-if="!state.model.import" label="标注类型" prop="annotateType">
+      <el-form-item
+        v-if="!state.model.import"
+        label="标注类型"
+        prop="annotateType"
+      >
         <InfoSelect
           v-model="state.model.annotateType"
           placeholder="标注类型"
@@ -70,7 +72,9 @@
               <span>页面创建</span>
             </div>
           </el-cascader>
-          <div style="position: relative; top: -33px; right: 30px; float: right;">
+          <div
+            style="position: relative; top: -33px; right: 30px; float: right;"
+          >
             <el-link
               v-if="state.chosenGroupId !== null"
               target="_blank"
@@ -83,7 +87,11 @@
             </el-link>
           </div>
         </div>
-        <div v-else class="label-input" style="color: #c0c4cc; background-color: #f5f7fa;">
+        <div
+          v-else
+          class="label-input"
+          style="color: #c0c4cc; background-color: #f5f7fa;"
+        >
           &nbsp;&nbsp;&nbsp;&nbsp;{{ state.model.labelGroupName }}
           <el-link
             v-if="state.model.labelGroupId !== null"
@@ -129,19 +137,19 @@
 </template>
 
 <script>
-import { isNil } from 'lodash';
-import { watch, reactive, computed } from '@vue/composition-api';
+import { isNil } from 'lodash'
+import { watch, reactive, computed } from '@vue/composition-api'
 
-import BaseModal from '@/components/BaseModal';
-import InfoSelect from '@/components/InfoSelect';
-import { validateName } from '@/utils/validate';
+import BaseModal from '@/components/BaseModal'
+import InfoSelect from '@/components/InfoSelect'
+import { validateName } from '@/utils/validate'
 import {
   annotationList,
   dataTypeMap,
   isIncludeStatus,
   enableLabelGroup,
-} from '@/views/dataset/util';
-import { getLabelGroupList } from '@/api/preparation/labelGroup';
+} from '@/views/dataset/util'
+import { getLabelGroupList } from '@/api/preparation/labelGroup'
 
 export default {
   name: 'EditDataset',
@@ -166,20 +174,28 @@ export default {
     },
   },
   setup(props, { refs }) {
-    const { handleOk } = props;
+    const { handleOk } = props
 
     const rules = {
       name: [
-        { required: true, message: '请输入数据集名称', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请输入数据集名称',
+          trigger: ['change', 'blur'],
+        },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
-      annotateType: [{ required: true, message: '请选择标注类型', trigger: 'change' }],
-      remark: [{ required: false, message: '请输入数据集描述信息', trigger: 'blur' }],
-    };
+      annotateType: [
+        { required: true, message: '请选择标注类型', trigger: 'change' },
+      ],
+      remark: [
+        { required: false, message: '请输入数据集描述信息', trigger: 'blur' },
+      ],
+    }
 
     const buildModel = (record, options) => {
-      return { ...record, ...options };
-    };
+      return { ...record, ...options }
+    }
 
     const state = reactive({
       model: buildModel(props.row),
@@ -199,56 +215,56 @@ export default {
           children: [],
         },
       ],
-    });
+    })
 
     const deletable = computed(() => {
-      return isNil(props.row.labelGroupId);
-    });
+      return isNil(props.row.labelGroupId)
+    })
 
     const dataTypeList = computed(() => {
       return Object.keys(dataTypeMap).map((d) => ({
         label: dataTypeMap[d],
         value: Number(d),
-      }));
-    });
+      }))
+    })
 
     const editable = computed(() => {
-      return isIncludeStatus(state.model, ['UNANNOTATED', 'UNSAMPLED']);
-    });
+      return isIncludeStatus(state.model, ['UNANNOTATED', 'UNSAMPLED'])
+    })
 
     // 是否展示标签组
     const showlabelGroup = computed(
-      () => enableLabelGroup(state.model.annotateType) && !state.model.import
-    );
+      () => enableLabelGroup(state.model.annotateType) && !state.model.import,
+    )
 
     const handleEditDataset = () => {
-      state.model.labelGroupId = state.chosenGroupId;
+      state.model.labelGroupId = state.chosenGroupId
       refs.form.validate((valid) => {
         if (!valid) {
-          return false;
+          return false
         }
-        handleOk(state.model, props.row);
-        return null;
-      });
-    };
+        handleOk(state.model, props.row)
+        return null
+      })
+    }
 
     const handleGroupChange = (val) => {
       if (val.length === 0) {
-        state.chosenGroup = null;
-        state.chosenGroupId = null;
+        state.chosenGroup = null
+        state.chosenGroupId = null
       } else {
-        state.chosenGroup = val;
+        state.chosenGroup = val
         // eslint-disable-next-line prefer-destructuring
-        state.chosenGroupId = val[1];
+        state.chosenGroupId = val[1]
       }
-    };
+    }
 
     watch(
       () => props.row,
       (next) => {
         Object.assign(state, {
           model: { ...state.model, ...next },
-        });
+        })
         if (!isNil(state.model.dataType)) {
           getLabelGroupList({
             type: 1,
@@ -260,9 +276,9 @@ export default {
                 value: item.id,
                 label: item.name,
                 disabled: false,
-              });
-            });
-          });
+              })
+            })
+          })
         }
         if (!isNil(state.model.dataType)) {
           getLabelGroupList({
@@ -275,24 +291,24 @@ export default {
                 value: item.id,
                 label: item.name,
                 disabled: false,
-              });
-            });
-          });
+              })
+            })
+          })
         }
         // 读取数据集已有标签组
         if (!isNil(next?.labelGroupId)) {
-          state.chosenGroupId = next.labelGroupId;
+          state.chosenGroupId = next.labelGroupId
           if (next.labelGroupType === 0) {
-            state.chosenGroup = ['custom', next.labelGroupId];
+            state.chosenGroup = ['custom', next.labelGroupId]
           } else {
-            state.chosenGroup = ['system', next.labelGroupId];
+            state.chosenGroup = ['system', next.labelGroupId]
           }
         } else {
-          state.chosenGroupId = null;
-          state.chosenGroup = null;
+          state.chosenGroupId = null
+          state.chosenGroup = null
         }
-      }
-    );
+      },
+    )
 
     return {
       rules,
@@ -304,7 +320,7 @@ export default {
       dataTypeList,
       annotationList,
       showlabelGroup,
-    };
+    }
   },
-};
+}
 </script>

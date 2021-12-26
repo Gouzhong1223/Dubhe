@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -69,7 +63,10 @@
             @click.stop="goEdit(scope.row, 'edit')"
             >修改</el-button
           >
-          <el-button :id="`showLog_` + scope.$index" type="text" @click.stop="onShowLog(scope.row)"
+          <el-button
+            :id="`showLog_` + scope.$index"
+            type="text"
+            @click.stop="onShowLog(scope.row)"
             >运行日志</el-button
           >
           <!-- 状态为 4 (停止) 时，在下拉菜单中展示保存模型 -->
@@ -90,7 +87,11 @@
             >断点续训</el-button
           >
           <el-dropdown>
-            <el-button type="text" style="margin-left: 10px;" @click.stop="() => {}">
+            <el-button
+              type="text"
+              style="margin-left: 10px;"
+              @click.stop="() => {}"
+            >
               更多<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
@@ -110,7 +111,9 @@
                 :disabled="!scope.row.modelPath"
                 @click.native="goSaveModel(scope.row)"
               >
-                <el-button :disabled="!scope.row.modelPath" type="text">保存模型</el-button>
+                <el-button :disabled="!scope.row.modelPath" type="text"
+                  >保存模型</el-button
+                >
               </el-dropdown-item>
               <el-dropdown-item
                 :id="`goEditParams_` + scope.$index"
@@ -118,7 +121,9 @@
                 @click.native="goEdit(scope.row, 'saveParams')"
               >
                 <!--状态：2为运行完成，3为失败，4为停止，5为未知 -->
-                <el-button :disabled="statusFlagMap[scope.row.trainStatus] !== 'done'" type="text"
+                <el-button
+                  :disabled="statusFlagMap[scope.row.trainStatus] !== 'done'"
+                  type="text"
                   >保存任务模板</el-button
                 >
               </el-dropdown-item>
@@ -128,7 +133,9 @@
                 @click.native="doDelete(scope.row.id)"
               >
                 <!--状态：2为运行完成，3为失败，4为停止，5为未知 -->
-                <el-button :disabled="statusFlagMap[scope.row.trainStatus] !== 'done'" type="text"
+                <el-button
+                  :disabled="statusFlagMap[scope.row.trainStatus] !== 'done'"
+                  type="text"
                   >删除</el-button
                 >
               </el-dropdown-item>
@@ -181,30 +188,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce'
 
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import { Constant, generateMap, emitter } from '@/utils';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import { Constant, generateMap, emitter } from '@/utils'
 import crudJob, {
   getJobList,
   stop as stopJob,
   del as deleteJob,
   edit as editJob,
   getJobDetail,
-} from '@/api/trainingJob/job';
-import { add as addParams } from '@/api/trainingJob/params';
-import BaseModal from '@/components/BaseModal';
-import JobForm from '@/components/Training/jobForm';
-import MsgPopover from '@/components/MsgPopover';
-import SaveModelDialog from '@/components/Training/saveModelDialog';
-import DropdownHeader from '@/components/DropdownHeader';
+} from '@/api/trainingJob/job'
+import { add as addParams } from '@/api/trainingJob/params'
+import BaseModal from '@/components/BaseModal'
+import JobForm from '@/components/Training/jobForm'
+import MsgPopover from '@/components/MsgPopover'
+import SaveModelDialog from '@/components/Training/saveModelDialog'
+import DropdownHeader from '@/components/DropdownHeader'
 
-import pathSelectDialog from './components/pathSelectDialog';
-import jobDrawer from './components/jobDrawer';
-import LogDialog from './components/logDialog';
-import { TRAINING_STATUS_ENUM, TRAINING_STATUS_MAP } from './utils';
+import pathSelectDialog from './components/pathSelectDialog'
+import jobDrawer from './components/jobDrawer'
+import LogDialog from './components/logDialog'
+import { TRAINING_STATUS_ENUM, TRAINING_STATUS_MAP } from './utils'
 
 export default {
   name: 'JobDetail',
@@ -227,7 +234,7 @@ export default {
         del: false,
       },
       queryOnPresenterCreated: false,
-    });
+    })
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -252,211 +259,216 @@ export default {
       statusNameMap: generateMap(TRAINING_STATUS_MAP, 'name'),
       statusTagMap: generateMap(TRAINING_STATUS_MAP, 'tagMap'),
       statusFlagMap: generateMap(TRAINING_STATUS_MAP, 'statusMap'),
-    };
+    }
   },
   beforeRouteEnter(to, from, next) {
     if (!to.query.id) {
-      next('/training/job');
+      next('/training/job')
     } else {
-      next();
+      next()
     }
   },
   computed: {
     ...mapGetters(['user']),
     jobStatusList() {
-      const list = [{ label: '全部', value: null }];
+      const list = [{ label: '全部', value: null }]
       Object.keys(this.statusNameMap).forEach((status) => {
-        list.push({ label: this.statusNameMap[status], value: status });
-      });
-      return list;
+        list.push({ label: this.statusNameMap[status], value: status })
+      })
+      return list
     },
   },
   mounted() {
-    this.id = this.$route.query.id;
-    this.refetch = debounce(1000, this.getJobList);
-    this.getJobList();
-    emitter.on('jumpToTrainingDetail', this.onJumpIn);
+    this.id = this.$route.query.id
+    this.refetch = debounce(1000, this.getJobList)
+    this.getJobList()
+    emitter.on('jumpToTrainingDetail', this.onJumpIn)
   },
   beforeDestroy() {
-    this.keepPool = false;
-    emitter.off('jumpToTrainingDetail', this.onJumpIn);
+    this.keepPool = false
+    emitter.off('jumpToTrainingDetail', this.onJumpIn)
   },
   methods: {
     // handle 操作
     onRowClick(row) {
-      this.drawerVisible = true;
+      this.drawerVisible = true
       this.$nextTick(() => {
-        this.$refs.jobDrawer.onOpen(row.id);
-      });
+        this.$refs.jobDrawer.onOpen(row.id)
+      })
     },
     async onShowLog(row) {
       if (row.k8sNamespace) {
-        this.selectedTrain = row;
+        this.selectedTrain = row
       } else {
-        await this.getJobDetail(row.id);
+        await this.getJobDetail(row.id)
       }
-      this.$refs.logDialog.show(this.selectedTrain);
+      this.$refs.logDialog.show(this.selectedTrain)
     },
     handleSortChange({ prop, order }) {
       const sortParams = {
         sort: order ? prop : undefined,
         order: order ? Constant.tableSortMap[order] : undefined,
-      };
-      this.params = Object.assign(this.params, sortParams);
-      this.getJobList();
+      }
+      this.params = Object.assign(this.params, sortParams)
+      this.getJobList()
     },
     handleDrawerClose() {
-      this.$refs.jobDrawer.onClose();
+      this.$refs.jobDrawer.onClose()
     },
     // 页面逻辑
     async getJobList() {
-      const params = { trainId: this.id, ...this.params };
-      const data = await getJobList(params);
-      this.tableList = data;
+      const params = { trainId: this.id, ...this.params }
+      const data = await getJobList(params)
+      this.tableList = data
       if (
         this.keepPool &&
-        this.tableList.some((item) => item.trainStatus === 0 || item.trainStatus === 1)
+        this.tableList.some(
+          (item) => item.trainStatus === 0 || item.trainStatus === 1,
+        )
       ) {
         setTimeout(() => {
-          this.refetch(); // 如果有中间状态就进入轮询
-        }, 1000);
+          this.refetch() // 如果有中间状态就进入轮询
+        }, 1000)
       }
     },
     refreshList() {
-      this.params = {};
-      this.getJobList();
+      this.params = {}
+      this.getJobList()
     },
     async getForm(form) {
-      this.submitLoading = true;
+      this.submitLoading = true
       if (this.dialogType === 'edit') {
         await editJob(form).finally(() => {
-          this.submitLoading = false;
-        });
-        this.refreshList();
+          this.submitLoading = false
+        })
+        this.refreshList()
         this.$message({
           message: '任务修改成功',
           type: 'success',
-        });
+        })
       } else {
         await addParams(form).finally(() => {
-          this.submitLoading = false;
-        });
+          this.submitLoading = false
+        })
         this.$message({
           message: '任务模板保存成功',
           type: 'success',
-        });
+        })
       }
-      this.showDialog = false;
+      this.showDialog = false
     },
     // 表头筛选
     filter(column, value) {
-      this.params[column] = value || undefined;
-      this.getJobList();
+      this.params[column] = value || undefined
+      this.getJobList()
     },
     // link
     goEdit(item, dialogType) {
-      this.reFresh = false;
+      this.reFresh = false
       this.$nextTick(() => {
         if (dialogType === 'saveParams') {
-          item.paramName = item.jobName;
+          item.paramName = item.jobName
         }
-        this.showDialog = true;
+        this.showDialog = true
         this.$nextTick(() => {
-          this.$refs.jobFormEdit.initForm(item);
-        });
-        this.dialogTitle = dialogType === 'edit' ? '修改任务' : '保存任务模板';
-        this.dialogType = dialogType;
-        this.reFresh = true;
-      });
+          this.$refs.jobFormEdit.initForm(item)
+        })
+        this.dialogTitle = dialogType === 'edit' ? '修改任务' : '保存任务模板'
+        this.dialogType = dialogType
+        this.reFresh = true
+      })
     },
     goVisual(jobName) {
       const params = {
         id: this.user.id,
         trainJobName: jobName,
-      };
-      const { href } = this.$router.resolve({ name: 'VISUAL', params });
-      const url = `${href}?id=${params.id}&trainJobName=${params.trainJobName}`;
-      window.open(url, '_blank');
+      }
+      const { href } = this.$router.resolve({ name: 'VISUAL', params })
+      const url = `${href}?id=${params.id}&trainJobName=${params.trainJobName}`
+      window.open(url, '_blank')
     },
     async goSaveModel(model) {
-      this.pathType = 'modelSelect';
+      this.pathType = 'modelSelect'
       const modelParams = {
         algorithmId: model.algorithmId,
         algorithmName: model.algorithmName,
         algorithmSource: model.algorithmSource,
         modelClassName: model.algorithmUsage,
         modelAddress: model.modelPath,
-      };
-      this.getJobDetail(model.id);
+      }
+      this.getJobDetail(model.id)
       this.$nextTick(() => {
         this.$refs.pathSelect.show({
           resumePath: `${model.modelPath}/`,
           id: model.algorithmId,
           params: modelParams,
-        });
-      });
+        })
+      })
     },
     // op
     doEdit() {
-      this.$refs.jobFormEdit.save();
+      this.$refs.jobFormEdit.save()
     },
     doStop(id) {
-      this.$confirm('此操作将停止该任务版本, 是否继续?', '请确认').then(async () => {
-        const params = {
-          trainId: this.id,
-          id,
-        };
-        await stopJob(params);
-        this.$message({
-          message: '停止成功',
-          type: 'success',
-        });
-        this.refreshList();
-      });
+      this.$confirm('此操作将停止该任务版本, 是否继续?', '请确认').then(
+        async () => {
+          const params = {
+            trainId: this.id,
+            id,
+          }
+          await stopJob(params)
+          this.$message({
+            message: '停止成功',
+            type: 'success',
+          })
+          this.refreshList()
+        },
+      )
     },
     doDelete(id) {
       const alertText =
         this.tableList.length === 1
           ? '此版本为该训练唯一的版本，如果删除该版本，对应的训练任务将一并删除, 是否继续?'
-          : '此操作将删除该任务版本, 是否继续?';
+          : '此操作将删除该任务版本, 是否继续?'
       this.$confirm(alertText, '请确认').then(async () => {
         const params = {
           trainId: this.id,
           id,
-        };
-        await deleteJob(params);
+        }
+        await deleteJob(params)
         this.$message({
           message: '删除成功',
           type: 'success',
-        });
+        })
         if (this.tableList.length === 1) {
-          this.$router.push({ path: '/training/job' });
+          this.$router.push({ path: '/training/job' })
         } else {
-          this.refreshList();
+          this.refreshList()
         }
-      });
+      })
     },
     async doResume(item) {
-      this.pathType = 'jobResume';
+      this.pathType = 'jobResume'
       this.$nextTick(() => {
         this.$refs.pathSelect.show({
           resumePath: `${item.modelPath}/`,
           id: item.id,
-        });
-      });
+        })
+      })
     },
     chooseDone() {
-      this.refreshList();
+      this.refreshList()
     },
     chooseModel(selectPath, params) {
       Object.assign(params, {
         modelAddress: selectPath,
-        frameType: this.selectedTrain.frameType && String(this.selectedTrain.frameType),
-      });
-      this.$refs.saveModel.show(params);
+        frameType:
+          this.selectedTrain.frameType && String(this.selectedTrain.frameType),
+      })
+      this.$refs.saveModel.show(params)
     },
     async getJobDetail(jobId) {
-      this.selectedTrain = await getJobDetail(jobId);
+      this.selectedTrain = await getJobDetail(jobId)
     },
 
     showPopover(trainStatus) {
@@ -464,19 +476,19 @@ export default {
         TRAINING_STATUS_ENUM.PENDING,
         TRAINING_STATUS_ENUM.UNKNOW,
         TRAINING_STATUS_ENUM.CREATE_FAILED,
-      ].includes(trainStatus);
+      ].includes(trainStatus)
     },
 
     messageText(trainStatus) {
-      return trainStatus ? '暂无提示信息' : '容器正在启动中';
+      return trainStatus ? '暂无提示信息' : '容器正在启动中'
     },
 
     onJumpIn() {
       this.$nextTick(() => {
-        this.id = this.$route.query.id;
-        this.getJobList();
-      });
+        this.id = this.$route.query.id
+        this.getJobList()
+      })
     },
   },
-};
+}
 </script>

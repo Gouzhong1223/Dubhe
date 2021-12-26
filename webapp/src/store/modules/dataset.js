@@ -22,53 +22,53 @@ const state = {
   activePanel: 0,
   activePanelLabelGroup: 0,
   activePanelMedical: 0,
-};
+}
 
 const mutations = {
   TOGGLE_PANEL: (state, panel) => {
-    state.activePanel = panel;
+    state.activePanel = panel
   },
   RESET_PANEL: (state) => {
-    state.activePanel = 0;
+    state.activePanel = 0
   },
   TOGGLE_PANEL_LABEL_GROUP: (state, panel) => {
-    state.activePanelLabelGroup = panel;
+    state.activePanelLabelGroup = panel
   },
   RESET_PANEL_LABEL_GROUP: (state) => {
-    state.activePanelLabelGroup = 0;
+    state.activePanelLabelGroup = 0
   },
   TOGGLE_PANEL_MEDICAL: (state, panel) => {
-    state.activePanelMedical = panel;
+    state.activePanelMedical = panel
   },
   RESET_PANEL_MEDICAL: (state) => {
-    state.activePanelMedical = 0;
+    state.activePanelMedical = 0
   },
-};
+}
 
 const actions = {
   togglePanel({ commit }, panel) {
-    commit('TOGGLE_PANEL', panel);
+    commit('TOGGLE_PANEL', panel)
   },
   resetPanel({ commit }) {
-    commit('RESET_PANEL');
+    commit('RESET_PANEL')
   },
   togglePanelLabelGroup({ commit }, panel) {
-    commit('TOGGLE_PANEL_LABEL_GROUP', panel);
+    commit('TOGGLE_PANEL_LABEL_GROUP', panel)
   },
   resetPanelLabelGroup({ commit }) {
-    commit('RESET_PANEL_LABEL_GROUP');
+    commit('RESET_PANEL_LABEL_GROUP')
   },
   togglePanelMedical({ commit }, panel) {
-    commit('TOGGLE_PANEL_MEDICAL', panel);
+    commit('TOGGLE_PANEL_MEDICAL', panel)
   },
   resetPanelMedical({ commit }) {
-    commit('RESET_PANEL_MEDICAL');
+    commit('RESET_PANEL_MEDICAL')
   },
-};
+}
 
 export default {
   namespaced: true,
   state,
   mutations,
   actions,
-};
+}

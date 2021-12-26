@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-import elSelectLoadMore from './modules/elSelectLoadMore';
-import mouseWheel from './modules/mouseWheel';
-import clickOnce from './modules/clickOnce';
+import elSelectLoadMore from './modules/elSelectLoadMore'
+import mouseWheel from './modules/mouseWheel'
+import clickOnce from './modules/clickOnce'
 
 const directives = {
   'el-select-load-more': elSelectLoadMore,
   'mouse-wheel': mouseWheel,
   'click-once': clickOnce,
-};
+}
 
-export default directives;
+export default directives

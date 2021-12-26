@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function getPodLog(params) {
   return request({
     url: `/${API_MODULE_NAME.K8S}/pod/log`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function downloadPodLog(params) {
@@ -30,7 +30,7 @@ export function downloadPodLog(params) {
     url: `/${API_MODULE_NAME.K8S}/pod/log/download`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function batchDownloadPodLog(data) {
@@ -39,7 +39,7 @@ export function batchDownloadPodLog(data) {
     method: 'post',
     responseType: 'blob',
     data,
-  });
+  })
 }
 
 export function countPodLogs(namespace, podVOList) {
@@ -47,7 +47,7 @@ export function countPodLogs(namespace, podVOList) {
     url: `/${API_MODULE_NAME.K8S}/pod/log/count`,
     method: 'post',
     data: { namespace, podVOList },
-  });
+  })
 }
 
 export function getMetrics(params) {
@@ -55,7 +55,7 @@ export function getMetrics(params) {
     url: `/${API_MODULE_NAME.K8S}/pod/realtimeMetrics`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getHistoryMetrics(params) {
@@ -63,7 +63,7 @@ export function getHistoryMetrics(params) {
     url: `/${API_MODULE_NAME.K8S}/pod/rangeMetrics`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 根据用户 Id 查询用户当前资源占用情况
@@ -72,5 +72,5 @@ export function getUserResourceInfo(userId) {
     url: `/${API_MODULE_NAME.K8S}/namespace/findNamespace`,
     method: 'get',
     params: { userId },
-  });
+  })
 }

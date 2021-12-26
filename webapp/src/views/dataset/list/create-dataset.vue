@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <BaseModal
@@ -24,9 +18,18 @@
     @change="handleClose"
     @ok="handleOk"
   >
-    <el-form ref="formRef" :model="state.form" :rules="rules" label-width="100px">
+    <el-form
+      ref="formRef"
+      :model="state.form"
+      :rules="rules"
+      label-width="100px"
+    >
       <el-form-item label="数据集名称" prop="name">
-        <el-input v-model="state.form.name" placeholder="数据集名称不能超过50字" maxlength="50" />
+        <el-input
+          v-model="state.form.name"
+          placeholder="数据集名称不能超过50字"
+          maxlength="50"
+        />
       </el-form-item>
       <el-form-item label="数据类型" prop="dataType">
         <InfoRadio
@@ -80,7 +83,12 @@
           >官方文档</a
         >
       </div>
-      <el-form-item v-if="showlabelGroup" label="标签组" style="height: 32px;" prop="labelGroup">
+      <el-form-item
+        v-if="showlabelGroup"
+        label="标签组"
+        style="height: 32px;"
+        prop="labelGroup"
+      >
         <el-cascader
           v-model="state.form.labelGroup"
           clearable
@@ -150,10 +158,10 @@
   </BaseModal>
 </template>
 <script>
-import { onMounted, reactive, watch, ref, computed } from '@vue/composition-api';
-import { Message } from 'element-ui';
-import cx from 'classnames';
-import { set, omit } from 'lodash';
+import { onMounted, reactive, watch, ref, computed } from '@vue/composition-api'
+import { Message } from 'element-ui'
+import cx from 'classnames'
+import { set, omit } from 'lodash'
 
 import {
   dataTypeMap,
@@ -162,16 +170,16 @@ import {
   enableLabelGroup,
   dataTypeCodeMap,
   annotationMap,
-} from '@/views/dataset/util';
-import BaseModal from '@/components/BaseModal';
-import InfoRadio from '@/components/InfoRadio';
-import { isEmptyValue } from '@/utils';
-import { validateName } from '@/utils/validate';
+} from '@/views/dataset/util'
+import BaseModal from '@/components/BaseModal'
+import InfoRadio from '@/components/InfoRadio'
+import { isEmptyValue } from '@/utils'
+import { validateName } from '@/utils/validate'
 
-import { getLabelGroupList } from '@/api/preparation/labelGroup';
-import { add } from '@/api/preparation/dataset';
+import { getLabelGroupList } from '@/api/preparation/labelGroup'
+import { add } from '@/api/preparation/dataset'
 
-const annotationByDataType = annotationBy('dataType');
+const annotationByDataType = annotationBy('dataType')
 
 // 数据类型 => 图像
 const imageNameMap = {
@@ -185,7 +193,7 @@ const imageNameMap = {
   ner: 'ner.png',
   speechRecognition: 'speechRecognition.png',
   custom: 'custom.png',
-};
+}
 
 export default {
   name: 'CreateDataset',
@@ -199,7 +207,7 @@ export default {
     onResetFresh: Function,
   },
   setup(props) {
-    const { toggleVisible, onResetFresh } = props;
+    const { toggleVisible, onResetFresh } = props
     const initialForm = {
       name: '',
       dataType: 0,
@@ -208,8 +216,8 @@ export default {
       labelGroupId: null,
       remark: '',
       type: 0,
-    };
-    const formRef = ref(null);
+    }
+    const formRef = ref(null)
 
     const initialLabelGroupOptions = [
       {
@@ -224,7 +232,7 @@ export default {
         disabled: false,
         children: [],
       },
-    ];
+    ]
 
     const state = reactive({
       form: initialForm,
@@ -232,9 +240,9 @@ export default {
       visible: props.visible,
       loading: false, // 数据集创建进行中
       customAnnotationType: null,
-    });
+    })
 
-    const labelGroupOptions = ref(initialLabelGroupOptions);
+    const labelGroupOptions = ref(initialLabelGroupOptions)
 
     const rules = {
       name: [
@@ -245,16 +253,23 @@ export default {
         },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
-      dataType: [{ required: true, message: '请选择数据类型', trigger: 'change' }],
-      annotateType: [{ required: true, message: '请选择标注类型', trigger: 'change' }],
-      labelGroup: [{ required: true, message: '请选择标签组', trigger: 'change' }],
-    };
+      dataType: [
+        { required: true, message: '请选择数据类型', trigger: 'change' },
+      ],
+      annotateType: [
+        { required: true, message: '请选择标注类型', trigger: 'change' },
+      ],
+      labelGroup: [
+        { required: true, message: '请选择标签组', trigger: 'change' },
+      ],
+    }
 
     // 是否展示标签组
     const showlabelGroup = computed(
       () =>
-        enableLabelGroup(state.form.annotateType) && state.form.dataType !== dataTypeCodeMap.CUSTOM
-    );
+        enableLabelGroup(state.form.annotateType) &&
+        state.form.dataType !== dataTypeCodeMap.CUSTOM,
+    )
 
     const setForm = (params) =>
       Object.assign(state, {
@@ -262,10 +277,10 @@ export default {
           ...state.form,
           ...params,
         },
-      });
+      })
 
     // 更新加载状态
-    const setLoading = (loading) => Object.assign(state, { loading });
+    const setLoading = (loading) => Object.assign(state, { loading })
 
     // 重置状态（reactive mutate 原始对象）
     const resetForm = () =>
@@ -279,45 +294,51 @@ export default {
           remark: '',
           type: 0,
         },
-      });
+      })
 
     // 更新标签组信息
     const updateLabelGroupOptions = (index, path, params) => {
-      labelGroupOptions.value[index] = set(labelGroupOptions.value[index], path, params);
-    };
+      labelGroupOptions.value[index] = set(
+        labelGroupOptions.value[index],
+        path,
+        params,
+      )
+    }
 
-    const annotationList = computed(() => annotationByDataType(state.form.dataType));
+    const annotationList = computed(() =>
+      annotationByDataType(state.form.dataType),
+    )
 
     const allAnnotationList = computed(() => {
       return Object.keys(annotationMap).map((d) => ({
         label: annotationMap[d].name,
         value: annotationMap[d].code,
         code: annotationMap[d].code,
-      }));
-    });
+      }))
+    })
 
     const transformOptions = (list) => {
       return list.map((d) => ({
         ...d,
         label: d.label,
         value: Number(d.value),
-      }));
-    };
+      }))
+    }
 
     // eslint-disable-next-line
-    const getImgUrl = item => {
+    const getImgUrl = (item) => {
       try {
         // eslint-disable-next-line
-        return require(`@/assets/images/dataset/${imageNameMap[item.type]}`);
+        return require(`@/assets/images/dataset/${imageNameMap[item.type]}`)
       } catch (err) {
-        console.error(err);
+        console.error(err)
       }
-    };
+    }
 
     const getImageKlass = (item) =>
       cx(`image-select-item item-${item.urlPrefix}`, {
         'is-active': item.code === Number(state.form.annotateType),
-      });
+      })
 
     // 构建标签组信息
     const buildLabelOptions = (data) =>
@@ -325,34 +346,34 @@ export default {
         value: d.id,
         label: d.name,
         disabled: false,
-      }));
+      }))
 
     const updateLabelGroup = () => {
-      const { dataType, annotateType } = state.form || {};
+      const { dataType, annotateType } = state.form || {}
       if (!isEmptyValue(dataType) && !isEmptyValue(annotateType)) {
         // 遍历两层
-        [0, 1].forEach((d) => {
+        ;[0, 1].forEach((d) => {
           getLabelGroupList({ type: d, dataType, annotateType }).then((res) => {
-            const options = buildLabelOptions(res);
-            updateLabelGroupOptions(d, 'children', options);
-          });
-        });
+            const options = buildLabelOptions(res)
+            updateLabelGroupOptions(d, 'children', options)
+          })
+        })
       }
-    };
+    }
 
     const selectAnnotationType = (item) => {
-      if (item.code === Number(state.form.annotateType)) return;
+      if (item.code === Number(state.form.annotateType)) return
       setForm({
         annotateType: item.code,
         labelGroup: null,
         labelGroupId: null,
-      });
-      updateLabelGroup();
-    };
+      })
+      updateLabelGroup()
+    }
 
     const selectCustomAnnotationType = (val) => {
-      setForm({ annotateType: val });
-    };
+      setForm({ annotateType: val })
+    }
 
     const handleDataTypeChange = () => {
       // 默认定位到第一个标注场景
@@ -361,18 +382,18 @@ export default {
           annotateType: annotationList.value[0].code,
           labelGroup: null,
           labelGroupId: null,
-        });
+        })
       }
-      updateLabelGroup();
-    };
+      updateLabelGroup()
+    }
 
     const handleGroupChange = (val) => {
       if (val.length === 0) {
-        setForm({ labelGroup: null, labelGroupId: null });
+        setForm({ labelGroup: null, labelGroupId: null })
       } else {
-        setForm({ labelGroup: val, labelGroupId: val[1] });
+        setForm({ labelGroup: val, labelGroupId: val[1] })
       }
-    };
+    }
 
     const handleClose = () => {
       Object.assign(state, {
@@ -388,28 +409,28 @@ export default {
           type: 0,
         },
         loading: false,
-      });
-      toggleVisible();
-      onResetFresh();
-    };
+      })
+      toggleVisible()
+      onResetFresh()
+    }
 
     const handleOk = () => {
       formRef.value.validate((valid) => {
-        if (!valid) return;
-        const params = omit(state.form, ['labelGroup']);
-        params.import = params.dataType === dataTypeCodeMap.CUSTOM;
-        setLoading(true);
+        if (!valid) return
+        const params = omit(state.form, ['labelGroup'])
+        params.import = params.dataType === dataTypeCodeMap.CUSTOM
+        setLoading(true)
         add(params)
           .then(() => {
-            Message.success('数据集创建成功');
-            resetForm();
-            toggleVisible();
+            Message.success('数据集创建成功')
+            resetForm()
+            toggleVisible()
           })
           .finally(() => {
-            setLoading(false);
-          });
-      });
-    };
+            setLoading(false)
+          })
+      })
+    }
 
     watch(
       () => props.visible,
@@ -417,15 +438,15 @@ export default {
         next !== state.visible &&
           Object.assign(state, {
             visible: next,
-          });
-      }
-    );
+          })
+      },
+    )
 
     onMounted(() => {
-      annotationList.value.forEach((item) => getImgUrl(item));
+      annotationList.value.forEach((item) => getImgUrl(item))
       // 初始化标签组
-      updateLabelGroup();
-    });
+      updateLabelGroup()
+    })
 
     return {
       state,
@@ -447,9 +468,9 @@ export default {
       handleOk,
       rules,
       showlabelGroup,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 @import '../style/common.scss';

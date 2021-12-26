@@ -1,22 +1,25 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
-  <div v-loading="state.loading" class="app-container" style="width: 600px; margin-top: 28px;">
-    <el-form ref="formRef" :model="state.createForm" :rules="rules" label-width="100px">
+  <div
+    v-loading="state.loading"
+    class="app-container"
+    style="width: 600px; margin-top: 28px;"
+  >
+    <el-form
+      ref="formRef"
+      :model="state.createForm"
+      :rules="rules"
+      label-width="100px"
+    >
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="state.createForm.name"
@@ -58,11 +61,19 @@
             <Exception v-if="state.createForm.labels.length === 0" />
             <div v-else>
               <div v-if="state.groupType === 1">
-                <el-tag v-for="label in state.originList" :key="label.id" class="mr-10">{{
-                  label.name
-                }}</el-tag>
+                <el-tag
+                  v-for="label in state.originList"
+                  :key="label.id"
+                  class="mr-10"
+                  >{{ label.name }}</el-tag
+                >
               </div>
-              <el-form v-else ref="customFormRef" :model="state.createForm" label-width="100px">
+              <el-form
+                v-else
+                ref="customFormRef"
+                :model="state.createForm"
+                label-width="100px"
+              >
                 <DynamicField
                   :list="state.createForm.labels"
                   :labelGroupType="state.createForm.labelGroupType"
@@ -89,7 +100,11 @@
               <IconFont type="beauty" class="format" />
             </span>
           </el-tab-pane>
-          <el-tab-pane label="导入标签组" name="upload" :disabled="state.actionType !== 'create'">
+          <el-tab-pane
+            label="导入标签组"
+            name="upload"
+            :disabled="state.actionType !== 'create'"
+          >
             <div class="min-height-100 flex flex-center upload-tab">
               <UploadInline
                 ref="uploadFormRef"
@@ -119,7 +134,10 @@
             <div>1. 请按照格式要求提交 json 格式标签文件</div>
             <div>
               2. 格式参考
-              <a target="_blank" :href="`${VUE_APP_DOCS_URL}module/dataset/labelGroup`">
+              <a
+                target="_blank"
+                :href="`${VUE_APP_DOCS_URL}module/dataset/labelGroup`"
+              >
                 标签组模版文件
               </a>
             </div>
@@ -128,36 +146,43 @@
       </el-form-item>
     </el-form>
     <div style="margin-left: 100px;">
-      <el-button type="primary" @click="handleSubmit">{{ submitTxt }}</el-button>
+      <el-button type="primary" @click="handleSubmit">{{
+        submitTxt
+      }}</el-button>
       <!-- <el-button @click="goBack">{{state.cancelText}}</el-button> -->
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref, onMounted, computed } from '@vue/composition-api';
-import { Message, MessageBox } from 'element-ui';
-import { pick, uniqBy } from 'lodash';
+import { reactive, ref, onMounted, computed } from '@vue/composition-api'
+import { Message, MessageBox } from 'element-ui'
+import { pick, uniqBy } from 'lodash'
 
-import Beautify from 'js-beautify';
+import Beautify from 'js-beautify'
 
-import Editor from '@/components/editor';
-import Exception from '@/components/Exception';
-import UploadInline from '@/components/UploadForm/inline';
-import { remove, replace, duplicate } from '@/utils';
-import { labelGroupTypeMap } from '@/views/dataset/util';
-import { validateName, validateLabelsUtil } from '@/utils/validate';
-import { getAutoLabels } from '@/api/preparation/datalabel';
-import { add, edit, getLabelGroupDetail, importLabelGroup } from '@/api/preparation/labelGroup';
-import InfoSelect from '@/components/InfoSelect';
-import DynamicField from './dynamicField';
+import Editor from '@/components/editor'
+import Exception from '@/components/Exception'
+import UploadInline from '@/components/UploadForm/inline'
+import { remove, replace, duplicate } from '@/utils'
+import { labelGroupTypeMap } from '@/views/dataset/util'
+import { validateName, validateLabelsUtil } from '@/utils/validate'
+import { getAutoLabels } from '@/api/preparation/datalabel'
+import {
+  add,
+  edit,
+  getLabelGroupDetail,
+  importLabelGroup,
+} from '@/api/preparation/labelGroup'
+import InfoSelect from '@/components/InfoSelect'
+import DynamicField from './dynamicField'
 
-const defaultColor = '#FFFFFF';
+const defaultColor = '#FFFFFF'
 
 const initialLabels = [
   { name: '', color: defaultColor },
   { name: '', color: '#000000' },
-];
+]
 
 export default {
   name: 'LabelGroupForm',
@@ -169,50 +194,58 @@ export default {
     InfoSelect,
   },
   setup(props, ctx) {
-    const editorRef = ref(null);
-    const formRef = ref(null);
-    const uploadFormRef = ref(null);
-    const customFormRef = ref(null);
+    const editorRef = ref(null)
+    const formRef = ref(null)
+    const uploadFormRef = ref(null)
+    const customFormRef = ref(null)
 
-    const { $route, $router } = ctx.root;
+    const { $route, $router } = ctx.root
     const routeMap = {
       LabelGroupCreate: 'create',
       LabelGroupDetail: 'detail',
       LabelGroupEdit: 'edit',
-    };
+    }
 
     const txtMap = {
       create: '确认创建',
       edit: '确认编辑',
       detail: '返回',
-    };
+    }
 
     const operateTypeMap = {
       1: 'custom',
       2: 'edit',
       3: 'upload',
-    };
+    }
 
     // 表单规则
     const rules = {
       name: [
-        { required: true, message: '请输入标签组名称', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请输入标签组名称',
+          trigger: ['change', 'blur'],
+        },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
       labelGroupType: [
-        { required: true, message: '请选择标签组类型', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请选择标签组类型',
+          trigger: ['change', 'blur'],
+        },
       ],
-    };
+    }
 
     const buildModel = (record, options) => {
-      return { ...record, ...options };
-    };
+      return { ...record, ...options }
+    }
 
     // 生成 keys
-    const setKeys = (labels) => labels.map((label, index) => index);
+    const setKeys = (labels) => labels.map((label, index) => index)
 
     // 页面类型
-    const actionType = routeMap[$route.name] || 'create';
+    const actionType = routeMap[$route.name] || 'create'
 
     const state = reactive({
       id: actionType !== 'create' ? $route.query.id : null,
@@ -246,43 +279,45 @@ export default {
       cancelText: '取消',
       errmsg: '',
       loading: false, // 加载详情
-    });
+    })
 
-    const submitTxt = txtMap[state.actionType];
+    const submitTxt = txtMap[state.actionType]
 
     // 获取 key 值索引
-    const getIndex = (index) => state.keys.findIndex((key) => key === index);
+    const getIndex = (index) => state.keys.findIndex((key) => key === index)
 
     // 根据值获取标签值
     const getLabelGroupLabel = (value) => {
-      return (Object.values(labelGroupTypeMap).find((d) => d.value === value) || {}).label;
-    };
+      return (
+        Object.values(labelGroupTypeMap).find((d) => d.value === value) || {}
+      ).label
+    }
 
     const setCode = (code) => {
       Object.assign(state, {
         codeContent: code,
-      });
-    };
+      })
+    }
 
     const handleCodeChange = (value) => {
-      setCode(value);
-    };
+      setCode(value)
+    }
 
     const beautify = () => {
       // 编辑器内容
-      const code = editorRef.value.getValue();
-      const formated = Beautify(code);
-      setCode(formated);
-    };
+      const code = editorRef.value.getValue()
+      const formated = Beautify(code)
+      setCode(formated)
+    }
 
     const uploadError = (err) => {
-      Message.error('上传失败', err.message || err);
-      console.error(err);
-    };
+      Message.error('上传失败', err.message || err)
+      console.error(err)
+    }
 
     const goBack = () => {
-      $router.push({ path: '/data/labelgroup' });
-    };
+      $router.push({ path: '/data/labelgroup' })
+    }
 
     // 更新
     const updateCreateForm = (next) => {
@@ -291,10 +326,10 @@ export default {
           ...state.createForm,
           ...next,
         },
-      });
-    };
+      })
+    }
 
-    const labelGroupTypeList = Object.values(labelGroupTypeMap);
+    const labelGroupTypeList = Object.values(labelGroupTypeMap)
 
     const handleLabelGroupTypeChange = () => {
       Object.assign(state, {
@@ -302,37 +337,37 @@ export default {
           ...state.createForm,
           labels: initialLabels,
         },
-      });
+      })
       getAutoLabels(state.createForm.labelGroupType).then((res) => {
         Object.assign(state, {
           activeLabels: res,
           systemLabels: res,
-        });
-      });
-    };
+        })
+      })
+    }
 
     const handleLabelGroupRequest = (params) => {
       const nextParams = {
         ...params,
         labels: JSON.stringify(params.labels),
-      };
+      }
 
-      const requestResource = params.id ? edit : add;
-      const message = params.id ? '标签组编辑成功' : '标签组创建成功';
+      const requestResource = params.id ? edit : add
+      const message = params.id ? '标签组编辑成功' : '标签组创建成功'
 
       requestResource(nextParams).then(() => {
         Message.success({
           message,
           duration: 1500,
           onClose: goBack,
-        });
-      });
-    };
+        })
+      })
+    }
 
     const handleSubmit = () => {
       if (actionType === 'detail') {
-        goBack();
-        return;
+        goBack()
+        return
       }
 
       formRef.value.validate((validWrapper) => {
@@ -345,94 +380,96 @@ export default {
                   const params = {
                     ...state.createForm,
                     operateType: 1,
-                  };
-                  handleLabelGroupRequest(params);
+                  }
+                  handleLabelGroupRequest(params)
                 }
-              });
-              break;
+              })
+              break
             // 编辑标签组
             case 'edit':
               try {
-                let errMsg = '';
-                const code = JSON.parse(editorRef.value.getValue());
+                let errMsg = ''
+                const code = JSON.parse(editorRef.value.getValue())
                 if (Array.isArray(code) && code.length) {
                   for (const d of code) {
                     if (validateLabelsUtil(d) !== '') {
-                      errMsg = validateLabelsUtil(d);
-                      break;
+                      errMsg = validateLabelsUtil(d)
+                      break
                     }
                   }
                 }
                 if (errMsg) {
-                  Message.error(errMsg);
-                  return;
+                  Message.error(errMsg)
+                  return
                 }
                 const editParams = {
                   ...state.createForm,
                   labels: code,
                   operateType: 2,
-                };
-                handleLabelGroupRequest(editParams);
+                }
+                handleLabelGroupRequest(editParams)
               } catch (err) {
-                console.error(err);
-                throw err;
+                console.error(err)
+                throw err
               }
-              break;
+              break
             case 'upload': {
-              const { uploadFiles } = uploadFormRef.value.formRef?.$refs.uploader || {};
-              const { name, remark, labelGroupType } = state.createForm;
+              const { uploadFiles } =
+                uploadFormRef.value.formRef?.$refs.uploader || {}
+              const { name, remark, labelGroupType } = state.createForm
 
-              const formData = new FormData();
-              formData.append('name', name);
-              formData.append('remark', remark);
-              formData.append('file', uploadFiles[0].raw);
-              formData.append('operateType', 3);
-              formData.append('labelGroupType', labelGroupType);
+              const formData = new FormData()
+              formData.append('name', name)
+              formData.append('remark', remark)
+              formData.append('file', uploadFiles[0].raw)
+              formData.append('operateType', 3)
+              formData.append('labelGroupType', labelGroupType)
 
               importLabelGroup(formData).then(() => {
                 Message.success({
                   message: '标签组导入成功',
                   duration: 1500,
                   onClose: goBack,
-                });
-              });
-              break;
+                })
+              })
+              break
             }
             default:
-              break;
+              break
           }
         }
-      });
-    };
+      })
+    }
 
     const beforeLeave = (activeName, oldActiveName) => {
-      if (activeName === oldActiveName) return false;
+      if (activeName === oldActiveName) return false
       if (oldActiveName === 'upload') {
-        const { uploadFiles } = uploadFormRef.value.formRef?.$refs.uploader || {};
+        const { uploadFiles } =
+          uploadFormRef.value.formRef?.$refs.uploader || {}
         if (uploadFiles.length) {
           return MessageBox.confirm('标注文件已提交，确认切换？').catch(() => {
-            state.addWay = 'upload';
-            return Promise.reject();
-          });
+            state.addWay = 'upload'
+            return Promise.reject()
+          })
         }
-        return true;
+        return true
       }
-      return true;
-    };
+      return true
+    }
 
     //
     const handleClick = (tab) => {
-      if (state.addWay === tab.name) return;
+      if (state.addWay === tab.name) return
       // 切换到编辑模式
       if (tab.name === 'edit') {
         // 从自定义编辑切换过去
         if (state.addWay === 'custom') {
-          state.codeContent = JSON.stringify(state.createForm.labels);
+          state.codeContent = JSON.stringify(state.createForm.labels)
         }
       } else if (tab.name === 'custom') {
         if (state.addWay === 'edit') {
           try {
-            const nextLabels = JSON.parse(editorRef.value.getValue());
+            const nextLabels = JSON.parse(editorRef.value.getValue())
             Object.assign(state, {
               createForm: {
                 ...state.createForm,
@@ -440,83 +477,83 @@ export default {
               },
               keys: setKeys(nextLabels),
               counter: Math.max(state.counter, nextLabels.length - 1),
-            });
+            })
           } catch (err) {
-            Message.error('编辑格式不合法');
-            return;
+            Message.error('编辑格式不合法')
+            return
           }
         }
       }
-      state.addWay = tab.name;
-    };
+      state.addWay = tab.name
+    }
 
     const addLabel = (row) => {
-      state.createForm.labels.push(row);
-      const nextKeys = state.keys.concat(state.counter + 1);
+      state.createForm.labels.push(row)
+      const nextKeys = state.keys.concat(state.counter + 1)
       Object.assign(state, {
         keys: nextKeys,
         counter: state.counter + 1,
-      });
-    };
+      })
+    }
 
     // 添加一行标签
     const addRow = () => {
       addLabel({
         name: '',
         color: defaultColor,
-      });
-    };
+      })
+    }
 
     // 用户自定义创建标签
     const createCustomLabel = (name, index) => {
-      const updateLabel = { name, color: defaultColor };
+      const updateLabel = { name, color: defaultColor }
       updateCreateForm({
         labels: replace(state.createForm.labels, index, updateLabel),
-      });
-    };
+      })
+    }
 
     const validateDuplicate = (rule, value, callback) => {
       const isDuplicate = duplicate(state.createForm.labels, (d) => {
-        if (!value.id) return false;
-        return d.id === value.id;
-      });
+        if (!value.id) return false
+        return d.id === value.id
+      })
       if (isDuplicate) {
-        callback(new Error('标签不能重复'));
-        return;
+        callback(new Error('标签不能重复'))
+        return
       }
-      callback();
-    };
+      callback()
+    }
 
     const handleLabelChange = (key, value) => {
-      const index = getIndex(key);
+      const index = getIndex(key)
 
       // 每次触发错误表单项验证
       const errorFields = customFormRef.value.fields
         .filter((d) => d.validateState === 'error')
-        .map((d) => d.prop);
-      customFormRef.value.validateField(errorFields);
+        .map((d) => d.prop)
+      customFormRef.value.validateField(errorFields)
       // 判断是新建还是选择标签
-      const editLabel = state.systemLabels.find((d) => d.id === value);
+      const editLabel = state.systemLabels.find((d) => d.id === value)
       // 选择已有标签
       if (editLabel) {
-        const updateLabel = pick(editLabel, ['name', 'id', 'color']);
+        const updateLabel = pick(editLabel, ['name', 'id', 'color'])
         Object.assign(state, {
           createForm: {
             ...state.createForm,
             labels: replace(state.createForm.labels, index, updateLabel),
           },
-        });
+        })
       } else {
         // 创建用户自定义标签
-        createCustomLabel(value, index);
+        createCustomLabel(value, index)
       }
-    };
+    }
 
     // 移除标签
     const removeLabel = (k) => {
       // 至少保留一条记录
-      if (state.keys.length === 1) return;
-      const index = getIndex(k);
+      if (state.keys.length === 1) return
+      const index = getIndex(k)
 
       Object.assign(state, {
         keys: state.keys.filter((key) => key !== k),
@@ -524,42 +561,45 @@ export default {
           ...state.createForm,
           labels: remove(state.createForm.labels, index),
         },
-      });
-    };
+      })
+    }
 
     const setLoading = (loading) => {
       Object.assign(state, {
         loading,
-      });
-    };
+      })
+    }
 
-    const labelGroupType = computed(() => getLabelGroupLabel(state.groupType)) || undefined;
+    const labelGroupType =
+      computed(() => getLabelGroupLabel(state.groupType)) || undefined
 
     onMounted(() => {
       // 异常判断
       if (actionType !== 'create') {
         if (!state.id) {
-          $router.push({ path: '/data/labelgroup' });
-          throw new Error('当前标签组 id 不存在');
+          $router.push({ path: '/data/labelgroup' })
+          throw new Error('当前标签组 id 不存在')
         }
-        setLoading(true);
+        setLoading(true)
         // 查询数据集详情
         getLabelGroupDetail(state.id)
           .then(async (res) => {
             // 当编辑模式，且数据为空时需要提供默认数据
             const labels =
-              res.labels.length === 0 && actionType === 'edit' ? initialLabels : res.labels;
+              res.labels.length === 0 && actionType === 'edit'
+                ? initialLabels
+                : res.labels
             const restProps =
               state.actionType === 'detail'
                 ? {
                     groupType: res.type || 0,
                   }
-                : {};
-            const autoLabels = await getAutoLabels(res.labelGroupType);
+                : {}
+            const autoLabels = await getAutoLabels(res.labelGroupType)
             Object.assign(state, {
               activeLabels: autoLabels,
               systemLabels: autoLabels,
-            });
+            })
             Object.assign(state, {
               createForm: {
                 ...state.createForm,
@@ -573,13 +613,13 @@ export default {
               counter: Math.max(state.counter, labels.length - 1),
               codeContent: JSON.stringify(res.labels),
               ...restProps,
-            });
+            })
           })
           .finally(() => {
-            setLoading(false);
-          });
+            setLoading(false)
+          })
       }
-    });
+    })
 
     return {
       rules,
@@ -604,9 +644,9 @@ export default {
       labelGroupTypeList,
       handleLabelGroupTypeChange,
       handleCodeChange,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

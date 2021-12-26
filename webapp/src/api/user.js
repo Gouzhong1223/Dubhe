@@ -14,22 +14,22 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function userMenus(params) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/user/menus`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function dictDetail(name) {
   return request({
     url: `/${API_MODULE_NAME.ADMIN}/user/dict/${name}`,
     method: 'get',
-  });
+  })
 }
 
 export function userInfo(data) {
@@ -37,7 +37,7 @@ export function userInfo(data) {
     url: `/${API_MODULE_NAME.ADMIN}/user/info`,
     method: 'get',
     data,
-  });
+  })
 }
 
 export function editUser(data) {
@@ -45,7 +45,7 @@ export function editUser(data) {
     url: `/${API_MODULE_NAME.ADMIN}/user/info`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function updateAvatar(data) {
@@ -53,7 +53,7 @@ export function updateAvatar(data) {
     url: `/${API_MODULE_NAME.ADMIN}/user/updateAvatar`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function updatePass(data) {
@@ -61,7 +61,7 @@ export function updatePass(data) {
     url: `/${API_MODULE_NAME.ADMIN}/user/updatePass`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function resetEmail(data) {
@@ -69,5 +69,5 @@ export function resetEmail(data) {
     url: `/${API_MODULE_NAME.ADMIN}/user/resetEmail`,
     method: 'post',
     data,
-  });
+  })
 }

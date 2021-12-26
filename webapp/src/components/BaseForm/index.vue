@@ -1,21 +1,21 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
-  <el-form ref="formRef" :model="model" v-bind="attrs" v-on="$listeners" @submit.native.prevent>
+  <el-form
+    ref="formRef"
+    :model="model"
+    v-bind="attrs"
+    v-on="$listeners"
+    @submit.native.prevent
+  >
     <template v-for="item of mergedFormItems">
       <el-form-item
         v-if="!hideItem(item)"
@@ -74,21 +74,21 @@
 </template>
 
 <script>
-import { computed, reactive, ref } from '@vue/composition-api';
+import { computed, reactive, ref } from '@vue/composition-api'
 
-import { runFunc } from '@/utils';
+import { runFunc } from '@/utils'
 
 // 默认表单属性
 const defaultFormAttrs = {
   // TODO: 确认是否添加表单默认属性
-};
+}
 
 // 默认表单项定义
 const defaultItemDefinition = {
   type: 'input',
   clearable: true,
   rows: 4,
-};
+}
 
 export default {
   name: 'BaseForm',
@@ -104,51 +104,51 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { model } = reactive(props);
+    const { model } = reactive(props)
     // 表单组件 ref
-    const formRef = ref(null);
+    const formRef = ref(null)
 
     // 合并表单默认属性和 $attrs
     const attrs = computed(() => {
-      return { ...defaultFormAttrs, ...ctx.attrs };
-    });
+      return { ...defaultFormAttrs, ...ctx.attrs }
+    })
 
     const hideItem = (item) => {
-      if (item.hidden) return true;
-      if (typeof item.hiddenFunc === 'function') return item.hiddenFunc();
-      return false;
-    };
+      if (item.hidden) return true
+      if (typeof item.hiddenFunc === 'function') return item.hiddenFunc()
+      return false
+    }
 
     // 表单项预处理
     const mergedFormItems = computed(() => {
       return props.formItems.map((item) => {
-        return { ...defaultItemDefinition, ...item };
-      });
-    });
+        return { ...defaultItemDefinition, ...item }
+      })
+    })
 
     // 表单校验方法
     const validate = (resolve, reject) => {
-      let valid;
+      let valid
       formRef.value.validate((isValid) => {
-        valid = isValid;
+        valid = isValid
         if (isValid) {
           if (typeof resolve === 'function') {
-            return resolve(model);
+            return resolve(model)
           }
-          return true;
+          return true
         }
         if (typeof reject === 'function') {
-          return reject(model);
+          return reject(model)
         }
-        return false;
-      });
-      return valid;
-    };
+        return false
+      })
+      return valid
+    }
 
     // 清空表单校验
     const clearValidate = () => {
-      formRef.value.clearValidate();
-    };
+      formRef.value.clearValidate()
+    }
 
     return {
       formRef,
@@ -159,7 +159,7 @@ export default {
 
       validate,
       clearValidate,
-    };
+    }
   },
-};
+}
 </script>

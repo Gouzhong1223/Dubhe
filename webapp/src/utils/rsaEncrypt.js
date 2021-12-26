@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import JSEncrypt from 'jsencrypt/bin/jsencrypt';
-import { publicKey } from '@/settings';
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+import { publicKey } from '@/settings'
 
 // 加密
 export function encrypt(txt) {
-  const encryptor = new JSEncrypt();
-  encryptor.setPublicKey(publicKey);
-  return encryptor.encrypt(txt);
+  const encryptor = new JSEncrypt()
+  encryptor.setPublicKey(publicKey)
+  return encryptor.encrypt(txt)
 }
 
 // 解密
 export function decrypt(txt, privateKey) {
-  const encryptor = new JSEncrypt();
-  encryptor.setPrivateKey(privateKey);
-  return encryptor.decrypt(txt);
+  const encryptor = new JSEncrypt()
+  encryptor.setPrivateKey(privateKey)
+  return encryptor.decrypt(txt)
 }

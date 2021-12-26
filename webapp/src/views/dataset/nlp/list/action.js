@@ -22,7 +22,7 @@ export default {
     doDelete: Function,
   },
   render(h, { data, props }) {
-    const { showDetail, doDelete } = props;
+    const { showDetail, doDelete } = props
     const columnProps = {
       ...data,
       scopedSlots: {
@@ -31,7 +31,7 @@ export default {
             <span>
               <span>操作</span>
             </span>
-          );
+          )
         },
         default: ({ row, $index }) => {
           const btnProps = {
@@ -43,34 +43,34 @@ export default {
               marginLeft: '0px',
               marginRight: '10px',
             },
-          };
+          }
 
           // 查看标注按钮总会显示
-          const showCheckButton = true;
+          const showCheckButton = true
           const checkButton = (
             <el-button {...btnProps} onClick={() => showDetail(row, $index)}>
               查看
             </el-button>
-          );
+          )
 
           // 删除按钮总会显示
-          const showDeleteButton = true;
+          const showDeleteButton = true
           const deleteButton = (
             <el-button {...btnProps} onClick={() => doDelete([{ id: row.id }])}>
               删除
             </el-button>
-          );
+          )
 
           return (
             <span>
               {showCheckButton && checkButton}
               {showDeleteButton && deleteButton}
             </span>
-          );
+          )
         },
       },
-    };
+    }
 
-    return h('el-table-column', columnProps);
+    return h('el-table-column', columnProps)
   },
-};
+}

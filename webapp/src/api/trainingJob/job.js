@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.TRAIN}/trainJob`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -46,7 +46,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob`,
     method: 'delete',
     data: ids,
-  });
+  })
 }
 
 export function resumeTrain(data) {
@@ -54,7 +54,7 @@ export function resumeTrain(data) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/resume`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function stop(data) {
@@ -62,7 +62,7 @@ export function stop(data) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/stop`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 停止所有训练
@@ -71,7 +71,7 @@ export function batchStop(data) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/batchStop`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function getJobList(params) {
@@ -79,7 +79,7 @@ export function getJobList(params) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/trainJobVersionDetail`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getJobDetail(jobId) {
@@ -87,7 +87,7 @@ export function getJobDetail(jobId) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/jobDetail`,
     method: 'get',
     params: { id: jobId },
-  });
+  })
 }
 
 export function getTrainLog(params) {
@@ -95,14 +95,14 @@ export function getTrainLog(params) {
     url: `/${API_MODULE_NAME.TRAIN}/trainLog`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function myTrainJobCount() {
   return request({
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/mine`,
     method: 'get',
-  });
+  })
 }
 
 export function getTrainJobSpecs(params) {
@@ -110,14 +110,14 @@ export function getTrainJobSpecs(params) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/trainJobSpecs`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getPods(jobId) {
   return request({
     url: `/${API_MODULE_NAME.TRAIN}/trainLog/pod/${jobId}`,
     method: 'get',
-  });
+  })
 }
 
 export function getTrainModel(params) {
@@ -125,7 +125,7 @@ export function getTrainModel(params) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/model`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getTrainingVisualList(params) {
@@ -133,7 +133,7 @@ export function getTrainingVisualList(params) {
     url: `/${API_MODULE_NAME.TRAIN}/trainJob/visualTrain`,
     method: 'get',
     params,
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

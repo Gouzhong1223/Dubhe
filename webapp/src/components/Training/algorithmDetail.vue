@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="ts-drawer">
@@ -179,7 +173,8 @@
         <el-col :xl="19" :lg="16" :span="24">
           <div class="text">
             <div v-for="(p, index) in runParamsList" :key="p.key">
-              {{ p.key }} = {{ p.value }}{{ index === runParamsList.length - 1 ? '' : ', ' }}
+              {{ p.key }} = {{ p.value
+              }}{{ index === runParamsList.length - 1 ? '' : ', ' }}
             </div>
           </div>
         </el-col>
@@ -189,14 +184,14 @@
 </template>
 
 <script>
-import { convertMapToList } from '@/utils';
-import { edit as editAlgorithm } from '@/api/algorithm/algorithm';
+import { convertMapToList } from '@/utils'
+import { edit as editAlgorithm } from '@/api/algorithm/algorithm'
 import {
   list as getUsages,
   add as addUsage,
   del as deleteUsage,
-} from '@/api/algorithm/algorithmUsage';
-import Edit from '@/components/InlineTableEdit';
+} from '@/api/algorithm/algorithmUsage'
+import Edit from '@/components/InlineTableEdit'
 
 export default {
   name: 'AlgorithmDetail',
@@ -216,29 +211,29 @@ export default {
       algorithmUsageList: [],
       localUsage: null,
       usageEditVisible: false,
-    };
+    }
   },
   computed: {
     displayType() {
-      let displayType;
+      let displayType
       // 1 为我的算法，2 为预置算法，3 为其他页面进入
       if (this.type === 'algorithm' && this.item.algorithmSource === 1) {
-        displayType = 1;
+        displayType = 1
       } else if (this.type === 'algorithm' && this.item.algorithmSource === 2) {
-        displayType = 2;
+        displayType = 2
       } else {
-        displayType = 3;
+        displayType = 3
       }
-      return displayType;
+      return displayType
     },
     runParamsList() {
-      return convertMapToList(this.item.runParams);
+      return convertMapToList(this.item.runParams)
     },
   },
   mounted() {
     if (this.displayType === 1) {
-      this.getAlgorithmUsages();
-      this.localUsage = this.item.algorithmUsage;
+      this.getAlgorithmUsages()
+      this.localUsage = this.item.algorithmUsage
     }
   },
   methods: {
@@ -246,58 +241,60 @@ export default {
       await editAlgorithm({
         id: algorithm.id,
         algorithmName,
-      });
-      this.item.algorithmName = algorithmName;
+      })
+      this.item.algorithmName = algorithmName
     },
     async editDescription(description, algorithm) {
       await editAlgorithm({
         id: algorithm.id,
         description,
-      });
-      this.item.description = description;
+      })
+      this.item.description = description
     },
     editAlgorithm(type, value) {
-      const param = { id: this.item.id };
-      param[type] = value;
-      return editAlgorithm(param);
+      const param = { id: this.item.id }
+      param[type] = value
+      return editAlgorithm(param)
     },
     async getAlgorithmUsages() {
       const params = {
         isContainDefault: true,
         current: 1,
         size: 1000,
-      };
-      const data = await getUsages(params);
-      this.algorithmUsageList = data.result;
+      }
+      const data = await getUsages(params)
+      this.algorithmUsageList = data.result
     },
     async createAlgorithmUsage(auxInfo) {
-      await addUsage({ auxInfo });
-      this.getAlgorithmUsages();
+      await addUsage({ auxInfo })
+      this.getAlgorithmUsages()
     },
     async delAlgorithmUsage(usage) {
-      await deleteUsage({ ids: [usage.id] });
+      await deleteUsage({ ids: [usage.id] })
       if (this.localUsage === usage.auxInfo) {
-        this.localUsage = null;
+        this.localUsage = null
       }
-      this.getAlgorithmUsages();
+      this.getAlgorithmUsages()
     },
     onAlgorithmUsageChange(value) {
-      const usage = this.algorithmUsageList.find((usage) => usage.auxInfo === value);
+      const usage = this.algorithmUsageList.find(
+        (usage) => usage.auxInfo === value,
+      )
       if (value && !usage) {
-        this.createAlgorithmUsage(value);
+        this.createAlgorithmUsage(value)
       }
     },
     onUsageEditShow() {
-      this.localUsage = this.item.algorithmUsage;
+      this.localUsage = this.item.algorithmUsage
     },
     handleCancel() {
-      this.usageEditVisible = false;
+      this.usageEditVisible = false
     },
     async handleOk() {
-      await this.editAlgorithm('algorithmUsage', this.localUsage);
-      this.item.algorithmUsage = this.localUsage;
-      this.usageEditVisible = false;
+      await this.editAlgorithm('algorithmUsage', this.localUsage)
+      this.item.algorithmUsage = this.localUsage
+      this.usageEditVisible = false
     },
   },
-};
+}
 </script>

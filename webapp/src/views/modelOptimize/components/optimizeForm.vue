@@ -1,23 +1,22 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form ref="form" :model="form" :rules="rules" label-width="100px">
     <el-form-item label="任务名称" prop="name">
-      <el-input ref="nameInput" v-model.trim="form.name" maxlength="32" show-word-limit />
+      <el-input
+        ref="nameInput"
+        v-model.trim="form.name"
+        maxlength="32"
+        show-word-limit
+      />
     </el-form-item>
     <el-form-item label="任务描述" prop="description">
       <el-input
@@ -34,7 +33,11 @@
         <el-radio border :label="false" class="w-200">我的优化</el-radio>
       </el-radio-group>
     </el-form-item>
-    <BuiltInForm v-if="isBuiltIn" ref="builtInForm" @change="(form) => assignForm(form)" />
+    <BuiltInForm
+      v-if="isBuiltIn"
+      ref="builtInForm"
+      @change="(form) => assignForm(form)"
+    />
     <CustomizeForm
       v-else
       ref="customizeForm"
@@ -45,12 +48,12 @@
 </template>
 
 <script>
-import { isNil } from 'lodash';
+import { isNil } from 'lodash'
 
-import { validateNameWithHyphen } from '@/utils';
+import { validateNameWithHyphen } from '@/utils'
 
-import BuiltInForm from './builtInForm';
-import CustomizeForm from './customizeForm';
+import BuiltInForm from './builtInForm'
+import CustomizeForm from './customizeForm'
 
 const defaultForm = {
   id: null,
@@ -75,7 +78,7 @@ const defaultForm = {
 
   command: '',
   params: {},
-};
+}
 
 export default {
   name: 'OptimizeForm',
@@ -151,98 +154,110 @@ export default {
           },
         ],
       },
-    };
+    }
   },
   computed: {
     isBuiltIn() {
-      return this.form.isBuiltIn;
+      return this.form.isBuiltIn
     },
   },
   methods: {
     initForm(originForm) {
       // 获取初始表单对象或空对象作为初始表单
-      const form = originForm || Object.create(null);
+      const form = originForm || Object.create(null)
 
       // 根据表单的字段，将初始表单的对应字段赋值到表单上，若字段不存在则使用默认值
       Object.keys(this.form).forEach((key) => {
-        !isNil(form[key]) && (this.form[key] = form[key]);
-      });
+        !isNil(form[key]) && (this.form[key] = form[key])
+      })
       this.$nextTick(() => {
         if (this.isBuiltIn) {
-          this.$refs.builtInForm.init(this.form, originForm !== undefined && this.isBuiltIn);
+          this.$refs.builtInForm.init(
+            this.form,
+            originForm !== undefined && this.isBuiltIn,
+          )
         } else {
-          this.$refs.customizeForm.init(this.form, originForm !== undefined && !this.isBuiltIn);
+          this.$refs.customizeForm.init(
+            this.form,
+            originForm !== undefined && !this.isBuiltIn,
+          )
         }
-      });
+      })
 
       // name 字段自动 focus
       this.$nextTick(() => {
-        this.$refs.nameInput.focus();
-      });
+        this.$refs.nameInput.focus()
+      })
 
       // 渲染完成后清空表单验证，避免初始值导致表单错误提示
       this.$nextTick(() => {
-        this.clearValidate();
-      });
+        this.clearValidate()
+      })
     },
     assignForm(form) {
-      Object.assign(this.form, form);
+      Object.assign(this.form, form)
     },
 
     validate(resolve, reject) {
-      let valid = true;
+      let valid = true
       if (this.isBuiltIn) {
-        Object.assign(this.form, this.$refs.builtInForm.form);
+        Object.assign(this.form, this.$refs.builtInForm.form)
       } else {
-        Object.assign(this.form, this.$refs.customizeForm.form);
+        Object.assign(this.form, this.$refs.customizeForm.form)
       }
 
       this.$refs.form.validate((isValid) => {
-        valid = valid && isValid;
-      });
+        valid = valid && isValid
+      })
 
       if (!this.isBuiltIn) {
         this.$refs.customizeForm.validate((isValid) => {
-          valid = valid && isValid;
-        });
+          valid = valid && isValid
+        })
       }
 
-      const form = { ...this.form };
+      const form = { ...this.form }
       if (!this.isBuiltIn) {
-        form.params = this.$refs.customizeForm.paramsObj;
+        form.params = this.$refs.customizeForm.paramsObj
       }
 
       if (valid) {
         if (typeof resolve === 'function') {
-          return resolve(form);
+          return resolve(form)
         }
-        return true;
+        return true
       }
       if (typeof reject === 'function') {
-        return reject(this.form);
+        return reject(this.form)
       }
-      return false;
+      return false
     },
     clearValidate() {
-      this.$refs.form.clearValidate();
+      this.$refs.form.clearValidate()
     },
 
     // handlers
     onModelBuiltInChange() {
       // 手动切换优化类型后，清空其他所有表单内容
-      const { id, name, description, isBuiltIn } = this.form;
-      Object.assign(this.form, { ...this.defaultForm, id, name, description, isBuiltIn });
+      const { id, name, description, isBuiltIn } = this.form
+      Object.assign(this.form, {
+        ...this.defaultForm,
+        id,
+        name,
+        description,
+        isBuiltIn,
+      })
       if (isBuiltIn) {
-        this.$refs.builtInForm.reset();
+        this.$refs.builtInForm.reset()
       } else {
-        this.$refs.customizeForm.reset();
+        this.$refs.customizeForm.reset()
       }
     },
     onToBottom() {
       this.$nextTick(() => {
-        this.$el.parentElement.scrollTop = this.$el.scrollHeight;
-      });
+        this.$el.parentElement.scrollTop = this.$el.scrollHeight
+      })
     },
   },
-};
+}
 </script>

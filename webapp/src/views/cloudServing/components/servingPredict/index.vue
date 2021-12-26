@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="serving-predict-wrapper">
@@ -35,7 +29,12 @@
         >
           <el-button slot="trigger" :disabled="disabled">上传</el-button>
           <el-button :disabled="disabled" @click="toPredict">预测</el-button>
-          <el-tooltip class="item" effect="dark" :content="predictContent" placement="right">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="predictContent"
+            placement="right"
+          >
             <i class="el-icon-warning-outline primary f18 vm" />
           </el-tooltip>
           <i v-if="predicting" class="el-icon-loading" />
@@ -48,9 +47,9 @@
 </template>
 
 <script>
-import { predict } from '@/api/cloudServing';
-import { ONLINE_SERVING_TYPE, upload } from '@/views/cloudServing/util';
-import { servingConfig } from '@/config';
+import { predict } from '@/api/cloudServing'
+import { ONLINE_SERVING_TYPE, upload } from '@/views/cloudServing/util'
+import { servingConfig } from '@/config'
 
 export default {
   name: 'ServingPredict',
@@ -81,50 +80,57 @@ export default {
       fileList: [],
       result: null,
       predicting: false,
-    };
+    }
   },
   computed: {
     requestUrl() {
-      return this.predictParam.url;
+      return this.predictParam.url
     },
     isGrpc() {
-      return this.type === ONLINE_SERVING_TYPE.GRPC;
+      return this.type === ONLINE_SERVING_TYPE.GRPC
     },
     predictContent() {
-      return `仅支持预测 JPG、JPEG、PNG、BMP 格式的文件，且单次预测选择的文件大小总计不超过 ${servingConfig.onlinePredictFileSizeSum}MB`;
+      return `仅支持预测 JPG、JPEG、PNG、BMP 格式的文件，且单次预测选择的文件大小总计不超过 ${servingConfig.onlinePredictFileSizeSum}MB`
     },
   },
   activated() {
     if (this.refresh) {
-      this.reset();
+      this.reset()
     }
   },
   methods: {
     toPredict() {
       if (this.predicting) {
-        return;
+        return
       }
       if (!this.fileList.length) {
-        this.$message.warning('请先选择文件');
-        return;
+        this.$message.warning('请先选择文件')
+        return
       }
-      const totalSize = this.fileList.reduce((total, file) => total + file.size, 0) / 1024 / 1024;
+      const totalSize =
+        this.fileList.reduce((total, file) => total + file.size, 0) /
+        1024 /
+        1024
       if (totalSize > servingConfig.onlinePredictFileSizeSum) {
-        this.$message.warning(`当前上传文件大小总和为 ${totalSize.toFixed(2)}MB，超过限制大小`);
-        return;
+        this.$message.warning(
+          `当前上传文件大小总和为 ${totalSize.toFixed(2)}MB，超过限制大小`,
+        )
+        return
       }
 
-      this.predicting = true;
+      this.predicting = true
       if (this.isGrpc) {
-        const formData = new FormData();
-        this.fileList.forEach((file) => formData.append('files', file.raw, file.raw.name));
+        const formData = new FormData()
+        this.fileList.forEach((file) =>
+          formData.append('files', file.raw, file.raw.name),
+        )
         predict(formData, { id: this.predictParam.id, url: this.requestUrl })
           .then((res) => {
-            this.onUploadSuccess(res);
+            this.onUploadSuccess(res)
           })
           .catch((err) => {
-            this.onUploadError(err);
-          });
+            this.onUploadError(err)
+          })
       } else {
         upload({
           requestUrl: this.requestUrl,
@@ -132,39 +138,39 @@ export default {
           uploadName: this.uploadName,
           onUploadError: this.onUploadError,
           onUploadSuccess: this.onUploadSuccess,
-        });
+        })
       }
     },
     reset() {
-      this.result = null;
-      this.$refs.upload.clearFiles();
-      this.predicting = false;
-      this.$emit('reseted');
+      this.result = null
+      this.$refs.upload.clearFiles()
+      this.predicting = false
+      this.$emit('reseted')
     },
     // handlers
     onFileChange(file, fileList) {
-      this.fileList = fileList;
+      this.fileList = fileList
     },
     onUploadError(err) {
-      this.$message.error(err.message);
-      this.predicting = false;
+      this.$message.error(err.message)
+      this.predicting = false
     },
     onUploadSuccess(res) {
       try {
         if (this.type === ONLINE_SERVING_TYPE.GRPC) {
           // GRPC 模式下返回的是 JSON 字符串，需要手动解析
-          res = JSON.parse(res);
+          res = JSON.parse(res)
         }
-        this.result = JSON.stringify(res.data, null, 4);
+        this.result = JSON.stringify(res.data, null, 4)
       } catch (err) {
-        this.result = res;
+        this.result = res
       }
-      this.$refs.upload.clearFiles();
-      this.fileList = [];
-      this.predicting = false;
+      this.$refs.upload.clearFiles()
+      this.fileList = []
+      this.predicting = false
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

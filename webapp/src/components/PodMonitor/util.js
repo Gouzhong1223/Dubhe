@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import { round } from 'lodash';
+import { round } from 'lodash'
 
 // 公共默认配置
 export const defaultOption = {
@@ -31,18 +31,18 @@ export const defaultOption = {
     min(value) {
       // 如果图中没有值，y轴最小值默认设为 0
       if (value.min === Infinity) {
-        return 0;
+        return 0
       }
       // y轴最小值不小于 0; y轴最小值与数据最小值的距离不大于 10，且不大于数据最大值与 100 之间的距离
-      return round(Math.max(value.min - Math.min(100 - value.max, 10), 0), 2);
+      return round(Math.max(value.min - Math.min(100 - value.max, 10), 0), 2)
     },
     max(value) {
       // 如果图中没有值，y轴最大值默认设为 100
       if (value.max === -Infinity) {
-        return 100;
+        return 100
       }
       // y轴最大值不大于 100; y轴最大值与数据最大值的距离不大于 10，且不大于数据最小值与 0 之间的距离
-      return round(Math.min(value.max + Math.min(value.min, 10), 100), 2);
+      return round(Math.min(value.max + Math.min(value.min, 10), 100), 2)
     },
   },
   grid: {
@@ -68,9 +68,11 @@ export const defaultOption = {
     },
     formatter(params) {
       const toolTips = params.map(({ seriesName, value }) => {
-        return `${seriesName}: <strong>${value === undefined ? '-' : value}</strong>`;
-      });
-      return toolTips.join('<br />');
+        return `${seriesName}: <strong>${
+          value === undefined ? '-' : value
+        }</strong>`
+      })
+      return toolTips.join('<br />')
     },
   },
   toolbox: {
@@ -90,7 +92,7 @@ export const defaultOption = {
       type: 'inside',
     },
   ],
-};
+}
 
 export const cpuOption = {
   title: {
@@ -100,7 +102,7 @@ export const cpuOption = {
   yAxis: {
     name: 'CPU 占用率(%)',
   },
-};
+}
 
 export const memOption = {
   title: {
@@ -111,21 +113,21 @@ export const memOption = {
     name: '内存使用量(Gi)',
     min(value) {
       if (value.min === Infinity) {
-        return 0;
+        return 0
       }
       // 内存 y轴最小值不小于 0; y轴最小值与数据最小值的距离不大于 1。内存理论上不设置内存上限
-      return round(Math.max(value.min - 1, 0), 2);
+      return round(Math.max(value.min - 1, 0), 2)
     },
     max(value) {
       // 内存无数据时默认设置 y 轴上限为 8
       if (value.max === -Infinity) {
-        return 8;
+        return 8
       }
       // 内存 y轴最大值与数据最大值的距离不大于 1，且不大于数据最小值与 0 之间的距离; 理论上不设置上限
-      return round(value.max + Math.min(1, value.min), 2);
+      return round(value.max + Math.min(1, value.min), 2)
     },
   },
-};
+}
 
 export const gpuOption = {
   title: {
@@ -138,13 +140,15 @@ export const gpuOption = {
   tooltip: {
     formatter(params) {
       const toolTips = params.map(({ seriesName, value }) => {
-        const [podName, accId] = seriesName.split(': ');
-        return `${podName}: <br />${accId}: <strong>${value === undefined ? '-' : value}</strong>`;
-      });
-      return toolTips.join('<br />');
+        const [podName, accId] = seriesName.split(': ')
+        return `${podName}: <br />${accId}: <strong>${
+          value === undefined ? '-' : value
+        }</strong>`
+      })
+      return toolTips.join('<br />')
     },
   },
-};
+}
 
 // GPU 显存折线图选项
 export const getGpuMemOption = ({ limit } = {}) => {
@@ -160,23 +164,23 @@ export const getGpuMemOption = ({ limit } = {}) => {
       },
       min(value) {
         if (value.min === Infinity) {
-          return 0;
+          return 0
         }
         // 显存 y轴最小值不小于 0; y轴最小值与数据最小值的距离不大于 1。理论上不设置显存上限
-        return round(Math.max(value.min - 1, 0), 2);
+        return round(Math.max(value.min - 1, 0), 2)
       },
       max(value) {
         // 显存无数据时默认设置 y 轴上限为 8
         if (value.max === -Infinity) {
-          return 8;
+          return 8
         }
         // 显存 y轴最大值与数据最大值的距离不大于 1，且不大于数据最小值与 0 之间的距离; 理论上不设置上限
-        return round(value.max + Math.min(1, value.min), 2);
+        return round(value.max + Math.min(1, value.min), 2)
       },
       axisLabel: {
         formatter(value) {
-          if (!limit) return value;
-          return `${value}(${Math.round((value / limit) * 1000) / 10}%)`;
+          if (!limit) return value
+          return `${value}(${Math.round((value / limit) * 1000) / 10}%)`
         },
       },
     },
@@ -186,16 +190,16 @@ export const getGpuMemOption = ({ limit } = {}) => {
     tooltip: {
       formatter(params) {
         const toolTips = params.map(({ seriesName, value }) => {
-          const [podName, accId] = seriesName.split(': ');
+          const [podName, accId] = seriesName.split(': ')
           return `${podName}: <br />${accId} 显存使用量: <strong>${
             value === undefined ? '-' : value
-          } Gi</strong>`;
-        });
-        return toolTips.join('<br />');
+          } Gi</strong>`
+        })
+        return toolTips.join('<br />')
       },
     },
-  };
-};
+  }
+}
 
 /**
  * 数据示例

@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-import cx from 'classnames';
+import cx from 'classnames'
 
 export default {
   name: 'Group',
   functional: true,
   render(h, context) {
-    const { props, children } = context;
-    const { top = 0, left = 0, transform, className, ...otherProps } = props;
+    const { props, children } = context
+    const { top = 0, left = 0, transform, className, ...otherProps } = props
 
     return (
       <g
@@ -31,6 +31,6 @@ export default {
       >
         {children}
       </g>
-    );
+    )
   },
-};
+}

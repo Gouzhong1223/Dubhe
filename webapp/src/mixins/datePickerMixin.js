@@ -19,9 +19,9 @@ export default {
     return {
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > new Date().setHours(23, 59, 59, 999);
+          return time.getTime() > new Date().setHours(23, 59, 59, 999)
         },
       },
-    };
+    }
   },
-};
+}

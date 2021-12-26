@@ -24,43 +24,43 @@ const state = {
 
   batchServingPage: 1,
   batchServingSort: { sort: null, order: null },
-};
+}
 
 const mutations = {
   UPDATE_ONLINE_PAGE(state, page) {
-    state.onlineServingPage = page;
+    state.onlineServingPage = page
   },
   UPDATE_ONLINE_SORT(state, sort) {
-    state.onlineServingSort = sort;
+    state.onlineServingSort = sort
   },
 
   UPDATE_BATCH_PAGE(state, page) {
-    state.batchServingPage = page;
+    state.batchServingPage = page
   },
   UPDATE_BATCH_SORT(state, sort) {
-    state.batchServingSort = sort;
+    state.batchServingSort = sort
   },
-};
+}
 
 const actions = {
   updateOnlinePage({ commit }, page) {
-    commit('UPDATE_ONLINE_PAGE', page);
+    commit('UPDATE_ONLINE_PAGE', page)
   },
   updateOnlineSort({ commit }, sort) {
-    commit('UPDATE_ONLINE_SORT', sort);
+    commit('UPDATE_ONLINE_SORT', sort)
   },
 
   updateBatchPage({ commit }, page) {
-    commit('UPDATE_BATCH_PAGE', page);
+    commit('UPDATE_BATCH_PAGE', page)
   },
   updateBatchSort({ commit }, sort) {
-    commit('UPDATE_BATCH_SORT', sort);
+    commit('UPDATE_BATCH_SORT', sort)
   },
-};
+}
 
 export default {
   namespaced: true,
   state,
   mutations,
   actions,
-};
+}

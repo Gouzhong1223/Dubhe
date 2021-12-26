@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="workspace-container flex flex-col">
@@ -23,7 +17,11 @@
     <div>tooltipData: {{ tooltipData }}</div>
     <div>imgInfo {{ imgInfo }}</div>
     <div>svgDimentsion, {{ svgDimension }}</div> -->
-    <div v-if="!state.error.value" v-hotkey.stop="keymap" class="workspace-stage flex flex-col f1">
+    <div
+      v-if="!state.error.value"
+      v-hotkey.stop="keymap"
+      class="workspace-stage flex flex-col f1"
+    >
       <ToolBar
         :zoomIn="zoomIn"
         :zoomOut="zoomOut"
@@ -35,7 +33,12 @@
         :isSegmentation="isSegmentation"
         v-on="listeners"
       />
-      <div id="stage" ref="imgWrapperRef" v-loading="!imgInfo.loaded" class="f1 rel">
+      <div
+        id="stage"
+        ref="imgWrapperRef"
+        v-loading="!imgInfo.loaded"
+        class="f1 rel"
+      >
         <ZoomContainer
           ref="zoomRef"
           :controlled="true"
@@ -53,7 +56,10 @@
                 <img ref="imgRef" :src="currentImg.url" class="usn" />
               </div>
               <!-- svg 宽高要根据图片自适应 -->
-              <div class="annotation-element-group abs" :style="dimension.annotationGroupStyle">
+              <div
+                class="annotation-element-group abs"
+                :style="dimension.annotationGroupStyle"
+              >
                 <svg ref="svgRef" class="canvas" :style="dimension.svg">
                   <g v-if="!isSegmentation">
                     <Brush
@@ -124,14 +130,21 @@
                       :key="annotate.id"
                       :annotate="annotate"
                       :currentAnnotationId="state.currentAnnotationId.value"
-                      :isMoving="isSegmentation ? transformer.isDragging : brush.isBrushing"
+                      :isMoving="
+                        isSegmentation
+                          ? transformer.isDragging
+                          : brush.isBrushing
+                      "
                       :offset="offset"
                       :transformer="transformer"
                       :getLabelName="getLabelName"
                       :annotationType="annotationType"
                     />
                   </div>
-                  <div v-if="state.showId.value && isTrack" class="annotation-tag-group">
+                  <div
+                    v-if="state.showId.value && isTrack"
+                    class="annotation-tag-group"
+                  >
                     <AnnotationId
                       v-for="annotate in api.annotations"
                       :key="annotate.id"
@@ -183,13 +196,13 @@ import {
   inject,
   onMounted,
   onBeforeUnmount,
-} from '@vue/composition-api';
-import { isNil } from 'lodash';
-import { event as d3Event } from 'd3-selection';
-import { Message } from 'element-ui';
+} from '@vue/composition-api'
+import { isNil } from 'lodash'
+import { event as d3Event } from 'd3-selection'
+import { Message } from 'element-ui'
 
-import { labelsSymbol } from '@/views/dataset/util';
-import { useBrush, useZoom, unref, useTooltip, useImage } from '@/hooks';
+import { labelsSymbol } from '@/views/dataset/util'
+import { useBrush, useZoom, unref, useTooltip, useImage } from '@/hooks'
 import {
   getBounding,
   raise,
@@ -197,28 +210,28 @@ import {
   extent2Bbox,
   parsePolygon2Bbox,
   getZoomPosition,
-} from '@/utils';
-import { Brush } from '@/components/svg';
-import ZoomContainer from '@/components/ZoomContainer';
-import Exception from '@/components/Exception';
-import ToolBar from './toolbar';
-import BboxWrapper from './bboxWrapper';
-import Score from './score';
-import Tag from './tag';
-import AnnotationId from './annotationId';
-import DropDownLabel from './dropdownLabel';
-import BrushTip from './brushTip';
-import Segmentation from './segmentation';
+} from '@/utils'
+import { Brush } from '@/components/svg'
+import ZoomContainer from '@/components/ZoomContainer'
+import Exception from '@/components/Exception'
+import ToolBar from './toolbar'
+import BboxWrapper from './bboxWrapper'
+import Score from './score'
+import Tag from './tag'
+import AnnotationId from './annotationId'
+import DropDownLabel from './dropdownLabel'
+import BrushTip from './brushTip'
+import Segmentation from './segmentation'
 
-const addEventListener = require('add-dom-event-listener');
+const addEventListener = require('add-dom-event-listener')
 
-const FooterHeight = 0;
+const FooterHeight = 0
 
 // 侧边栏宽度
-export const ThumbWidth = 160;
+export const ThumbWidth = 160
 
 // msg 实例
-let msgInstance = null;
+let msgInstance = null
 
 export default {
   name: 'WorkSpaceContainer',
@@ -263,16 +276,16 @@ export default {
       handleConfirm,
       isSegmentation,
       annotationType,
-    } = props;
+    } = props
 
-    const imgWrapperRef = ref(null);
-    const svgRef = ref(null);
-    const resizerRef = ref(null); // 事件句柄
-    const imgRef = ref(null); // 图片
-    const segmentationRef = ref(null);
+    const imgWrapperRef = ref(null)
+    const svgRef = ref(null)
+    const resizerRef = ref(null) // 事件句柄
+    const imgRef = ref(null) // 图片
+    const segmentationRef = ref(null)
 
     // 当前所有标签信息
-    const labels = inject(labelsSymbol);
+    const labels = inject(labelsSymbol)
     // 初始化状态
     const api = reactive({
       annotations: props.state.annotations,
@@ -282,10 +295,10 @@ export default {
       isCenter: false, // 图片是否已居中
       imgBounding: null, // 图片的位置，给 bbox 位置定位使用
       active: '', // 当前选中
-    });
+    })
 
     // 对标注进行合并
-    const annotations = computed(() => api[annotationType]);
+    const annotations = computed(() => api[annotationType])
 
     // 标注偏移
     const transformer = reactive({
@@ -294,9 +307,9 @@ export default {
       dy: 0,
       x: undefined,
       y: undefined,
-    });
+    })
 
-    const { listeners } = ctx;
+    const { listeners } = ctx
     const {
       brush,
       onBrushStart,
@@ -305,46 +318,50 @@ export default {
       getExtent,
       // onBrushEnd,
       onBrushReset,
-    } = useBrush();
+    } = useBrush()
 
     const initialZoom = {
       zoom: unref(state.zoom),
       zoomX: unref(state.zoomX),
       zoomY: unref(state.zoomY),
-    };
+    }
 
     // 初始放大和缩小函数
-    const { zoomIn, zoomOut, setZoom, reset: resetZoom, zoom, getZoom } = useZoom(
-      initialZoom,
-      imgWrapperRef
-    );
+    const {
+      zoomIn,
+      zoomOut,
+      setZoom,
+      reset: resetZoom,
+      zoom,
+      getZoom,
+    } = useZoom(initialZoom, imgWrapperRef)
 
     // tooltip
-    const { tooltipData, showTooltip, hideTooltip } = useTooltip();
+    const { tooltipData, showTooltip, hideTooltip } = useTooltip()
 
     // 图片尺寸
-    const { imgInfo = {}, setImg } = useImage();
+    const { imgInfo = {}, setImg } = useImage()
 
     const filter = () => {
       // 如果没有开启选框
       // if (!state.selection.value) return true
       // 不允许通过鼠标拖拽来更改缩放
-      return d3Event.type !== 'mousedown';
-    };
+      return d3Event.type !== 'mousedown'
+    }
 
     const setApi = (params) => {
-      Object.assign(api, params);
-    };
+      Object.assign(api, params)
+    }
 
     // 更新标注偏移
     const setTransformer = (params) => {
-      Object.assign(transformer, params);
-    };
+      Object.assign(transformer, params)
+    }
 
     // 转换 zoom 位置
     const transformZoom = (point) => {
-      return getZoomPosition(ctx.refs.zoomRef.wrapperRef, point);
-    };
+      return getZoomPosition(ctx.refs.zoomRef.wrapperRef, point)
+    }
 
     const defaultDimension = {
       svg: {},
@@ -352,37 +369,37 @@ export default {
       wrapper: {},
       margin: {},
       scale: 1,
-    };
+    }
 
     // 根据图片大小重新计算 svg 位置信息
     const dimension = computed(() => {
       // 当 dom 元素加载完毕来计算 svg 尺寸
       if (!isNil(api.bounding) && !!imgInfo.loaded && svgRef.value) {
         // 容器的最大宽度、高度
-        const { width: cw, height: ch, left, top } = api.bounding;
+        const { width: cw, height: ch, left, top } = api.bounding
         // 图片的宽度，高度
-        const iw = imgInfo.width;
-        const ih = imgInfo.height;
+        const iw = imgInfo.width
+        const ih = imgInfo.height
 
         const wrapperDimension = {
           width: cw,
           height: ch - FooterHeight,
           left,
           top,
-        };
+        }
 
         // 当图片尺寸超过容器尺寸，进行缩放
         const imgScale = Math.min(
           wrapperDimension.width / imgInfo.width,
           wrapperDimension.height / imgInfo.height,
-          1
-        );
+          1,
+        )
 
         // 如果图片有缩放，直接取容器尺寸即可
         const svgDimension = {
           width: imgScale < 1 ? cw : Math.min(iw, cw),
           height: imgScale < 1 ? ch - FooterHeight : Math.min(ih, ch),
-        };
+        }
 
         // 标注相关元素的容器
         const annotationGroupStyle = {
@@ -390,30 +407,30 @@ export default {
           top: imgScale === 1 ? `${(ch - FooterHeight - ih) / 2}px` : 0,
           width: imgScale === 1 ? `${iw}px` : `${cw}px`,
           height: imgScale === 1 ? `${ih}px` : `${ch - FooterHeight}px`,
-        };
+        }
 
         // 上面已经通过margin: 0 auto 做过宽度处理
-        const ml = Math.max(wrapperDimension.width - iw * imgScale, 0) / 2;
-        const mt = Math.max(wrapperDimension.height - ih * imgScale, 0) / 2;
+        const ml = Math.max(wrapperDimension.width - iw * imgScale, 0) / 2
+        const mt = Math.max(wrapperDimension.height - ih * imgScale, 0) / 2
 
-        const marginStyle = {};
+        const marginStyle = {}
         if (ml > 0) {
-          marginStyle['padding-left'] = `${ml}px`;
-          marginStyle['padding-right'] = `${ml}px`;
+          marginStyle['padding-left'] = `${ml}px`
+          marginStyle['padding-right'] = `${ml}px`
         }
         if (mt > 0) {
-          marginStyle['padding-top'] = `${mt}px`;
-          marginStyle['padding-bottom'] = `${mt}px`;
+          marginStyle['padding-top'] = `${mt}px`
+          marginStyle['padding-bottom'] = `${mt}px`
         }
         const margin = {
           left: ml,
           top: mt,
-        };
+        }
 
         const imgDimension = {
           width: iw,
           height: ih,
-        };
+        }
 
         const imgScaleStyle =
           imgScale < 1
@@ -423,9 +440,9 @@ export default {
                 transition: 'opacity 0.4s',
                 opacity: 1,
               }
-            : {};
+            : {}
         // 居中
-        api.isCenter = true;
+        api.isCenter = true
         return {
           svg: svgDimension,
           img: imgDimension,
@@ -435,7 +452,7 @@ export default {
           scale: imgScale,
           imgScaleStyle,
           annotationGroupStyle,
-        };
+        }
       }
       if (!imgInfo.loaded || (imgInfo.width === 0 && imgInfo.height === 0)) {
         // 加一个过渡效果，避免太唐突
@@ -444,94 +461,108 @@ export default {
           imgScaleStyle: {
             opacity: 0,
           },
-        };
+        }
       }
-      return defaultDimension;
-    });
+      return defaultDimension
+    })
 
     const findImgIndex = () => {
-      const { files, currentImgId } = state;
-      const currentImgIndex = files.value.findIndex((d) => d.id === currentImgId.value);
-      return { currentImgIndex, files };
-    };
+      const { files, currentImgId } = state
+      const currentImgIndex = files.value.findIndex(
+        (d) => d.id === currentImgId.value,
+      )
+      return { currentImgIndex, files }
+    }
 
     const onMessageClose = () => {
       // 清理 message 实例
-      msgInstance = null;
-    };
+      msgInstance = null
+    }
 
     const handlePrev = () => {
-      const { files, currentImgIndex } = findImgIndex();
+      const { files, currentImgIndex } = findImgIndex()
       if (currentImgIndex > 0) {
-        ctx.emit('changeImg', files.value[currentImgIndex - 1]);
+        ctx.emit('changeImg', files.value[currentImgIndex - 1])
       } else if (!msgInstance) {
         msgInstance = Message.warning({
           message: '当前图片不存在或图片已经到顶了',
           onClose: onMessageClose,
-        });
+        })
       }
-    };
+    }
 
     const handleNext = () => {
       // 未标注文件全量更新，不需要切换到下一张
-      if (props.state.filterUnfinished.value) return;
+      if (props.state.filterUnfinished.value) return
 
-      const { files, currentImgIndex } = findImgIndex();
+      const { files, currentImgIndex } = findImgIndex()
       if (currentImgIndex > -1 && currentImgIndex < files.value.length - 1) {
-        ctx.emit('changeImg', files.value[currentImgIndex + 1]);
+        ctx.emit('changeImg', files.value[currentImgIndex + 1])
         // 触发下一页数据
-        ctx.emit('nextPage', files.value[currentImgIndex + 1], currentImgIndex + 1, files);
+        ctx.emit(
+          'nextPage',
+          files.value[currentImgIndex + 1],
+          currentImgIndex + 1,
+          files,
+        )
       } else if (!msgInstance) {
         msgInstance = Message.warning({
           message: '当前图片不存在或图片已经到底了',
           onClose: onMessageClose,
-        });
+        })
       }
-    };
+    }
 
     // 删除注释
     const removeAnnotation = () => {
-      hideTooltip();
-      const currentAnnotationId = state.currentAnnotationId.value;
+      hideTooltip()
+      const currentAnnotationId = state.currentAnnotationId.value
       if (currentAnnotationId) {
-        deleteAnnotation(currentAnnotationId);
+        deleteAnnotation(currentAnnotationId)
       }
-    };
+    }
 
     // 取消选择（目前只针对分割有效）
     const cancelSelection = () => {
-      segmentationRef.value?.reset();
-    };
+      segmentationRef.value?.reset()
+    }
 
     // 完成绘制（目前只针对分割有效）
     const finishDraw = () => {
-      segmentationRef.value?.finishDraw();
-    };
+      segmentationRef.value?.finishDraw()
+    }
 
     // 选中标注，开始画框
     const selection = () => {
-      setApi({ active: 'selection' });
+      setApi({ active: 'selection' })
       // 关闭已有的 dropdown
-      hideTooltip();
-      listeners.selection(true);
-    };
+      hideTooltip()
+      listeners.selection(true)
+    }
 
     watch(
       () => api.isCenter,
       (isCenter) => {
         if (isCenter) {
-          const { width: boundingWidth, height: boundingHeight } = api.bounding;
-          const { width: imgWidth, height: imgHeight } = getBounding(imgRef.value);
+          const { width: boundingWidth, height: boundingHeight } = api.bounding
+          const { width: imgWidth, height: imgHeight } = getBounding(
+            imgRef.value,
+          )
           // 缩放图片取容器尺寸，否则取图片尺寸
-          const mw = dimension.value.scale < 1 ? boundingWidth : dimension.value.img.width;
+          const mw =
+            dimension.value.scale < 1
+              ? boundingWidth
+              : dimension.value.img.width
           const mh =
-            dimension.value.scale < 1 ? boundingHeight - FooterHeight : dimension.value.img.height;
+            dimension.value.scale < 1
+              ? boundingHeight - FooterHeight
+              : dimension.value.img.height
           Object.assign(api, {
             imgBounding: [(mw - imgWidth) / 2, (mh - imgHeight) / 2],
-          });
+          })
         }
-      }
-    );
+      },
+    )
 
     // 快捷键
     const keymap = computed(() => ({
@@ -546,108 +577,114 @@ export default {
       n: selection,
       esc: cancelSelection,
       f: finishDraw,
-    }));
+    }))
 
     // 选中标注
     const setCurAnnotation = (annotation = {}) => {
       updateState({
         currentAnnotationId: annotation.id || '',
-      });
-    };
+      })
+    }
 
     // 开始绘制
     const handleBrushStart = (start) => {
       // 关闭已有的 dropdown
-      hideTooltip();
+      hideTooltip()
       // 判断是否开启选框
       // if (!state.selection.value) return;
-      const { x, y } = start;
-      onBrushStart({ x, y });
+      const { x, y } = start
+      onBrushStart({ x, y })
       // 重置当前选中的标注
-      setCurAnnotation(undefined);
-    };
+      setCurAnnotation(undefined)
+    }
 
     const handleBrushMove = (state) => {
-      const { x, y } = state.end || {};
-      onBrushMove({ x, y });
-    };
+      const { x, y } = state.end || {}
+      onBrushMove({ x, y })
+    }
 
     const handleBrushEnd = (state, event, options = {}) => {
-      const { prevState = {} } = options;
+      const { prevState = {} } = options
       // 确认是move 之后触发
       if (state.end && !!prevState.isDragging) {
         // 展示tooltip
-        showTooltip({}, event, { el: imgWrapperRef.value });
+        showTooltip({}, event, { el: imgWrapperRef.value })
         // 回调
-        drawShapeEnd && drawShapeEnd(state, event);
-        onBrushReset();
-        return;
+        drawShapeEnd && drawShapeEnd(state, event)
+        onBrushReset()
+        return
       }
-      onBrushReset();
-    };
+      onBrushReset()
+    }
 
     // 清除选择框
-    const clearSelection = () => listeners.selection(false);
+    const clearSelection = () => listeners.selection(false)
 
     // 判断标签是否已存在
     const islabelExists = (value) => {
-      return !!(labels.value || []).find((label) => label.id === Number(value));
-    };
+      return !!(labels.value || []).find((label) => label.id === Number(value))
+    }
 
     // 基于检测生成 bbox
     const offsetBbox = (bbox) => {
       const paddingLeft =
-        dimension.value.scale < 1 && !isNil(api.imgBounding) ? api.imgBounding[0] : 0;
+        dimension.value.scale < 1 && !isNil(api.imgBounding)
+          ? api.imgBounding[0]
+          : 0
 
       const paddingTop =
-        dimension.value.scale < 1 && !isNil(api.imgBounding) ? api.imgBounding[1] : 0;
+        dimension.value.scale < 1 && !isNil(api.imgBounding)
+          ? api.imgBounding[1]
+          : 0
 
       const pos = {
         x: bbox.x * dimension.value.scale + paddingLeft,
         y: bbox.y * dimension.value.scale + paddingTop,
-      };
+      }
 
       if (bbox.width && bbox.height) {
         Object.assign(pos, {
           width: bbox.width * dimension.value.scale,
           height: bbox.height * dimension.value.scale,
-        });
+        })
       }
 
-      return pos;
-    };
+      return pos
+    }
 
     // 标注偏移
     const offset = (annotate) => {
-      const { data = {} } = annotate;
-      const _bbox = isSegmentation ? parsePolygon2Bbox(data.points) : extent2Bbox(data.extent);
-      return offsetBbox(_bbox);
-    };
+      const { data = {} } = annotate
+      const _bbox = isSegmentation
+        ? parsePolygon2Bbox(data.points)
+        : extent2Bbox(data.extent)
+      return offsetBbox(_bbox)
+    }
 
     // handle 变更
     const onBrushHandleChange = (brush, annotation) => {
       // 同步 brush
-      const pos = offset(annotation);
+      const pos = offset(annotation)
       updateState((prev) => {
-        const index = prev.annotations.findIndex((d) => d.id === annotation.id);
+        const index = prev.annotations.findIndex((d) => d.id === annotation.id)
         if (index > -1) {
-          const selectedItem = prev.annotations[index];
+          const selectedItem = prev.annotations[index]
           const _nextItem = {
             ...selectedItem,
             data: {
               ...selectedItem.data,
               extent: brush.extent,
             },
-          };
+          }
 
-          const nextAnnotations = replace(prev.annotations, index, _nextItem);
+          const nextAnnotations = replace(prev.annotations, index, _nextItem)
           return {
             ...prev,
             annotations: nextAnnotations,
-          };
+          }
         }
-        return prev;
-      });
+        return prev
+      })
 
       // 更新brush
       updateBrush((prevBrush) => {
@@ -660,14 +697,14 @@ export default {
             y0: pos.y,
             y1: pos.y + pos.height,
           },
-        };
-      });
-    };
+        }
+      })
+    }
 
     // handle 拖拽完成
     const onBrushHandleEnd = (brush, annotation) => {
       // 同步 brush
-      const pos = offset(annotation);
+      const pos = offset(annotation)
       // 更新brush
       updateBrush((prevBrush) => {
         return {
@@ -679,109 +716,120 @@ export default {
             y0: pos.y,
             y1: pos.y + pos.height,
           },
-        };
-      });
-    };
+        }
+      })
+    }
 
     // 人工确认
     const confirm = () => {
       handleConfirm().then(() => {
         // 切换到下一页
-        Message.success({ message: '人工确认成功', duration: 400, onClose: handleNext });
-      });
-    };
+        Message.success({
+          message: '人工确认成功',
+          duration: 400,
+          onClose: handleNext,
+        })
+      })
+    }
 
     // 选中selectItem
     const handleSelectChange = async (value) => {
-      let labelVal = value;
+      let labelVal = value
       // 首先判断标签是否已存在
       // 如果没有，就先创建
       if (!islabelExists(value)) {
-        labelVal = await createLabel({ name: value });
-        const nextLabels = await queryLabels();
+        labelVal = await createLabel({ name: value })
+        const nextLabels = await queryLabels()
         // 更新全局 provide
         updateState({
           labels: nextLabels,
-        });
+        })
       }
-      const { currentAnnotationId } = state;
-      const annotationInfo = isSegmentation ? state.shapes : state.annotations;
+      const { currentAnnotationId } = state
+      const annotationInfo = isSegmentation ? state.shapes : state.annotations
       const selectedLabel = {
         ...api.label,
         value: labelVal,
-      };
+      }
       Object.assign(api, {
         label: selectedLabel,
-      });
+      })
       const curAnnotation =
-        annotationInfo.value.find((d) => d.id === currentAnnotationId.value) || {};
+        annotationInfo.value.find((d) => d.id === currentAnnotationId.value) ||
+        {}
       // 触发标注对应标签变更事件
-      ctx.emit('selectLabel', { selectedLabel, curAnnotation });
+      ctx.emit('selectLabel', { selectedLabel, curAnnotation })
       // 选择标签完成关闭选择器
-      hideTooltip();
-    };
+      hideTooltip()
+    }
 
     const handleZoom = (nextZoomTransform) => {
-      if (!nextZoomTransform) return;
+      if (!nextZoomTransform) return
       setZoom({
         zoomX: nextZoomTransform.x,
         zoomY: nextZoomTransform.y,
         zoom: nextZoomTransform.k,
-      });
-    };
+      })
+    }
 
     // 每次拖拽的优先级提升
     const onDragStart = (draw, annotation) => {
-      const index = api.annotations.findIndex((d) => d.id === annotation.id);
+      const index = api.annotations.findIndex((d) => d.id === annotation.id)
       if (index > -1) {
-        const raised = raise(api.annotations, index);
+        const raised = raise(api.annotations, index)
         Object.assign(api, {
           annotations: raised,
-        });
+        })
       }
       // 同步当前标注
-      setCurAnnotation(annotation);
+      setCurAnnotation(annotation)
 
       // 同步 brush
-      const pos = offset(annotation);
+      const pos = offset(annotation)
       updateBrush((prevBrush) => {
         const start = {
           x: pos.x,
           y: pos.y,
-        };
+        }
         const end = {
           x: pos.x + pos.width,
           y: pos.y + pos.height,
-        };
+        }
         return {
           ...prevBrush,
           start,
           end,
           extent: getExtent(start, end),
-        };
-      });
-    };
+        }
+      })
+    }
 
     // 拖拽 boxing 更新位置
     const onDragMove = (draw, annotation) => {
-      const pos = offset(annotation);
-      const { drag = {} } = draw;
-      const { zoom } = getZoom();
+      const pos = offset(annotation)
+      const { drag = {} } = draw
+      const { zoom } = getZoom()
 
       const validDx =
         drag.dx > 0
-          ? Math.min(drag.dx / zoom, dimension.value.svg.width - pos.x - pos.width)
-          : Math.max(drag.dx / zoom, -pos.x);
+          ? Math.min(
+              drag.dx / zoom,
+              dimension.value.svg.width - pos.x - pos.width,
+            )
+          : Math.max(drag.dx / zoom, -pos.x)
 
       const validDy =
         drag.dy > 0
-          ? Math.min(drag.dy / zoom, dimension.value.svg.height - pos.y - pos.height)
-          : Math.max(drag.dy / zoom, -pos.y);
+          ? Math.min(
+              drag.dy / zoom,
+              dimension.value.svg.height - pos.y - pos.height,
+            )
+          : Math.max(drag.dy / zoom, -pos.y)
 
       // 更新 brush 位置
       updateBrush((prevBrush) => {
-        const { x: x0, y: y0 } = prevBrush.start;
-        const { x: x1, y: y1 } = prevBrush.end;
+        const { x: x0, y: y0 } = prevBrush.start
+        const { x: x1, y: y1 } = prevBrush.end
         return {
           ...prevBrush,
           isBrushing: true,
@@ -792,8 +840,8 @@ export default {
             y0: y0 + validDy,
             y1: y1 + validDy,
           },
-        };
-      });
+        }
+      })
 
       setTransformer({
         isDragging: true,
@@ -802,12 +850,12 @@ export default {
         y: drag.y,
         dx: validDx,
         dy: validDy,
-      });
-    };
+      })
+    }
 
     // 拖拽 boxing 结束，更新位置
     const onDragEnd = (draw, annotation) => {
-      const { drag = {} } = draw;
+      const { drag = {} } = draw
       // 重置标注 transform
       setTransformer({
         isDragging: false,
@@ -816,12 +864,12 @@ export default {
         y: drag.y,
         dx: 0,
         dy: 0,
-      });
+      })
 
       updateState((prev) => {
-        const index = prev.annotations.findIndex((d) => d.id === annotation.id);
+        const index = prev.annotations.findIndex((d) => d.id === annotation.id)
         if (index > -1) {
-          const selectedItem = prev.annotations[index];
+          const selectedItem = prev.annotations[index]
           const _nextItem = {
             ...selectedItem,
             data: {
@@ -834,16 +882,16 @@ export default {
                 y1: selectedItem.data.extent.y1 + (drag.validDy || 0),
               },
             },
-          };
+          }
 
-          const nextAnnotations = replace(prev.annotations, index, _nextItem);
+          const nextAnnotations = replace(prev.annotations, index, _nextItem)
           return {
             ...prev,
             annotations: nextAnnotations,
-          };
+          }
         }
-        return prev;
-      });
+        return prev
+      })
 
       // 更新 brush 位置
       updateBrush((prevBrush) => {
@@ -860,39 +908,39 @@ export default {
             x: Math.max(prevBrush.extent.x0, prevBrush.extent.x1),
             y: Math.max(prevBrush.extent.y0, prevBrush.extent.y1),
           },
-        };
-      });
-    };
+        }
+      })
+    }
 
     const handleShapesChange = ({ type, state: shapeState, options = {} }) => {
-      const { shape, event } = options;
+      const { shape, event } = options
       switch (type) {
         case 'DRAW_END': {
           // 更新当前选中的 shape
           event &&
             showTooltip(shape, event, {
               el: imgWrapperRef.value,
-            });
+            })
           // 回调，进行标注格式组装
-          drawShapeEnd(shape);
-          break;
+          drawShapeEnd(shape)
+          break
         }
         default: {
-          const { transformer } = segmentationRef.value;
+          const { transformer } = segmentationRef.value
           // 更新transformer
-          setTransformer(transformer);
+          setTransformer(transformer)
           updateState({
             shapes: shapeState.shapes,
-          });
+          })
         }
       }
-    };
+    }
 
     onMounted(() => {
       addEventListener(document.body, 'click', (e) => {
         // 如果不在画布内，直接清空
         // 过滤右侧设置标注 table
-        const { target } = e;
+        const { target } = e
         if (
           !target.closest('.annotation-table') &&
           !target.closest('#stage') &&
@@ -901,54 +949,54 @@ export default {
           // 清空选中的注释
           updateState({
             currentAnnotationId: '',
-          });
+          })
         }
-      });
+      })
 
       // resizerRef.value = addEventListener(window, 'resize', () => {
       //   api.bounding = getBounding(imgWrapperRef.value)
       // })
       // 初始化执行一次
-      api.bounding = getBounding(imgWrapperRef.value);
-    });
+      api.bounding = getBounding(imgWrapperRef.value)
+    })
 
     onBeforeUnmount(() => {
-      resizerRef.value && resizerRef.value.remove();
-      resizerRef.value = null;
-    });
+      resizerRef.value && resizerRef.value.remove()
+      resizerRef.value = null
+    })
 
     // 监听 currentImage 变化
     watch(
       () => props.currentImg,
       (nextImg) => {
         // 每次切换图片重置 zoom
-        resetZoom();
+        resetZoom()
         // 重置选中的标签和位置
         Object.assign(api, {
           label: {},
           isCenter: false,
           imgBounding: null,
-        });
+        })
         if (nextImg?.url) {
-          setImg(nextImg.url);
+          setImg(nextImg.url)
         }
         // 首先清空标注信息
         setApi({
           [annotationType]: [],
-        });
+        })
         // 清理选择（分割）
-        cancelSelection();
-      }
-    );
+        cancelSelection()
+      },
+    )
 
     watch(
       () => props.state,
       (nextProps) => {
         if (annotationType in nextProps) {
-          api[annotationType] = nextProps[annotationType] || [];
+          api[annotationType] = nextProps[annotationType] || []
         }
-      }
-    );
+      },
+    )
 
     return {
       listeners,
@@ -1001,9 +1049,9 @@ export default {
       segmentationRef,
       handleShapesChange,
       annotations,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 @import '~@/assets/styles/variables.scss';

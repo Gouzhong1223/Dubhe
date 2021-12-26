@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import Drag from '@/components/Drag';
+import Drag from '@/components/Drag'
 
 export default {
   name: 'BrushHandle',
@@ -38,32 +38,39 @@ export default {
 
   // todo: 鼠标离开画布没有释放
   setup(props) {
-    const { updateBrush, updateBrushEnd, type, scale, handleBrushStart, getZoom } = props;
+    const {
+      updateBrush,
+      updateBrushEnd,
+      type,
+      scale,
+      handleBrushStart,
+      getZoom,
+    } = props
 
     const handleDragStart = (drag, event) => {
       // 开始拖拽是选中当前标注
       if (handleBrushStart) {
-        handleBrushStart(drag, event);
+        handleBrushStart(drag, event)
       }
-    };
+    }
 
     const handleDragMove = (drag) => {
-      if (!drag.isDragging) return;
-      const { zoom } = getZoom();
+      if (!drag.isDragging) return
+      const { zoom } = getZoom()
       updateBrush((prevBrush) => {
-        const { start, end } = prevBrush;
-        let nextState = {};
-        let move = 0;
-        const _scale = scale * zoom;
+        const { start, end } = prevBrush
+        let nextState = {}
+        let move = 0
+        const _scale = scale * zoom
 
-        const xMax = Math.max(start.x, end.x);
-        const xMin = Math.min(start.x, end.x);
-        const yMax = Math.max(start.y, end.y);
-        const yMin = Math.min(start.y, end.y);
+        const xMax = Math.max(start.x, end.x)
+        const xMin = Math.min(start.x, end.x)
+        const yMax = Math.max(start.y, end.y)
+        const yMin = Math.min(start.y, end.y)
 
         switch (type) {
           case 'right':
-            move = xMax + drag.dx / _scale;
+            move = xMax + drag.dx / _scale
             nextState = {
               ...prevBrush,
               activeHandle: type,
@@ -72,10 +79,10 @@ export default {
                 x0: Math.max(Math.min(move, start.x), prevBrush.bounds.x0),
                 x1: Math.min(Math.max(move, start.x), prevBrush.bounds.x1),
               },
-            };
-            break;
+            }
+            break
           case 'left':
-            move = xMin + drag.dx / _scale;
+            move = xMin + drag.dx / _scale
             nextState = {
               ...prevBrush,
               activeHandle: type,
@@ -84,10 +91,10 @@ export default {
                 x0: Math.min(move, end.x),
                 x1: Math.max(move, end.x),
               },
-            };
-            break;
+            }
+            break
           case 'top':
-            move = yMin + drag.dy / _scale;
+            move = yMin + drag.dy / _scale
             nextState = {
               ...prevBrush,
               activeHandle: type,
@@ -96,10 +103,10 @@ export default {
                 y0: Math.min(move, end.y),
                 y1: Math.max(move, end.y),
               },
-            };
-            break;
+            }
+            break
           case 'bottom':
-            move = yMax + drag.dy / _scale;
+            move = yMax + drag.dy / _scale
             nextState = {
               ...prevBrush,
               activeHandle: type,
@@ -108,22 +115,22 @@ export default {
                 y0: Math.min(move, start.y),
                 y1: Math.max(move, start.y),
               },
-            };
-            break;
+            }
+            break
           default:
-            break;
+            break
         }
-        return nextState;
-      });
-    };
+        return nextState
+      })
+    }
 
     const handleDragEnd = () => {
       updateBrushEnd((prevBrush) => {
-        const { start, end, extent } = { ...prevBrush };
-        start.x = Math.min(extent.x0, extent.x1);
-        start.y = Math.min(extent.y0, extent.y0);
-        end.x = Math.max(extent.x0, extent.x1);
-        end.y = Math.max(extent.y0, extent.y1);
+        const { start, end, extent } = { ...prevBrush }
+        start.x = Math.min(extent.x0, extent.x1)
+        start.y = Math.min(extent.y0, extent.y0)
+        end.x = Math.max(extent.x0, extent.x1)
+        end.y = Math.max(extent.y0, extent.y1)
         const nextBrush = {
           ...prevBrush,
           start,
@@ -136,23 +143,24 @@ export default {
             y0: Math.min(start.y, end.y),
             y1: Math.max(start.y, end.y),
           },
-        };
-        return nextBrush;
-      });
-    };
+        }
+        return nextBrush
+      })
+    }
 
     return {
       handleDragStart,
       handleDragMove,
       handleDragEnd,
-    };
+    }
   },
 
   render() {
-    const { stageWidth, stageHeight, handle, type } = this;
-    const { x, y, width, height } = handle;
+    const { stageWidth, stageHeight, handle, type } = this
+    const { x, y, width, height } = handle
 
-    const cursor = type === 'right' || type === 'left' ? 'ew-resize' : 'ns-resize';
+    const cursor =
+      type === 'right' || type === 'left' ? 'ew-resize' : 'ns-resize'
 
     const dragProps = {
       props: {
@@ -163,11 +171,11 @@ export default {
         onDragMove: this.handleDragMove,
         onDragEnd: this.handleDragEnd,
       },
-    };
+    }
 
     const style = {
       cursor,
-    };
+    }
 
     return (
       <Drag {...dragProps}>
@@ -186,6 +194,6 @@ export default {
           />
         )}
       </Drag>
-    );
+    )
   },
-};
+}

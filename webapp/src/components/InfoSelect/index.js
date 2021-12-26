@@ -14,6 +14,6 @@
  * =============================================================
  */
 
-import InfoSelect from './info-select';
+import InfoSelect from './info-select'
 
-export default InfoSelect;
+export default InfoSelect

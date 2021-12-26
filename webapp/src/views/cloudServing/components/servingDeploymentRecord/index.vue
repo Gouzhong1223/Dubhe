@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="serving-deploy-wrapper">
@@ -38,8 +32,18 @@
             {{ dict.label.frame_type[scope.row.frameType] }}
           </template>
         </el-table-column>
-        <el-table-column prop="releaseRate" label="灰度分流发布率" min-width="120px" fixed />
-        <el-table-column prop="resourcesPoolSpecs" label="节点规格" min-width="120px" fixed />
+        <el-table-column
+          prop="releaseRate"
+          label="灰度分流发布率"
+          min-width="120px"
+          fixed
+        />
+        <el-table-column
+          prop="resourcesPoolSpecs"
+          label="节点规格"
+          min-width="120px"
+          fixed
+        />
         <el-table-column prop="resourcesPoolType" label="节点类型">
           <template slot-scope="scope">
             {{ scope.row.resourcesPoolType === 0 ? 'CPU' : 'GPU' }}
@@ -71,8 +75,8 @@
 </template>
 
 <script>
-import { getRollbackList, edit as rollbackServing } from '@/api/cloudServing';
-import { parseTime } from '@/utils/index';
+import { getRollbackList, edit as rollbackServing } from '@/api/cloudServing'
+import { parseTime } from '@/utils/index'
 
 export default {
   name: 'ServingDeploymentRecord',
@@ -98,11 +102,11 @@ export default {
   data() {
     return {
       originData: {},
-    };
+    }
   },
   computed: {
     rollbackList() {
-      const rollbackList = [];
+      const rollbackList = []
       // 根据 key 倒序展示
       Object.keys(this.originData)
         .sort()
@@ -111,45 +115,47 @@ export default {
           rollbackList.push({
             key,
             data: this.originData[key],
-          });
-        });
-      return rollbackList;
+          })
+        })
+      return rollbackList
     },
   },
   mounted() {
     if (this.refresh) {
-      return;
+      return
     } // 处理 进入页面之前进行刷新操作后请求两次的问题
-    this.getOriginData();
+    this.getOriginData()
   },
   activated() {
     if (this.refresh) {
-      this.reset();
-      this.$emit('reseted');
+      this.reset()
+      this.$emit('reseted')
     }
   },
   methods: {
     onRollBack(key) {
       // clone 服务详情数据，以免受到轮询影响
-      const rollbackDetailClone = JSON.parse(JSON.stringify(this.rollbackDetail));
-      rollbackDetailClone.modelConfigList = this.originData[key];
+      const rollbackDetailClone = JSON.parse(
+        JSON.stringify(this.rollbackDetail),
+      )
+      rollbackDetailClone.modelConfigList = this.originData[key]
 
       this.$confirm('是否要回滚该记录？', '请确认').then(() => {
         rollbackServing(rollbackDetailClone).then(() => {
-          this.$message.success('回滚成功');
-          this.$router.push({ name: 'CloudServing' });
-        });
-      });
+          this.$message.success('回滚成功')
+          this.$router.push({ name: 'CloudServing' })
+        })
+      })
     },
     async getOriginData() {
-      this.originData = await getRollbackList(this.serviceId);
+      this.originData = await getRollbackList(this.serviceId)
     },
     reset() {
-      this.getOriginData();
+      this.getOriginData()
     },
     parseTime,
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -36,20 +30,20 @@
 </template>
 
 <script>
-import { h, ref, reactive } from '@vue/composition-api';
-import InfoTable from '@/components/InfoTable';
-import BaseModal from '@/components/BaseModal';
-import { getConvertInfo } from '@/api/preparation/dataset';
-import { Message, MessageBox } from 'element-ui';
+import { h, ref, reactive } from '@vue/composition-api'
+import { Message, MessageBox } from 'element-ui'
+import InfoTable from '@/components/InfoTable'
+import BaseModal from '@/components/BaseModal'
+import { getConvertInfo } from '@/api/preparation/dataset'
 
-import api from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
-import { parseTime } from '@/utils';
-import Actions from './actions';
-import Convert from './convert';
-import { dataTypeMap, annotationBy } from '../util';
+import api from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
+import { parseTime } from '@/utils'
+import Actions from './actions'
+import Convert from './convert'
+import { dataTypeMap, annotationBy } from '../util'
 
-const annotationByCode = annotationBy('code');
+const annotationByCode = annotationBy('code')
 
 export default {
   name: 'DatasetVersion',
@@ -59,17 +53,17 @@ export default {
     Convert,
   },
   setup(props, ctx) {
-    const { $route } = ctx.root;
-    const { params = {} } = $route;
-    const actionRef = ref(null);
-    const convertForm = ref(null);
+    const { $route } = ctx.root
+    const { params = {} } = $route
+    const actionRef = ref(null)
+    const convertForm = ref(null)
     const state = reactive({
       modal: {
         show: false,
         loading: false,
         row: null,
       },
-    });
+    })
 
     const showConvert = (row) => {
       Object.assign(state, {
@@ -77,8 +71,8 @@ export default {
           show: true,
           row,
         },
-      });
-    };
+      })
+    }
 
     const columns = [
       { prop: 'datasetId', label: 'ID', minWidth: 100, sortable: true },
@@ -88,7 +82,7 @@ export default {
         label: '数据类型',
         minWidth: 100,
         render: ({ row }) => {
-          return dataTypeMap[row.dataType];
+          return dataTypeMap[row.dataType]
         },
       },
       {
@@ -102,7 +96,7 @@ export default {
         label: '是否为当前版本',
         minWidth: 120,
         render: ({ row }) => {
-          return row.isCurrent ? '是' : '否';
+          return row.isCurrent ? '是' : '否'
         },
       },
       { prop: 'versionName', label: '版本号', minWidth: 100, sortable: true },
@@ -127,20 +121,20 @@ export default {
                 showConvert,
               },
             }),
-          ];
+          ]
         },
       },
-    ];
+    ]
 
     const queryParams = {
       datasetId: params.datasetId,
-    };
+    }
 
     const request = (options) => {
       return api(`/${API_MODULE_NAME.DATA}/datasets/versions/`, {
         params: options,
-      });
-    };
+      })
+    }
 
     const handleCancel = () => {
       Object.assign(state, {
@@ -149,8 +143,8 @@ export default {
           loading: false,
           row: null,
         },
-      });
-    };
+      })
+    }
 
     const doConvert = () => {
       convertForm.value
@@ -162,15 +156,15 @@ export default {
               loading: false,
               row: null,
             },
-          });
-          Message.success('生成预置数据集成功', 500);
-          convertForm.value.resetModel();
+          })
+          Message.success('生成预置数据集成功', 500)
+          convertForm.value.resetModel()
         })
         .catch((err) => {
-          state.modal.loading = false;
-          Message.error(err.message, 1000);
-        });
-    };
+          state.modal.loading = false
+          Message.error(err.message, 1000)
+        })
+    }
 
     const checkConvert = () => {
       getConvertInfo(state.modal.row.datasetId).then((res) => {
@@ -178,26 +172,26 @@ export default {
           MessageBox.confirm(
             '该操作将覆盖当前数据集已有的转预置版本，可能会影响正在使用的训练任务，继续请确认',
             '提示',
-            { distinguishCancelAndClose: true }
+            { distinguishCancelAndClose: true },
           )
             .then(() => {
-              doConvert();
+              doConvert()
             })
             .catch(() => {
-              state.modal.loading = false;
-            });
+              state.modal.loading = false
+            })
         } else {
-          doConvert();
+          doConvert()
         }
-      });
-    };
+      })
+    }
 
     const handleConvert = () => {
       Object.assign(state, {
         modal: { ...state.modal, loading: true },
-      });
-      checkConvert();
-    };
+      })
+      checkConvert()
+    }
 
     return {
       parseTime,
@@ -209,7 +203,7 @@ export default {
       convertForm,
       handleCancel,
       handleConvert,
-    };
+    }
   },
-};
+}
 </script>

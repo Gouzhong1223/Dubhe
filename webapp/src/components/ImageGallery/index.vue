@@ -1,25 +1,30 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div :class="rootClass" class="img-gallery">
     <ul v-if="dataImagesLocal.length" :class="rootClass + '__wrapper'">
-      <li v-for="dataImage in dataImagesLocal" :key="dataImage.id" :class="rootClass + '__item'">
-        <div v-if="!isMultiple" :class="classThumbnail(singleSelected.id, dataImage.id)">
-          <img :src="formatUrl(dataImage.url)" :alt="dataImage.alt" :class="rootClass + '__img'" />
+      <li
+        v-for="dataImage in dataImagesLocal"
+        :key="dataImage.id"
+        :class="rootClass + '__item'"
+      >
+        <div
+          v-if="!isMultiple"
+          :class="classThumbnail(singleSelected.id, dataImage.id)"
+        >
+          <img
+            :src="formatUrl(dataImage.url)"
+            :alt="dataImage.alt"
+            :class="rootClass + '__img'"
+          />
 
           <label v-if="useLabel" :class="rootClass + '__lbl'">
             {{ dataImage.alt }}
@@ -51,7 +56,11 @@
             class="image-checkbox"
             @change="(checked) => handleCheck(dataImage, checked)"
           />
-          <div v-show="showOption(dataImage.id)" :title="dataImage.name" class="img-name-row">
+          <div
+            v-show="showOption(dataImage.id)"
+            :title="dataImage.name"
+            class="img-name-row"
+          >
             <div class="img-name">{{ basename(dataImage.url) }}</div>
           </div>
 
@@ -65,12 +74,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { bucketHost } from '@/utils/minIO';
-import { fileCodeMap, findKey, isStatus } from '@/views/dataset/util';
+import Vue from 'vue'
+import { bucketHost } from '@/utils/minIO'
+import { fileCodeMap, findKey, isStatus } from '@/views/dataset/util'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const path = require('path');
+const path = require('path')
 
 export default {
   name: 'ImageGallery',
@@ -119,155 +128,163 @@ export default {
       },
       hoverImg: null,
       isStatus,
-    };
+    }
   },
   computed: {
     dataImagesLocal() {
-      return this.dataImages || [];
+      return this.dataImages || []
     },
     selectedMap() {
-      const m = {};
+      const m = {}
       this.dataImagesLocal.forEach((item) => {
-        const isSelected = this.selectImgsId.includes(item.id);
-        m[item.id] = isSelected;
-      });
-      return m;
+        const isSelected = this.selectImgsId.includes(item.id)
+        m[item.id] = isSelected
+      })
+      return m
     },
     imageLabelTag() {
-      const labelTag = {};
+      const labelTag = {}
       try {
         this.dataImages.forEach((item) => {
-          const statusInfo = this.imgStatusMap[findKey(item.status, fileCodeMap)];
-          const annotation = JSON.parse(item.annotation);
-          let categoryName = '未识别';
-          let tagColor = '#db2a2a';
-          if (statusInfo && Array.isArray(annotation) && annotation.length > 0) {
-            annotation.sort((a, b) => b.score - a.score); // 标注按照score降序排序
-            const categoryId = annotation[0].category_id; // 取score最高的标注标签予以显示
-            categoryName = this.categoryId2Name[categoryId] || '';
-            tagColor = statusInfo.color;
+          const statusInfo = this.imgStatusMap[
+            findKey(item.status, fileCodeMap)
+          ]
+          const annotation = JSON.parse(item.annotation)
+          let categoryName = '未识别'
+          let tagColor = '#db2a2a'
+          if (
+            statusInfo &&
+            Array.isArray(annotation) &&
+            annotation.length > 0
+          ) {
+            annotation.sort((a, b) => b.score - a.score) // 标注按照score降序排序
+            const categoryId = annotation[0].category_id // 取score最高的标注标签予以显示
+            categoryName = this.categoryId2Name[categoryId] || ''
+            tagColor = statusInfo.color
           }
-          const divider = categoryName && `| ${categoryName}`;
+          const divider = categoryName && `| ${categoryName}`
           labelTag[item.id] = {
             text: `${statusInfo.text} ${divider}`,
             color: tagColor,
-          };
-        });
+          }
+        })
       } catch (err) {
-        console.error(err);
-        throw err;
+        console.error(err)
+        throw err
       }
-      return labelTag;
+      return labelTag
     },
   },
   mounted() {
     // set initial selectedImage
-    this.setInitialSelection();
+    this.setInitialSelection()
   },
   methods: {
     formatUrl(url) {
-      return `${bucketHost}/${url}`;
+      return `${bucketHost}/${url}`
     },
     basename(imgOrigin) {
-      return path.basename(imgOrigin);
+      return path.basename(imgOrigin)
     },
     classThumbnail(selectedId, imageId) {
-      const baseClass = `${this.rootClass}__thumbnail`;
+      const baseClass = `${this.rootClass}__thumbnail`
       if (selectedId === imageId) {
-        return `${baseClass} ${baseClass}${this.activeClass}`;
+        return `${baseClass} ${baseClass}${this.activeClass}`
       }
-      return `${baseClass}`;
+      return `${baseClass}`
     },
     classThumbnailMultiple(id) {
-      const baseClass = `${this.rootClass}__thumbnail`;
-      const baseMultipleClass = `${baseClass} is--multiple`;
+      const baseClass = `${this.rootClass}__thumbnail`
+      const baseMultipleClass = `${baseClass} is--multiple`
       if (this.hasSelected(id)) {
-        return `${baseMultipleClass} ${baseClass}${this.activeClass}`;
+        return `${baseMultipleClass} ${baseClass}${this.activeClass}`
       }
-      return `${baseMultipleClass}`;
+      return `${baseMultipleClass}`
     },
     onSelectImage(objectImage) {
-      this.singleSelected = { ...this.singleSelected, ...objectImage };
-      this.$emit('onselectimage', objectImage);
+      this.singleSelected = { ...this.singleSelected, ...objectImage }
+      this.$emit('onselectimage', objectImage)
     },
     onClickImg(objectImage) {
-      this.$emit('clickImg', objectImage, this.multipleSelected);
+      this.$emit('clickImg', objectImage, this.multipleSelected)
       if (this.multipleSelected.length > 0) {
-        const checked = this.hasSelected(objectImage.id);
-        this.toggleCheck(objectImage, !checked);
+        const checked = this.hasSelected(objectImage.id)
+        this.toggleCheck(objectImage, !checked)
       }
     },
     onMouseEnter(objectImage) {
-      Vue.set(objectImage, 'isHover', true);
-      this.hoverImg = objectImage;
+      Vue.set(objectImage, 'isHover', true)
+      this.hoverImg = objectImage
     },
     onMouseLeave(objectImage) {
       if (objectImage.isHover) {
-        Vue.set(objectImage, 'isHover', false);
-        this.hoverImg = null;
+        Vue.set(objectImage, 'isHover', false)
+        this.hoverImg = null
       }
     },
     isHover(id) {
-      return this.hoverImg?.id === id;
+      return this.hoverImg?.id === id
     },
     hasSelected(id) {
-      return this.multipleSelected.find((item) => id === item);
+      return this.multipleSelected.find((item) => id === item)
     },
     showOption(id) {
-      return this.isHover(id) || this.hasSelected(id);
+      return this.isHover(id) || this.hasSelected(id)
     },
     removeFromSingleSelected() {
-      this.singleSelected = {};
-      this.$emit('onselectimage', {});
+      this.singleSelected = {}
+      this.$emit('onselectimage', {})
     },
     removeFromMultipleSelected(id, dontFireEmit) {
-      this.multipleSelected = this.multipleSelected.filter((item) => id !== item);
+      this.multipleSelected = this.multipleSelected.filter(
+        (item) => id !== item,
+      )
       if (!dontFireEmit) {
-        this.$emit('onselectmultipleimage', this.multipleSelected);
+        this.$emit('onselectmultipleimage', this.multipleSelected)
       }
     },
     resetMultipleSelection() {
-      this.multipleSelected = [];
+      this.multipleSelected = []
       for (const key in this.selectedMap) {
-        this.selectedMap[key] = false;
+        this.selectedMap[key] = false
       }
-      this.$emit('onselectmultipleimage', this.multipleSelected);
+      this.$emit('onselectmultipleimage', this.multipleSelected)
     },
     selectAll() {
-      this.multipleSelected = this.dataImages.map((d) => d.id);
+      this.multipleSelected = this.dataImages.map((d) => d.id)
       for (const key in this.selectedMap) {
-        this.selectedMap[key] = true;
+        this.selectedMap[key] = true
       }
-      this.$emit('onselectmultipleimage', this.multipleSelected);
+      this.$emit('onselectmultipleimage', this.multipleSelected)
     },
     handleCheck(objectImage, checked) {
-      return this.toggleCheck(objectImage, checked);
+      return this.toggleCheck(objectImage, checked)
     },
     toggleCheck(objectImage, checked) {
       if (checked) {
-        this.multipleSelected.push(objectImage.id);
-        this.selectedMap[objectImage.id] = true;
+        this.multipleSelected.push(objectImage.id)
+        this.selectedMap[objectImage.id] = true
       } else {
-        this.removeFromMultipleSelected(objectImage.id, true);
-        this.selectedMap[objectImage.id] = false;
+        this.removeFromMultipleSelected(objectImage.id, true)
+        this.selectedMap[objectImage.id] = false
       }
 
-      this.$emit('onselectmultipleimage', this.multipleSelected);
+      this.$emit('onselectmultipleimage', this.multipleSelected)
     },
     setInitialSelection() {
       if (this.selectImgsId) {
         if (!this.isMultiple && this.selectImgsId.length === 1) {
-          this.singleSelected = { ...this.selectImgsId[0] };
+          this.singleSelected = { ...this.selectImgsId[0] }
         } else {
-          this.multipleSelected = [].concat(this.selectImgsId);
+          this.multipleSelected = [].concat(this.selectImgsId)
         }
       }
     },
     setImageTagVisible(tagVisible) {
-      this.imageTagVisible = tagVisible;
+      this.imageTagVisible = tagVisible
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

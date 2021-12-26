@@ -1,29 +1,32 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div v-if="data.length > 0" class="flex flex-wrap">
-    <div v-for="item in data" :key="item.name" class="mx-10 my-10" style="width: 200px;">
+    <div
+      v-for="item in data"
+      :key="item.name"
+      class="mx-10 my-10"
+      style="width: 200px;"
+    >
       <el-card :body-style="{ padding: '0px' }" shadow="hover">
         <el-checkbox
           v-model="state.checkboxGroup[item.name]"
           class="checkbox"
           @change="onChange(item)"
         ></el-checkbox>
-        <div class="tc" :class="item.browser === '' ? '' : 'pointer item'" @click="goDetail(item)">
+        <div
+          class="tc"
+          :class="item.browser === '' ? '' : 'pointer item'"
+          @click="goDetail(item)"
+        >
           <el-image
             v-if="item.fileType === 'img'"
             :src="buildFileUrl(item)"
@@ -32,7 +35,12 @@
             fit="scale-down"
             lazy
           />
-          <IconFont v-else :type="getIcon(item.ext)" class="mb-10" style="font-size: 99px;" />
+          <IconFont
+            v-else
+            :type="getIcon(item.ext)"
+            class="mb-10"
+            style="font-size: 99px;"
+          />
           <el-tooltip :open-delay="1000">
             <div slot="content">{{ item.name }}</div>
             <div class="ellipsis mb-10 mx-10">
@@ -49,8 +57,8 @@
 </template>
 
 <script>
-import { reactive } from '@vue/composition-api';
-import { getIcon } from '../../util';
+import { reactive } from '@vue/composition-api'
+import { getIcon } from '../../util'
 
 export default {
   name: 'GridTable',
@@ -80,32 +88,32 @@ export default {
     const state = reactive({
       selections: [],
       checkboxGroup: {},
-    });
+    })
 
     const clearSelection = () => {
       Object.keys(state.checkboxGroup).forEach((key) => {
-        state.checkboxGroup[key] = false;
-      });
-      state.selections = [];
-    };
+        state.checkboxGroup[key] = false
+      })
+      state.selections = []
+    }
 
     const onChange = (d) => {
       if (state.checkboxGroup[d.name]) {
-        state.selections.push(d);
+        state.selections.push(d)
       } else {
-        state.selections = state.selections.filter((a) => d.name !== a.name);
+        state.selections = state.selections.filter((a) => d.name !== a.name)
       }
-      props.changeSelection(state.selections);
-    };
+      props.changeSelection(state.selections)
+    }
 
     return {
       state,
       onChange,
       clearSelection,
       getIcon,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

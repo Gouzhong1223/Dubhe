@@ -1,10 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
-Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
-You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
-required by applicable law or agreed to in writing, software * distributed under the License is
-distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. * See the License for the specific language governing permissions and * limitations under
-the License. * ============================================================= */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div style="height: 100%">
@@ -41,7 +43,9 @@ the License. * ============================================================= */
             <span>{{ $store.state.settings.footerTxt }}</span>
             <template v-if="$store.state.settings.caseNumber">
               <span>⋅</span>
-              <a href="/" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+              <a href="/" target="_blank">{{
+                $store.state.settings.caseNumber
+              }}</a>
             </template>
           </div>
         </div>
@@ -63,37 +67,38 @@ export default {
         {
           id: 0,
           title: '人工智能实训',
-          text: '提供云端深度学习开发环境，让你进入深度学习网络可视化建模的世界',
+          text:
+            '提供云端深度学习开发环境，让你进入深度学习网络可视化建模的世界',
         },
       ],
       currentIndex: 0,
       timer: '',
-    };
+    }
   },
   mounted() {
-    this.startSlider();
+    this.startSlider()
     this.$once('hook:beforeDestroy', () => {
-      this.stopSlider();
-    });
+      this.stopSlider()
+    })
   },
   methods: {
     startSlider() {
       this.timer = setInterval(() => {
-        this.autoPlay();
-      }, 8000);
+        this.autoPlay()
+      }, 8000)
     },
     stopSlider() {
-      clearInterval(this.timer);
-      this.timer = null;
+      clearInterval(this.timer)
+      this.timer = null
     },
     autoPlay() {
-      this.currentIndex += 1;
+      this.currentIndex += 1
       if (this.currentIndex > this.loginImageList.length - 1) {
-        this.currentIndex = 0;
+        this.currentIndex = 0
       }
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

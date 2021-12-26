@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="serving-log-wrapper">
@@ -62,7 +56,11 @@
         <el-button @click="doRefresh">搜索</el-button>
       </span>
     </header>
-    <el-tabs v-model="activeLogTimeTag" class="log-time-tags my-10" @tab-click="onLogTimeTabClick">
+    <el-tabs
+      v-model="activeLogTimeTag"
+      class="log-time-tags my-10"
+      @tab-click="onLogTimeTabClick"
+    >
       <el-tab-pane
         v-for="time in timeOptions"
         :key="time.value"
@@ -103,16 +101,16 @@ import {
   toRefs,
   onActivated,
   onMounted,
-} from '@vue/composition-api';
-import { Message } from 'element-ui';
+} from '@vue/composition-api'
+import { Message } from 'element-ui'
 
-import datePickerMixin from '@/mixins/datePickerMixin';
-import { getServingPods } from '@/api/cloudServing';
-import { getBatchServingPods } from '@/api/cloudServing/batch';
-import { getPodLog } from '@/api/system/pod';
-import LogContainer from '@/components/LogContainer';
+import datePickerMixin from '@/mixins/datePickerMixin'
+import { getServingPods } from '@/api/cloudServing'
+import { getBatchServingPods } from '@/api/cloudServing/batch'
+import { getPodLog } from '@/api/system/pod'
+import LogContainer from '@/components/LogContainer'
 
-import { SERVING_STATUS_ENUM } from '@/views/cloudServing/util';
+import { SERVING_STATUS_ENUM } from '@/views/cloudServing/util'
 
 export default {
   name: 'ServingLog',
@@ -147,18 +145,18 @@ export default {
       selectedModel: null,
       selectedPod: null,
       podList: [],
-    });
+    })
 
     // computed
     const isOnlineServing = computed(() => {
-      return props.type === 'onlineServing';
-    });
+      return props.type === 'onlineServing'
+    })
     const isBatchServing = computed(() => {
-      return props.type === 'batchServing';
-    });
+      return props.type === 'batchServing'
+    })
 
     // Loggers
-    const logContainer = ref(null);
+    const logContainer = ref(null)
     const loggerState = reactive({
       logTimeRange: [],
       logKeyword: null,
@@ -181,14 +179,14 @@ export default {
           value: '60',
         },
       ],
-    });
+    })
     const resetLogger = () => {
       if (state.selectedPod) {
         setTimeout(() => {
-          logContainer.value.reset(true);
-        }, 0);
+          logContainer.value.reset(true)
+        }, 0)
       }
-    };
+    }
     const logOptions = computed(() => {
       return {
         podName: state.selectedPod?.podName,
@@ -200,102 +198,102 @@ export default {
           ? loggerState.logTimeRange[1].getTime()
           : undefined,
         logKeyword: loggerState.logKeyword || undefined,
-      };
-    });
+      }
+    })
     const onLogTimeTabClick = () => {
-      const minutes = Number.parseInt(loggerState.activeLogTimeTag, 10);
+      const minutes = Number.parseInt(loggerState.activeLogTimeTag, 10)
       // 如果解析为 NaN，说明选择了自定义时间段，将 logTimeRange 设为空数组
       if (Number.isNaN(minutes)) {
-        loggerState.logTimeRange = [];
+        loggerState.logTimeRange = []
       } else {
-        const now = new Date();
-        loggerState.logTimeRange = [new Date(now - 1000 * 60 * minutes), now];
+        const now = new Date()
+        loggerState.logTimeRange = [new Date(now - 1000 * 60 * minutes), now]
       }
-      resetLogger();
-    };
+      resetLogger()
+    }
     const onTimeRangeChange = () => {
-      resetLogger();
-    };
+      resetLogger()
+    }
     const onSearchKeyChange = () => {
-      resetLogger();
-    };
+      resetLogger()
+    }
     const doRefresh = () => {
-      resetLogger();
-    };
+      resetLogger()
+    }
 
     // pod
     const getPodList = async () => {
       if (isOnlineServing.value) {
         if (!state.selectedModel) {
-          state.selectedPod = null;
-          return;
+          state.selectedPod = null
+          return
         }
-        state.podList = await getServingPods(state.selectedModel.id);
+        state.podList = await getServingPods(state.selectedModel.id)
       }
       if (isBatchServing.value) {
-        state.podList = await getBatchServingPods(props.serviceId);
+        state.podList = await getBatchServingPods(props.serviceId)
       }
       if (!state.podList.length) {
         if (props.status === SERVING_STATUS_ENUM.IN_DEPLOYMENT) {
-          Message.warning('服务正在部署中，暂无节点信息');
+          Message.warning('服务正在部署中，暂无节点信息')
         } else {
-          Message.warning('当前模型没有节点');
+          Message.warning('当前模型没有节点')
         }
-        state.selectedPod = null;
-        return;
+        state.selectedPod = null
+        return
       }
-      [state.selectedPod] = state.podList;
-    };
+      ;[state.selectedPod] = state.podList
+    }
     const onPodChange = () => {
-      resetLogger();
-    };
+      resetLogger()
+    }
 
     watch(
       () => props.status,
       async (next, previous) => {
         // 如果状态从 部署中 变为其他状态时，重新请求 pod 列表
         if (previous === SERVING_STATUS_ENUM.IN_DEPLOYMENT) {
-          await getPodList();
-          onLogTimeTabClick();
+          await getPodList()
+          onLogTimeTabClick()
         }
-      }
-    );
+      },
+    )
 
     // Model
     const onModelChange = async () => {
-      await getPodList();
-      resetLogger();
-    };
+      await getPodList()
+      resetLogger()
+    }
 
     // reset
     const reset = async () => {
-      loggerState.logKeyword = null;
-      state.selectedModel = props.modelList.length ? props.modelList[0] : null;
-      await getPodList();
-      onLogTimeTabClick();
-      ctx.emit('reseted');
-    };
+      loggerState.logKeyword = null
+      state.selectedModel = props.modelList.length ? props.modelList[0] : null
+      await getPodList()
+      onLogTimeTabClick()
+      ctx.emit('reseted')
+    }
 
     onActivated(() => {
       if (props.refresh) {
-        reset();
+        reset()
       }
-    });
+    })
 
     onMounted(async () => {
       if (isOnlineServing.value) {
         if (!props.modelList.length) {
-          Message.warning('模型列表为空');
-          return;
+          Message.warning('模型列表为空')
+          return
         }
-        [state.selectedModel] = props.modelList;
+        ;[state.selectedModel] = props.modelList
       }
       if (props.refresh) {
-        return;
+        return
       } // 处理 进入页面之前进行刷新操作后请求两次的问题
-      await getPodList();
-      onLogTimeTabClick();
-    });
+      await getPodList()
+      onLogTimeTabClick()
+    })
 
     return {
       ...toRefs(state),
@@ -319,9 +317,9 @@ export default {
       doRefresh,
       // reset
       reset,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

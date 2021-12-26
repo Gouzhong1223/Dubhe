@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div>
@@ -46,7 +40,11 @@
         @change="handleChange"
       />
     </el-form-item>
-    <el-form-item v-show="paramsMode === 2" label="运行参数" :error="argErrorMsg">
+    <el-form-item
+      v-show="paramsMode === 2"
+      label="运行参数"
+      :error="argErrorMsg"
+    >
       <el-input
         v-model="paramsArguments"
         type="textarea"
@@ -59,8 +57,8 @@
 </template>
 
 <script>
-import { pythonKeyValidator, stringIsValidPythonVariable } from '@/utils';
-import ParamPair from './paramPair';
+import { pythonKeyValidator, stringIsValidPythonVariable } from '@/utils'
+import ParamPair from './paramPair'
 
 export default {
   name: 'RunParamForm',
@@ -99,15 +97,15 @@ export default {
       paramId: 0,
       paramRepeatWarning: null,
       hasError: false,
-    };
+    }
   },
   watch: {
     runParamObj() {
-      this.syncListData();
+      this.syncListData()
     },
   },
   async mounted() {
-    this.syncListData();
+    this.syncListData()
   },
   methods: {
     addP() {
@@ -116,19 +114,19 @@ export default {
         value: '',
         // eslint-disable-next-line no-plusplus
         id: this.paramId++,
-      });
-      this.$emit('addParams', this.runParamsList.length);
+      })
+      this.$emit('addParams', this.runParamsList.length)
     },
     removeP(i) {
-      this.runParamsList.splice(i, 1);
-      this.updateRunParamObj();
+      this.runParamsList.splice(i, 1)
+      this.updateRunParamObj()
     },
     syncListData() {
-      const list = [];
+      const list = []
       for (const key in this.runParamObj) {
-        const objItem = this.runParamsList.find((p) => p.key === key);
+        const objItem = this.runParamsList.find((p) => p.key === key)
         if (objItem) {
-          objItem.value = this.runParamObj[key];
+          objItem.value = this.runParamObj[key]
         }
         list.push(
           objItem || {
@@ -136,148 +134,151 @@ export default {
             value: this.runParamObj[key],
             // eslint-disable-next-line no-plusplus
             id: this.paramId++,
-          }
-        );
+          },
+        )
       }
-      this.runParamsList = list;
+      this.runParamsList = list
       if (this.runParamsList.length === 0) {
-        this.addP();
+        this.addP()
       }
       if (this.paramsMode === 2) {
-        this.convertPairsToArgs();
+        this.convertPairsToArgs()
       }
     },
     handleChange(paramPair) {
       // 当参数对的值改变时 key 为空，则把对于的 param 删除
       if (!paramPair.key) {
-        const paramIndex = this.runParamsList.findIndex((p) => p.id === paramPair.id);
-        this.runParamsList.splice(paramIndex, 1);
+        const paramIndex = this.runParamsList.findIndex(
+          (p) => p.id === paramPair.id,
+        )
+        this.runParamsList.splice(paramIndex, 1)
       }
       if (!this.runParamsList.length) {
-        this.addP();
+        this.addP()
       }
-      this.updateRunParamObj();
+      this.updateRunParamObj()
     },
     // 提供修改参数的入口, 如果参数存在则可修改
     updateParam(key, value) {
-      const param = this.runParamsList.find((p) => p.key === key);
+      const param = this.runParamsList.find((p) => p.key === key)
       if (param) {
-        param.value = value;
-        this.updateRunParamObj();
+        param.value = value
+        this.updateRunParamObj()
       }
     },
     updateRunParamObj() {
-      const obj = {};
-      const repeatedParams = new Set();
+      const obj = {}
+      const repeatedParams = new Set()
       this.runParamsList.forEach((param) => {
         // 当 key 为空或者已存在相同 key 时，不加入数值
         if (!param.key) {
-          return;
+          return
         }
         if (obj[param.key] !== undefined) {
-          repeatedParams.add(param.key);
-          return;
+          repeatedParams.add(param.key)
+          return
         }
-        obj[param.key] = param.value;
-      });
+        obj[param.key] = param.value
+      })
       if (repeatedParams.size) {
-        this.paramRepeatWarning && this.paramRepeatWarning.close();
+        this.paramRepeatWarning && this.paramRepeatWarning.close()
         this.paramRepeatWarning = this.$message.warning(
-          `参数 ${[...repeatedParams].join(', ')} 有重复, 将取用第一个值。`
-        );
+          `参数 ${[...repeatedParams].join(', ')} 有重复, 将取用第一个值。`,
+        )
       }
-      this.$emit('updateRunParams', obj);
+      this.$emit('updateRunParams', obj)
     },
     validate() {
       // 单独校验
-      let valid = true;
+      let valid = true
       const validCallback = (pairValid) => {
-        valid = valid && pairValid;
-      };
+        valid = valid && pairValid
+      }
 
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.runParamsList.length; i++) {
-        this.paramsMode === 1 && this.$refs.paramPairs[i].validate(validCallback);
+        this.paramsMode === 1 &&
+          this.$refs.paramPairs[i].validate(validCallback)
       }
 
-      valid = valid && !this.hasError;
+      valid = valid && !this.hasError
 
-      return valid;
+      return valid
     },
     onParamsModeChange(value) {
       switch (value) {
         case 1:
-          this.convertArgsToPairs();
-          break;
+          this.convertArgsToPairs()
+          break
         case 2:
-          this.convertPairsToArgs();
-          break;
+          this.convertPairsToArgs()
+          break
         // no default
       }
     },
     convertArgsToPairs() {
-      const paramsList = this.paramsArguments.split(' ');
-      const pairList = [];
-      const re = /^--(.+)=(.*)$/;
-      this.hasError = false;
+      const paramsList = this.paramsArguments.split(' ')
+      const pairList = []
+      const re = /^--(.+)=(.*)$/
+      this.hasError = false
       // 先使用正则进行匹配
       paramsList.forEach((arg) => {
-        const group = re.exec(arg);
+        const group = re.exec(arg)
         if (group) {
           pairList.push({
             key: group[1],
             value: group[2],
             // eslint-disable-next-line no-plusplus
             id: this.paramId++,
-          });
+          })
         } else if (arg) {
           this.$nextTick(() => {
-            this.argErrorMsg = `参数'${arg}'不合法，请检查运行参数`;
-          });
-          this.paramsMode = 2;
-          this.hasError = true;
+            this.argErrorMsg = `参数'${arg}'不合法，请检查运行参数`
+          })
+          this.paramsMode = 2
+          this.hasError = true
         }
-      });
-      if (this.hasError) return;
+      })
+      if (this.hasError) return
       // 其次做参数名验证
       pairList.forEach((pair) => {
         if (!stringIsValidPythonVariable(pair.key)) {
           this.$nextTick(() => {
-            this.argErrorMsg = `参数名'${pair.key}'不是合法参数，请检查运行参数`;
-          });
-          this.paramsMode = 2;
-          this.hasError = true;
+            this.argErrorMsg = `参数名'${pair.key}'不是合法参数，请检查运行参数`
+          })
+          this.paramsMode = 2
+          this.hasError = true
         }
-      });
-      if (this.hasError) return;
+      })
+      if (this.hasError) return
       // 参数为空时增加一个空参数
       if (!pairList.length) {
         // eslint-disable-next-line no-plusplus
-        pairList.push({ key: '', value: '', id: this.paramId++ });
+        pairList.push({ key: '', value: '', id: this.paramId++ })
       }
-      this.runParamsList = pairList;
-      this.updateRunParamObj();
-      this.argErrorMsg = null;
+      this.runParamsList = pairList
+      this.updateRunParamObj()
+      this.argErrorMsg = null
     },
     convertPairsToArgs() {
-      let args = '';
+      let args = ''
       this.runParamsList.forEach((pair) => {
         // 跳过空参数
-        if (!pair.key) return;
-        args += args ? ' ' : '';
-        args += `--${pair.key}=${pair.value}`;
-      });
-      this.paramsArguments = args;
+        if (!pair.key) return
+        args += args ? ' ' : ''
+        args += `--${pair.key}=${pair.value}`
+      })
+      this.paramsArguments = args
     },
     reset() {
-      this.argErrorMsg = null;
-      this.paramsMode = 1;
-      this.paramsArguments = '';
+      this.argErrorMsg = null
+      this.paramsMode = 1
+      this.paramsArguments = ''
       // eslint-disable-next-line no-plusplus
-      this.runParamsList = [{ key: '', value: '', id: this.paramId++ }];
+      this.runParamsList = [{ key: '', value: '', id: this.paramId++ }]
     },
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .el-radio.is-bordered {

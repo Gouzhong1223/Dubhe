@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="lesion-table-wrapper">
@@ -32,7 +26,11 @@
           <i class="el-icon-warning-outline cp" style="color: #fff;" />
         </el-tooltip>
       </div>
-      <el-table :data="state.lesions" class="lesionInfo-table" :max-height="385">
+      <el-table
+        :data="state.lesions"
+        class="lesionInfo-table"
+        :max-height="385"
+      >
         <el-table-column label="序号" :min-width="40">
           <template slot-scope="scope">
             <span>{{ scope.$index + 1 }}</span>
@@ -74,10 +72,22 @@
         </el-table-column>
         <el-table-column label="操作" :min-width="60">
           <template slot-scope="{ row }">
-            <el-tooltip effect="dark" content="跳转到结节层面" placement="top" :open-delay="800">
-              <i class="el-icon-d-arrow-right cp" style="color: #fff;" @click="toPosition(row)" />
+            <el-tooltip
+              effect="dark"
+              content="跳转到结节层面"
+              placement="top"
+              :open-delay="800"
+            >
+              <i
+                class="el-icon-d-arrow-right cp"
+                style="color: #fff;"
+                @click="toPosition(row)"
+              />
             </el-tooltip>
-            <el-popconfirm title="确定删除标注？" @onConfirm="() => deleteDrawItem(row)">
+            <el-popconfirm
+              title="确定删除标注？"
+              @onConfirm="() => deleteDrawItem(row)"
+            >
               <span slot="reference"><i class="el-icon-delete cp ml-4"/></span>
             </el-popconfirm>
           </template>
@@ -87,9 +97,9 @@
   </div>
 </template>
 <script>
-import { reactive, watch } from '@vue/composition-api';
-import Edit from '@/components/InlineTableEdit';
-import { getDrawLayer, getShapeGroup, activeShapeGroup } from '../lib';
+import { reactive, watch } from '@vue/composition-api'
+import Edit from '@/components/InlineTableEdit'
+import { getDrawLayer, getShapeGroup, activeShapeGroup } from '../lib'
 
 export default {
   name: 'LesionInfo',
@@ -109,40 +119,40 @@ export default {
     editDrawDetail: Function,
   },
   setup(props) {
-    const { deleteDraw, setCurrentSlice, getApp } = props;
+    const { deleteDraw, setCurrentSlice, getApp } = props
     const state = reactive({
       lesions: props.lesions,
-    });
+    })
     // 删除标注
     const deleteDrawItem = (row) => {
-      deleteDraw(row);
-    };
+      deleteDraw(row)
+    }
 
     // 定位到病灶所在位置
     const toPosition = (row) => {
-      const { sliceNumber, drawId } = row.list[0];
-      setCurrentSlice(sliceNumber - 1);
-      const drawLayer = getDrawLayer(getApp());
-      const selectedShape = getShapeGroup(drawId, drawLayer);
+      const { sliceNumber, drawId } = row.list[0]
+      setCurrentSlice(sliceNumber - 1)
+      const drawLayer = getDrawLayer(getApp())
+      const selectedShape = getShapeGroup(drawId, drawLayer)
       if (selectedShape) {
-        activeShapeGroup(getApp(), selectedShape);
+        activeShapeGroup(getApp(), selectedShape)
       }
-    };
+    }
 
     watch(
       () => props.lesions,
       (next) => {
-        state.lesions = next;
-      }
-    );
+        state.lesions = next
+      },
+    )
 
     return {
       state,
       deleteDrawItem,
       toPosition,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 .lesion-table-wrapper {

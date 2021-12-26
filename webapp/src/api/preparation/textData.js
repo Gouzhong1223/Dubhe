@@ -14,16 +14,16 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
-  const { datasetId } = params;
+  const { datasetId } = params
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files/txt`,
     method: 'get',
     params,
-  });
+  })
 }
 
 // 获取分页信息 deprecated
@@ -31,7 +31,7 @@ export function queryFiles(datasetId, params) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files/txt`,
     params,
-  });
+  })
 }
 
 // 删除文件
@@ -43,7 +43,7 @@ export function deleteFile(datasetId, fileId) {
       datasetIds: [Number(datasetId)],
       fileIds: [Number(fileId)],
     },
-  });
+  })
 }
 
 // 保存
@@ -52,16 +52,16 @@ export function save(datasetId, fileId, data) {
     url: `/${API_MODULE_NAME.DATA}/datasets/files/${datasetId}/${fileId}/annotations/finish`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function search(params) {
-  const { datasetId } = params;
+  const { datasetId } = params
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files/content`,
     method: 'get',
     params,
-  });
+  })
 }
 
-export default { list };
+export default { list }

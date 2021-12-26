@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-popover
@@ -31,7 +25,11 @@
       style="margin-top: 20px;"
     >
       <el-form-item label="名称" prop="name">
-        <el-input ref="inputRef" v-model="state.form.name" placeholder="修改标签名称" />
+        <el-input
+          ref="inputRef"
+          v-model="state.form.name"
+          placeholder="修改标签名称"
+        />
       </el-form-item>
       <el-form-item label="颜色" prop="color">
         <el-color-picker v-model="state.form.color" />
@@ -41,13 +39,18 @@
         <el-button type="primary" @click="handleOk">确定</el-button>
       </div>
     </el-form>
-    <i slot="reference" class="el-icon-edit" style="margin-left: 4px;" :style="getStyle(item)" />
+    <i
+      slot="reference"
+      class="el-icon-edit"
+      style="margin-left: 4px;"
+      :style="getStyle(item)"
+    />
   </el-popover>
 </template>
 <script>
-import Vue from 'vue';
-import { reactive, ref, watch } from '@vue/composition-api';
-import { validateName } from '@/utils/validate';
+import Vue from 'vue'
+import { reactive, ref, watch } from '@vue/composition-api'
+import { validateName } from '@/utils/validate'
 
 export default {
   name: 'EditLabel',
@@ -60,8 +63,8 @@ export default {
     title: String,
   },
   setup(props, ctx) {
-    const inputRef = ref(null);
-    const formRef = ref(null);
+    const inputRef = ref(null)
+    const formRef = ref(null)
 
     const state = reactive({
       visible: false,
@@ -69,15 +72,19 @@ export default {
         name: props.item.name || '',
         color: props.item.color || '#2e4fde',
       },
-    });
+    })
 
     // 表单规则
     const rules = {
       name: [
-        { required: true, message: '请输入标签名称', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请输入标签名称',
+          trigger: ['change', 'blur'],
+        },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
-    };
+    }
 
     const handleCancel = () => {
       Object.assign(state, {
@@ -86,27 +93,27 @@ export default {
           name: props.item.name || '',
           color: props.item.color || '#2e4fde',
         },
-      });
-    };
+      })
+    }
 
     // 编辑标注名称
     const handleOk = () => {
       formRef.value.validate().then((valid) => {
         if (!valid) {
-          return;
+          return
         }
-        ctx.emit('handleOk', state.form, props.item);
-        handleCancel();
-      });
-    };
+        ctx.emit('handleOk', state.form, props.item)
+        handleCancel()
+      })
+    }
 
     const onShow = () => {
       // onShow 的时候重置
       Vue.nextTick(() => {
-        const input = inputRef && inputRef.value.$refs.input;
-        input && input.focus();
-      });
-    };
+        const input = inputRef && inputRef.value.$refs.input
+        input && input.focus()
+      })
+    }
 
     watch(
       () => props.item,
@@ -115,10 +122,10 @@ export default {
           state.form = {
             name: next.name || '',
             color: next.color || '#2e4fde',
-          };
+          }
         }
-      }
-    );
+      },
+    )
 
     return {
       props,
@@ -129,7 +136,7 @@ export default {
       handleOk,
       handleCancel,
       onShow,
-    };
+    }
   },
-};
+}
 </script>

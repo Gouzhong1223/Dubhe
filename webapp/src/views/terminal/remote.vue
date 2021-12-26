@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="pro-remote-wrapper" class="app-container">
@@ -20,7 +14,8 @@
       说明：
       <ol>
         <li>
-          远程连接进入环境后，在点击保存并停止之前，只有在 /workspace 下的文件才会被永久保存。
+          远程连接进入环境后，在点击保存并停止之前，只有在 /workspace
+          下的文件才会被永久保存。
         </li>
         <li>
           保存并停止会将当前环境打包成镜像，需要等待一段时间，此时应尽量避免在远程连接窗口输入命令。
@@ -50,14 +45,19 @@
       </div>
       <div class="info-row">
         <span class="info-title">启动镜像：</span>
-        <span class="info-value">{{ connection.imageName }}:{{ connection.imageTag }}</span>
+        <span class="info-value"
+          >{{ connection.imageName }}:{{ connection.imageTag }}</span
+        >
       </div>
       <div class="info-row">
         <span class="info-title">状态</span>
         <span class="info-value"
-          ><el-tag :type="terminalTagMap[connection.status]" effect="plain" class="v-text-bottom">{{
-            terminalNameMap[connection.status] || '--'
-          }}</el-tag>
+          ><el-tag
+            :type="terminalTagMap[connection.status]"
+            effect="plain"
+            class="v-text-bottom"
+            >{{ terminalNameMap[connection.status] || '--' }}</el-tag
+          >
           <MsgPopover
             v-if="hasStatusDetail(connection.statusDetail)"
             :status-detail="connection.statusDetail"
@@ -99,7 +99,9 @@
           @click="restartConnection(connection)"
           >重新启动</el-button
         >
-        <el-button type="danger" @click="deleteConnection(connection)">删除</el-button>
+        <el-button type="danger" @click="deleteConnection(connection)"
+          >删除</el-button
+        >
       </div>
     </el-card>
     <div v-if="connectionList.length === 0" class="empty-connection-wrapper">
@@ -133,14 +135,26 @@
 </template>
 
 <script>
-import { computed, nextTick, reactive, ref, toRefs, onUnmounted } from '@vue/composition-api';
-import { Message, MessageBox } from 'element-ui';
+import {
+  computed,
+  nextTick,
+  reactive,
+  ref,
+  toRefs,
+  onUnmounted,
+} from '@vue/composition-api'
+import { Message, MessageBox } from 'element-ui'
 
-import BaseTable from '@/components/BaseTable';
-import BaseModal from '@/components/BaseModal';
-import MsgPopover from '@/components/MsgPopover';
-import { createTerminal, deleteTerminal, restartTerminal, preserveTerminal } from '@/api/terminal';
-import { generateMap, moveToAnchor, emitter } from '@/utils';
+import BaseTable from '@/components/BaseTable'
+import BaseModal from '@/components/BaseModal'
+import MsgPopover from '@/components/MsgPopover'
+import {
+  createTerminal,
+  deleteTerminal,
+  restartTerminal,
+  preserveTerminal,
+} from '@/api/terminal'
+import { generateMap, moveToAnchor, emitter } from '@/utils'
 
 import {
   connectionNodeTableColumns,
@@ -150,9 +164,9 @@ import {
   TERMINAL_INFO_STATUS_ENUM,
   TERMINAL_INFO_STATUS_MAP,
   usePoll,
-} from './utils';
-import ConnectionForm from './components/connectionForm';
-import PreserveForm from './components/preserveForm';
+} from './utils'
+import ConnectionForm from './components/connectionForm'
+import PreserveForm from './components/preserveForm'
 
 // 新建连接/重启连接表单
 const useConnectionForm = ({ getTerminals, jumpToAnchor }) => {
@@ -160,70 +174,70 @@ const useConnectionForm = ({ getTerminals, jumpToAnchor }) => {
     formVisible: false,
     formLoading: false,
     formType: 'add',
-  });
-  const formRef = ref(null);
+  })
+  const formRef = ref(null)
 
   const formTitle = computed(() => {
     switch (state.formType) {
       case 'restart':
-        return '重新启动';
+        return '重新启动'
       case 'add':
       default:
-        return '新建连接';
+        return '新建连接'
     }
-  });
+  })
 
   const createConnection = () => {
-    state.formType = 'add';
-    state.formVisible = true;
+    state.formType = 'add'
+    state.formVisible = true
     nextTick(() => {
-      formRef.value.initForm();
-    });
-  };
+      formRef.value.initForm()
+    })
+  }
 
   const doRestartConnection = (connection) => {
-    state.formType = 'restart';
-    state.formVisible = true;
+    state.formType = 'restart'
+    state.formVisible = true
     nextTick(() => {
-      formRef.value.initForm(connection);
-    });
-  };
+      formRef.value.initForm(connection)
+    })
+  }
 
   const onFormSubmit = () => {
     formRef.value.validate((form) => {
-      let submitFn;
-      let submitMsg;
+      let submitFn
+      let submitMsg
       switch (state.formType) {
         case 'add':
-          submitFn = createTerminal;
-          submitMsg = '连接创建成功';
-          break;
+          submitFn = createTerminal
+          submitMsg = '连接创建成功'
+          break
         case 'restart':
-          submitFn = restartTerminal;
-          submitMsg = '连接重启成功';
-          break;
+          submitFn = restartTerminal
+          submitMsg = '连接重启成功'
+          break
         // no default
       }
       if (submitFn) {
-        state.formLoading = true;
+        state.formLoading = true
         submitFn(form)
           .then(({ name }) => {
-            state.formVisible = false;
-            Message.success(submitMsg);
+            state.formVisible = false
+            Message.success(submitMsg)
             getTerminals().then(() => {
-              jumpToAnchor(`#${name}`); // 创建、修改完之后直接跳转到对应连接的位置
-            });
+              jumpToAnchor(`#${name}`) // 创建、修改完之后直接跳转到对应连接的位置
+            })
           })
           .finally(() => {
-            state.formLoading = false;
-          });
+            state.formLoading = false
+          })
       }
-    });
-  };
+    })
+  }
 
   const onFormClose = () => {
-    formRef.value.resetForm();
-  };
+    formRef.value.resetForm()
+  }
 
   return {
     ...toRefs(state),
@@ -233,31 +247,38 @@ const useConnectionForm = ({ getTerminals, jumpToAnchor }) => {
     doRestartConnection,
     onFormSubmit,
     onFormClose,
-  };
-};
+  }
+}
 
 // 单个连接的保存、删除、重启等入口
-const useConnection = ({ doRestartConnection, getTerminals, doPreserveConnection }) => {
+const useConnection = ({
+  doRestartConnection,
+  getTerminals,
+  doPreserveConnection,
+}) => {
   const prereserveConnection = (connection) => {
-    doPreserveConnection(connection);
-  };
+    doPreserveConnection(connection)
+  }
   const restartConnection = (connection) => {
-    doRestartConnection(connection);
-  };
+    doRestartConnection(connection)
+  }
   const deleteConnection = (connection) => {
     MessageBox.confirm(`确认删除连接 ${connection.name}`, '请确认').then(() => {
       deleteTerminal(connection.id).then(() => {
-        Message.success('连接删除成功');
-        getTerminals();
-      });
-    });
-  };
+        Message.success('连接删除成功')
+        getTerminals()
+      })
+    })
+  }
 
   const canRestart = (connection) => {
-    return [TERMINAL_STATUS_ENUM.FAILED, TERMINAL_STATUS_ENUM.STOPPED].includes(connection.status);
-  };
+    return [TERMINAL_STATUS_ENUM.FAILED, TERMINAL_STATUS_ENUM.STOPPED].includes(
+      connection.status,
+    )
+  }
 
-  const canSave = (connection) => connection.status === TERMINAL_STATUS_ENUM.RUNNING;
+  const canSave = (connection) =>
+    connection.status === TERMINAL_STATUS_ENUM.RUNNING
 
   return {
     prereserveConnection,
@@ -266,42 +287,42 @@ const useConnection = ({ doRestartConnection, getTerminals, doPreserveConnection
 
     canRestart,
     canSave,
-  };
-};
+  }
+}
 
 // 保存并停止功能
 const usePreserveForm = ({ getTerminals }) => {
   const state = reactive({
     preserveFormVisible: false,
     preserveFormLoading: false,
-  });
-  const preserveFormRef = ref(null);
+  })
+  const preserveFormRef = ref(null)
 
   const onPreserveFormSubmit = () => {
     preserveFormRef.value.validate((form) => {
-      state.preserveFormLoading = true;
+      state.preserveFormLoading = true
       preserveTerminal(form)
         .then(() => {
-          state.preserveFormVisible = false;
-          Message.success('保存并停止连接成功');
-          getTerminals();
+          state.preserveFormVisible = false
+          Message.success('保存并停止连接成功')
+          getTerminals()
         })
         .finally(() => {
-          state.preserveFormLoading = false;
-        });
-    });
-  };
+          state.preserveFormLoading = false
+        })
+    })
+  }
 
   const doPreserveConnection = (connection) => {
-    state.preserveFormVisible = true;
+    state.preserveFormVisible = true
     nextTick(() => {
-      preserveFormRef.value.initForm(connection);
-    });
-  };
+      preserveFormRef.value.initForm(connection)
+    })
+  }
 
   const onPreserveFormClose = () => {
-    preserveFormRef.value.resetForm();
-  };
+    preserveFormRef.value.resetForm()
+  }
 
   return {
     ...toRefs(state),
@@ -309,8 +330,8 @@ const usePreserveForm = ({ getTerminals }) => {
     onPreserveFormSubmit,
     onPreserveFormClose,
     doPreserveConnection,
-  };
-};
+  }
+}
 
 export default {
   name: 'TerminalRemote',
@@ -322,63 +343,67 @@ export default {
     MsgPopover,
   },
   setup(props, { root }) {
-    const terminalNameMap = generateMap(TERMINAL_STATUS_MAP, 'name');
-    const terminalTagMap = generateMap(TERMINAL_STATUS_MAP, 'tagMap');
-    const terminalInfoNameMap = generateMap(TERMINAL_INFO_STATUS_MAP, 'name');
-    const terminalInfoTagMap = generateMap(TERMINAL_INFO_STATUS_MAP, 'tagMap');
+    const terminalNameMap = generateMap(TERMINAL_STATUS_MAP, 'name')
+    const terminalTagMap = generateMap(TERMINAL_STATUS_MAP, 'tagMap')
+    const terminalInfoNameMap = generateMap(TERMINAL_INFO_STATUS_MAP, 'name')
+    const terminalInfoTagMap = generateMap(TERMINAL_INFO_STATUS_MAP, 'tagMap')
 
-    const { terminalList: connectionList, getTerminals } = useGetTerminals();
+    const { terminalList: connectionList, getTerminals } = useGetTerminals()
 
     // 锚点跳转
     const jumpToAnchor = (anchor) => {
-      anchor = anchor || root.$route.hash;
+      anchor = anchor || root.$route.hash
       if (anchor) {
-        moveToAnchor(anchor);
+        moveToAnchor(anchor)
       }
-    };
+    }
 
     // 轮询
     const stopFn = () => {
       return Boolean(
         connectionList.value.find((terminal) => {
           return (
-            [TERMINAL_STATUS_ENUM.RUNNING, TERMINAL_STATUS_ENUM.SAVING].includes(terminal.status) ||
+            [
+              TERMINAL_STATUS_ENUM.RUNNING,
+              TERMINAL_STATUS_ENUM.SAVING,
+            ].includes(terminal.status) ||
             terminal.info.find((pod) =>
-              [TERMINAL_INFO_STATUS_ENUM.PENDING, TERMINAL_INFO_STATUS_ENUM.RUNNING].includes(
-                pod.status
-              )
+              [
+                TERMINAL_INFO_STATUS_ENUM.PENDING,
+                TERMINAL_INFO_STATUS_ENUM.RUNNING,
+              ].includes(pod.status),
             )
-          );
-        })
-      );
-    };
-    let firstPoll = true;
+          )
+        }),
+      )
+    }
+    let firstPoll = true
     const { startPoll, stopPoll } = usePoll({
       pollFn: async () => {
-        await getTerminals();
+        await getTerminals()
         // 第一次轮询结果出来之后进行锚点跳转
         if (firstPoll) {
-          firstPoll = false;
+          firstPoll = false
           setTimeout(() => {
-            jumpToAnchor();
-          }, 500);
+            jumpToAnchor()
+          }, 500)
         }
       },
       stopFn,
-    });
-    startPoll();
+    })
+    startPoll()
     onUnmounted(() => {
-      stopPoll();
-    });
+      stopPoll()
+    })
 
     // 资源规格跳转
     const onJumpIn = () => {
-      setTimeout(jumpToAnchor);
-    };
-    emitter.on('jumpToTerminalRemote', onJumpIn);
+      setTimeout(jumpToAnchor)
+    }
+    emitter.on('jumpToTerminalRemote', onJumpIn)
     onUnmounted(() => {
-      emitter.off('jumpToTerminalRemote', onJumpIn);
-    });
+      emitter.off('jumpToTerminalRemote', onJumpIn)
+    })
 
     const {
       formRef,
@@ -389,7 +414,7 @@ export default {
       formTitle,
       onFormSubmit,
       onFormClose,
-    } = useConnectionForm({ getTerminals: startPoll, jumpToAnchor });
+    } = useConnectionForm({ getTerminals: startPoll, jumpToAnchor })
 
     const {
       preserveFormVisible,
@@ -398,7 +423,7 @@ export default {
       onPreserveFormSubmit,
       onPreserveFormClose,
       doPreserveConnection,
-    } = usePreserveForm({ getTerminals: startPoll });
+    } = usePreserveForm({ getTerminals: startPoll })
 
     const {
       prereserveConnection,
@@ -410,12 +435,12 @@ export default {
       doRestartConnection,
       getTerminals: startPoll,
       doPreserveConnection,
-    });
+    })
 
     // 判断是否具有 statusDetail 信息
     const hasStatusDetail = (detail) => {
-      return detail && detail !== '{}';
-    };
+      return detail && detail !== '{}'
+    }
 
     return {
       TERMINAL_STATUS_ENUM,
@@ -449,9 +474,9 @@ export default {
       onPreserveFormClose,
 
       hasStatusDetail,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

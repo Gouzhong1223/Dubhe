@@ -23,11 +23,11 @@
  * />
  */
 
-import create from './iconfont';
+import create from './iconfont'
 
 const IconFont = create({
   scriptUrl: '//at.alicdn.com/t/font_1756495_hq281r3cld4.js',
   extraIconProps: { class: 'svg-icon' },
-});
+})
 
-export default IconFont;
+export default IconFont

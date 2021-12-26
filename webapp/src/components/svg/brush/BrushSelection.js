@@ -35,7 +35,13 @@ export default {
   },
 
   render() {
-    const { width, height, brush, disableDraggingSelection, selectionStyle } = this;
+    const {
+      width,
+      height,
+      brush,
+      disableDraggingSelection,
+      selectionStyle,
+    } = this
 
     return (
       <rect
@@ -46,10 +52,11 @@ export default {
         className="db-brush-selection"
         style={{
           ...selectionStyle,
-          pointerEvents: brush.isBrushing || brush.activeHandle ? 'none' : 'all',
+          pointerEvents:
+            brush.isBrushing || brush.activeHandle ? 'none' : 'all',
           cursor: disableDraggingSelection ? null : 'move',
         }}
       />
-    );
+    )
   },
-};
+}

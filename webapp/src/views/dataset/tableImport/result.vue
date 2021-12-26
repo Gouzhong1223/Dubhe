@@ -15,10 +15,10 @@
   </div>
 </template>
 <script>
-import { reactive, watch, onMounted, computed } from '@vue/composition-api';
-import cx from 'classnames';
-import { detail } from '@/api/preparation/dataset';
-import { isStatus } from '@/views/dataset/util';
+import { reactive, watch, onMounted, computed } from '@vue/composition-api'
+import cx from 'classnames'
+import { detail } from '@/api/preparation/dataset'
+import { isStatus } from '@/views/dataset/util'
 
 export default {
   name: 'ImportTableResult',
@@ -27,52 +27,52 @@ export default {
     datasetId: [String, Number],
   },
   setup(props, ctx) {
-    const { datasetId } = props;
-    const { $router } = ctx.root;
+    const { datasetId } = props
+    const { $router } = ctx.root
 
     const state = reactive({
       datasetInfo: {},
       loading: false,
-    });
+    })
 
     const backToList = () => {
-      $router.push({ path: '/data/datasets' });
-    };
+      $router.push({ path: '/data/datasets' })
+    }
 
     const queryDatasetInfo = async () => {
-      const datasetInfo = await detail(datasetId);
-      Object.assign(state, { datasetInfo });
-    };
+      const datasetInfo = await detail(datasetId)
+      Object.assign(state, { datasetInfo })
+    }
 
     const klass = computed(() =>
       cx('success', {
         'el-icon-time': state.loading === true,
         'el-icon-el-icon-circle-check': state.loading === false,
-      })
-    );
+      }),
+    )
 
     onMounted(() => {
-      Object.assign(state, { loading: true });
-      queryDatasetInfo();
-    });
+      Object.assign(state, { loading: true })
+      queryDatasetInfo()
+    })
 
     watch(
       () => state.datasetInfo,
       (next) => {
         if (isStatus(next, 'IMPORTING')) {
-          setTimeout(queryDatasetInfo, 3000);
+          setTimeout(queryDatasetInfo, 3000)
         } else {
-          Object.assign(state, { loading: false });
-          ctx.emit('finish', next);
+          Object.assign(state, { loading: false })
+          ctx.emit('finish', next)
         }
-      }
-    );
+      },
+    )
 
     return {
       backToList,
       klass,
       state,
-    };
+    }
   },
-};
+}
 </script>

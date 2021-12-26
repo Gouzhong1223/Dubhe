@@ -15,33 +15,33 @@
  */
 
 // tooltip 容器
-import { ref, reactive } from '@vue/composition-api';
+import { ref, reactive } from '@vue/composition-api'
 
 const TooltipContainer = {
   setup() {
-    const containerRef = ref(null);
+    const containerRef = ref(null)
 
     const state = reactive({
       visible: false,
       position: {},
       tooltipData: null,
-    });
+    })
 
     return {
       state,
       containerRef,
-    };
+    }
   },
   // this is ugly~
   render(h) {
     const slotChildren = h(
       'div',
       { style: { position: 'relative' }, ref: 'containerRef' },
-      this.$scopedSlots.default({ data: this.state })
-    );
+      this.$scopedSlots.default({ data: this.state }),
+    )
 
-    return slotChildren;
+    return slotChildren
   },
-};
+}
 
-export default TooltipContainer;
+export default TooltipContainer

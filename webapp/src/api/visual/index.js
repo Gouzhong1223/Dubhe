@@ -14,64 +14,64 @@
  * =============================================================
  */
 // eslint-disable-next-line import/no-cycle
-import request, { useGet } from '@/utils/request';
+import request, { useGet } from '@/utils/request'
 
-const baseURL = process.env.VUE_APP_BASE_API;
+const baseURL = process.env.VUE_APP_BASE_API
 
 export function initVisual(params) {
   return request({
     url: '/visual/api/init',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getCategory(params) {
-  return useGet('/visual/api/getCategory', params);
+  return useGet('/visual/api/getCategory', params)
 }
 
 export function getScalar(params) {
-  return useGet('/visual/api/scalar', params);
+  return useGet('/visual/api/scalar', params)
 }
 
 export function getHistogram(params) {
-  return useGet('/visual/api/histogram', params);
+  return useGet('/visual/api/histogram', params)
 }
 
 export function getGraph(params) {
-  return useGet('/visual/api/graph', params);
+  return useGet('/visual/api/graph', params)
 }
 
 export function getDistribution(params) {
-  return useGet('/visual/api/distribution', params);
+  return useGet('/visual/api/distribution', params)
 }
 
 // 没用到
 export function getEmbedding(params) {
-  return useGet('/visual/api/getEmbedding', params);
+  return useGet('/visual/api/getEmbedding', params)
 }
 
 // 没用到
 export function getText(params) {
-  return useGet('/visual/api/text', params);
+  return useGet('/visual/api/text', params)
 }
 
 // 没用到
 export function getAudio(params) {
-  return useGet('/visual/api/audio', params);
+  return useGet('/visual/api/audio', params)
 }
 
 export function getAudioRaw(params) {
-  return useGet('/visual/api/audio_raw', params);
+  return useGet('/visual/api/audio_raw', params)
 }
 
 // 没用到
 export function getImage(params) {
-  return useGet('/visual/api/image', params);
+  return useGet('/visual/api/image', params)
 }
 
 export function getImageRaw(params) {
-  return useGet('/visual/api/image_raw', params);
+  return useGet('/visual/api/image_raw', params)
 }
 
 export function getRoc(params) {
@@ -80,7 +80,7 @@ export function getRoc(params) {
     url: '/api/getRoc',
     method: 'get',
     params,
-  });
+  })
 }
 export function getHyperparm(params) {
   return request({
@@ -88,7 +88,7 @@ export function getHyperparm(params) {
     url: '/api/hyperparm',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getCustom(params) {
@@ -97,7 +97,7 @@ export function getCustom(params) {
     url: '/api/getCustom',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getProjector(params) {
@@ -106,7 +106,7 @@ export function getProjector(params) {
     url: '/api/projector',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getProjectorData(params) {
@@ -115,7 +115,7 @@ export function getProjectorData(params) {
     url: '/api/projector_data',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getException(params) {
@@ -124,7 +124,7 @@ export function getException(params) {
     url: '/api/exception',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getExceptionData(params) {
@@ -133,7 +133,7 @@ export function getExceptionData(params) {
     url: '/api/exception_data',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getExceptionHist(params) {
@@ -142,7 +142,7 @@ export function getExceptionHist(params) {
     url: '/api/exception_hist',
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getExceptionBox(params) {
@@ -151,7 +151,7 @@ export function getExceptionBox(params) {
     url: '/api/exception_box',
     method: 'get',
     params,
-  });
+  })
 }
 
 export default {
@@ -176,4 +176,4 @@ export default {
   getAudio,
   getText,
   getEmbedding,
-};
+}

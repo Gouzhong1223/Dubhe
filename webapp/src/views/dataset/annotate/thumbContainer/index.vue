@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="thumb-wrapper">
@@ -37,7 +31,11 @@
         :popperAttrs="popperAttrs"
         klass="annotate-search-box"
       >
-        <el-button slot="trigger" type="text" class="mx-10" style="margin-top: -4px;"
+        <el-button
+          slot="trigger"
+          type="text"
+          class="mx-10"
+          style="margin-top: -4px;"
           >筛选<i class="el-icon-arrow-down el-icon--right"
         /></el-button>
       </SearchBox>
@@ -99,16 +97,20 @@
 </template>
 
 <script>
-import { reactive, ref, watch } from '@vue/composition-api';
-import { Message } from 'element-ui';
-import { isEqual } from 'lodash';
+import { reactive, ref, watch } from '@vue/composition-api'
+import { Message } from 'element-ui'
+import { isEqual } from 'lodash'
 
-import UploadForm from '@/components/UploadForm';
-import SearchBox from '@/components/SearchBox';
-import { getFileFromMinIO, withDimensionFile, fileCodeMap } from '@/views/dataset/util';
-import { submit } from '@/api/preparation/datafile';
-import { detectFileList, queryFileOffset } from '@/api/preparation/dataset';
-import List from './list';
+import UploadForm from '@/components/UploadForm'
+import SearchBox from '@/components/SearchBox'
+import {
+  getFileFromMinIO,
+  withDimensionFile,
+  fileCodeMap,
+} from '@/views/dataset/util'
+import { submit } from '@/api/preparation/datafile'
+import { detectFileList, queryFileOffset } from '@/api/preparation/dataset'
+import List from './list'
 
 export default {
   name: 'ThumbContainer',
@@ -125,13 +127,13 @@ export default {
     isTrack: Boolean,
   },
   setup(props, ctx) {
-    const { $route } = ctx.root;
+    const { $route } = ctx.root
 
-    const uploaderRef = ref(null);
-    const listRef = ref(null);
-    const searchBoxRef = ref(null);
-    const { updateList, state, updateState, isTrack } = props;
-    const { datasetId } = state;
+    const uploaderRef = ref(null)
+    const listRef = ref(null)
+    const searchBoxRef = ref(null)
+    const { updateList, state, updateState, isTrack } = props
+    const { datasetId } = state
     const detectOptions = [
       { label: '不限', value: '' },
       { label: '未标注', value: 101 },
@@ -139,8 +141,11 @@ export default {
       { label: '自动标注完成', value: 103 },
       { label: '手动标注完成', value: 104 },
       { label: '未识别', value: 105 },
-    ];
-    const trackOptions = detectOptions.concat({ label: '目标跟踪完成', value: 201 });
+    ]
+    const trackOptions = detectOptions.concat({
+      label: '目标跟踪完成',
+      value: 201,
+    })
     const rawFormItems = [
       {
         label: '标注状态:',
@@ -159,11 +164,11 @@ export default {
         },
         options: [],
       },
-    ];
+    ]
 
     const popperAttrs = {
       placement: 'bottom-start',
-    };
+    }
 
     const thumbState = reactive({
       type: props.state.fileFilterType.value, // 文件状态筛选条件
@@ -172,121 +177,130 @@ export default {
       gotoNumber: 1,
       formItems: rawFormItems,
       filterUnfinished: props.state.filterUnfinished,
-    });
+    })
 
     // 重置后的选项值
     const initialValue = {
       annotateStatus: [''],
       labelId: [],
-    };
+    }
 
     const handleFilter = (form) => {
       // 筛选框和快速查看无标注的状态同步
       thumbState.filterUnfinished = isEqual(
         form.annotateStatus.sort(),
-        [fileCodeMap.UNANNOTATED, fileCodeMap.UNRECOGNIZED].sort()
-      );
+        [fileCodeMap.UNANNOTATED, fileCodeMap.UNRECOGNIZED].sort(),
+      )
       Object.assign(thumbState, {
         type: form.annotateStatus,
         labelId: form.labelId,
         gotoNumber: 1,
-      });
+      })
       updateState({
         annotations: [],
         fileFilterType: form.annotateStatus,
         filterLabelId: form.labelId,
-      });
+      })
       // 重新请求文件
-      updateList({ type: form.annotateStatus, labelId: form.labelId, offset: 0 });
+      updateList({
+        type: form.annotateStatus,
+        labelId: form.labelId,
+        offset: 0,
+      })
       // 获取滚动列表容器
-      const listWrapper = listRef.value.$refs?.listWrapper;
+      const listWrapper = listRef.value.$refs?.listWrapper
       listWrapper.scrollTo({
         top: 0,
-      });
-    };
+      })
+    }
 
     // 快速查看无标注
     const handleStatusChange = (val) => {
       searchBoxRef.value.changeOption(
         'annotateStatus',
-        val ? [fileCodeMap.UNANNOTATED, fileCodeMap.UNRECOGNIZED] : ['']
-      );
-      searchBoxRef.value.handleOk();
+        val ? [fileCodeMap.UNANNOTATED, fileCodeMap.UNRECOGNIZED] : [''],
+      )
+      searchBoxRef.value.handleOk()
       // 更新是否查看无标注文件
-      updateState({ filterUnfinished: val });
-    };
+      updateState({ filterUnfinished: val })
+    }
 
     const handleClose = () => {
-      thumbState.showDialog = false;
-    };
+      thumbState.showDialog = false
+    }
 
     const uploadSuccess = async (res) => {
-      const files = getFileFromMinIO(res);
+      const files = getFileFromMinIO(res)
       // 提交业务上传
       submit(datasetId.value, files).then(() => {
-        Message.success('上传成功');
-        updateList({ type: thumbState.type });
-      });
-    };
+        Message.success('上传成功')
+        updateList({ type: thumbState.type })
+      })
+    }
 
     const uploadError = (err) => {
-      Message.error('上传失败', err);
-      console.error(err.message || err);
-    };
+      Message.error('上传失败', err)
+      console.error(err.message || err)
+    }
 
     const handleUpload = () => {
-      thumbState.showDialog = true;
-    };
+      thumbState.showDialog = true
+    }
 
     const uploadParams = {
       datasetId: datasetId.value,
       objectPath: `dataset/${datasetId.value}/origin`, // 对象存储路径
-    };
+    }
 
     const handleKeyup = async ({ target, keyCode }) => {
-      let { value } = target;
+      let { value } = target
       if (keyCode === 13) {
         if (parseInt(target.value, 10) < parseInt(target.min, 10)) {
-          thumbState.gotoNumber = target.min;
-          value = target.min;
+          thumbState.gotoNumber = target.min
+          value = target.min
         }
         if (parseInt(target.value, 10) > parseInt(target.max, 10)) {
-          thumbState.gotoNumber = target.max;
-          value = target.max;
+          thumbState.gotoNumber = target.max
+          value = target.max
         }
 
         // 获取图片id，跳转对应图片详情页
         const res = await detectFileList(datasetId.value, {
           offset: value - 1,
           limit: 1,
-        });
-        const endStrReg = /(\/file\/)(\d+)$/;
+        })
+        const endStrReg = /(\/file\/)(\d+)$/
         if (res.result.length > 0) {
           if (state.currentImgId.value === res.result[0].id) {
-            return;
+            return
           }
-          const nextPath = $route.path.replace(endStrReg, `$1${res.result[0].id}`);
-          window.location.replace(nextPath);
+          const nextPath = $route.path.replace(
+            endStrReg,
+            `$1${res.result[0].id}`,
+          )
+          window.location.replace(nextPath)
         }
       }
-    };
+    }
 
     watch(
       () => state.labels.value,
       (next) => {
         // 用于筛选功能
-        const labelOptionsIndex = thumbState.formItems.findIndex((d) => d.prop === 'labelId');
+        const labelOptionsIndex = thumbState.formItems.findIndex(
+          (d) => d.prop === 'labelId',
+        )
         thumbState.formItems[labelOptionsIndex].options = next.map((item) => {
           return {
             label: item.name,
             value: item.id,
-          };
-        });
+          }
+        })
       },
       {
         immediate: true,
-      }
-    );
+      },
+    )
 
     watch(
       () => state.currentImgId.value,
@@ -295,24 +309,28 @@ export default {
         const query = {
           type: thumbState.type,
           labelId: thumbState.labelId,
-        };
-        if (!next) return;
-        const currentImgIndex = await queryFileOffset(datasetId.value, next, query);
-        thumbState.gotoNumber = currentImgIndex + 1;
+        }
+        if (!next) return
+        const currentImgIndex = await queryFileOffset(
+          datasetId.value,
+          next,
+          query,
+        )
+        thumbState.gotoNumber = currentImgIndex + 1
       },
       {
         immediate: true,
-      }
-    );
+      },
+    )
 
     watch(
       () => state.filterUnfinished.value,
       (next) => {
         Object.assign(thumbState, {
           filterUnfinished: next,
-        });
-      }
-    );
+        })
+      },
+    )
 
     return {
       listRef,
@@ -330,9 +348,9 @@ export default {
       handleFilter,
       popperAttrs,
       handleStatusChange,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss">
 @import '~@/assets/styles/variables.scss';

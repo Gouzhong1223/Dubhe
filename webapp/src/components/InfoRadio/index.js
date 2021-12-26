@@ -14,6 +14,6 @@
  * =============================================================
  */
 
-import InfoRadio from './info-radio';
+import InfoRadio from './info-radio'
 
-export default InfoRadio;
+export default InfoRadio

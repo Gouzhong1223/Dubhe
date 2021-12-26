@@ -14,6 +14,6 @@
  * =============================================================
  */
 
-import Drag from './drag';
+import Drag from './drag'
 
-export default Drag;
+export default Drag

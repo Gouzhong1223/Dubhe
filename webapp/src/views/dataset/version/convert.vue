@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-form ref="form" :model="state.model" :rules="rules" label-width="100px">
@@ -36,11 +30,11 @@
 </template>
 
 <script>
-import { pick } from 'lodash';
+import { pick } from 'lodash'
 
-import { reactive, ref, watch } from '@vue/composition-api';
-import { validateName } from '@/utils/validate';
-import { convertPreset } from '@/api/preparation/dataset';
+import { reactive, ref, watch } from '@vue/composition-api'
+import { validateName } from '@/utils/validate'
+import { convertPreset } from '@/api/preparation/dataset'
 
 export default {
   name: 'Convert',
@@ -51,39 +45,55 @@ export default {
     },
   },
   setup(props) {
-    const form = ref(null);
+    const form = ref(null)
     const rules = {
       name: [
-        { required: true, message: '请输入预置数据集名称', trigger: ['change', 'blur'] },
+        {
+          required: true,
+          message: '请输入预置数据集名称',
+          trigger: ['change', 'blur'],
+        },
         { validator: validateName, trigger: ['blur'] },
       ],
-      remark: [{ required: false, message: '请输入数据集描述信息', trigger: 'blur' }],
-    };
+      remark: [
+        { required: false, message: '请输入数据集描述信息', trigger: 'blur' },
+      ],
+    }
 
-    const defaultModel = pick(props.row, ['datasetId', 'name', 'versionName', 'versionNote']);
+    const defaultModel = pick(props.row, [
+      'datasetId',
+      'name',
+      'versionName',
+      'versionNote',
+    ])
 
     const state = reactive({
       model: { ...defaultModel },
-    });
+    })
 
     const doConvert = () => {
-      return convertPreset(form.value.model);
-    };
+      return convertPreset(form.value.model)
+    }
 
     const resetModel = () => {
       Object.assign(state, {
         model: { ...defaultModel },
-      });
-    };
+      })
+    }
 
     watch(
       () => props.row,
       (next) => {
         Object.assign(state, {
-          model: pick(next, ['datasetId', 'name', 'versionName', 'versionNote']),
-        });
-      }
-    );
+          model: pick(next, [
+            'datasetId',
+            'name',
+            'versionName',
+            'versionNote',
+          ]),
+        })
+      },
+    )
 
     return {
       rules,
@@ -91,7 +101,7 @@ export default {
       form,
       doConvert,
       resetModel,
-    };
+    }
   },
-};
+}
 </script>

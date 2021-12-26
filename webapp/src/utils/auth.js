@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-import Cookies from 'js-cookie';
-import Config from '@/settings';
+import Cookies from 'js-cookie'
+import Config from '@/settings'
 
-const { TokenKey } = Config;
+const { TokenKey } = Config
 
 export function getToken() {
-  return Cookies.get(TokenKey);
+  return Cookies.get(TokenKey)
 }
 
 export function setToken(token, rememberMe) {
   if (rememberMe) {
-    return Cookies.set(TokenKey, token, { expires: Config.tokenCookieExpires });
+    return Cookies.set(TokenKey, token, { expires: Config.tokenCookieExpires })
   }
-  return Cookies.set(TokenKey, token);
+  return Cookies.set(TokenKey, token)
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey);
+  return Cookies.remove(TokenKey)
 }

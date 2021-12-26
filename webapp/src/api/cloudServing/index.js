@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(id) {
@@ -46,7 +46,7 @@ export function del(id) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services`,
     method: 'delete',
     data: { id },
-  });
+  })
 }
 
 export function detail(id) {
@@ -54,7 +54,7 @@ export function detail(id) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/detail`,
     method: 'get',
     params: { id },
-  });
+  })
 }
 
 export function start(id) {
@@ -62,7 +62,7 @@ export function start(id) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/start`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
 export function stop(id) {
@@ -70,7 +70,7 @@ export function stop(id) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/stop`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
 export function getPredictParam(id) {
@@ -78,28 +78,28 @@ export function getPredictParam(id) {
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/predictParam`,
     method: 'get',
     params: { id },
-  });
+  })
 }
 
 export function getMetrics(id) {
   return request({
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/metrics/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function getServingPods(configId) {
   return request({
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/servingConfig/pod/${configId}`,
     method: 'get',
-  });
+  })
 }
 
 export function getRollbackList(servingId) {
   return request({
     url: `/${API_MODULE_NAME.CLOUD_SERVING}/services/rollback/${servingId}`,
     method: 'get',
-  });
+  })
 }
 
 export function predict(data, params) {
@@ -109,7 +109,7 @@ export function predict(data, params) {
     headers: { 'Content-Type': 'multipart/form-data' },
     params,
     data,
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

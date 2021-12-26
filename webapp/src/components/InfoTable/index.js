@@ -14,6 +14,6 @@
  * =============================================================
  */
 
-import InfoTable from './info-table';
+import InfoTable from './info-table'
 
-export default InfoTable;
+export default InfoTable

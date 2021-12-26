@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div>
@@ -46,7 +40,10 @@
               :initialValue="initialValue"
               :popperAttrs="popperAttrs"
             >
-              <el-button slot="trigger" type="text" style=" margin-bottom: 14px; margin-left: 30px;"
+              <el-button
+                slot="trigger"
+                type="text"
+                style=" margin-bottom: 14px; margin-left: 30px;"
                 >筛选<i class="el-icon-arrow-down el-icon--right"
               /></el-button>
             </SearchBox>
@@ -60,7 +57,11 @@
                   style="width: 60%;"
                   @keyup.enter.native="crud.toQuery"
                 >
-                  <i slot="suffix" class="cp el-icon-search el-input__icon" @click="crud.toQuery" />
+                  <i
+                    slot="suffix"
+                    class="cp el-icon-search el-input__icon"
+                    @click="crud.toQuery"
+                  />
                 </el-input>
               </div>
               <div class="row-right">
@@ -78,10 +79,19 @@
                     <i :class="refreshKlass"></i>
                   </el-button>
                 </el-tooltip>
-                <el-button :disabled="disableImport" icon="el-icon-plus" @click="importFile">
+                <el-button
+                  :disabled="disableImport"
+                  icon="el-icon-plus"
+                  @click="importFile"
+                >
                   导入文件
                 </el-button>
-                <el-button icon="el-icon-right" class="ml-40" type="primary" @click="goDetail">
+                <el-button
+                  icon="el-icon-right"
+                  class="ml-40"
+                  type="primary"
+                  @click="goDetail"
+                >
                   去标注
                 </el-button>
               </div>
@@ -91,7 +101,9 @@
             <div class="flex flex-between">
               <div>已选 {{ crud.selections.length }} 项</div>
               <div>
-                <el-button type="text" @click="cancelSelection">取消选择</el-button>
+                <el-button type="text" @click="cancelSelection"
+                  >取消选择</el-button
+                >
                 <el-button
                   class="danger"
                   type="text"
@@ -119,9 +131,17 @@
               align="left"
               min-width="50%"
             />
-            <el-table-column prop="status" label="标注状态" align="left" min-width="10%">
+            <el-table-column
+              prop="status"
+              label="标注状态"
+              align="left"
+              min-width="10%"
+            >
               <template slot-scope="scope">
-                <el-tag :style="getStatusStyle(scope.row)" :color="getStatus(scope.row).bgColor">
+                <el-tag
+                  :style="getStatusStyle(scope.row)"
+                  :color="getStatus(scope.row).bgColor"
+                >
                   {{ getStatus(scope.row).name }}
                 </el-tag>
               </template>
@@ -202,19 +222,20 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
-import { isNil, pick } from 'lodash';
-import cx from 'classnames';
+import { Message } from 'element-ui'
+import { isNil, pick } from 'lodash'
+import cx from 'classnames'
 
-import { colorByLuminance, stripeHtmlTag, remove } from '@/utils';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import { colorByLuminance, stripeHtmlTag, remove } from '@/utils'
 import {
   detail,
   createLabel as createLabelApi,
   queryLabels as queryLabelsApi,
   count,
-} from '@/api/preparation/dataset';
-import { del, submit } from '@/api/preparation/datafile';
-import { search } from '@/api/preparation/textData';
+} from '@/api/preparation/dataset'
+import { del, submit } from '@/api/preparation/datafile'
+import { search } from '@/api/preparation/textData'
 import {
   fileCodeMap,
   getFileFromMinIO,
@@ -222,21 +243,20 @@ import {
   dataTypeCodeMap,
   isStatus,
   annotationCodeMap,
-} from '@/views/dataset/util';
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import SideBar from '@/views/dataset/nlp/annotation/sidebar';
-import UploadForm from '@/components/UploadForm';
-import TextInfoModal from '@/views/dataset/components/textInfoModal';
-import InfoAlert from '@/components/InfoAlert';
-import SearchBox from '@/components/SearchBox';
+} from '@/views/dataset/util'
+import SideBar from '@/views/dataset/nlp/annotation/sidebar'
+import UploadForm from '@/components/UploadForm'
+import TextInfoModal from '@/views/dataset/components/textInfoModal'
+import InfoAlert from '@/components/InfoAlert'
+import SearchBox from '@/components/SearchBox'
 
-import Action from './action';
+import Action from './action'
 
 const initialPageInfo = {
   current: null,
   size: 1,
   total: 0,
-};
+}
 
 export default {
   name: 'TextList',
@@ -249,14 +269,14 @@ export default {
     SearchBox,
   },
   cruds() {
-    const id = this.parent.$route.params.datasetId;
+    const id = this.parent.$route.params.datasetId
     const crudObj = CRUD({
       title: '文本分类',
       crudMethod: { del, list: search },
-    });
-    crudObj.params = { datasetId: id, status: fileCodeMap.UNFINISHED };
-    crudObj.page.size = 10;
-    return crudObj;
+    })
+    crudObj.params = { datasetId: id, status: fileCodeMap.UNFINISHED }
+    crudObj.page.size = 10
+    return crudObj
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -345,109 +365,111 @@ export default {
         finished: 0,
       },
       searchTxt: '',
-    };
+    }
   },
   computed: {
     formItems() {
-      return this.lastTabName === 'unfinished' ? this.formItemsUnfinish : this.formItemsFinish;
+      return this.lastTabName === 'unfinished'
+        ? this.formItemsUnfinish
+        : this.formItemsFinish
     },
     uploadParams() {
       return {
         datasetId: this.datasetId,
         objectPath: `dataset/${this.datasetId}/origin`, // 对象存储路径
-      };
+      }
     },
     isNil() {
-      return isNil;
+      return isNil
     },
 
     countInfoTxt() {
       return {
         unfinished: `无标注信息（${this.countInfo.unfinished}）`,
         finished: `有标注信息（${this.countInfo.finished}）`,
-      };
+      }
     },
     isTable() {
-      return this.datasetInfo.dataType === dataTypeCodeMap.TABLE;
+      return this.datasetInfo.dataType === dataTypeCodeMap.TABLE
     },
     // 是否禁用文件导入
     disableImport() {
-      if (this.lastTabName === 'finished') return true;
-      if (this.isTable && isStatus(this.datasetInfo, 'IMPORTING')) return true;
-      return false;
+      if (this.lastTabName === 'finished') return true
+      if (this.isTable && isStatus(this.datasetInfo, 'IMPORTING')) return true
+      return false
     },
     // 是否导入中
     isImporting() {
-      return isStatus(this.datasetInfo, 'IMPORTING');
+      return isStatus(this.datasetInfo, 'IMPORTING')
     },
     refreshKlass() {
       return cx('el-icon-refresh', {
         rotate: this.isImporting,
-      });
+      })
     },
     // 根据类型是否展示标签（文本分词不展示标签）
     showLabel() {
-      return this.datasetInfo.annotateType === annotationCodeMap.TEXTCLASSIFY;
+      return this.datasetInfo.annotateType === annotationCodeMap.TEXTCLASSIFY
     },
     // TODO：目前仅文本分类支持自动标注，后续会增加
     enableAuto() {
-      return this.datasetInfo.annotateType === annotationCodeMap.TEXTCLASSIFY;
+      return this.datasetInfo.annotateType === annotationCodeMap.TEXTCLASSIFY
     },
   },
   watch: {
     // eslint-disable-next-line func-names
     datasetInfo(next) {
       if (isStatus(next, 'IMPORTING')) {
-        setTimeout(this.queryDatasetInfo, 3000);
+        setTimeout(this.queryDatasetInfo, 3000)
       }
     },
   },
   created() {
-    this.datasetId = parseInt(this.$route.params.datasetId, 10);
+    this.datasetId = parseInt(this.$route.params.datasetId, 10)
     // 获取未标注和已标注的数量确定展示tab页
     this.setCountInfo().then(() => {
       if (this.countInfo.unfinished === 0 && this.countInfo.finished !== 0) {
-        this.lastTabName = 'finished';
-        this.crud.params.status = this.crudStatusMap[this.lastTabName];
-        this.crud.toQuery();
+        this.lastTabName = 'finished'
+        this.crud.params.status = this.crudStatusMap[this.lastTabName]
+        this.crud.toQuery()
       }
-    });
+    })
 
     // 获取详情
-    this.queryDatasetInfo().then(this.updateLabels);
+    this.queryDatasetInfo().then(this.updateLabels)
   },
   methods: {
     [CRUD.HOOK.beforeRefresh]() {
-      this.crud.params = { ...this.crud.params, content: this.searchTxt };
+      this.crud.params = { ...this.crud.params, content: this.searchTxt }
     },
     [CRUD.HOOK.afterRefresh]() {
-      const { data } = this.crud;
+      const { data } = this.crud
       this.dataList = data.map((d) => ({
         ...d,
         rawContent: d.content,
         content: stripeHtmlTag(d.content),
-      }));
-      this.setCountInfo();
+      }))
+      this.setCountInfo()
     },
     handleFilter(form) {
-      Object.assign(this.crud.params, form);
-      this.crud.refresh();
+      Object.assign(this.crud.params, form)
+      this.crud.refresh()
     },
     queryDatasetInfo() {
       return detail(this.datasetId).then((res) => {
-        this.datasetInfo = res || {};
-      });
+        this.datasetInfo = res || {}
+      })
     },
     openUploadDialog() {
-      this.uploadDialogVisible = true;
+      this.uploadDialogVisible = true
     },
     handleClose() {
-      this.uploadDialogVisible = false;
+      this.uploadDialogVisible = false
     },
     getStyle(item) {
-      const sLabel = this.labels.find((d) => d.id === item.labelId) || null;
+      const sLabel = this.labels.find((d) => d.id === item.labelId) || null
       // 根据亮度来决定颜色
-      const color = colorByLuminance(sLabel?.color);
+      const color = colorByLuminance(sLabel?.color)
       return {
         color,
         display: 'inline-block',
@@ -455,76 +477,83 @@ export default {
         minWidth: '60px',
         textAlign: 'center',
         border: 'unset',
-      };
+      }
     },
     getStatus(row) {
-      return textStatusMap[row.status] || {};
+      return textStatusMap[row.status] || {}
     },
     getStatusStyle(row) {
-      const status = this.getStatus(row);
+      const status = this.getStatus(row)
       const style = {
         borderColor: status.bgColor,
-      };
-      return style;
+      }
+      return style
     },
     getColor(item) {
-      return this.categoryId2Name[item.labelId]?.color || null;
+      return this.categoryId2Name[item.labelId]?.color || null
     },
     getName(item) {
-      return this.categoryId2Name[item.labelId]?.name || '-';
+      return this.categoryId2Name[item.labelId]?.name || '-'
     },
     importFile() {
       if (this.isTable) {
         // 表格方案
         this.$router.push({
           name: `TableImport`,
-          params: { datasetId: this.datasetId, annotateType: this.datasetInfo.annotateType },
-        });
+          params: {
+            datasetId: this.datasetId,
+            annotateType: this.datasetInfo.annotateType,
+          },
+        })
       } else {
-        this.openUploadDialog();
+        this.openUploadDialog()
       }
     },
     // 查询标签
     async queryLabels(requestParams = {}) {
-      const labels = await queryLabelsApi(this.datasetId, requestParams);
-      const labelOptionsIndex = this.formItemsFinish.findIndex((d) => d.prop === 'labelId');
+      const labels = await queryLabelsApi(this.datasetId, requestParams)
+      const labelOptionsIndex = this.formItemsFinish.findIndex(
+        (d) => d.prop === 'labelId',
+      )
       // 用于筛选功能，区分是否需要展示标签
       if (this.showLabel) {
-        this.formItemsFinish[labelOptionsIndex].options = labels.map((item) => ({
-          label: item.name,
-          value: item.id,
-        }));
+        this.formItemsFinish[labelOptionsIndex].options = labels.map(
+          (item) => ({
+            label: item.name,
+            value: item.id,
+          }),
+        )
       } else {
-        this.formItemsFinish = remove(this.formItemsFinish, labelOptionsIndex);
+        this.formItemsFinish = remove(this.formItemsFinish, labelOptionsIndex)
       }
 
-      return labels || [];
+      return labels || []
     },
 
     handleTabClick(tab) {
-      const tabName = tab.name;
+      const tabName = tab.name
       if (this.lastTabName === tabName) {
-        return;
+        return
       }
       // 切换tab页清除筛选条件
-      this.textStatusFilter = null;
-      this.crud.page.current = 1;
-      this.searchTxt = '';
-      this.crud.params = pick(this.crud.params, ['status', 'datasetId']);
+      this.textStatusFilter = null
+      this.crud.page.current = 1
+      this.searchTxt = ''
+      this.crud.params = pick(this.crud.params, ['status', 'datasetId'])
       this.crud.params = {
         ...this.crud.params,
         labelId: null,
         content: '',
         status: this.crudStatusMap[tabName],
-      };
-      this.lastTabName = tabName;
-      this.crud.refresh();
-      this.checkAll = false;
+      }
+      this.lastTabName = tabName
+      this.crud.refresh()
+      this.checkAll = false
     },
 
     // 更新标签
     async updateLabels() {
-      this.labels = await this.queryLabels();
+      this.labels = await this.queryLabels()
       this.categoryId2Name = this.labels.reduce(
         (acc, item) =>
           Object.assign(acc, {
@@ -533,71 +562,71 @@ export default {
               color: item.color,
             },
           }),
-        {}
-      );
+        {},
+      )
     },
 
     // 新建标签
     createLabel(labelParams = {}) {
       return createLabelApi(this.datasetId, labelParams).then(() => {
-        this.updateLabels();
-        Message.success('标签创建成功');
-      });
+        this.updateLabels()
+        Message.success('标签创建成功')
+      })
     },
 
     async uploadSuccess(res) {
-      const files = getFileFromMinIO(res);
+      const files = getFileFromMinIO(res)
       // 提交业务上传
       if (files.length > 0) {
         submit(this.datasetId, files).then(() => {
           this.$message({
             message: '上传文件成功',
             type: 'success',
-          });
-          this.crud.toQuery();
-          this.setCountInfo();
-        });
+          })
+          this.crud.toQuery()
+          this.setCountInfo()
+        })
       }
     },
     uploadError(err) {
       this.$message({
         message: err.message || '上传文件失败',
         type: 'error',
-      });
+      })
     },
     // 删除文件基类
     deleteFile(datas = []) {
-      this.crud.delAllLoading = true;
-      const ids = datas.map((d) => ({ id: d }));
-      datas = datas.map((d) => d.id);
+      this.crud.delAllLoading = true
+      const ids = datas.map((d) => ({ id: d }))
+      datas = datas.map((d) => d.id)
       const params = {
         fileIds: datas,
         datasetIds: this.datasetId,
-      };
+      }
       if (ids.length) {
         return del(params)
           .then(() => {
             this.$message({
               message: '删除文件成功',
               type: 'success',
-            });
-            this.crud.toQuery();
+            })
+            this.crud.toQuery()
             // 更新统计
-            this.setCountInfo();
+            this.setCountInfo()
           })
           .finally(() => {
-            this.crud.delAllLoading = false;
-          });
+            this.crud.delAllLoading = false
+          })
       }
-      return Promise.reject(new Error('文件不存在'));
+      return Promise.reject(new Error('文件不存在'))
     },
     doDelete(datas = []) {
-      const self = this;
+      const self = this
       this.$confirm(`确认删除选中的${datas.length}个文件?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => self.deleteFile(datas));
+      }).then(() => self.deleteFile(datas))
     },
     // 查看标注
     goDetail() {
@@ -606,55 +635,58 @@ export default {
           ? {
               tab: 'finished',
             }
-          : {};
+          : {}
       this.$router.push({
         name: 'TextAnnotation',
         query,
         params: { current: this.pageInfo.current, datasetId: this.datasetId },
-      });
+      })
     },
     async setCountInfo() {
-      const countInfo = await count(this.$route.params.datasetId, this.crud.params);
-      this.countInfo = countInfo;
+      const countInfo = await count(
+        this.$route.params.datasetId,
+        this.crud.params,
+      )
+      this.countInfo = countInfo
     },
     // 当size 为1 重新生成页码的位置
     sizeOfPage() {
-      return this.crud.page.size * (this.crud.page.current - 1);
+      return this.crud.page.size * (this.crud.page.current - 1)
     },
     reset() {
-      this.pageInfo = initialPageInfo;
+      this.pageInfo = initialPageInfo
     },
     // 显示查看文本详情框
     showDetail(row, index) {
-      this.showTextModal = true;
+      this.showTextModal = true
       this.pageInfo = {
         ...this.crud.page,
         current: this.sizeOfPage() + index + 1,
-      };
+      }
     },
     handleTextModalClose() {
-      this.modalId += 1;
-      this.showTextModal = false;
-      this.reset();
+      this.modalId += 1
+      this.showTextModal = false
+      this.reset()
     },
     toNext() {
       this.pageInfo = {
         ...this.pageInfo,
         current: Math.min(this.pageInfo.current + 1, this.pageInfo.total),
-      };
+      }
     },
     toPrev() {
       this.pageInfo = {
         ...this.pageInfo,
         current: Math.max(this.pageInfo.current - 1, 1),
-      };
+      }
     },
     cancelSelection() {
-      this.$refs.textTable.clearSelection();
-      this.crud.selectionChangeHandler([]);
+      this.$refs.textTable.clearSelection()
+      this.crud.selectionChangeHandler([])
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -16,27 +16,28 @@
 
 export default {
   bind(el, binding) {
-    const { value } = binding;
-    let mouseWheelDown;
-    let mouseWheelUp;
+    const { value } = binding
+    let mouseWheelDown
+    let mouseWheelUp
     if (typeof value === 'function') {
-      mouseWheelDown = value;
+      mouseWheelDown = value
     } else if (typeof value === 'object' && value !== null) {
-      mouseWheelDown = value.down;
-      mouseWheelUp = value.up;
+      mouseWheelDown = value.down
+      mouseWheelUp = value.up
     }
     // eslint-disable-next-line func-names
     el.addEventListener('mousewheel', function(event) {
       const downAvaliable =
         this.scrollHeight === this.clientHeight ||
-        this.scrollHeight - this.scrollTop <= this.clientHeight + 10;
-      const upAvaliable = this.scrollHeight === this.clientHeight || this.scrollTop <= 10;
+        this.scrollHeight - this.scrollTop <= this.clientHeight + 10
+      const upAvaliable =
+        this.scrollHeight === this.clientHeight || this.scrollTop <= 10
       if (downAvaliable && event.deltaY > 0 && mouseWheelDown) {
-        mouseWheelDown();
+        mouseWheelDown()
       }
       if (upAvaliable && event.deltaY < 0 && mouseWheelUp) {
-        mouseWheelUp();
+        mouseWheelUp()
       }
-    });
+    })
   },
-};
+}

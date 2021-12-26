@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div id="measure-container" class="app-container">
@@ -33,9 +27,26 @@
       </cdOperation>
     </div>
     <!--表格渲染-->
-    <el-table ref="table" :data="crud.data" highlight-current-row @sort-change="crud.sortChange">
-      <el-table-column prop="id" label="ID" sortable="custom" width="80px" fixed />
-      <el-table-column prop="name" label="度量名称" min-width="120px" show-overflow-tooltip fixed />
+    <el-table
+      ref="table"
+      :data="crud.data"
+      highlight-current-row
+      @sort-change="crud.sortChange"
+    >
+      <el-table-column
+        prop="id"
+        label="ID"
+        sortable="custom"
+        width="80px"
+        fixed
+      />
+      <el-table-column
+        prop="name"
+        label="度量名称"
+        min-width="120px"
+        show-overflow-tooltip
+        fixed
+      />
       <el-table-column
         prop="description"
         label="度量描述"
@@ -52,12 +63,19 @@
           />
         </template>
         <template slot-scope="scope">
-          <el-tag :type="statusTagMap[scope.row.measureStatus]" effect="plain">{{
-            statusNameMap[scope.row.measureStatus] || '--'
-          }}</el-tag>
+          <el-tag
+            :type="statusTagMap[scope.row.measureStatus]"
+            effect="plain"
+            >{{ statusNameMap[scope.row.measureStatus] || '--' }}</el-tag
+          >
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" sortable="custom" min-width="160px">
+      <el-table-column
+        prop="createTime"
+        label="创建时间"
+        sortable="custom"
+        min-width="160px"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -112,24 +130,30 @@
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { debounce } from 'throttle-debounce';
+import { debounce } from 'throttle-debounce'
 
-import { list, add, edit, del } from '@/api/atlas';
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import rrOperation from '@crud/RR.operation';
-import cdOperation from '@crud/CD.operation';
-import pagination from '@crud/Pagination';
-import BaseModal from '@/components/BaseModal';
-import DropdownHeader from '@/components/DropdownHeader';
-import { Constant, downloadFileAsStream, minioBaseUrl, generateMap, hasPermission } from '@/utils';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import cdOperation from '@crud/CD.operation'
+import pagination from '@crud/Pagination'
+import { list, add, edit, del } from '@/api/atlas'
+import BaseModal from '@/components/BaseModal'
+import DropdownHeader from '@/components/DropdownHeader'
+import {
+  Constant,
+  downloadFileAsStream,
+  minioBaseUrl,
+  generateMap,
+  hasPermission,
+} from '@/utils'
 
-import MeasureForm from './components/measureForm';
-import { MEASURE_STATUS_ENUM, MEASURE_STATUS_MAP } from './util';
+import MeasureForm from './components/measureForm'
+import { MEASURE_STATUS_ENUM, MEASURE_STATUS_MAP } from './util'
 
 const defaultQuery = {
   nameOrId: null,
   measureStatus: null,
-};
+}
 
 export default {
   name: 'Measure',
@@ -155,7 +179,7 @@ export default {
         },
       },
       time: 0,
-    });
+    })
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -167,102 +191,104 @@ export default {
       formLoading: false, // 表单提交状态
 
       keepPoll: true, // 中间状态轮询标识
-    };
+    }
   },
   computed: {
     statusNameMap() {
-      return generateMap(MEASURE_STATUS_MAP, 'name');
+      return generateMap(MEASURE_STATUS_MAP, 'name')
     },
     statusTagMap() {
-      return generateMap(MEASURE_STATUS_MAP, 'tagMap');
+      return generateMap(MEASURE_STATUS_MAP, 'tagMap')
     },
     measureStatusList() {
-      const list = [{ label: '全部', value: null }];
+      const list = [{ label: '全部', value: null }]
       Object.keys(this.statusNameMap).forEach((status) => {
-        list.push({ label: this.statusNameMap[status], value: status });
-      });
-      return list;
+        list.push({ label: this.statusNameMap[status], value: status })
+      })
+      return list
     },
     formTitle() {
-      return `${Constant.FORM_TYPE_MAP[this.formType]}度量`;
+      return `${Constant.FORM_TYPE_MAP[this.formType]}度量`
     },
   },
   created() {
-    this.refetch = debounce(1000, this.crud.refresh);
+    this.refetch = debounce(1000, this.crud.refresh)
   },
   beforeDestroy() {
-    this.keepPoll = false;
+    this.keepPoll = false
   },
   methods: {
     hasPermission,
 
     toAdd() {
-      this.formType = 'add';
-      this.formVisible = true;
-      this.$nextTick(() => this.$refs.measureForm.initForm());
+      this.formType = 'add'
+      this.formVisible = true
+      this.$nextTick(() => this.$refs.measureForm.initForm())
     },
     onResetQuery() {
-      this.localQuery = { ...defaultQuery };
+      this.localQuery = { ...defaultQuery }
     },
     onFormSubmit() {
       this.$refs.measureForm.validate(async (form) => {
-        this.formLoading = true;
-        const func = this.formType === 'add' ? add : edit;
+        this.formLoading = true
+        const func = this.formType === 'add' ? add : edit
         await func(form).finally(() => {
-          this.formLoading = false;
-        });
-        this.formVisible = false;
-        this.crud.refresh();
-      });
+          this.formLoading = false
+        })
+        this.formVisible = false
+        this.crud.refresh()
+      })
     },
     onFormClose() {
-      this.$refs.measureForm.resetForm();
+      this.$refs.measureForm.resetForm()
     },
 
     goVisial(measureName) {
       this.$router.push({
         name: 'AtlasGraphVisual',
         params: { measureName },
-      });
+      })
     },
     doEdit(measure) {
-      this.formType = 'edit';
-      this.formVisible = true;
-      this.$nextTick(() => this.$refs.measureForm.initForm(measure));
+      this.formType = 'edit'
+      this.formVisible = true
+      this.$nextTick(() => this.$refs.measureForm.initForm(measure))
     },
     doDownload(measure) {
-      const { name, url } = measure;
-      downloadFileAsStream(`${minioBaseUrl}/${url}`, `${name}.json`);
+      const { name, url } = measure
+      downloadFileAsStream(`${minioBaseUrl}/${url}`, `${name}.json`)
     },
     doDelete(id) {
       this.$confirm('是否确认删除度量？').then(async () => {
-        await del([id]);
-        this.crud.refresh();
-      });
+        await del([id])
+        this.crud.refresh()
+      })
     },
 
     [CRUD.HOOK.beforeRefresh]() {
-      this.crud.query = { ...this.localQuery };
+      this.crud.query = { ...this.localQuery }
     },
     [CRUD.HOOK.afterRefresh]() {
       if (
         this.keepPoll &&
-        this.crud.data.some((measure) => this.isMeasureMaking(measure.measureStatus))
+        this.crud.data.some((measure) =>
+          this.isMeasureMaking(measure.measureStatus),
+        )
       ) {
-        this.refetch();
+        this.refetch()
       }
     },
 
     filter(column, value) {
-      this.localQuery[column] = value;
-      this.crud.toQuery();
+      this.localQuery[column] = value
+      this.crud.toQuery()
     },
     isMeasureMaking(measureStatus) {
-      return measureStatus === MEASURE_STATUS_ENUM.MAKING;
+      return measureStatus === MEASURE_STATUS_ENUM.MAKING
     },
     isMeasureSuccess(measureStatus) {
-      return measureStatus === MEASURE_STATUS_ENUM.SUCCESS;
+      return measureStatus === MEASURE_STATUS_ENUM.SUCCESS
     },
   },
-};
+}
 </script>

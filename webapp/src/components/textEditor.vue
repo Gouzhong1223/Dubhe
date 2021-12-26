@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div v-loading="loading" class="textEditor" v-on="listeners">
@@ -20,7 +14,7 @@
   </div>
 </template>
 <script>
-import { onMounted } from '@vue/composition-api';
+import { onMounted } from '@vue/composition-api'
 
 export default {
   name: 'TextEditor',
@@ -32,17 +26,17 @@ export default {
     },
   },
   setup(props, ctx) {
-    const { listeners } = ctx;
+    const { listeners } = ctx
 
     onMounted(() => {
-      ctx.emit('mount');
-    });
+      ctx.emit('mount')
+    })
 
     return {
       listeners,
-    };
+    }
   },
-};
+}
 </script>
 <style lang="scss" scoped>
 .textEditor {

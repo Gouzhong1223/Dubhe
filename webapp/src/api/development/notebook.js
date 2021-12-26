@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function del(ids) {
@@ -38,7 +38,7 @@ export function del(ids) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks`,
     method: 'delete',
     data: ids,
-  });
+  })
 }
 
 export function start(params) {
@@ -46,7 +46,7 @@ export function start(params) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/start`,
     method: 'put',
     params,
-  });
+  })
 }
 
 export function stop(params) {
@@ -54,28 +54,28 @@ export function stop(params) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/stop`,
     method: 'put',
     params,
-  });
+  })
 }
 
 export function open(id) {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function getModels() {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/notebook-model`,
     method: 'get',
-  });
+  })
 }
 
 export function myNotebookCount() {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/run-number`,
     method: 'get',
-  });
+  })
 }
 
 export function createNotebook(source, data) {
@@ -83,14 +83,14 @@ export function createNotebook(source, data) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/create/${source}`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function getNotebookAddress(id) {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/${id}/get-address`,
     method: 'get',
-  });
+  })
 }
 
 export function detail(data) {
@@ -98,7 +98,7 @@ export function detail(data) {
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/detail`,
     method: 'post',
     data,
-  });
+  })
 }
 
 // 一键停止所有 Notebook
@@ -106,7 +106,7 @@ export function batchStopNotebook() {
   return request({
     url: `/${API_MODULE_NAME.NOTEBOOK}/notebooks/batchStop`,
     method: 'put',
-  });
+  })
 }
 
-export default { list, add, del, start, stop, open, detail };
+export default { list, add, del, start, stop, open, detail }

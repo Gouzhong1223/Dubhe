@@ -1,10 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under the Apache License,
-Version 2.0 (the "License"); * you may not use this file except in compliance with the License. *
-You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless
-required by applicable law or agreed to in writing, software * distributed under the License is
-distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-implied. * See the License for the specific language governing permissions and * limitations under
-the License. * ============================================================= */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <BaseModal
@@ -17,18 +19,32 @@ the License. * ============================================================= */
     @change="handleClose"
     @ok="handleOk"
   >
-    <el-form ref="formRef" :model="state.form" :rules="rules" label-width="100px">
+    <el-form
+      ref="formRef"
+      :model="state.form"
+      :rules="rules"
+      label-width="100px"
+    >
       <el-alert class="info-alert" type="warning" show-icon :closable="false">
         <div slot="title" class="slot-content">
           <div>数据集创建完毕后，需要使用脚本工具上传本地已有数据集</div>
-          <a :href="`${VUE_APP_DOCS_URL}module/dataset/util`" target="_blank">使用文档</a>
+          <a :href="`${VUE_APP_DOCS_URL}module/dataset/util`" target="_blank"
+            >使用文档</a
+          >
         </div>
       </el-alert>
       <el-form-item label="数据集名称" prop="name">
-        <el-input v-model="state.form.name" placeholder="数据集名称不能超过50字" maxlength="50" />
+        <el-input
+          v-model="state.form.name"
+          placeholder="数据集名称不能超过50字"
+          maxlength="50"
+        />
       </el-form-item>
       <el-form-item label="数据集来源" prop="sourceType">
-        <InfoRadio v-model="state.form.sourceType" :dataSource="sourceTypeList" />
+        <InfoRadio
+          v-model="state.form.sourceType"
+          :dataSource="sourceTypeList"
+        />
         <div>
           标准数据集是指凌波智能平台预置支持的部分数据集类型，
           <a
@@ -81,15 +97,15 @@ the License. * ============================================================= */
 </template>
 
 <script>
-import { reactive, watch, ref, computed } from '@vue/composition-api';
-import { Message } from 'element-ui';
-import { omit } from 'lodash';
+import { reactive, watch, ref, computed } from '@vue/composition-api'
+import { Message } from 'element-ui'
+import { omit } from 'lodash'
 
-import BaseModal from '@/components/BaseModal';
-import InfoRadio from '@/components/InfoRadio';
-import InfoSelect from '@/components/InfoSelect';
+import BaseModal from '@/components/BaseModal'
+import InfoRadio from '@/components/InfoRadio'
+import InfoSelect from '@/components/InfoSelect'
 
-import { validateName } from '@/utils/validate';
+import { validateName } from '@/utils/validate'
 import {
   annotationBy,
   dataTypeMap,
@@ -97,11 +113,11 @@ import {
   annotationCodeMap,
   annotationMap,
   transformMapToList,
-} from '@/views/dataset/util';
+} from '@/views/dataset/util'
 
-import { add } from '@/api/preparation/dataset';
+import { add } from '@/api/preparation/dataset'
 
-const annotationByDataType = annotationBy('dataType');
+const annotationByDataType = annotationBy('dataType')
 
 export default {
   name: 'ImportDataset',
@@ -123,7 +139,7 @@ export default {
     },
   },
   setup(props) {
-    const { toggleVisible, onResetFresh } = props;
+    const { toggleVisible, onResetFresh } = props
     const initialForm = {
       name: '',
       dataType: 0,
@@ -131,9 +147,9 @@ export default {
       remark: '',
       loading: false,
       sourceType: 0,
-    };
+    }
 
-    const formRef = ref(null);
+    const formRef = ref(null)
 
     // 标准数据集白名单：图像分类、目标检测、语义分割
     // 文本分类
@@ -144,7 +160,7 @@ export default {
       annotationCodeMap.SEGMENTATION,
       annotationCodeMap.TEXTCLASSIFY,
       annotationCodeMap.AUDIOCLASSIFY,
-    ];
+    ]
 
     const rules = {
       name: [
@@ -155,8 +171,12 @@ export default {
         },
         { validator: validateName, trigger: ['change', 'blur'] },
       ],
-      sourceType: [{ required: true, message: '请选择数据集来源', trigger: 'change' }],
-      dataType: [{ required: true, message: '请选择数据类型', trigger: 'change' }],
+      sourceType: [
+        { required: true, message: '请选择数据集来源', trigger: 'change' },
+      ],
+      dataType: [
+        { required: true, message: '请选择数据类型', trigger: 'change' },
+      ],
       annotateType: [
         {
           required: true,
@@ -164,14 +184,14 @@ export default {
           trigger: ['change', 'blur'],
         },
       ],
-    };
+    }
 
     const state = reactive({
       form: initialForm,
       formKey: 1,
       visible: props.visible,
       loading: false, // 数据集创建进行中
-    });
+    })
 
     const sourceTypeList = [
       {
@@ -182,20 +202,24 @@ export default {
         label: '标准数据集',
         value: 1,
       },
-    ];
+    ]
 
     // 是否为自定义来源
-    const sourceByCustom = computed(() => state.form.sourceType === 0);
+    const sourceByCustom = computed(() => state.form.sourceType === 0)
 
     const dataTypeList = computed(() => {
       const transformed = transformMapToList(
-        omit(dataTypeMap, [dataTypeCodeMap.TABLE, dataTypeCodeMap.CUSTOM, dataTypeCodeMap.VIDEO])
-      );
+        omit(dataTypeMap, [
+          dataTypeCodeMap.TABLE,
+          dataTypeCodeMap.CUSTOM,
+          dataTypeCodeMap.VIDEO,
+        ]),
+      )
       return transformed.map((d) => ({
         ...d,
         value: Number(d.value),
-      }));
-    });
+      }))
+    })
 
     const annotationList = computed(() =>
       annotationByDataType(state.form.dataType)
@@ -203,16 +227,16 @@ export default {
         .map((d) => ({
           value: d.code,
           label: d.name,
-        }))
-    );
+        })),
+    )
 
     const allAnnotationList = computed(() => {
       return Object.keys(annotationMap).map((d) => ({
         label: annotationMap[d].name,
         value: annotationMap[d].code,
         code: annotationMap[d].code,
-      }));
-    });
+      }))
+    })
 
     const setForm = (params) =>
       Object.assign(state, {
@@ -220,10 +244,10 @@ export default {
           ...state.form,
           ...params,
         },
-      });
+      })
 
     // 更新加载状态
-    const setLoading = (loading) => Object.assign(state, { loading });
+    const setLoading = (loading) => Object.assign(state, { loading })
 
     // 重置状态（reactive mutate 原始对象）
     const resetForm = () =>
@@ -235,23 +259,23 @@ export default {
           annotateType: 2,
           remark: '',
         },
-      });
+      })
 
     const handleDataTypeChange = () => {
       // 默认定位到第一个标注场景
       if (annotationList.value.length) {
         setForm({
           annotateType: annotationList.value[0].value,
-        });
+        })
       }
-    };
+    }
 
     const selectAnnotationType = (item) => {
-      if (item.code === Number(state.form.annotateType)) return;
+      if (item.code === Number(state.form.annotateType)) return
       setForm({
         annotateType: item.code,
-      });
-    };
+      })
+    }
 
     const handleClose = () => {
       Object.assign(state, {
@@ -265,21 +289,21 @@ export default {
           remark: '',
         },
         loading: false,
-      });
-      toggleVisible(false);
-      onResetFresh();
-    };
+      })
+      toggleVisible(false)
+      onResetFresh()
+    }
 
     const handleOk = () => {
       formRef.value.validate((valid) => {
-        if (!valid) return;
+        if (!valid) return
         const params = {
           type: 0,
           import: true,
           name: state.form.name,
           remark: state.form.remark,
           annotateType: state.form.annotateType,
-        };
+        }
         // 区分自定义数据集、标注数据集
         state.form.sourceType === 0
           ? Object.assign(params, {
@@ -287,36 +311,38 @@ export default {
             })
           : Object.assign(params, {
               dataType: state.form.dataType,
-            });
-        setLoading(true);
+            })
+        setLoading(true)
         add(params)
           .then(() => {
-            Message.success('数据集创建成功，请下载数据集脚本工具进行下一步操作');
-            resetForm();
-            toggleVisible(false);
+            Message.success(
+              '数据集创建成功，请下载数据集脚本工具进行下一步操作',
+            )
+            resetForm()
+            toggleVisible(false)
           })
           .finally(() => {
-            setLoading(false);
-          });
-      });
-    };
+            setLoading(false)
+          })
+      })
+    }
 
     const transformOptions = (list) => {
       return list.map((d) => ({
         ...d,
         label: d.label,
         value: Number(d.value),
-      }));
-    };
+      }))
+    }
 
     watch(
       () => props.visible,
       (next) => {
         Object.assign(state, {
           visible: next,
-        });
-      }
-    );
+        })
+      },
+    )
 
     return {
       VUE_APP_DOCS_URL: process.env.VUE_APP_DOCS_URL,
@@ -333,7 +359,7 @@ export default {
       selectAnnotationType,
       handleClose,
       handleOk,
-    };
+    }
   },
-};
+}
 </script>

@@ -14,25 +14,25 @@
  * =============================================================
  */
 
-import { ref } from '@vue/composition-api';
+import { ref } from '@vue/composition-api'
 
 export function useLocalStorage(key, initialValue = undefined) {
-  const valueRef = ref(initialValue);
+  const valueRef = ref(initialValue)
 
   // 读值
   try {
-    const item = window.localStorage.getItem(key);
-    valueRef.value = item ? JSON.parse(item) : initialValue;
+    const item = window.localStorage.getItem(key)
+    valueRef.value = item ? JSON.parse(item) : initialValue
   } catch (err) {
-    console.error(err);
-    valueRef.value = initialValue;
+    console.error(err)
+    valueRef.value = initialValue
   }
 
   // 写入
   const setValue = (value) => {
-    valueRef.value = value;
-    window.localStorage.setItem(key, JSON.stringify(value));
-  };
+    valueRef.value = value
+    window.localStorage.setItem(key, JSON.stringify(value))
+  }
 
-  return [valueRef.value, setValue];
+  return [valueRef.value, setValue]
 }

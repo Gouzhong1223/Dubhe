@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="wrapper">
@@ -33,15 +27,28 @@
       <div v-if="!mini" class="action flex flex-between">
         <div class="flex flex-vertical-align">
           <!-- 暂停/播放 -->
-          <i v-click-once style="font-size: 25px;" :class="buttonIcon" @click="playOrPause" />
+          <i
+            v-click-once
+            style="font-size: 25px;"
+            :class="buttonIcon"
+            @click="playOrPause"
+          />
           <!-- 进度 -->
           <span class="time">{{ data.currentTime }} / {{ data.duration }}</span>
-          <el-dropdown class="steep" trigger="click" placement="top" @command="onCommand">
+          <el-dropdown
+            class="steep"
+            trigger="click"
+            placement="top"
+            @command="onCommand"
+          >
             <label class="el-dropdown-link">
               {{ data.speed ? `${data.speed.toFixed(2)}x` : '倍速' }}
             </label>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="item in data.speeds" :key="item" :command="+item"
+              <el-dropdown-item
+                v-for="item in data.speeds"
+                :key="item"
+                :command="+item"
                 >{{ item }}x</el-dropdown-item
               >
             </el-dropdown-menu>
@@ -60,11 +67,11 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref, computed } from '@vue/composition-api';
-import WaveSurfer from 'wavesurfer.js';
-import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
-import { durationTrans } from '@/utils';
-import { getFullFileUrl } from '@/views/dataset/util';
+import { onMounted, reactive, ref, computed } from '@vue/composition-api'
+import WaveSurfer from 'wavesurfer.js'
+import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor'
+import { durationTrans } from '@/utils'
+import { getFullFileUrl } from '@/views/dataset/util'
 
 export default {
   name: 'AudioCard',
@@ -81,8 +88,8 @@ export default {
     },
   },
   setup(props) {
-    const waveformRef = ref(null);
-    const wavesurfer = ref(null); // 实例
+    const waveformRef = ref(null)
+    const wavesurfer = ref(null) // 实例
 
     const data = reactive({
       isPlay: false,
@@ -91,9 +98,11 @@ export default {
       volume: 100,
       duration: '00:00',
       currentTime: '00:00',
-    });
+    })
 
-    const buttonIcon = computed(() => (data.isPlay ? 'el-icon-video-pause' : 'el-icon-video-play'));
+    const buttonIcon = computed(() =>
+      data.isPlay ? 'el-icon-video-pause' : 'el-icon-video-play',
+    )
 
     const initWaveSurfer = () => {
       let waveSurferConfig = {
@@ -106,7 +115,7 @@ export default {
         progressColor: '#7fd1b5', // 光标后面的波形部分的填充色。当progressColor和waveColor相同时，完全不渲染进度波
         cursorColor: '#eee',
         hideScrollbar: props.mini, // mini模式隐藏滚动条
-      };
+      }
 
       if (!props.mini) {
         waveSurferConfig = {
@@ -120,57 +129,59 @@ export default {
               opacity: 1,
             }),
           ],
-        };
+        }
       }
 
-      wavesurfer.value = WaveSurfer.create(waveSurferConfig);
+      wavesurfer.value = WaveSurfer.create(waveSurferConfig)
 
-      wavesurfer.value.on('error', (e) => console.warn(e));
+      wavesurfer.value.on('error', (e) => console.warn(e))
 
       // 加载音频
-      wavesurfer.value.load(getFullFileUrl({ url: props.url }));
+      wavesurfer.value.load(getFullFileUrl({ url: props.url }))
 
       // 播放结束后播放变成暂停
-      wavesurfer.value.on('finish', () => Object.assign(data, { isPlay: false }));
+      wavesurfer.value.on('finish', () =>
+        Object.assign(data, { isPlay: false }),
+      )
 
       // 加载完成后获取总时长
       wavesurfer.value.on('ready', () => {
-        data.duration = durationTrans(wavesurfer.value.getDuration());
-      });
+        data.duration = durationTrans(wavesurfer.value.getDuration())
+      })
 
       // 单击音波部分返回当前进度
       wavesurfer.value.on('seek', () => {
-        data.currentTime = durationTrans(wavesurfer.value.getCurrentTime());
-      });
+        data.currentTime = durationTrans(wavesurfer.value.getCurrentTime())
+      })
 
       // 音频播放时返回当前进度
       wavesurfer.value.on('audioprocess', () => {
-        data.currentTime = durationTrans(wavesurfer.value.getCurrentTime());
-      });
-    };
+        data.currentTime = durationTrans(wavesurfer.value.getCurrentTime())
+      })
+    }
 
     const playOrPause = () => {
-      data.isPlay = !data.isPlay;
+      data.isPlay = !data.isPlay
       // 播放时暂停, 暂停时播放
-      wavesurfer.value.playPause();
-    };
+      wavesurfer.value.playPause()
+    }
 
     const onCommand = (speed) => {
       Object.assign(data, {
         speed,
-      });
+      })
       // 设置音频倍速
-      wavesurfer.value.setPlaybackRate(speed);
-    };
+      wavesurfer.value.setPlaybackRate(speed)
+    }
 
     const onVolumeChange = (volume) => {
       Object.assign(data, {
         volume,
-      });
-      wavesurfer.value.setVolume(volume / 100);
-    };
+      })
+      wavesurfer.value.setVolume(volume / 100)
+    }
 
-    onMounted(initWaveSurfer);
+    onMounted(initWaveSurfer)
 
     return {
       data,
@@ -179,9 +190,9 @@ export default {
       playOrPause,
       onCommand,
       onVolumeChange,
-    };
+    }
   },
-};
+}
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .wave {

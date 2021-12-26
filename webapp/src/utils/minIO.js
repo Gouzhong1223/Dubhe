@@ -14,31 +14,31 @@
  * =============================================================
  */
 
-import { getMinIOAuth } from '@/api/auth';
-import { decrypt } from '@/utils/rsaEncrypt';
+import { getMinIOAuth } from '@/api/auth'
+import { decrypt } from '@/utils/rsaEncrypt'
 
-const Minio = require('minio');
-const toArray = require('stream-to-array');
+const Minio = require('minio')
+const toArray = require('stream-to-array')
 
 const {
   VUE_APP_MINIO_ENDPOINT,
   VUE_APP_MINIO_PORT,
   VUE_APP_MINIO_USESSL,
   VUE_APP_MINIO_BUCKETNAME,
-} = process.env;
+} = process.env
 
 // 创建 bucket
 const makeBucket = (client, bucketName) => {
   return new Promise((resolve, reject) => {
     client.makeBucket(bucketName, (err) => {
       if (err) {
-        reject(err);
-        return;
+        reject(err)
+        return
       }
-      resolve();
-    });
-  });
-};
+      resolve()
+    })
+  })
+}
 
 // 组装 minIO 配置信息
 const minIOConfig = {
@@ -48,52 +48,65 @@ const minIOConfig = {
     useSSL: JSON.parse(VUE_APP_MINIO_USESSL),
   },
   bucketName: VUE_APP_MINIO_BUCKETNAME,
-};
+}
 
 // 导出 bucketName
-export const { bucketName } = minIOConfig;
+export const { bucketName } = minIOConfig
 
 // todo: 生产环境
-export const bucketHost = `${window.location.protocol}//${minIOConfig.config.endPoint}:${minIOConfig.config.port}`;
+export const bucketHost = `${window.location.protocol}//${minIOConfig.config.endPoint}:${minIOConfig.config.port}`
 
-export const minioBaseUrl = `${bucketHost}/${bucketName}`;
+export const minioBaseUrl = `${bucketHost}/${bucketName}`
 
 // 上传文件
 class MinioClient {
   constructor() {
-    this.minIOConfig = minIOConfig.config;
-    this.bucketName = minIOConfig.bucketName;
+    this.minIOConfig = minIOConfig.config
+    this.bucketName = minIOConfig.bucketName
   }
 
   async init() {
-    const authInfo = await getMinIOAuth();
-    const { accessKey, privateKey, secretKey } = authInfo || {};
-    const rawAccessKey = decrypt(accessKey, privateKey);
-    const rawSecretKey = decrypt(secretKey, privateKey);
-    this.config = { ...this.minIOConfig, accessKey: rawAccessKey, secretKey: rawSecretKey };
-    this.client = new Minio.Client(this.config);
-    await this.makeBucket(this.bucketName);
-    return this;
+    const authInfo = await getMinIOAuth()
+    const { accessKey, privateKey, secretKey } = authInfo || {}
+    const rawAccessKey = decrypt(accessKey, privateKey)
+    const rawSecretKey = decrypt(secretKey, privateKey)
+    this.config = {
+      ...this.minIOConfig,
+      accessKey: rawAccessKey,
+      secretKey: rawSecretKey,
+    }
+    this.client = new Minio.Client(this.config)
+    await this.makeBucket(this.bucketName)
+    return this
   }
 
   async makeBucket(name) {
-    const bucketExists = await this.client.bucketExists(name);
+    const bucketExists = await this.client.bucketExists(name)
     if (bucketExists) {
-      return;
+      return
     }
 
-    await makeBucket(this.client, name);
+    await makeBucket(this.client, name)
   }
 
   async listObjects(prefix, recursive = true) {
-    const result = await this.client.listObjects(this.bucketName, prefix, recursive);
-    return toArray(result);
+    const result = await this.client.listObjects(
+      this.bucketName,
+      prefix,
+      recursive,
+    )
+    return toArray(result)
   }
 
   // eslint-disable-next-line
   async putObject(objectName, stream, ...rest) {
     try {
-      const result = await this.client.putObject(this.bucketName, objectName, stream, ...rest);
+      const result = await this.client.putObject(
+        this.bucketName,
+        objectName,
+        stream,
+        ...rest,
+      )
       if (result) {
         return {
           err: null,
@@ -101,18 +114,21 @@ class MinioClient {
             objectName,
             result,
           },
-        };
+        }
       }
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error(err)
+      throw err
     }
   }
 
   // eslint-disable-next-line
   async removeObject(objectName) {
     try {
-      const result = await this.client.removeObject(this.bucketName, `${objectName}`);
+      const result = await this.client.removeObject(
+        this.bucketName,
+        `${objectName}`,
+      )
       if (result) {
         return {
           err: null,
@@ -120,13 +136,13 @@ class MinioClient {
             objectName,
             result,
           },
-        };
+        }
       }
     } catch (err) {
-      console.error(err);
-      throw err;
+      console.error(err)
+      throw err
     }
   }
 }
 
-export default MinioClient;
+export default MinioClient

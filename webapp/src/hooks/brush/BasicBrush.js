@@ -15,13 +15,13 @@
  */
 
 // 基础 Brush 组件，用于在手动标注页面框选标注
-import cx from 'classnames';
+import cx from 'classnames'
 
 export default {
   name: 'BasicBrush',
   functional: true,
   render(h, context) {
-    const { props } = context;
+    const { props } = context
     const {
       brush,
       className,
@@ -29,15 +29,15 @@ export default {
       stroke = 'rgba(102, 181, 245, 1)',
       strokeWidth = 1,
       ...otherProps
-    } = props;
+    } = props
 
-    const { start, end, isBrushing } = brush;
-    if (!start) return null;
-    if (!end) return null;
-    const x = end.x > start.x ? start.x : end.x;
-    const y = end.y > start.y ? start.y : end.y;
-    const width = Math.abs(start.x - end.x);
-    const height = Math.abs(start.y - end.y);
+    const { start, end, isBrushing } = brush
+    if (!start) return null
+    if (!end) return null
+    const x = end.x > start.x ? start.x : end.x
+    const y = end.y > start.y ? start.y : end.y
+    const width = Math.abs(start.x - end.x)
+    const height = Math.abs(start.y - end.y)
 
     return (
       <g className={cx('basic-brush', className)}>
@@ -54,6 +54,6 @@ export default {
           />
         )}
       </g>
-    );
+    )
   },
-};
+}

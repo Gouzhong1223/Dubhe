@@ -13,18 +13,18 @@
  * limitations under the License.
  * =============================================================
  */
-import Vue from 'vue';
-import { curveLinearClosed } from 'd3';
-import { reactive } from '@vue/composition-api';
+import Vue from 'vue'
+import { curveLinearClosed } from 'd3'
+import { reactive } from '@vue/composition-api'
 
-import Drag from '@/components/Drag';
-import { calcDistance, midPoint, inBoundary, getPolygonExtent } from '@/utils';
+import Drag from '@/components/Drag'
+import { calcDistance, midPoint, inBoundary, getPolygonExtent } from '@/utils'
 
-import PolylineRender from './polyline';
-import Vertice from './vertice';
+import PolylineRender from './polyline'
+import Vertice from './vertice'
 
 // 锚点最小距离
-export const MIN_POINT_DISTANCE = 20;
+export const MIN_POINT_DISTANCE = 20
 
 export default {
   name: 'PolygonRender',
@@ -51,65 +51,71 @@ export default {
     setTransformer: Function,
   },
   setup(props) {
-    const { onDragStart, onDragMove, onDragEnd, getZoom, setTransformer } = props;
+    const {
+      onDragStart,
+      onDragMove,
+      onDragEnd,
+      getZoom,
+      setTransformer,
+    } = props
     const state = reactive({
       drag: undefined,
-    });
+    })
 
     const updateState = (updater, callback) => {
-      const newState = updater(state);
+      const newState = updater(state)
       Vue.nextTick(() => {
-        Object.assign(state, newState);
+        Object.assign(state, newState)
         if (typeof callback === 'function') {
-          callback(state);
+          callback(state)
         }
-      });
-    };
+      })
+    }
 
     const renderMidPoints = (points) => {
       const midPoints = points
         .map((pos, index) => [pos, points[(index + 1) % points.length], index])
-        .filter(([a, b]) => calcDistance(a, b) > MIN_POINT_DISTANCE * 2);
+        .filter(([a, b]) => calcDistance(a, b) > MIN_POINT_DISTANCE * 2)
 
-      return midPoints;
-    };
+      return midPoints
+    }
 
     const selectionDragStart = (drag) => {
       const start = {
         x: drag.x + drag.dx,
         y: drag.y + drag.dy,
-      };
-      const end = { ...start };
+      }
+      const end = { ...start }
 
       const transformState = {
         start,
         end,
-      };
+      }
 
       // 回调
       if (typeof onDragStart === 'function') {
-        onDragStart(transformState, props.shape);
+        onDragStart(transformState, props.shape)
       }
-    };
+    }
 
     const selectionDragMove = (drag) => {
-      const { zoom } = getZoom();
+      const { zoom } = getZoom()
       updateState(
         (prevState) => {
           // 位置比较计算
-          const _scale = zoom * props.scale;
+          const _scale = zoom * props.scale
 
-          const { x0, x1, y0, y1 } = getPolygonExtent(props.shape.data.points);
+          const { x0, x1, y0, y1 } = getPolygonExtent(props.shape.data.points)
 
           const validDx =
             drag.dx > 0
               ? Math.min(drag.dx / _scale, props.bounds.width - x1)
-              : Math.max(drag.dx / _scale, -x0);
+              : Math.max(drag.dx / _scale, -x0)
 
           const validDy =
             drag.dy > 0
               ? Math.min(drag.dy / _scale, props.bounds.height - y1)
-              : Math.max(drag.dy / _scale, -y0);
+              : Math.max(drag.dy / _scale, -y0)
 
           return {
             ...prevState,
@@ -118,18 +124,18 @@ export default {
               validDx,
               validDy,
             },
-          };
+          }
         },
         (nextState) => {
           if (typeof onDragMove === 'function') {
-            onDragMove(nextState, props.shape);
+            onDragMove(nextState, props.shape)
           }
-        }
-      );
-    };
+        },
+      )
+    }
 
     const selectionDragEnd = (drag, event, options = {}) => {
-      const { prevState } = options;
+      const { prevState } = options
       setTransformer({
         isDragging: false,
         id: props.shape.id,
@@ -137,9 +143,9 @@ export default {
         y: drag.y,
         dx: 0,
         dy: 0,
-      });
+      })
       // fix 双击触发移动选框
-      if (!prevState.isMoving) return;
+      if (!prevState.isMoving) return
       updateState(
         (state) => ({
           ...state,
@@ -151,11 +157,11 @@ export default {
         (nextState) => {
           // 拖拽结束以后重新生成路径
           if (typeof onDragEnd === 'function') {
-            onDragEnd(nextState, props.shape);
+            onDragEnd(nextState, props.shape)
           }
-        }
-      );
-    };
+        },
+      )
+    }
 
     return {
       state,
@@ -164,7 +170,7 @@ export default {
       selectionDragStart,
       selectionDragMove,
       selectionDragEnd,
-    };
+    }
   },
   render() {
     const {
@@ -176,20 +182,20 @@ export default {
       stageWidth,
       stageHeight,
       offset,
-    } = this;
+    } = this
 
-    let transform = null;
+    let transform = null
     // 匹配当前标注
     if (shape.id === transformer.id) {
       transform = {
         translate: `translate(${transformer.dx}, ${transformer.dy})`,
         isDragging: transformer.isDragging,
-      };
+      }
     }
 
     const style = {
       pointerEvents: draw.isDrawing || transform?.isDragging ? 'none' : 'all',
-    };
+    }
 
     const dragProps = {
       props: {
@@ -200,9 +206,9 @@ export default {
         onDragMove: this.selectionDragMove,
         onDragEnd: this.selectionDragEnd,
       },
-    };
+    }
 
-    const isActive = shape.id === this.currentAnnotationId;
+    const isActive = shape.id === this.currentAnnotationId
 
     return (
       <Drag {...dragProps} key={shape.id}>
@@ -219,7 +225,7 @@ export default {
                   onMouseleave={(event) => {
                     // 超出边界判断
                     if (!inBoundary(event, event.target)) {
-                      draw.dragEnd();
+                      draw.dragEnd()
                     }
                   }}
                   style={{
@@ -239,7 +245,7 @@ export default {
                       stroke-opacity={0.7}
                       stroke-dasharray="5"
                     />
-                  );
+                  )
                 })}
               <g transform={transform?.translate} style={style}>
                 <PolylineRender
@@ -266,7 +272,7 @@ export default {
                           }),
                         fill: shape.data.color,
                       },
-                    };
+                    }
                     return (
                       <Vertice
                         key={index}
@@ -280,7 +286,7 @@ export default {
                         handleChange={handleChange}
                         {...pointProps}
                       />
-                    );
+                    )
                   }),
                   renderMidPoints(shape.data.points).map(([a, b, index]) => {
                     // 新增节点
@@ -293,7 +299,7 @@ export default {
                             shape,
                           }),
                       },
-                    };
+                    }
                     return (
                       <Vertice
                         key={`${index}-mid`}
@@ -308,14 +314,14 @@ export default {
                         className="add-point"
                         {...addPointProps}
                       />
-                    );
+                    )
                   }),
                 ]}
               </g>
             </g>
-          );
+          )
         }}
       </Drag>
-    );
+    )
   },
-};
+}

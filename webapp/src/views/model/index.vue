@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -45,10 +39,26 @@
         </span>
       </div>
       <div>
-        <el-tabs v-model="active" class="eltabs-inlineblock" @tab-click="onTabClick">
-          <el-tab-pane id="tab_0" label="我的模型" :name="String(MODEL_RESOURCE_ENUM.CUSTOM)" />
-          <el-tab-pane id="tab_1" label="预训练模型" :name="String(MODEL_RESOURCE_ENUM.PRESET)" />
-          <el-tab-pane id="tab_2" label="炼知模型" :name="String(MODEL_RESOURCE_ENUM.ATLAS)" />
+        <el-tabs
+          v-model="active"
+          class="eltabs-inlineblock"
+          @tab-click="onTabClick"
+        >
+          <el-tab-pane
+            id="tab_0"
+            label="我的模型"
+            :name="String(MODEL_RESOURCE_ENUM.CUSTOM)"
+          />
+          <el-tab-pane
+            id="tab_1"
+            label="预训练模型"
+            :name="String(MODEL_RESOURCE_ENUM.PRESET)"
+          />
+          <el-tab-pane
+            id="tab_2"
+            label="炼知模型"
+            :name="String(MODEL_RESOURCE_ENUM.ATLAS)"
+          />
         </el-tabs>
       </div>
     </div>
@@ -62,7 +72,13 @@
       @selection-change="crud.selectionChangeHandler"
       @sort-change="crud.sortChange"
     >
-      <el-table-column v-if="!isPreset" prop="id" label="ID" width="80" sortable="custom" />
+      <el-table-column
+        v-if="!isPreset"
+        prop="id"
+        label="ID"
+        width="80"
+        sortable="custom"
+      />
       <el-table-column prop="name" label="模型名称" min-width="180px" />
       <el-table-column prop="frameType" label="框架名称" min-width="150px">
         <template slot-scope="scope">{{
@@ -75,7 +91,9 @@
         }}</template>
       </el-table-column>
       <el-table-column prop="modelClassName" label="模型类别" min-width="150px">
-        <template slot-scope="scope">{{ scope.row.modelClassName || '--' }}</template>
+        <template slot-scope="scope">{{
+          scope.row.modelClassName || '--'
+        }}</template>
       </el-table-column>
       <el-table-column
         prop="modelDescription"
@@ -85,13 +103,20 @@
       />
       <el-table-column v-if="isCustom" prop="version" label="版本" width="80">
         <template slot-scope="scope">
-          <a v-if="scope.row.version" @click="goVersion(scope.row.id, scope.row.name)">{{
-            scope.row.version
-          }}</a>
+          <a
+            v-if="scope.row.version"
+            @click="goVersion(scope.row.id, scope.row.name)"
+            >{{ scope.row.version }}</a
+          >
           <span v-if="!scope.row.version">--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" width="160" sortable="custom">
+      <el-table-column
+        prop="updateTime"
+        label="更新时间"
+        width="160"
+        sortable="custom"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
@@ -129,7 +154,10 @@
             >编辑</el-button
           >
           <el-button
-            v-if="isAtlas && scope.row.packaged === ALTAS_MODEL_PACKAGE_ENUM.UNPACKAGED"
+            v-if="
+              isAtlas &&
+                scope.row.packaged === ALTAS_MODEL_PACKAGE_ENUM.UNPACKAGED
+            "
             type="text"
             @click="doPack(scope.row.id)"
             >打包</el-button
@@ -149,10 +177,14 @@
                 >部署<i class="el-icon-arrow-down el-icon--right" />
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="doServing(scope.row, 'onlineServing')">
+                <el-dropdown-item
+                  @click.native="doServing(scope.row, 'onlineServing')"
+                >
                   <el-button type="text">在线服务</el-button>
                 </el-dropdown-item>
-                <el-dropdown-item @click.native="doServing(scope.row, 'batchServing')">
+                <el-dropdown-item
+                  @click.native="doServing(scope.row, 'batchServing')"
+                >
                   <el-button type="text">批量部署</el-button>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -257,7 +289,11 @@
       </el-form>
     </BaseModal>
     <!--多步骤新增dialog-->
-    <add-model-dialog ref="addModel" :create-model-type="createModelType" @addDone="addDone" />
+    <add-model-dialog
+      ref="addModel"
+      :create-model-type="createModelType"
+      @addDone="addDone"
+    />
     <BaseModal
       title="炼知模型打包"
       :visible.sync="packageVisible"
@@ -273,25 +309,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import crudModel, { del, packageAtlasModel, getModelTypeMap } from '@/api/model/model';
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import pagination from '@crud/Pagination'
+import crudModel, {
+  del,
+  packageAtlasModel,
+  getModelTypeMap,
+} from '@/api/model/model'
 import {
   list as getAlgorithmUsages,
   add as addAlgorithmUsage,
-} from '@/api/algorithm/algorithmUsage';
-import CRUD, { presenter, header, form, crud } from '@crud/crud';
-import BaseModal from '@/components/BaseModal';
-import rrOperation from '@crud/RR.operation';
-import pagination from '@crud/Pagination';
+} from '@/api/algorithm/algorithmUsage'
+import BaseModal from '@/components/BaseModal'
 import {
   validateNameWithHyphen,
   downloadZipFromObjectPath,
   MODEL_RESOURCE_ENUM,
   ALTAS_MODEL_PACKAGE_ENUM,
-} from '@/utils';
-import AddModelDialog from './components/addModelDialog';
-import PackageForm from './components/packageForm';
+} from '@/utils'
+import AddModelDialog from './components/addModelDialog'
+import PackageForm from './components/packageForm'
 
 const defaultForm = {
   name: null,
@@ -299,7 +339,7 @@ const defaultForm = {
   modelType: null,
   modelClassName: null,
   modelDescription: null,
-};
+}
 
 export default {
   name: 'Model',
@@ -323,7 +363,7 @@ export default {
       optShow: {
         del: false,
       },
-    });
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
@@ -340,8 +380,12 @@ export default {
             trigger: ['blur', 'change'],
           },
         ],
-        frameType: [{ required: true, message: '请选择模型框架', trigger: 'blur' }],
-        modelType: [{ required: true, message: '请选择模型格式', trigger: 'blur' }],
+        frameType: [
+          { required: true, message: '请选择模型框架', trigger: 'blur' },
+        ],
+        modelType: [
+          { required: true, message: '请选择模型格式', trigger: 'blur' },
+        ],
         modelClassName: [
           {
             required: true,
@@ -349,7 +393,9 @@ export default {
             trigger: ['blur', 'change'],
           },
         ],
-        modelDescription: [{ max: 255, message: '长度在255个字符以内', trigger: 'blur' }],
+        modelDescription: [
+          { max: 255, message: '长度在255个字符以内', trigger: 'blur' },
+        ],
       },
       algorithmUsageList: [],
       active: String(MODEL_RESOURCE_ENUM.CUSTOM),
@@ -358,46 +404,46 @@ export default {
       packageVisible: false, // 炼知模型打包弹窗
       packageSubmitting: false,
       modelTypeMap: {},
-    };
+    }
   },
   computed: {
     ...mapGetters(['isAdmin']),
     isCustom() {
-      return this.active === String(MODEL_RESOURCE_ENUM.CUSTOM);
+      return this.active === String(MODEL_RESOURCE_ENUM.CUSTOM)
     },
     isPreset() {
-      return this.active === String(MODEL_RESOURCE_ENUM.PRESET);
+      return this.active === String(MODEL_RESOURCE_ENUM.PRESET)
     },
     isAtlas() {
-      return this.active === String(MODEL_RESOURCE_ENUM.ATLAS);
+      return this.active === String(MODEL_RESOURCE_ENUM.ATLAS)
     },
     createModelType() {
       if (this.isCustom) {
-        return 'Custom';
+        return 'Custom'
       }
       if (this.isAtlas) {
-        return 'Atlas';
+        return 'Atlas'
       }
-      return null;
+      return null
     },
     queryPlaceholder() {
-      return `请输入模型名称${this.isPreset ? '' : '或ID'}`;
+      return `请输入模型名称${this.isPreset ? '' : '或ID'}`
     },
     modelTypeList() {
       if (!this.form.frameType || !this.modelTypeMap[this.form.frameType]) {
-        return this.dict.model_type;
+        return this.dict.model_type
       }
       return this.dict.model_type.filter((type) =>
-        this.modelTypeMap[this.form.frameType].includes(+type.value)
-      );
+        this.modelTypeMap[this.form.frameType].includes(+type.value),
+      )
     },
   },
   mounted() {
-    this.getModelTypeMap();
+    this.getModelTypeMap()
     if (this.$route.params?.type === 'add') {
       setTimeout(() => {
-        this.crud.toAdd();
-      }, 500);
+        this.crud.toAdd()
+      }, 500)
     }
   },
   methods: {
@@ -406,130 +452,136 @@ export default {
         isContainDefault: true,
         current: 1,
         size: 1000,
-      };
+      }
       getAlgorithmUsages(params).then((res) => {
-        this.algorithmUsageList = res.result;
-      });
+        this.algorithmUsageList = res.result
+      })
     },
     async createAlgorithmUsage(auxInfo) {
-      await addAlgorithmUsage({ auxInfo });
-      this.getAlgorithmUsages();
+      await addAlgorithmUsage({ auxInfo })
+      this.getAlgorithmUsages()
     },
     // handle
     onTabClick() {
-      this.query.name = undefined;
-      this.crud.toQuery();
+      this.query.name = undefined
+      this.crud.toQuery()
 
       // 切换 tab 时需要让表格重新渲染
-      this.showTable = false;
+      this.showTable = false
       this.$nextTick(() => {
-        this.showTable = true;
-      });
+        this.showTable = true
+      })
     },
     onDialogOpen() {
-      this.getAlgorithmUsages();
+      this.getAlgorithmUsages()
     },
     onAlgorithmUsageChange(value) {
-      const usageRes = this.algorithmUsageList.find((usage) => usage.auxInfo === value);
+      const usageRes = this.algorithmUsageList.find(
+        (usage) => usage.auxInfo === value,
+      )
       if (!usageRes) {
-        this.createAlgorithmUsage(value);
+        this.createAlgorithmUsage(value)
       }
     },
     toAdd() {
-      this.$refs.addModel.show();
+      this.$refs.addModel.show()
     },
     addDone() {
-      this.crud.refresh();
+      this.crud.refresh()
     },
 
     // 获取模型框架 —— 模型格式匹配关系
     async getModelTypeMap() {
-      this.modelTypeMap = await getModelTypeMap();
+      this.modelTypeMap = await getModelTypeMap()
     },
 
     // 模型框架
     onFrameTypeChange() {
-      this.form.modelType = null;
+      this.form.modelType = null
     },
 
     onPackageConfirm() {
       this.$refs.packageForm.validate((form) => {
-        this.packageSubmitting = true;
+        this.packageSubmitting = true
         packageAtlasModel(form)
           .then(() => {
-            this.packageVisible = false;
-            this.$message.success('模型打包成功');
+            this.packageVisible = false
+            this.$message.success('模型打包成功')
           })
           .finally(() => {
-            this.packageSubmitting = false;
-          });
-      });
+            this.packageSubmitting = false
+          })
+      })
     },
     onPackageCancel() {
-      this.packageVisible = false;
+      this.packageVisible = false
     },
     onPackageClose() {
-      this.$refs.packageForm.resetForm();
+      this.$refs.packageForm.resetForm()
     },
 
     // link
     goVersion(id, name, type = 'detail') {
-      this.$router.push({ path: '/model/version', query: { id, name, type } });
+      this.$router.push({ path: '/model/version', query: { id, name, type } })
     },
     // op
     async doEdit(item) {
       // temp handle
-      item.frameType = String(item.frameType);
-      item.modelType = String(item.modelType);
-      this.crud.toEdit(item);
+      item.frameType = String(item.frameType)
+      item.modelType = String(item.modelType)
+      this.crud.toEdit(item)
     },
     doPack(id) {
-      this.packageVisible = true;
+      this.packageVisible = true
       this.$nextTick(() => {
-        this.$refs.packageForm.initForm(id);
-      });
+        this.$refs.packageForm.initForm(id)
+      })
     },
     doDelete(id) {
-      this.$confirm('此操作将永久删除该模型, 是否继续?', '请确认').then(async () => {
-        const params = {
-          ids: [id],
-        };
-        await del(params);
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.crud.refresh();
-      });
+      this.$confirm('此操作将永久删除该模型, 是否继续?', '请确认').then(
+        async () => {
+          const params = {
+            ids: [id],
+          }
+          await del(params)
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.crud.refresh()
+        },
+      )
     },
     doDownload(row) {
-      const { name, version, modelAddress } = row;
-      let msg;
+      const { name, version, modelAddress } = row
+      let msg
       switch (this.active) {
         case String(MODEL_RESOURCE_ENUM.CUSTOM):
-          msg = `此操作将下载 ${name} 模型的 ${version} 版本, 是否继续?`;
-          break;
+          msg = `此操作将下载 ${name} 模型的 ${version} 版本, 是否继续?`
+          break
         case String(MODEL_RESOURCE_ENUM.PRESET):
-          msg = `此操作将下载预训练模型 ${name}, 是否继续?`;
-          break;
+          msg = `此操作将下载预训练模型 ${name}, 是否继续?`
+          break
         case String(MODEL_RESOURCE_ENUM.ATLAS):
-          msg = `此操作将下载炼知模型 ${name}, 是否继续?`;
-          break;
+          msg = `此操作将下载炼知模型 ${name}, 是否继续?`
+          break
         default:
-          msg = `此操作将下载模型 ${name}, 是否继续?`;
-          break;
+          msg = `此操作将下载模型 ${name}, 是否继续?`
+          break
       }
       this.$confirm(msg, '请确认').then(
         () => {
-          const url = /^\//.test(modelAddress) ? modelAddress : `/${modelAddress}`;
-          downloadZipFromObjectPath(url, 'model.zip');
+          const url = /^\//.test(modelAddress)
+            ? modelAddress
+            : `/${modelAddress}`
+          downloadZipFromObjectPath(url, 'model.zip')
           this.$message({
             message: '请查看下载文件',
             type: 'success',
-          });
+          })
         },
-        () => {}
-      );
+        () => {},
+      )
     },
     doServing(model, type) {
       this.$router.push({
@@ -541,11 +593,11 @@ export default {
           modelResource: 1,
           modelAddress: model.modelAddress,
         },
-      });
+      })
     },
     [CRUD.HOOK.beforeRefresh]() {
-      this.crud.query.modelResource = Number(this.active);
+      this.crud.query.modelResource = Number(this.active)
     },
   },
-};
+}
 </script>

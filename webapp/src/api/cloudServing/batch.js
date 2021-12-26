@@ -14,15 +14,15 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
   return request({
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function add(data) {
@@ -30,7 +30,7 @@ export function add(data) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function edit(data) {
@@ -38,7 +38,7 @@ export function edit(data) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices`,
     method: 'put',
     data,
-  });
+  })
 }
 
 export function del(id) {
@@ -46,7 +46,7 @@ export function del(id) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices`,
     method: 'delete',
     data: { id },
-  });
+  })
 }
 
 export function detail(id) {
@@ -54,7 +54,7 @@ export function detail(id) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices/detail`,
     method: 'get',
     params: { id },
-  });
+  })
 }
 
 export function start(id) {
@@ -62,7 +62,7 @@ export function start(id) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices/start`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
 export function stop(id) {
@@ -70,21 +70,21 @@ export function stop(id) {
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices/stop`,
     method: 'post',
     data: { id },
-  });
+  })
 }
 
 export function getBatchServingPods(id) {
   return request({
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices/pod/${id}`,
     method: 'get',
-  });
+  })
 }
 
 export function getServiceProgress(id) {
   return request({
     url: `/${API_MODULE_NAME.BATCH_SERVING}/batchServices/queryById/${id}`,
     method: 'get',
-  });
+  })
 }
 
-export default { list, add, edit, del };
+export default { list, add, edit, del }

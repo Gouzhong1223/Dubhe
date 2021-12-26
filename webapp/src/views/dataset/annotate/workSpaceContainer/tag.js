@@ -14,10 +14,10 @@
  * =============================================================
  */
 
-import { isNil } from 'lodash';
-import { addSuffix, chroma, colorByLuminance } from '@/utils';
+import { isNil } from 'lodash'
+import { addSuffix, chroma, colorByLuminance } from '@/utils'
 
-import { defaultColor } from '@/views/dataset/util';
+import { defaultColor } from '@/views/dataset/util'
 
 export default {
   name: 'Tag',
@@ -35,41 +35,51 @@ export default {
     annotationType: String,
   },
   render(h, context) {
-    const { props } = context;
-    const { annotate = {}, getLabelName, offset, transformer, annotationType } = props;
+    const { props } = context
+    const {
+      annotate = {},
+      getLabelName,
+      offset,
+      transformer,
+      annotationType,
+    } = props
 
-    const { data = {}, id } = annotate;
+    const { data = {}, id } = annotate
     // 区分分割和检测
-    const shape = annotationType === 'shapes' ? data.points : data.bbox;
-    const { color = defaultColor } = data;
+    const shape = annotationType === 'shapes' ? data.points : data.bbox
+    const { color = defaultColor } = data
     // 当前在拖拽中不展示
-    if (props.currentAnnotationId === id && props.isMoving) return null;
-    if (isNil(shape)) return null;
+    if (props.currentAnnotationId === id && props.isMoving) return null
+    if (isNil(shape)) return null
     // 是否为草稿模式
-    const pos = offset(props.annotate);
+    const pos = offset(props.annotate)
     const style = {
       left: addSuffix(pos.x),
       top: addSuffix(pos.y),
       color: colorByLuminance(color),
-    };
+    }
 
     // 匹配当前标注
     if (annotate.id === transformer.id) {
-      style.transform = `translate(${transformer.dx}px, ${transformer.dy}px)`;
+      style.transform = `translate(${transformer.dx}px, ${transformer.dy}px)`
     }
 
     const tagColor = chroma(color)
       .alpha(0.8)
-      .toString();
-    const tagName = getLabelName(data.categoryId);
+      .toString()
+    const tagName = getLabelName(data.categoryId)
 
-    if (!tagName) return null;
+    if (!tagName) return null
     return (
       <div class="annotation-label image-tag usn" style={style}>
-        <el-tag color={tagColor} disable-transitions style={{ color: 'inherit', border: 'none' }}>
+        <el-tag
+          color={tagColor}
+          disable-transitions
+          style={{ color: 'inherit', border: 'none' }}
+        >
           {tagName}
         </el-tag>
       </div>
-    );
+    )
   },
-};
+}

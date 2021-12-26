@@ -28,5 +28,5 @@ const getters = {
   dataset: (state) => state.dataset,
   cloudServing: (state) => state.cloudServing,
   modelOptimize: (state) => state.modelOptimize,
-};
-export default getters;
+}
+export default getters

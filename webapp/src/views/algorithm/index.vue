@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -42,25 +36,30 @@
       <AlgorithmForm ref="form" :form-type="formType" />
     </BaseModal>
     <!--右边侧边栏-->
-    <el-drawer :visible.sync="drawer" :with-header="false" :direction="'rtl'" size="36%">
+    <el-drawer
+      :visible.sync="drawer"
+      :with-header="false"
+      :direction="'rtl'"
+      size="36%"
+    >
       <algorithm-detail :item="selectedItemObj" />
     </el-drawer>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import { downloadZipFromObjectPath, ALGORITHM_RESOURCE_ENUM } from '@/utils';
-import { list, add, del as deleteAlgorithm } from '@/api/algorithm/algorithm';
-import { list as getAlgorithmUsages } from '@/api/algorithm/algorithmUsage';
-import { createNotebook, getNotebookAddress } from '@/api/development/notebook';
-import BaseModal from '@/components/BaseModal';
-import ProTable from '@/components/ProTable';
-import AlgorithmDetail from '@/components/Training/algorithmDetail';
+import { downloadZipFromObjectPath, ALGORITHM_RESOURCE_ENUM } from '@/utils'
+import { list, add, del as deleteAlgorithm } from '@/api/algorithm/algorithm'
+import { list as getAlgorithmUsages } from '@/api/algorithm/algorithmUsage'
+import { createNotebook, getNotebookAddress } from '@/api/development/notebook'
+import BaseModal from '@/components/BaseModal'
+import ProTable from '@/components/ProTable'
+import AlgorithmDetail from '@/components/Training/algorithmDetail'
 
-import { getColumns, getQueryFormItems } from './utils';
-import AlgorithmForm from './components/algorithmForm';
+import { getColumns, getQueryFormItems } from './utils'
+import AlgorithmForm from './components/algorithmForm'
 
 export default {
   name: 'Algorithm',
@@ -95,7 +94,7 @@ export default {
       selectedItemObj: null,
       drawer: false,
       disableEdit: false,
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'isAdmin']),
@@ -109,72 +108,72 @@ export default {
         active: this.active,
         allAlgorithmUsageList: this.allAlgorithmUsageList,
         isAdmin: this.isAdmin,
-      });
+      })
     },
     queryFormItems() {
       return getQueryFormItems({
         active: this.active,
-      });
+      })
     },
     listOptions() {
       return {
         algorithmSource: Number(this.active),
-      };
+      }
     },
     allAlgorithmUsageList() {
       return [{ label: '全部', value: null }].concat(
         this.algorithmUsageList.map((item) => {
-          return { label: item.auxInfo, value: item.auxInfo };
-        })
-      );
+          return { label: item.auxInfo, value: item.auxInfo }
+        }),
+      )
     },
     operationProps() {
       return {
         disabled: this.isPreset,
-      };
+      }
     },
     isCustom() {
-      return this.active === String(ALGORITHM_RESOURCE_ENUM.CUSTOM);
+      return this.active === String(ALGORITHM_RESOURCE_ENUM.CUSTOM)
     },
     isPreset() {
-      return this.active === String(ALGORITHM_RESOURCE_ENUM.PRESET);
+      return this.active === String(ALGORITHM_RESOURCE_ENUM.PRESET)
     },
   },
   mounted() {
-    this.getAlgorithmUsages();
+    this.getAlgorithmUsages()
     if (this.$route.params.target === 'add') {
-      this.doAdd(this.$route.params.form);
+      this.doAdd(this.$route.params.form)
     }
   },
   beforeDestroy() {
-    this.disableEdit = false;
-    this.notifyInstance && this.notifyInstance.close();
+    this.disableEdit = false
+    this.notifyInstance && this.notifyInstance.close()
   },
   methods: {
     list,
     // handle
     handleTabClick(activeTab) {
-      this.active = activeTab;
-      this.$refs.proTable.query({ algorithmSource: Number(activeTab) });
+      this.active = activeTab
+      this.$refs.proTable.query({ algorithmSource: Number(activeTab) })
     },
     onDialogClose() {
-      this.formSubmitting = false;
-      this.$refs.form.resetForm();
+      this.formSubmitting = false
+      this.$refs.form.resetForm()
     },
     onSubmitForm() {
       this.$refs.form.validate(async (form) => {
-        this.formSubmitting = true;
+        this.formSubmitting = true
         await add(form).finally(() => {
-          this.formSubmitting = false;
-        });
-        this.formVisible = false;
-        this.$refs.proTable.query();
-      });
+          this.formSubmitting = false
+        })
+        this.formVisible = false
+        this.$refs.proTable.query()
+      })
     },
     // link
     goDetail(itemObj) {
-      this.selectedItemObj = itemObj;
-      this.drawer = true;
+      this.selectedItemObj = itemObj
+      this.drawer = true
     },
     goTraining(item) {
       this.$router.push({
@@ -191,112 +190,118 @@ export default {
             runCommand: item.runCommand,
           },
         },
-      });
+      })
     },
     goDownload(algorithm) {
-      downloadZipFromObjectPath(algorithm.codeDir, `${algorithm.algorithmName}.zip`, {
-        flat: true,
-      });
+      downloadZipFromObjectPath(
+        algorithm.codeDir,
+        `${algorithm.algorithmName}.zip`,
+        {
+          flat: true,
+        },
+      )
       this.$message({
         message: '请查看下载文件',
         type: 'success',
-      });
+      })
     },
     async goEdit(algorithm) {
       if (this.disableEdit) {
-        return;
+        return
       }
-      this.disableEdit = true;
+      this.disableEdit = true
       this.notifyInstance = this.$notify({
         title: '正在启动 Notebook',
         message: '正在启动 Notebook，请稍等',
         iconClass: 'el-icon-loading',
         duration: 0,
-      });
+      })
       const notebookInfo = await createNotebook(1, {
         sourceId: algorithm.id,
         sourceFilePath: algorithm.codeDir,
       }).finally(() => {
-        this.disableEdit = false;
-      });
+        this.disableEdit = false
+      })
       if (notebookInfo.status === 0 && notebookInfo.url) {
-        this.openNoteBook(notebookInfo.url, notebookInfo.noteBookName);
+        this.openNoteBook(notebookInfo.url, notebookInfo.noteBookName)
       } else {
-        this.disableEdit = true;
-        this.getNotebookAddress(notebookInfo.id, notebookInfo.noteBookName);
+        this.disableEdit = true
+        this.getNotebookAddress(notebookInfo.id, notebookInfo.noteBookName)
       }
     },
     // op
     doAdd(form = {}) {
-      this.formType = 'add';
-      this.formVisible = true;
-      form.algorithmSource = Number(this.active);
+      this.formType = 'add'
+      this.formVisible = true
+      form.algorithmSource = Number(this.active)
       this.$nextTick(() => {
-        this.$refs.form.initForm(form);
-      });
+        this.$refs.form.initForm(form)
+      })
     },
     doDelete(row) {
-      this.$confirm('此操作将永久删除该算法, 是否继续?', '请确认').then(async () => {
-        await deleteAlgorithm({ ids: [row.id] });
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.$refs.proTable.refresh();
-      });
+      this.$confirm('此操作将永久删除该算法, 是否继续?', '请确认').then(
+        async () => {
+          await deleteAlgorithm({ ids: [row.id] })
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.$refs.proTable.refresh()
+        },
+      )
     },
     doFork(item) {
-      this.formType = 'fork';
+      this.formType = 'fork'
       const form = {
         ...item,
         fork: true,
         algorithmSource: ALGORITHM_RESOURCE_ENUM.CUSTOM, // Fork 只能成为我的算法
-      };
-      this.formVisible = true;
+      }
+      this.formVisible = true
       this.$nextTick(() => {
-        this.$refs.form.initForm(form);
-      });
+        this.$refs.form.initForm(form)
+      })
     },
 
     getNotebookAddress(id, noteBookName) {
       if (!this.disableEdit) {
-        return;
+        return
       }
       getNotebookAddress(id)
         .then((url) => {
           if (url) {
-            this.openNoteBook(url, noteBookName);
+            this.openNoteBook(url, noteBookName)
           } else {
             setTimeout(() => {
-              this.getNotebookAddress(id, noteBookName);
-            }, 1000);
+              this.getNotebookAddress(id, noteBookName)
+            }, 1000)
           }
         })
         .catch((err) => {
-          this.disableEdit = false;
-          throw new Error(err);
-        });
+          this.disableEdit = false
+          throw new Error(err)
+        })
     },
     async getAlgorithmUsages() {
       const params = {
         isContainDefault: true,
         current: 1,
         size: 1000,
-      };
-      const data = await getAlgorithmUsages(params);
-      this.algorithmUsageList = data.result;
+      }
+      const data = await getAlgorithmUsages(params)
+      this.algorithmUsageList = data.result
     },
     openNoteBook(url, noteBookName) {
-      window.open(url);
-      this.$message.success('Notebook已启动.');
-      this.disableEdit = false;
+      window.open(url)
+      this.$message.success('Notebook已启动.')
+      this.disableEdit = false
       this.$router.push({
         name: 'Notebook',
         params: {
           noteBookName,
         },
-      });
+      })
     },
   },
-};
+}
 </script>

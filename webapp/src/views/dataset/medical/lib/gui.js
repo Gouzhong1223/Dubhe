@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import dwv from '@wulucxy/dwv';
+import dwv from '@wulucxy/dwv'
 
-dwv.gui.getElement = dwv.gui.base.getElement;
-dwv.gui.prompt = dwv.gui.base.prompt;
+dwv.gui.getElement = dwv.gui.base.getElement
+dwv.gui.prompt = dwv.gui.base.prompt

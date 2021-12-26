@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="app-container">
@@ -46,10 +40,20 @@
           <el-button
             :id="`doDownload_` + scope.$index"
             type="text"
-            @click="doDownload(scope.row.parentId, scope.row.version, scope.row.modelAddress)"
+            @click="
+              doDownload(
+                scope.row.parentId,
+                scope.row.version,
+                scope.row.modelAddress,
+              )
+            "
             >下载</el-button
           >
-          <el-tooltip content="该模型不支持部署" placement="top" :disabled="scope.row.servingModel">
+          <el-tooltip
+            content="该模型不支持部署"
+            placement="top"
+            :disabled="scope.row.servingModel"
+          >
             <el-dropdown>
               <el-button
                 type="text"
@@ -59,16 +63,22 @@
                 >部署<i class="el-icon-arrow-down el-icon--right" />
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="doServing(scope.row, 'onlineServing')">
+                <el-dropdown-item
+                  @click.native="doServing(scope.row, 'onlineServing')"
+                >
                   <el-button type="text">在线服务</el-button>
                 </el-dropdown-item>
-                <el-dropdown-item @click.native="doServing(scope.row, 'batchServing')">
+                <el-dropdown-item
+                  @click.native="doServing(scope.row, 'batchServing')"
+                >
                   <el-button type="text">批量服务</el-button>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-tooltip>
-          <el-button v-if="isAdmin" type="text" @click="doConvert(scope.row)">转预置</el-button>
+          <el-button v-if="isAdmin" type="text" @click="doConvert(scope.row)"
+            >转预置</el-button
+          >
           <el-button
             v-if="!allowFormatConvert"
             :id="`doDelete` + scope.$index"
@@ -77,7 +87,11 @@
             >删除</el-button
           >
           <el-dropdown v-else>
-            <el-button type="text" style="margin-left: 10px;" @click.stop="() => {}">
+            <el-button
+              type="text"
+              style="margin-left: 10px;"
+              @click.stop="() => {}"
+            >
               更多<i class="el-icon-arrow-down el-icon--right" />
             </el-button>
             <el-dropdown-menu slot="dropdown">
@@ -164,44 +178,55 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import { getModelById, getModelSuffix } from '@/api/model/model';
-import crudModelVersion, { del, convertPreset, formatConvert } from '@/api/model/modelVersion';
-import CRUD, { presenter, header, form, crud } from '@crud/crud';
-import BaseModal from '@/components/BaseModal';
-import BaseForm from '@/components/BaseForm';
-import cdOperation from '@crud/CD.operation';
-import pagination from '@crud/Pagination';
-import UploadInline from '@/components/UploadForm/inline';
-import UploadProgress from '@/components/UploadProgress';
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import cdOperation from '@crud/CD.operation'
+import pagination from '@crud/Pagination'
+import { getModelById, getModelSuffix } from '@/api/model/model'
+import crudModelVersion, {
+  del,
+  convertPreset,
+  formatConvert,
+} from '@/api/model/modelVersion'
+import BaseModal from '@/components/BaseModal'
+import BaseForm from '@/components/BaseForm'
+import UploadInline from '@/components/UploadForm/inline'
+import UploadProgress from '@/components/UploadProgress'
 import {
   getUniqueId,
   downloadZipFromObjectPath,
   uploadSizeFomatter,
   invalidFileNameChar,
   validateNameWithHyphen,
-} from '@/utils';
-import { modelConfig } from '@/config';
+} from '@/utils'
+import { modelConfig } from '@/config'
 
-import { TF_FRAME_TYPE, SAVED_MODEL_MODEL_TYPE } from './util';
+import { TF_FRAME_TYPE, SAVED_MODEL_MODEL_TYPE } from './util'
 
 const defaultForm = {
   parentId: null,
   modelAddress: null,
   modelSource: 0,
-};
+}
 
 const defaultConvertForm = {
   id: null,
   name: null,
   modelDescription: null,
-};
+}
 
 export default {
   name: 'ModelVersion',
   dicts: ['model_source'],
-  components: { BaseModal, BaseForm, pagination, cdOperation, UploadInline, UploadProgress },
+  components: {
+    BaseModal,
+    BaseForm,
+    pagination,
+    cdOperation,
+    UploadInline,
+    UploadProgress,
+  },
   cruds() {
     return CRUD({
       title: '模型版本管理',
@@ -215,7 +240,7 @@ export default {
           add: '上传模型版本',
         },
       },
-    });
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
@@ -225,7 +250,9 @@ export default {
       modelSuffixMap: {}, // 模型后缀信息
       actionType: '',
       rules: {
-        modelAddress: [{ required: true, message: '请上传有效的模型', trigger: 'manual' }],
+        modelAddress: [
+          { required: true, message: '请上传有效的模型', trigger: 'manual' },
+        ],
       },
       uploadParams: {
         objectPath: null, // 对象存储路径
@@ -270,142 +297,149 @@ export default {
             trigger: ['blur', 'change'],
           },
         ],
-        modelDescription: [{ max: 255, message: '长度在255个字符以内', trigger: 'blur' }],
+        modelDescription: [
+          { max: 255, message: '长度在255个字符以内', trigger: 'blur' },
+        ],
       },
 
       notifyInstance: null,
-    };
+    }
   },
   computed: {
     ...mapGetters(['user', 'isAdmin']),
     status() {
-      return this.progress === 100 ? 'success' : null;
+      return this.progress === 100 ? 'success' : null
     },
     modelName() {
-      return this.model.name;
+      return this.model.name
     },
     acceptModelSuffix() {
       if (this.modelSuffixMap[this.model.modelType]) {
-        return `.zip,${this.modelSuffixMap[this.model.modelType]}`;
+        return `.zip,${this.modelSuffixMap[this.model.modelType]}`
       }
-      return '.zip';
+      return '.zip'
     },
     allowFormatConvert() {
       return (
-        this.model.frameType === TF_FRAME_TYPE && this.model.modelType === SAVED_MODEL_MODEL_TYPE
-      );
+        this.model.frameType === TF_FRAME_TYPE &&
+        this.model.modelType === SAVED_MODEL_MODEL_TYPE
+      )
     },
   },
   created() {
-    const { id, type } = this.$route.query;
-    this.initPage(id, type);
+    const { id, type } = this.$route.query
+    this.initPage(id, type)
   },
   beforeDestroy() {
     if (this.notifyInstance) {
-      this.notifyInstance.close();
-      this.notifyInstance = null;
+      this.notifyInstance.close()
+      this.notifyInstance = null
     }
   },
   methods: {
     // 更新界面模型 ID
     initPage(parentId, type = 'detail') {
-      this.modelId = parentId;
-      this.getModelById();
-      this.actionType = type;
-      this.crud.query.parentId = parentId;
+      this.modelId = parentId
+      this.getModelById()
+      this.actionType = type
+      this.crud.query.parentId = parentId
       if (this.actionType === 'add') {
-        this.crud.toAdd();
+        this.crud.toAdd()
       }
-      this.crud.refresh();
+      this.crud.refresh()
     },
     // handle
     handleRemove() {
-      this.loading = false;
-      this.form.modelAddress = null;
-      this.$refs.modelAddress.validate('manual');
+      this.loading = false
+      this.form.modelAddress = null
+      this.$refs.modelAddress.validate('manual')
     },
     uploadStart(files) {
-      this.updateImagePath();
-      [this.loading, this.size, this.progress] = [true, files.size, 0];
+      this.updateImagePath()
+      ;[this.loading, this.size, this.progress] = [true, files.size, 0]
     },
     onSetProgress(val) {
-      this.progress += val;
+      this.progress += val
     },
     uploadSuccess(res) {
-      this.progress = 100;
+      this.progress = 100
       setTimeout(() => {
-        this.loading = false;
-      }, 1000);
-      this.form.modelAddress = res[0].data.objectName;
-      this.$refs.modelAddress.validate('manual');
+        this.loading = false
+      }, 1000)
+      this.form.modelAddress = res[0].data.objectName
+      this.$refs.modelAddress.validate('manual')
     },
     uploadError() {
-      this.loading = false;
+      this.loading = false
       this.$message({
         message: '上传文件失败',
         type: 'error',
-      });
+      })
     },
     onDialogOpen() {
-      this.getModelSuffix();
+      this.getModelSuffix()
     },
     onDialogClose() {
-      this.$refs.upload.formRef.reset();
-      this.loading = false;
+      this.$refs.upload.formRef.reset()
+      this.loading = false
     },
     onConvertDialogClose() {
-      this.convertForm = { ...defaultConvertForm };
+      this.convertForm = { ...defaultConvertForm }
     },
     onConvertDialogSubmit() {
       this.$refs.convertForm.validate(async (form) => {
-        this.convertLoading = true;
+        this.convertLoading = true
         await convertPreset(form).finally(() => {
-          this.convertLoading = false;
-        });
-        this.convertVisible = false;
-      });
+          this.convertLoading = false
+        })
+        this.convertVisible = false
+      })
     },
     onSubmit() {
-      this.form.parentId = this.modelId;
-      this.crud.submitCU();
+      this.form.parentId = this.modelId
+      this.crud.submitCU()
     },
     // hook
     [CRUD.HOOK.beforeToAdd]() {
-      this.refreshFlag = false;
+      this.refreshFlag = false
       this.$nextTick(() => {
-        this.refreshFlag = true;
-      });
+        this.refreshFlag = true
+      })
     },
     updateImagePath() {
-      this.uploadParams.objectPath = `upload-temp/${this.user.id}/${getUniqueId()}`;
+      this.uploadParams.objectPath = `upload-temp/${
+        this.user.id
+      }/${getUniqueId()}`
     },
     // op
     doDelete(id) {
-      this.$confirm('此操作将永久删除该模型, 是否继续?', '请确认').then(async () => {
-        const params = {
-          ids: [id],
-        };
-        await del(params);
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-        });
-        this.crud.refresh();
-      });
+      this.$confirm('此操作将永久删除该模型, 是否继续?', '请确认').then(
+        async () => {
+          const params = {
+            ids: [id],
+          }
+          await del(params)
+          this.$message({
+            message: '删除成功',
+            type: 'success',
+          })
+          this.crud.refresh()
+        },
+      )
     },
     doDownload(parentId, version, filepath) {
-      const msg = `此操作将下载${this.modelName}模型的${version}版本, 是否继续?`;
+      const msg = `此操作将下载${this.modelName}模型的${version}版本, 是否继续?`
       this.$confirm(msg, '请确认').then(
         () => {
-          const url = /^\//.test(filepath) ? filepath : `/${filepath}`;
-          downloadZipFromObjectPath(url, 'model.zip');
+          const url = /^\//.test(filepath) ? filepath : `/${filepath}`
+          downloadZipFromObjectPath(url, 'model.zip')
           this.$message({
             message: '请查看下载文件',
             type: 'success',
-          });
+          })
         },
-        () => {}
-      );
+        () => {},
+      )
     },
     doServing(model, type) {
       this.$router.push({
@@ -418,29 +452,31 @@ export default {
           modelAddress: model.modelAddress,
           modelResource: 0,
         },
-      });
+      })
     },
     doConvert(model) {
-      this.convertVisible = true;
+      this.convertVisible = true
       Object.assign(this.convertForm, {
         id: model.id,
         name: model.name,
         modelDescription: model.modelDescription,
-      });
+      })
     },
     uploadSizeFomatter,
 
     // 获取模型信息
     async getModelById() {
-      this.model = await getModelById(this.modelId);
+      this.model = await getModelById(this.modelId)
     },
     // 获取模型格式对应后缀
     async getModelSuffix() {
-      this.modelSuffixMap = await getModelSuffix({ modelType: this.model.modelType });
+      this.modelSuffixMap = await getModelSuffix({
+        modelType: this.model.modelType,
+      })
     },
     // 模型格式转换
     doFormatConvert({ id, name, version }) {
-      const msg = `该操作将把模型 ${name}-${version} 转换为 ONNX 格式，同时生成一个新的模型记录和版本，不会覆盖当前模型`;
+      const msg = `该操作将把模型 ${name}-${version} 转换为 ONNX 格式，同时生成一个新的模型记录和版本，不会覆盖当前模型`
       this.$confirm(msg, '模型转换确认').then(() => {
         this.notifyInstance = this.$notify({
           title: '模型转换中',
@@ -448,48 +484,48 @@ export default {
           iconClass: 'el-icon-loading',
           duration: 0,
           showClose: false,
-        });
+        })
         formatConvert(id)
           .then((res) => {
             // 如果实例存在，说明还在当前页面，则跳转至转换后模型详情页
             if (this.notifyInstance) {
-              this.notifyInstance.close();
+              this.notifyInstance.close()
               this.$router.push({
                 name: 'ModelVersion',
                 query: {
                   id: res.id,
                 },
-              });
+              })
               this.$notify({
                 title: '模型转换成功',
                 message: '模型转换已完成，已切换至转换后模型页面',
                 type: 'success',
                 duration: 0,
-              });
-              this.initPage(res.id);
+              })
+              this.initPage(res.id)
             } else {
               this.$notify({
                 title: '模型转换成功',
                 message: '模型转换已完成，请前往模型管理查看',
                 type: 'success',
                 duration: 0,
-              });
+              })
             }
           })
           .catch((error) => {
-            this.notifyInstance && this.notifyInstance.close();
+            this.notifyInstance && this.notifyInstance.close()
             this.$notify({
               title: '模型转换失败',
               message: error.message,
               type: 'error',
               duration: 0,
-            });
+            })
           })
           .finally(() => {
-            this.notifyInstance && (this.notifyInstance = null);
-          });
-      });
+            this.notifyInstance && (this.notifyInstance = null)
+          })
+      })
     },
   },
-};
+}
 </script>

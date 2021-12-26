@@ -13,10 +13,10 @@
  * limitations under the License.
  * =============================================================
  */
-import { isNil, isFunction } from 'lodash';
-import { line as d3Line } from 'd3';
+import { isNil, isFunction } from 'lodash'
+import { line as d3Line } from 'd3'
 
-import { defaultColor } from '@/views/dataset/util';
+import { defaultColor } from '@/views/dataset/util'
 
 export default {
   name: 'PolylineRender',
@@ -28,28 +28,28 @@ export default {
     offset: Function,
   },
   render(h, context) {
-    const { props } = context;
-    const { fill, points = [], offset } = props;
+    const { props } = context
+    const { fill, points = [], offset } = props
 
-    if (isNil(points)) return null;
+    if (isNil(points)) return null
 
-    const { style } = context.data;
+    const { style } = context.data
     const line = d3Line()
       .x((d) => d.x)
-      .y((d) => d.y);
+      .y((d) => d.y)
 
     if (props.curve) {
-      line.curve(props.curve);
+      line.curve(props.curve)
     }
 
-    const bgColor = fill || defaultColor;
+    const bgColor = fill || defaultColor
 
     const restProps = {
       attrs: context.data.attrs,
       on: context.data.on,
-    };
+    }
 
-    const nextData = isFunction(offset) ? points.map(offset) : points;
+    const nextData = isFunction(offset) ? points.map(offset) : points
 
     return (
       <path
@@ -61,6 +61,6 @@ export default {
         {...restProps}
         style={style}
       />
-    );
+    )
   },
-};
+}

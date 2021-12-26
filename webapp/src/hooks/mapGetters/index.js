@@ -14,9 +14,9 @@
  * =============================================================
  */
 
-import { reactive } from '@vue/composition-api';
+import { reactive } from '@vue/composition-api'
 
-import store from '@/store';
+import store from '@/store'
 
 /**
  * 使用 hooks 实现类似 mapGetters
@@ -24,9 +24,9 @@ import store from '@/store';
  * @param {Array<String>} getters getters 列表，对应 mapGetters 的数组
  */
 export function useMapGetters(getters) {
-  const map = reactive({});
+  const map = reactive({})
   for (const getter of getters) {
-    map[getter] = store.getters[getter];
+    map[getter] = store.getters[getter]
   }
-  return map;
+  return map
 }

@@ -1,18 +1,11 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance
+with the License. * You may obtain a copy of the License at * *
+http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law
+or agreed to in writing, software * distributed under the License is distributed
+on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. */
 
 <template>
   <div class="app-container">
@@ -55,9 +48,20 @@
       @cancel="crud.cancelCU"
       @ok="crud.submitCU"
     >
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
+      <el-form
+        ref="form"
+        :inline="true"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" style="width: 455px;" maxlength="50" show-word-limit />
+          <el-input
+            v-model="form.name"
+            style="width: 455px;"
+            maxlength="50"
+            show-word-limit
+          />
         </el-form-item>
         <el-form-item label="描述信息" prop="remark">
           <el-input
@@ -73,7 +77,14 @@
     </BaseModal>
     <el-row :gutter="15">
       <!--角色管理-->
-      <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="17" style="margin-bottom: 10px;">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="16"
+        :lg="16"
+        :xl="17"
+        style="margin-bottom: 10px;"
+      >
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <span class="role-span">角色列表</span>
@@ -85,10 +96,19 @@
             :row-class-name="tableRowClassName"
             @selection-change="crud.selectionChangeHandler"
           >
-            <el-table-column type="selection" width="40" :selectable="checkboxT" />
+            <el-table-column
+              type="selection"
+              width="40"
+              :selectable="checkboxT"
+            />
             <el-table-column prop="name" label="名称" />
             <el-table-column show-overflow-tooltip prop="remark" label="描述" />
-            <el-table-column show-overflow-tooltip prop="createTime" label="创建时间" width="160">
+            <el-table-column
+              show-overflow-tooltip
+              prop="createTime"
+              label="创建时间"
+              width="160"
+            >
               <template slot-scope="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
@@ -123,10 +143,22 @@
         </el-card>
       </el-col>
       <!-- 菜单授权 -->
-      <el-col v-show="treeMode === 'menu'" :xs="24" :sm="24" :md="8" :lg="8" :xl="7">
+      <el-col
+        v-show="treeMode === 'menu'"
+        :xs="24"
+        :sm="24"
+        :md="8"
+        :lg="8"
+        :xl="7"
+      >
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
-            <el-tooltip class="item" effect="dark" content="选择指定角色分配菜单" placement="top">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="选择指定角色分配菜单"
+              placement="top"
+            >
               <span class="role-span">菜单分配</span>
             </el-tooltip>
             <el-button
@@ -148,7 +180,14 @@
           />
         </el-card>
       </el-col>
-      <el-col v-show="treeMode === 'authCode'" :xs="24" :sm="24" :md="8" :lg="8" :xl="7">
+      <el-col
+        v-show="treeMode === 'authCode'"
+        :xs="24"
+        :sm="24"
+        :md="8"
+        :lg="8"
+        :xl="7"
+      >
         <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <el-tooltip
@@ -168,11 +207,16 @@
               >保存</el-button
             >
           </div>
-          <el-checkbox-group v-model="authCodeCheckedList" class="flex flex-col">
+          <el-checkbox-group
+            v-model="authCodeCheckedList"
+            class="flex flex-col"
+          >
             <el-popover
               v-for="authCode in authCodeList"
               :key="authCode.id"
-              :title="authCode.children.length ? '该权限组包含以下权限' : undefined"
+              :title="
+                authCode.children.length ? '该权限组包含以下权限' : undefined
+              "
               placement="left"
               trigger="hover"
               width="400"
@@ -194,23 +238,23 @@
 </template>
 
 <script>
-import CRUD, { presenter, header, form, crud } from '@crud/crud';
-import rrOperation from '@crud/RR.operation';
-import cdOperation from '@crud/CD.operation';
-import udOperation from '@crud/UD.operation';
-import pagination from '@crud/Pagination';
-import { validateName, checkLeafNode, hasPermission } from '@/utils';
-import crudRoles, { editMenu, get, editOperations } from '@/api/system/role';
-import { getMenusTree } from '@/api/system/menu';
-import { getAuthCodeList } from '@/api/system/authCode';
-import BaseModal from '@/components/BaseModal';
-import datePickerMixin from '@/mixins/datePickerMixin';
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import cdOperation from '@crud/CD.operation'
+import udOperation from '@crud/UD.operation'
+import pagination from '@crud/Pagination'
+import { validateName, checkLeafNode, hasPermission } from '@/utils'
+import crudRoles, { editMenu, get, editOperations } from '@/api/system/role'
+import { getMenusTree } from '@/api/system/menu'
+import { getAuthCodeList } from '@/api/system/authCode'
+import BaseModal from '@/components/BaseModal'
+import datePickerMixin from '@/mixins/datePickerMixin'
 
-const DASHBOARD_MENU_ID = 1; // 概览页菜单ID
-const ADMIN_ROLE_ID = 1; // 管理员角色id
-const REGISTER_ROLE_ID = 2; // 注册用户角色id
+const DASHBOARD_MENU_ID = 1 // 概览页菜单ID
+const ADMIN_ROLE_ID = 1 // 管理员角色id
+const REGISTER_ROLE_ID = 2 // 注册用户角色id
 
-const defaultForm = { id: null, name: null, remark: null };
+const defaultForm = { id: null, name: null, remark: null }
 export default {
   name: 'Role',
   components: { BaseModal, pagination, cdOperation, rrOperation, udOperation },
@@ -222,7 +266,7 @@ export default {
         add: hasPermission('system:role:create'),
         del: hasPermission('system:role:delete'),
       },
-    });
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud(), datePickerMixin],
   data() {
@@ -247,70 +291,70 @@ export default {
       authCodeList: [], // 操作权限树形列表
       authCodeCheckedList: [], // 操作权限勾选数组
       permissionLoading: false, // 保存权限 loading
-    };
+    }
   },
   computed: {
     // 所选用户 ID
     currentId() {
-      return this.currentRole.id;
+      return this.currentRole.id
     },
     // 所选角色的权限
     checkedPermissionList() {
-      if (!this.currentRole) return [];
+      if (!this.currentRole) return []
       return this.currentRole.auths
         .filter((auth) => this.permissionLeafNodeIdList.includes(auth.id))
-        .map((auth) => auth.id);
+        .map((auth) => auth.id)
     },
     // 权限列表叶节点
     permissionLeafNodeIdList() {
-      return this.authCodeList.map((p) => p.id);
+      return this.authCodeList.map((p) => p.id)
     },
   },
   created() {
-    this.getMenus();
-    this.getPermissions();
+    this.getMenus()
+    this.getPermissions()
   },
   methods: {
     hasPermission,
 
     [CRUD.HOOK.afterRefresh]() {
-      this.currentIndex = null;
-      this.currentRole = null;
-      this.treeMode = null;
-      this.$refs.menu.setCheckedKeys(this.defaultCheckedKeys);
+      this.currentIndex = null
+      this.currentRole = null
+      this.treeMode = null
+      this.$refs.menu.setCheckedKeys(this.defaultCheckedKeys)
     },
     // 提交前做的操作
     [CRUD.HOOK.afterValidateCU]() {
-      return true;
+      return true
     },
     // 获取所有菜单
     getMenus() {
       getMenusTree().then((res) => {
-        res = res || [];
+        res = res || []
         for (let index = 0; index < res.length; index += 1) {
-          const node = res[index];
+          const node = res[index]
           if (this.defaultCheckedKeys.includes(node.id)) {
-            node.disabled = true;
-            break;
+            node.disabled = true
+            break
           }
         }
-        this.menus = res;
-        this.leafNodeIds = checkLeafNode(res, []).map((node) => node.id);
-      });
+        this.menus = res
+        this.leafNodeIds = checkLeafNode(res, []).map((node) => node.id)
+      })
     },
     // 获取操作权限树结构
     async getPermissions() {
-      this.authCodeList = await getAuthCodeList();
+      this.authCodeList = await getAuthCodeList()
       this.authCodeList.forEach((authCode) => {
-        const { permissions } = authCode;
-        authCode.children = this.generatePermissionTree(permissions);
-      });
+        const { permissions } = authCode
+        authCode.children = this.generatePermissionTree(permissions)
+      })
     },
     generatePermissionTree(permissions) {
-      if (!permissions.length) return [];
+      if (!permissions.length) return []
 
-      const result = [];
-      const pidRecord = {};
+      const result = []
+      const pidRecord = {}
       for (const permission of permissions) {
         // pid 为 0 说明是第一级权限，直接加到 result
         if (permission.pid === 0) {
@@ -318,95 +362,95 @@ export default {
             id: permission.id,
             authCode: permission.name,
             children: [],
-          });
+          })
         } else {
-          const pidList = []; // 祖先 pid 列表
-          permission._pid = permission.pid; // 使用 _pid 临时记录 pid
+          const pidList = [] // 祖先 pid 列表
+          permission._pid = permission.pid // 使用 _pid 临时记录 pid
           while (permission._pid !== 0) {
-            pidList.unshift(permission._pid); // 从左侧插入祖先 pid
-            permission._pid = pidRecord[permission._pid]; // 寻找当前祖先权限的 pid
+            pidList.unshift(permission._pid) // 从左侧插入祖先 pid
+            permission._pid = pidRecord[permission._pid] // 寻找当前祖先权限的 pid
           }
-          let currentPermission;
-          let currentList = result;
+          let currentPermission
+          let currentList = result
 
           // 根据祖先 pid 列表，依次寻找正确的上级权限
           for (const pid of pidList) {
-            currentPermission = currentList.find((p) => p.id === pid);
-            currentList = currentPermission.children;
+            currentPermission = currentList.find((p) => p.id === pid)
+            currentList = currentPermission.children
           }
           currentPermission.children.push({
             id: permission.id,
             authCode: permission.name,
             children: [],
-          });
+          })
         }
 
-        pidRecord[permission.id] = permission.pid; // 记录当前权限及其 pid 的关系
+        pidRecord[permission.id] = permission.pid // 记录当前权限及其 pid 的关系
       }
 
-      return result;
+      return result
     },
     tableRowClassName({ rowIndex }) {
-      return rowIndex === this.currentIndex ? 'highlight-row' : '';
+      return rowIndex === this.currentIndex ? 'highlight-row' : ''
     },
     // 触发单选
     handleCurrentChange(role, index) {
-      this.treeMode = 'menu';
+      this.treeMode = 'menu'
       if (role) {
         // 保存当前的角色index
-        this.currentIndex = index;
-        this.currentRole = role;
+        this.currentIndex = index
+        this.currentRole = role
         // 菜单数据需要特殊处理
-        const idSet = new Set(this.defaultCheckedKeys);
+        const idSet = new Set(this.defaultCheckedKeys)
         role.menus.forEach((menu) => {
           if (this.leafNodeIds.includes(menu.id)) {
-            idSet.add(menu.id);
+            idSet.add(menu.id)
           }
-        });
-        this.$refs.menu.setCheckedKeys([...idSet]);
+        })
+        this.$refs.menu.setCheckedKeys([...idSet])
       }
     },
     doSelectPermissions(role, index) {
-      this.treeMode = 'authCode';
-      this.currentRole = role;
-      this.currentIndex = index;
-      this.authCodeCheckedList = role.auths.map((auth) => auth.id);
+      this.treeMode = 'authCode'
+      this.currentRole = role
+      this.currentIndex = index
+      this.authCodeCheckedList = role.auths.map((auth) => auth.id)
     },
     // 保存菜单
     saveMenu() {
-      this.menuLoading = true;
-      const role = { id: this.currentId, menus: [] };
+      this.menuLoading = true
+      const role = { id: this.currentId, menus: [] }
       // 得到半选的父节点数据，保存起来
       this.$refs.menu.getHalfCheckedKeys().forEach((data) => {
-        const menu = { id: data };
-        role.menus.push(menu);
-      });
+        const menu = { id: data }
+        role.menus.push(menu)
+      })
       // 得到已选中的 key 值
       this.$refs.menu.getCheckedKeys().forEach((data) => {
-        const menu = { id: data };
-        role.menus.push(menu);
-      });
+        const menu = { id: data }
+        role.menus.push(menu)
+      })
       editMenu(role)
         .then(() => {
-          this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS);
-          this.update();
+          this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
+          this.update()
         })
         .finally(() => {
-          this.menuLoading = false;
-        });
+          this.menuLoading = false
+        })
     },
     // 保存操作权限
     savePermission() {
-      const role = { roleId: this.currentId, authIds: this.authCodeCheckedList };
-      this.permissionLoading = true;
+      const role = { roleId: this.currentId, authIds: this.authCodeCheckedList }
+      this.permissionLoading = true
       editOperations(role)
         .then(() => {
-          this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS);
-          this.update();
+          this.crud.notify('保存成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
+          this.update()
         })
         .finally(() => {
-          this.permissionLoading = false;
-        });
+          this.permissionLoading = false
+        })
     },
     // 改变数据
     update() {
@@ -414,20 +458,20 @@ export default {
       get(this.currentId).then((res) => {
         for (let i = 0; i < this.crud.data.length; i += 1) {
           if (res.id === this.crud.data[i].id) {
-            Object.assign(this.crud.data[i], res);
-            break;
+            Object.assign(this.crud.data[i], res)
+            break
           }
         }
-      });
+      })
     },
     isDisabled(id) {
-      return id === ADMIN_ROLE_ID || id === REGISTER_ROLE_ID;
+      return id === ADMIN_ROLE_ID || id === REGISTER_ROLE_ID
     },
     checkboxT(row) {
-      return !this.isDisabled(row.id);
+      return !this.isDisabled(row.id)
     },
   },
-};
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

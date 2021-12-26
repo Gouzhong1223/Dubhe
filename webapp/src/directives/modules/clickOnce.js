@@ -14,33 +14,33 @@
  * =============================================================
  */
 
-import { isNumber, isPlainObject } from 'lodash';
+import { isNumber, isPlainObject } from 'lodash'
 
 export default {
   inserted(el, binding) {
     el.addEventListener('click', () => {
       if (!el.disabled) {
-        const { value } = binding;
-        let disabledTime = 1000; // 默认禁用时间
-        el.disabled = true;
-        el.style.cursor = 'unset';
+        const { value } = binding
+        let disabledTime = 1000 // 默认禁用时间
+        el.disabled = true
+        el.style.cursor = 'unset'
         if (isNumber(value)) {
-          disabledTime = value;
+          disabledTime = value
         }
         if (isPlainObject(value)) {
           if (value?.time !== undefined) {
-            const time = Number(value.time);
+            const time = Number(value.time)
             // eslint-disable-next-line no-restricted-globals
             if (!isNaN(time) && time > 0) {
-              disabledTime = time;
+              disabledTime = time
             }
           }
         }
         setTimeout(() => {
-          el.style.cursor = 'pointer';
-          el.disabled = false;
-        }, disabledTime);
+          el.style.cursor = 'pointer'
+          el.disabled = false
+        }, disabledTime)
       }
-    });
+    })
   },
-};
+}

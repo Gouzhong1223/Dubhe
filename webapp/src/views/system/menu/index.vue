@@ -1,18 +1,11 @@
-/*
-* Copyright 2019-2020 Zheng Jie
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+/* * Copyright 2019-2020 Zheng Jie * * Licensed under the Apache License,
+Version 2.0 (the "License"); * you may not use this file except in compliance
+with the License. * You may obtain a copy of the License at * *
+http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law
+or agreed to in writing, software * distributed under the License is distributed
+on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. */
 
 <template>
   <div class="app-container">
@@ -55,7 +48,13 @@
       @cancel="crud.cancelCU"
       @ok="crud.submitCU"
     >
-      <el-form ref="form" :inline="true" :model="form" :rules="rules" label-width="80px">
+      <el-form
+        ref="form"
+        :inline="true"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-form-item label="菜单类型" prop="type">
           <el-radio-group
             v-model="form.type"
@@ -159,7 +158,12 @@
           />
         </el-form-item>
         <el-form-item v-if="isPage" label="页面布局" prop="layout">
-          <el-select v-model="form.layout" placeholder="页面布局" class="short-item" clearable>
+          <el-select
+            v-model="form.layout"
+            placeholder="页面布局"
+            class="short-item"
+            clearable
+          >
             <el-option
               v-for="item in dict.Layout"
               :key="item.value"
@@ -168,7 +172,12 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="isPage" label="隐藏菜单" class="short-item" prop="hidden">
+        <el-form-item
+          v-if="isPage"
+          label="隐藏菜单"
+          class="short-item"
+          prop="hidden"
+        >
           <el-switch v-model="form.hidden" />
         </el-form-item>
         <el-form-item v-if="isPage" label="扩展配置" prop="extConfig">
@@ -201,15 +210,27 @@
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip prop="path" label="路由地址" />
-      <el-table-column show-overflow-tooltip prop="componentName" label="路由名称" />
-      <el-table-column show-overflow-tooltip prop="component" label="组件路径" />
+      <el-table-column
+        show-overflow-tooltip
+        prop="componentName"
+        label="路由名称"
+      />
+      <el-table-column
+        show-overflow-tooltip
+        prop="component"
+        label="组件路径"
+      />
       <el-table-column show-overflow-tooltip prop="layout" label="页面布局">
         <template slot-scope="scope">
           {{ dict.label.Layout[scope.row.layout] }}
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip prop="permission" label="权限标识" />
+      <el-table-column
+        show-overflow-tooltip
+        prop="permission"
+        label="权限标识"
+      />
       <el-table-column prop="hidden" label="隐藏" width="60">
         <template slot-scope="scope">
           {{ scope.row.type === 1 ? (scope.row.hidden ? '是' : '否') : '--' }}
@@ -240,20 +261,25 @@
 </template>
 
 <script>
-import Treeselect from '@riophae/vue-treeselect';
+import Treeselect from '@riophae/vue-treeselect'
 
-import Editor from '@/components/editor';
-import { validateName, validateString, validateJSON, hasPermission } from '@/utils';
-import crudMenu, { getMenusTree } from '@/api/system/menu';
-import { iconList } from '@/components/IconFont/iconfont';
-import CRUD, { presenter, header, form, crud } from '@crud/crud';
-import rrOperation from '@crud/RR.operation';
-import cdOperation from '@crud/CD.operation';
-import udOperation from '@crud/UD.operation';
-import datePickerMixin from '@/mixins/datePickerMixin';
-import BaseModal from '@/components/BaseModal';
+import CRUD, { presenter, header, form, crud } from '@crud/crud'
+import rrOperation from '@crud/RR.operation'
+import cdOperation from '@crud/CD.operation'
+import udOperation from '@crud/UD.operation'
+import Editor from '@/components/editor'
+import {
+  validateName,
+  validateString,
+  validateJSON,
+  hasPermission,
+} from '@/utils'
+import crudMenu, { getMenusTree } from '@/api/system/menu'
+import { iconList } from '@/components/IconFont/iconfont'
+import datePickerMixin from '@/mixins/datePickerMixin'
+import BaseModal from '@/components/BaseModal'
 
-import '@riophae/vue-treeselect/dist/vue-treeselect.css';
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 // crud交由presenter持有
 const defaultForm = {
@@ -272,11 +298,18 @@ const defaultForm = {
   type: 0,
   permission: null,
   extConfig: '{}',
-};
+}
 
 export default {
   name: 'Menu',
-  components: { BaseModal, Treeselect, cdOperation, rrOperation, udOperation, Editor },
+  components: {
+    BaseModal,
+    Treeselect,
+    cdOperation,
+    rrOperation,
+    udOperation,
+    Editor,
+  },
   cruds() {
     return CRUD({
       title: '菜单',
@@ -285,7 +318,7 @@ export default {
         add: hasPermission('system:menu:create'),
         del: hasPermission('system:menu:delete'),
       },
-    });
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud(), datePickerMixin],
   data() {
@@ -314,24 +347,26 @@ export default {
           { validator: validateString, trigger: 'blur' },
         ],
         pid: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }],
-        layout: [{ required: true, message: '请选择页面布局', trigger: 'blur' }],
+        layout: [
+          { required: true, message: '请选择页面布局', trigger: 'blur' },
+        ],
         extConfig: [{ validator: validateJSON, trigger: 'change' }],
       },
-    };
+    }
   },
   dicts: ['Layout'],
   computed: {
     // 目录模式
     isDir() {
-      return String(this.form.type) === '0';
+      return String(this.form.type) === '0'
     },
     // 页面模式
     isPage() {
-      return String(this.form.type) === '1';
+      return String(this.form.type) === '1'
     },
     // 外链模式
     isLink() {
-      return String(this.form.type) === '3';
+      return String(this.form.type) === '3'
     },
   },
   methods: {
@@ -340,39 +375,39 @@ export default {
     // 新增与编辑前做的操作
     [CRUD.HOOK.afterToCU]() {
       getMenusTree().then((res) => {
-        this.menus = [];
-        const menu = { id: 0, label: '根类目', children: [] };
-        menu.children = res;
-        this.menus.push(menu);
-      });
+        this.menus = []
+        const menu = { id: 0, label: '根类目', children: [] }
+        menu.children = res
+        this.menus.push(menu)
+      })
     },
     [CRUD.HOOK.beforeToAdd]() {
-      this.isEdit = false;
+      this.isEdit = false
     },
     [CRUD.HOOK.beforeToEdit]() {
-      this.isEdit = true;
+      this.isEdit = true
     },
     querySearch(queryString, cb) {
-      cb(iconList.map((item) => ({ value: item })));
+      cb(iconList.map((item) => ({ value: item })))
     },
     // 选中图标
     handleSelect(item) {
-      this.form.icon = item.value;
+      this.form.icon = item.value
     },
     onChangeType(type) {
-      this.crud.resetForm();
-      this.$refs.form.clearValidate();
-      this.crud.form.type = type;
+      this.crud.resetForm()
+      this.$refs.form.clearValidate()
+      this.crud.form.type = type
     },
     setCode(code) {
-      this.form.extConfig = code;
+      this.form.extConfig = code
     },
     handleCodeChange(value) {
-      this.setCode(value);
-      this.$refs.form.validateField('extConfig');
+      this.setCode(value)
+      this.$refs.form.validateField('extConfig')
     },
   },
-};
+}
 </script>
 <style scoped>
 .long-item {

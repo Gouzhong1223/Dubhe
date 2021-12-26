@@ -14,8 +14,8 @@
  * =============================================================
  */
 
-import ToolbarButton from './toolbarButton';
-import ToolbarControls from './controls';
+import ToolbarButton from './toolbarButton'
+import ToolbarControls from './controls'
 
 const ToolbarItem = {
   name: 'ToolbarItem',
@@ -37,17 +37,17 @@ const ToolbarItem = {
         activeTool: this.activeTool,
       },
       on: this.$listeners,
-    };
+    }
     if (this.item.command === 'Draw') {
-      return <ToolbarControls value={this.shape} {...toolItemProps} />;
+      return <ToolbarControls value={this.shape} {...toolItemProps} />
     }
 
     if (this.item.command === 'SetWlPreset') {
-      return <ToolbarControls value={this.wlPreset} {...toolItemProps} />;
+      return <ToolbarControls value={this.wlPreset} {...toolItemProps} />
     }
 
-    return <ToolbarButton {...toolItemProps} />;
+    return <ToolbarButton {...toolItemProps} />
   },
-};
+}
 
-export default ToolbarItem;
+export default ToolbarItem

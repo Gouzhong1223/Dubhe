@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <el-popover
@@ -58,7 +52,11 @@
     </el-form>
     <div style="margin: 0; text-align: right;">
       <el-button size="mini" type="text" @click="onCancel">取消</el-button>
-      <el-button type="primary" size="mini" :loading="submitting" @click="onFilesUpload"
+      <el-button
+        type="primary"
+        size="mini"
+        :loading="submitting"
+        @click="onFilesUpload"
         >上传</el-button
       >
     </div>
@@ -72,9 +70,9 @@ import {
   validateNameWithHyphen,
   uploadSizeFomatter,
   invalidFileNameChar,
-} from '@/utils';
-import UploadProgress from '@/components/UploadProgress';
-import UploadInline from '@/components/UploadForm/inline';
+} from '@/utils'
+import UploadProgress from '@/components/UploadProgress'
+import UploadInline from '@/components/UploadForm/inline'
 
 export default {
   name: 'QuickUploadPopover',
@@ -118,7 +116,13 @@ export default {
           { max: 32, message: '长度在 32 个字符以内', trigger: 'blur' },
           { validator: validateNameWithHyphen, trigger: ['blur', 'change'] },
         ],
-        path: [{ required: true, message: '请输入文件路径', trigger: ['blur', 'manual'] }],
+        path: [
+          {
+            required: true,
+            message: '请输入文件路径',
+            trigger: ['blur', 'manual'],
+          },
+        ],
       },
 
       uploadParams: {
@@ -135,87 +139,89 @@ export default {
       uploading: false,
       submitting: false,
       visible: false,
-    };
+    }
   },
   computed: {
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.user
     },
     status() {
-      return this.progress === 100 ? 'success' : null;
+      return this.progress === 100 ? 'success' : null
     },
   },
   mounted() {
-    this.updatePath();
+    this.updatePath()
   },
   methods: {
     onFileRemove() {
-      this.form.path = null;
-      this.uploading = false;
-      this.$refs.filesPath.validate('manual');
+      this.form.path = null
+      this.uploading = false
+      this.$refs.filesPath.validate('manual')
     },
     uploadStart(files) {
-      this.updatePath();
-      [this.uploading, this.size, this.progress] = [true, files.size, 0];
+      this.updatePath()
+      ;[this.uploading, this.size, this.progress] = [true, files.size, 0]
     },
     onSetProgress(val) {
-      this.progress += val;
+      this.progress += val
     },
     uploadSuccess(res) {
-      this.progress = 100;
+      this.progress = 100
       setTimeout(() => {
-        this.uploading = false;
-      }, 1000);
-      this.form.path = res[0].data.objectName;
-      this.$refs.filesPath.validate('manual');
+        this.uploading = false
+      }, 1000)
+      this.form.path = res[0].data.objectName
+      this.$refs.filesPath.validate('manual')
     },
     uploadError() {
       this.$message({
         message: '上传文件失败',
         type: 'error',
-      });
-      this.uploading = false;
+      })
+      this.uploading = false
     },
     updatePath() {
-      this.uploadParams.objectPath = `upload-temp/${this.user.id}/${getUniqueId()}`;
+      this.uploadParams.objectPath = `upload-temp/${
+        this.user.id
+      }/${getUniqueId()}`
     },
 
     onFilesUpload() {
       // 如果表单已经在提交了，就不做处理
       if (this.submitting) {
-        return;
+        return
       }
       // 对基础表单进行验证
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.submitting = true;
+          this.submitting = true
           this.uploadApi(this.form)
             .then((res) => {
-              this.$emit('success', res);
-              this.visible = false;
+              this.$emit('success', res)
+              this.visible = false
             })
             .finally(() => {
-              this.submitting = false;
-            });
+              this.submitting = false
+            })
         }
-      });
+      })
     },
     onCancel() {
-      this.visible = false;
+      this.visible = false
     },
     onHide() {
-      this.reset();
+      this.reset()
     },
 
     reset() {
-      this.form.name = this.form.path = null;
+      this.form.name = this.form.path = null
       setTimeout(() => {
-        this.$refs.form.clearValidate();
-      }, 0);
-      this.uploading = this.submitting = false;
+        this.$refs.form.clearValidate()
+      }, 0)
+      this.uploading = this.submitting = false
     },
 
     uploadSizeFomatter,
   },
-};
+}
 </script>

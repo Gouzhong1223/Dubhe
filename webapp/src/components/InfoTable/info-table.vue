@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="info-data-table">
@@ -47,8 +41,8 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive, watch } from '@vue/composition-api';
-import InfoTableColumn from './column';
+import { onMounted, reactive, watch } from '@vue/composition-api'
+import InfoTableColumn from './column'
 
 export default {
   name: 'InfoTable',
@@ -87,112 +81,112 @@ export default {
     actionRef: Function,
   },
   setup(props) {
-    const { request, pagination = {}, actionRef } = props;
+    const { request, pagination = {}, actionRef } = props
 
     const state = reactive({
       list: [],
       loading: false,
-    });
+    })
 
     const pageAttrs = {
       ...pagination,
-    };
+    }
 
     const pageInfo = reactive({
       current: pagination.current || 1,
       total: 0,
       pageSize: pagination.pageSize || 10,
-    });
+    })
 
     // 更新分页信息
     const setPageInfo = (info = {}) => {
-      Object.assign(pageInfo, info);
-    };
+      Object.assign(pageInfo, info)
+    }
 
     // 更新数据
     const setData = (data) => {
       Object.assign(state, {
         list: data,
-      });
-    };
+      })
+    }
 
     // 更新分页信息
     const setLoading = (loading) => {
       Object.assign(state, {
         loading,
-      });
-    };
+      })
+    }
 
     const sizeChange = (size) => {
       setPageInfo({
         pageSize: size,
-      });
-    };
+      })
+    }
 
     const pageChange = (current) => {
       setPageInfo({
         current,
-      });
-    };
+      })
+    }
 
     const queryList = async (cfg = {}) => {
       if (state.loading) {
-        return;
+        return
       }
-      setLoading(true);
-      const { pageSize, current } = pageInfo;
+      setLoading(true)
+      const { pageSize, current } = pageInfo
       try {
         const res = await request({
           current,
           size: pageSize,
           ...props.params,
           ...cfg,
-        });
+        })
         // 这边按照统一的 result, page 来进行管理
-        const { result = [], page = {} } = res || {};
-        setPageInfo({ total: page.total });
-        setData(result);
+        const { result = [], page = {} } = res || {}
+        setPageInfo({ total: page.total })
+        setData(result)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
     onMounted(() => {
       // 首先判断是否为异步请求
       if (typeof request === 'function') {
-        queryList();
+        queryList()
         if (typeof actionRef === 'function') {
           actionRef().value = {
             refresh: queryList,
-          };
+          }
         }
       } else if (Array.isArray(props.dataSource)) {
         // 检测是否为静态数据源
-        setData(props.dataSource);
+        setData(props.dataSource)
       }
-    });
+    })
 
     watch(
       () => pageInfo.pageSize,
       () => {
-        setPageInfo({ ...pageInfo, current: 1 });
-        queryList();
-      }
-    );
+        setPageInfo({ ...pageInfo, current: 1 })
+        queryList()
+      },
+    )
 
     watch(
       () => props.dataSource,
       (next) => {
-        setData(next);
-      }
-    );
+        setData(next)
+      },
+    )
 
     watch(
       () => pageInfo.current,
       () => {
-        queryList();
-      }
-    );
+        queryList()
+      },
+    )
 
     return {
       state,
@@ -206,7 +200,7 @@ export default {
         }),
       sizeChange,
       pageChange,
-    };
+    }
   },
-};
+}
 </script>

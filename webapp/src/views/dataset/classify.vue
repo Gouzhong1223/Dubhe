@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div>
@@ -46,7 +40,10 @@
               :initialValue="initialValue"
               :popperAttrs="popperAttrs"
             >
-              <el-button slot="trigger" type="text" style=" margin-bottom: 14px; margin-left: 30px;"
+              <el-button
+                slot="trigger"
+                type="text"
+                style=" margin-bottom: 14px; margin-left: 30px;"
                 >筛选<i class="el-icon-arrow-down el-icon--right"
               /></el-button>
             </SearchBox>
@@ -88,12 +85,24 @@
               </div>
             </div>
           </div>
-          <div v-if="lastTabName === 'unfinished' && crud.page.total === 0 && !crud.loading">
+          <div
+            v-if="
+              lastTabName === 'unfinished' &&
+                crud.page.total === 0 &&
+                !crud.loading
+            "
+          >
             <InfoCard :handleClick="openUploadDialog">
               <span slot="desc">点击添加图片</span>
             </InfoCard>
           </div>
-          <div v-if="lastTabName === 'finished' && crud.page.total === 0 && !crud.loading">
+          <div
+            v-if="
+              lastTabName === 'finished' &&
+                crud.page.total === 0 &&
+                !crud.loading
+            "
+          >
             <InfoCard>
               <i slot="image" class="el-icon-receiving" />
               <span slot="desc">
@@ -142,7 +151,9 @@
           <div class="mb-10">
             <label class="el-form-item__label no-float tl">标注类型</label>
             <div class="f14">
-              <span class="vm">{{ annotationByCode(datasetInfo.annotateType, 'name') }}</span>
+              <span class="vm">{{
+                annotationByCode(datasetInfo.annotateType, 'name')
+              }}</span>
             </div>
           </div>
           <div v-if="datasetInfo.labelGroupId" class="mb-10">
@@ -180,7 +191,9 @@
           </div>
           <div v-if="rawLabelData.length">
             <div class="pb-10 flex flex-between flex-wrap flex-vertical-align">
-              <label class="el-form-item__label" style="max-width: 39.9%; padding: 0;"
+              <label
+                class="el-form-item__label"
+                style="max-width: 39.9%; padding: 0;"
                 >全部标签({{ rawLabelData.length }})</label
               >
               <SearchLabel @change="handleSearch" />
@@ -232,11 +245,12 @@
 </template>
 
 <script>
-import { without, pick } from 'lodash';
-import { Message } from 'element-ui';
+import { without, pick } from 'lodash'
+import { Message } from 'element-ui'
 
-import { colorByLuminance } from '@/utils';
-import { queryDataEnhanceList, detail, count } from '@/api/preparation/dataset';
+import CRUD, { presenter, header, crud } from '@crud/crud'
+import { colorByLuminance } from '@/utils'
+import { queryDataEnhanceList, detail, count } from '@/api/preparation/dataset'
 
 import {
   transformFile,
@@ -248,25 +262,29 @@ import {
   labelGroupTypeMap,
   annotationBy,
   isPresetDataset,
-} from '@/views/dataset/util';
-import crudDataFile, { list, del, submit } from '@/api/preparation/datafile';
-import { getAutoLabels, getLabels, createLabel, editLabel } from '@/api/preparation/datalabel';
-import { batchFinishAnnotation } from '@/api/preparation/annotation';
-import CRUD, { presenter, header, crud } from '@crud/crud';
-import ImageGallery from '@/components/ImageGallery';
-import UploadForm from '@/components/UploadForm';
-import InfoCard from '@/components/Card/info';
-import InfoSelect from '@/components/InfoSelect';
-import SortingMenu from '@/components/SortingMenu';
-import SearchBox from '@/components/SearchBox';
-import LabelEditor from '@/views/dataset/components/labelEditor';
-import SearchLabel from './components/searchLabel';
-import LabelTip from './annotate/settingContainer/labelTip';
-import PicInfoModal from './components/picInfoModal';
-import EditLabel from './annotate/settingContainer/labelList/edit';
+} from '@/views/dataset/util'
+import crudDataFile, { list, del, submit } from '@/api/preparation/datafile'
+import {
+  getAutoLabels,
+  getLabels,
+  createLabel,
+  editLabel,
+} from '@/api/preparation/datalabel'
+import { batchFinishAnnotation } from '@/api/preparation/annotation'
+import ImageGallery from '@/components/ImageGallery'
+import UploadForm from '@/components/UploadForm'
+import InfoCard from '@/components/Card/info'
+import InfoSelect from '@/components/InfoSelect'
+import SortingMenu from '@/components/SortingMenu'
+import SearchBox from '@/components/SearchBox'
+import LabelEditor from '@/views/dataset/components/labelEditor'
+import SearchLabel from './components/searchLabel'
+import LabelTip from './annotate/settingContainer/labelTip'
+import PicInfoModal from './components/picInfoModal'
+import EditLabel from './annotate/settingContainer/labelList/edit'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const path = require('path');
+const path = require('path')
 
 export default {
   name: 'Classify',
@@ -284,11 +302,11 @@ export default {
     SearchBox,
   },
   cruds() {
-    const id = this.parent.$route.params.datasetId;
-    const crudObj = CRUD({ title: '数据分类', crudMethod: { ...crudDataFile } });
-    crudObj.params = { datasetId: id, status: fileCodeMap.UNFINISHED };
-    crudObj.page.size = 30;
-    return crudObj;
+    const id = this.parent.$route.params.datasetId
+    const crudObj = CRUD({ title: '数据分类', crudMethod: { ...crudDataFile } })
+    crudObj.params = { datasetId: id, status: fileCodeMap.UNFINISHED }
+    crudObj.page.size = 30
+    return crudObj
   },
   mixins: [presenter(), header(), crud()],
   data() {
@@ -395,117 +413,119 @@ export default {
         { label: '默认排序', value: 0 },
         { label: '名称排序', value: 1 },
       ],
-    };
+    }
   },
   computed: {
     formItems() {
-      return this.lastTabName === 'unfinished' ? this.formItemsUnfinish : this.formItemsFinish;
+      return this.lastTabName === 'unfinished'
+        ? this.formItemsUnfinish
+        : this.formItemsFinish
     },
     // 文件上传前携带尺寸信息
     withDimensionFile() {
-      return withDimensionFile;
+      return withDimensionFile
     },
     annotationByCode() {
-      return annotationBy('code');
+      return annotationBy('code')
     },
     uploadParams() {
       return {
         datasetId: this.datasetId,
         objectPath: `dataset/${this.datasetId}/origin`, // 对象存储路径
-      };
+      }
     },
     selectImgsId() {
-      return this.commit[this.lastTabName] || [];
+      return this.commit[this.lastTabName] || []
     },
     countInfoTxt() {
       return {
         unfinished: `无标注信息（${this.countInfo.unfinished}）`,
         finished: `有标注信息（${this.countInfo.finished}）`,
-      };
+      }
     },
     // 预置数据集不支持新建标签
     showAddLabel() {
-      return !isPresetDataset(this.datasetInfo.type);
+      return !isPresetDataset(this.datasetInfo.type)
     },
   },
   created() {
-    this.datasetId = parseInt(this.$route.params.datasetId, 10);
-    this.refreshLabel();
+    this.datasetId = parseInt(this.$route.params.datasetId, 10)
+    this.refreshLabel()
     Promise.all([
       list({ datasetId: this.datasetId, status: [fileCodeMap.UNFINISHED] }),
       list({ datasetId: this.datasetId, status: [fileCodeMap.FINISHED] }),
     ]).then(([unfinished, finished]) => {
       if (unfinished.result.length === 0 && finished.result.length !== 0) {
-        this.lastTabName = 'finished';
-        this.crud.params.status = this.crudStatusMap[this.lastTabName];
-        this.crud.toQuery();
+        this.lastTabName = 'finished'
+        this.crud.params.status = this.crudStatusMap[this.lastTabName]
+        this.crud.toQuery()
       }
-    });
+    })
 
     detail(this.datasetId).then((res) => {
-      this.datasetInfo = res || {};
-    });
+      this.datasetInfo = res || {}
+    })
     // 系统标签
-    this.getSystemLabel();
+    this.getSystemLabel()
   },
   mounted() {
-    (async () => {
-      const enhanceListResult = await queryDataEnhanceList();
-      const { dictDetails = [] } = enhanceListResult || {};
+    ;(async () => {
+      const enhanceListResult = await queryDataEnhanceList()
+      const { dictDetails = [] } = enhanceListResult || {}
       const labels = dictDetails.map((d) => ({
         label: d.label,
         value: Number(d.value),
-      }));
-      this.enhanceLabels = labels;
-    })();
+      }))
+      this.enhanceLabels = labels
+    })()
   },
   methods: {
     [CRUD.HOOK.afterRefresh]() {
-      this.updateCountInfo();
+      this.updateCountInfo()
     },
     // 更新数据集当前搜索条件下文件有无标注信息的统计数量
     async updateCountInfo() {
-      this.countInfo = await count(this.datasetId, this.crud.params);
+      this.countInfo = await count(this.datasetId, this.crud.params)
     },
     handleFilter(form) {
-      Object.assign(this.crud.params, form);
-      this.crud.refresh();
+      Object.assign(this.crud.params, form)
+      this.crud.refresh()
     },
     // 普通数据集的无标签组归属的标签才显示标签编辑按钮
     showEditLabel(label) {
-      return !label.labelGroupId && !isPresetDataset(this.datasetInfo.type);
+      return !label.labelGroupId && !isPresetDataset(this.datasetInfo.type)
     },
     handleEditLabel(field, item) {
-      editLabel(item.id, field).then(this.refreshLabel);
+      editLabel(item.id, field).then(this.refreshLabel)
     },
     handleSort(command) {
-      this.resetQuery();
-      this.crud.params.sort = command === 1 ? 'name' : '';
-      this.crud.refresh();
+      this.resetQuery()
+      this.crud.params.sort = command === 1 ? 'name' : ''
+      this.crud.refresh()
     },
     // 根据文件 enhaneType 找到对应的增强标签
     findEnhanceMatch(item) {
-      return this.enhanceLabels.find((d) => d.value === item.enhanceType);
+      return this.enhanceLabels.find((d) => d.value === item.enhanceType)
     },
     // 生成增强标签
     buildEnhanceTag(file) {
-      const match = this.findEnhanceMatch(file);
+      const match = this.findEnhanceMatch(file)
       if (match) {
         const enhanceTag = {
           label: match.label,
           value: match.value,
           tag: dataEnhanceMap[match.value],
-        };
-        return enhanceTag;
+        }
+        return enhanceTag
       }
-      return undefined;
+      return undefined
     },
     // 重置所有查询结果
     resetQuery() {
-      this.checkAll = false;
-      this.isIndeterminate = false;
-      this.$refs.imgGallery.resetMultipleSelection();
-      this.crud.page.current = 1;
+      this.checkAll = false
+      this.isIndeterminate = false
+      this.$refs.imgGallery.resetMultipleSelection()
+      this.crud.page.current = 1
     },
     getSystemLabel() {
       getAutoLabels(labelGroupTypeMap.VISUAL.value).then((res) => {
@@ -514,16 +534,16 @@ export default {
           label: item.name,
           color: item.color,
           chosen: false,
-        }));
-        this.systemLabels = labels;
-      });
+        }))
+        this.systemLabels = labels
+      })
     },
     // 获取过滤后的标签
     handleSearch(label) {
       if (label) {
-        this.labelData = this.rawLabelData.filter((d) => d.name.includes(label));
+        this.labelData = this.rawLabelData.filter((d) => d.name.includes(label))
       } else {
-        this.labelData = this.rawLabelData;
+        this.labelData = this.rawLabelData
       }
     },
     toDelete(datas = []) {
@@ -532,53 +552,53 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        this.crud.delAllLoading = true;
-        const ids = datas.map((d) => ({ id: d }));
+        this.crud.delAllLoading = true
+        const ids = datas.map((d) => ({ id: d }))
         const params = {
           fileIds: datas,
           datasetIds: this.datasetId,
-        };
+        }
         if (ids.length) {
           del(params)
             .then(() => {
               this.$message({
                 message: '删除文件成功',
                 type: 'success',
-              });
-              this.crud.toQuery();
+              })
+              this.crud.toQuery()
             })
             .finally(() => {
-              this.crud.delAllLoading = false;
-            });
+              this.crud.delAllLoading = false
+            })
         }
-        this.handleCheckAllChange(0);
+        this.handleCheckAllChange(0)
         // 更新 commit 表
         Object.assign(this.commit, {
           [this.lastTabName]: without(this.commit[this.lastTabName], ...datas),
-        });
-      });
+        })
+      })
     },
     handleCheckAllChange(val) {
-      const { imgGallery } = this.$refs;
+      const { imgGallery } = this.$refs
       if (imgGallery) {
         if (val) {
-          imgGallery.selectAll();
+          imgGallery.selectAll()
         } else {
-          imgGallery.resetMultipleSelection();
+          imgGallery.resetMultipleSelection()
         }
       }
     },
     handleSelectMultipleImg(values) {
       // 选中图片的数量
-      const checkedCount = values.length;
-      const dataImgLen = this.$refs.imgGallery.dataImages.length;
-      this.checkAll = checkedCount === dataImgLen;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < dataImgLen;
-      this.crud.selectionChangeHandler(values);
+      const checkedCount = values.length
+      const dataImgLen = this.$refs.imgGallery.dataImages.length
+      this.checkAll = checkedCount === dataImgLen
+      this.isIndeterminate = checkedCount > 0 && checkedCount < dataImgLen
+      this.crud.selectionChangeHandler(values)
       // 更新 commit 表
       Object.assign(this.commit, {
         [this.lastTabName]: values,
-      });
+      })
     },
     // 点击图片事件
     clickImg(img, selectedImgList) {
@@ -586,99 +606,105 @@ export default {
       const extendFile = (d) => ({
         file_name: path.basename(d.url),
         enhanceType: d.enhanceType,
-      });
+      })
 
       // 扩展文件增强类型
       const extendFileEnhance = (d) => ({
         file_name: path.basename(d.url),
         enhanceType: d.enhanceType,
         enhanceTag: this.buildEnhanceTag(d),
-      });
+      })
 
       // 如果没有选中图片
       if (selectedImgList.length === 0) {
-        this.showPicModal = true;
-        this.curFile = transformFile(img, extendFile);
-        this.fileList = transformFiles(this.crud.data, extendFileEnhance);
-        const curIndex = this.crud.data.findIndex((item) => item.id === this.curFile.id);
+        this.showPicModal = true
+        this.curFile = transformFile(img, extendFile)
+        this.fileList = transformFiles(this.crud.data, extendFileEnhance)
+        const curIndex = this.crud.data.findIndex(
+          (item) => item.id === this.curFile.id,
+        )
         if (curIndex > -1) {
-          this.initialIndex = curIndex;
+          this.initialIndex = curIndex
         }
       }
     },
     handlePicModalClose() {
-      this.modalId += 1;
-      this.showPicModal = false;
-      this.curFile = undefined;
-      this.fileList = [];
+      this.modalId += 1
+      this.showPicModal = false
+      this.curFile = undefined
+      this.fileList = []
     },
     handleTabClick(tab) {
-      const tabName = tab.name;
+      const tabName = tab.name
       if (this.lastTabName === tabName) {
-        return;
+        return
       }
-      this.crud.params = pick(this.crud.params, ['status', 'datasetId', 'sort']);
-      this.crud.params.status = this.crudStatusMap[tabName];
-      this.lastTabName = tabName;
-      this.crud.refresh();
-      this.checkAll = false;
-      this.typeSwitch = true;
+      this.crud.params = pick(this.crud.params, ['status', 'datasetId', 'sort'])
+      this.crud.params.status = this.crudStatusMap[tabName]
+      this.lastTabName = tabName
+      this.crud.refresh()
+      this.checkAll = false
+      this.typeSwitch = true
     },
     async uploadSuccess(res) {
-      const files = getFileFromMinIO(res);
+      const files = getFileFromMinIO(res)
       // 提交业务上传
       if (files.length > 0) {
         submit(this.datasetId, files).then(() => {
           this.$message({
             message: '上传文件成功',
             type: 'success',
-          });
-          this.crud.toQuery();
-        });
+          })
+          this.crud.toQuery()
+        })
       }
     },
     uploadError(err) {
       this.$message({
         message: err.message || '上传文件失败',
         type: 'error',
-      });
+      })
     },
     openUploadDialog() {
-      this.uploadDialogVisible = true;
+      this.uploadDialogVisible = true
     },
     handleClose() {
-      this.uploadDialogVisible = false;
+      this.uploadDialogVisible = false
     },
     refreshLabel() {
       getLabels(this.datasetId).then((res) => {
-        this.rawLabelData = res;
-        const labelOptionsIndex = this.formItemsFinish.findIndex((d) => d.prop === 'labelId');
+        this.rawLabelData = res
+        const labelOptionsIndex = this.formItemsFinish.findIndex(
+          (d) => d.prop === 'labelId',
+        )
         this.categoryId2Name = this.rawLabelData.reduce(
           (acc, item) =>
             Object.assign(acc, {
               [item.id]: item.name,
             }),
-          {}
-        );
+          {},
+        )
 
         // 用于筛选功能
-        this.formItemsFinish[labelOptionsIndex].options = this.rawLabelData.map((item) => {
-          return {
-            label: item.name,
-            value: item.id,
-          };
-        });
-        this.typeSwitch = true;
-        this.switchLabelTag(true);
+        this.formItemsFinish[labelOptionsIndex].options = this.rawLabelData.map(
+          (item) => {
+            return {
+              label: item.name,
+              value: item.id,
+            }
+          },
+        )
+        this.typeSwitch = true
+        this.switchLabelTag(true)
         // 初始化设置 labelData
-        this.labelData = this.rawLabelData;
-      });
+        this.labelData = this.rawLabelData
+      })
     },
     chooseLabel(label, event) {
       // 过滤编辑入口
-      if (event.target.classList.contains('el-icon-edit')) return;
+      if (event.target.classList.contains('el-icon-edit')) return
       if (this.selectImgsId.length > 0) {
-        const annotations = [];
+        const annotations = []
         this.selectImgsId.forEach((item) => {
           annotations.push({
             annotation: JSON.stringify([
@@ -688,75 +714,82 @@ export default {
               },
             ]),
             id: item,
-          });
-        });
+          })
+        })
         batchFinishAnnotation({ annotations }, this.datasetId).then(() => {
-          this.crud.refresh();
-          this.handleCheckAllChange(0);
-        });
+          this.crud.refresh()
+          this.handleCheckAllChange(0)
+        })
       } else {
         this.$message({
           message: '没有选中任何图片',
           type: 'info',
-        });
+        })
       }
     },
     // 选择系统预置标签
     handleLabelSelect(value) {
-      this.selectedLabel = this.systemLabels.find((d) => d.value === value)?.label;
+      this.selectedLabel = this.systemLabels.find(
+        (d) => d.value === value,
+      )?.label
       // 往数据集里添加系统标签
       if (this.selectedLabel) {
-        if (this.rawLabelData.findIndex((d) => d.name === this.selectedLabel) > -1) {
-          Message.warning(`当前数据集已存在标签[${this.selectedLabel}]`);
-          this.selectedLabel = undefined;
-          return;
+        if (
+          this.rawLabelData.findIndex((d) => d.name === this.selectedLabel) > -1
+        ) {
+          Message.warning(`当前数据集已存在标签[${this.selectedLabel}]`)
+          this.selectedLabel = undefined
+          return
         }
         createLabel(this.datasetId, { name: this.selectedLabel }).then(() => {
           this.$message({
             message: `标签[${this.selectedLabel}]创建成功`,
             type: 'success',
-          });
-          this.selectedLabel = undefined;
-          this.refreshLabel();
-        });
+          })
+          this.selectedLabel = undefined
+          this.refreshLabel()
+        })
       } else {
-        Message.warning('请选择标签');
+        Message.warning('请选择标签')
       }
     },
     // 新建自定义标签
     handleLabelCreate(id, form) {
-      this.newLabel = form.name;
-      this.newLabelColor = form.color;
+      this.newLabel = form.name
+      this.newLabelColor = form.color
       // 往数据集里添加自定义标签
       if (this.newLabel) {
         if (this.rawLabelData.findIndex((d) => d.name === this.newLabel) > -1) {
-          Message.warning(`当前数据集已存在标签[${this.newLabel}]`);
-          return;
+          Message.warning(`当前数据集已存在标签[${this.newLabel}]`)
+          return
         }
-        createLabel(this.datasetId, { name: this.newLabel, color: this.newLabelColor }).then(() => {
+        createLabel(this.datasetId, {
+          name: this.newLabel,
+          color: this.newLabelColor,
+        }).then(() => {
           this.$message({
             message: `标签[${this.newLabel}]创建成功`,
             type: 'success',
-          });
-          this.newLabel = undefined;
-          this.newLabelColor = undefined;
-          this.refreshLabel();
-        });
+          })
+          this.newLabel = undefined
+          this.newLabelColor = undefined
+          this.refreshLabel()
+        })
       } else {
-        Message.warning('请选择标签');
+        Message.warning('请选择标签')
       }
     },
     switchLabelTag(newSwitch) {
-      this.$refs.imgGallery?.setImageTagVisible(newSwitch);
+      this.$refs.imgGallery?.setImageTagVisible(newSwitch)
     },
     getStyle(item) {
       // 根据亮度来决定颜色
       return {
         color: colorByLuminance(item.color),
-      };
+      }
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

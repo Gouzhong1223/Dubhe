@@ -14,14 +14,14 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function getLabels(id) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${id}/labels`,
     method: 'get',
-  });
+  })
 }
 
 export function createLabel(id, label) {
@@ -29,23 +29,23 @@ export function createLabel(id, label) {
     url: `/${API_MODULE_NAME.DATA}/datasets/${id}/labels`,
     method: 'post',
     data: label,
-  });
+  })
 }
 
 export function editLabel(labelId, label) {
-  label.labelId = labelId;
+  label.labelId = labelId
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/labels`,
     method: 'put',
     data: label,
-  });
+  })
 }
 
 export function getAutoLabels(labelGroupType) {
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/labels/auto/${labelGroupType}`,
     method: 'get',
-  });
+  })
 }
 
 export function deleteLabel(datasetId, labelId) {
@@ -53,5 +53,5 @@ export function deleteLabel(datasetId, labelId) {
     url: `/${API_MODULE_NAME.DATA}/datasets/labels`,
     method: 'delete',
     data: { datasetId, labelId },
-  });
+  })
 }

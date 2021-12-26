@@ -20,16 +20,16 @@ export default {
   render(h, { data, props }) {
     const columnProps = {
       ...data,
-    };
+    }
 
     if (typeof props.render === 'function') {
       columnProps.scopedSlots = {
         default: (d) => {
-          return props.render(d, { refresh: props.refresh });
+          return props.render(d, { refresh: props.refresh })
         },
-      };
+      }
     }
 
-    return h('el-table-column', columnProps);
+    return h('el-table-column', columnProps)
   },
-};
+}

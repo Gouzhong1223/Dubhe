@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import { validateNameWithHyphen, getRegValidator, hasPermission } from '@/utils';
+import { validateNameWithHyphen, getRegValidator, hasPermission } from '@/utils'
 
 // 获取权限组表格列定义
 export function getAuthCodeColumns({ doEdit, doDelete }) {
@@ -58,19 +58,19 @@ export function getAuthCodeColumns({ doEdit, doDelete }) {
         },
       ],
     },
-  ];
+  ]
 }
 
 // 搜索表单项
 export function getQueryFormItems({ activeTab, query, resetQuery }) {
-  let placeholder;
+  let placeholder
   switch (activeTab) {
     case 'permission':
-      placeholder = '请输入权限名称或权限码';
-      break;
+      placeholder = '请输入权限名称或权限码'
+      break
     case 'authCode':
     default:
-      placeholder = '请输入权限组名称或 ID';
+      placeholder = '请输入权限组名称或 ID'
   }
   return [
     {
@@ -90,7 +90,7 @@ export function getQueryFormItems({ activeTab, query, resetQuery }) {
       btnType: 'primary',
       func: query,
     },
-  ];
+  ]
 }
 
 // 权限表单项
@@ -101,7 +101,7 @@ export function getPermissionFormItems({
   length,
   formType,
 }) {
-  const isEdit = formType === 'edit';
+  const isEdit = formType === 'edit'
   return [
     {
       prop: 'name',
@@ -133,7 +133,7 @@ export function getPermissionFormItems({
       icon: 'el-icon-minus',
       size: 'mini',
     },
-  ];
+  ]
 }
 
 // 权限表单规则
@@ -147,8 +147,11 @@ export const permissionRules = {
   ],
   permission: [
     {
-      validator: getRegValidator(/^[\w:]+$/, '仅支持字母、数字、下划线和英文冒号'),
+      validator: getRegValidator(
+        /^[\w:]+$/,
+        '仅支持字母、数字、下划线和英文冒号',
+      ),
       trigger: ['blur', 'change'],
     },
   ],
-};
+}

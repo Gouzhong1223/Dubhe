@@ -14,28 +14,28 @@
  * =============================================================
  */
 
-import request from '@/utils/request';
-import { API_MODULE_NAME } from '@/config';
+import request from '@/utils/request'
+import { API_MODULE_NAME } from '@/config'
 
 export function list(params) {
-  const { datasetId } = params;
-  delete params.datasetId;
+  const { datasetId } = params
+  delete params.datasetId
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function del(params) {
-  const datasetId = params.datasetIds;
-  delete params.datasetIds;
-  params.datasetIds = [datasetId];
+  const datasetId = params.datasetIds
+  delete params.datasetIds
+  params.datasetIds = [datasetId]
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/files`,
     method: 'delete',
     data: params,
-  });
+  })
 }
 
 export function submit(id, files) {
@@ -43,7 +43,7 @@ export function submit(id, files) {
     url: `/${API_MODULE_NAME.DATA}/datasets/${id}/files`,
     method: 'post',
     data: { files },
-  });
+  })
 }
 
 export function submitVideo(id, data) {
@@ -51,7 +51,7 @@ export function submitVideo(id, data) {
     url: `/${API_MODULE_NAME.DATA}/datasets/${id}/video`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function tableImport(data) {
@@ -59,25 +59,25 @@ export function tableImport(data) {
     url: `/${API_MODULE_NAME.DATA}/datasets/tableImport`,
     method: 'post',
     data,
-  });
+  })
 }
 
 export function getAudioDetail(params) {
-  const { datasetId } = params;
+  const { datasetId } = params
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files/audio`,
     method: 'get',
     params,
-  });
+  })
 }
 
 export function getCustomFileList(params) {
-  const { datasetId } = params;
+  const { datasetId } = params
   return request({
     url: `/${API_MODULE_NAME.DATA}/datasets/${datasetId}/files/filePage`,
     method: 'post',
     data: { ...params },
-  });
+  })
 }
 
-export default { list, del };
+export default { list, del }

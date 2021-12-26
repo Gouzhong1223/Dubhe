@@ -15,14 +15,14 @@
  */
 
 // 基础 Tooltip 组件，用于在手动标注页面框选标注，选择标签
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash'
 
-import { contains } from '@/utils';
-import BaseMixin from '@/mixins/baseMixin';
+import { contains } from '@/utils'
+import BaseMixin from '@/mixins/baseMixin'
 
-import './style.scss';
+import './style.scss'
 
-const addEventListener = require('add-dom-event-listener');
+const addEventListener = require('add-dom-event-listener')
 
 export default {
   name: 'BasicTooltip',
@@ -39,90 +39,94 @@ export default {
     hideTooltip: Function,
   },
   data() {
-    const visible = this.$props.visible || false;
+    const visible = this.$props.visible || false
     return {
       prevVisible: visible,
       curVisible: visible,
-    };
+    }
   },
   watch: {
     visible(val) {
       if (val !== undefined) {
-        this.prevVisible = this.curVisible;
-        this.curVisible = val;
+        this.prevVisible = this.curVisible
+        this.curVisible = val
       }
     },
   },
   methods: {
     update() {
-      this.clickOutsideHandler = addEventListener(document.body, 'mousedown', this.onDocumentClick);
+      this.clickOutsideHandler = addEventListener(
+        document.body,
+        'mousedown',
+        this.onDocumentClick,
+      )
     },
     close() {
       // 当前已关闭，没有必要重复执行
-      if (!this.curVisible) return;
-      const { hideTooltip } = this.$props;
+      if (!this.curVisible) return
+      const { hideTooltip } = this.$props
       // 是否通过外部控制
       if (isFunction(hideTooltip)) {
-        hideTooltip();
+        hideTooltip()
       } else {
-        this.setVisible(false);
+        this.setVisible(false)
       }
     },
     setVisible(visible) {
-      const { curVisible: prevVisible } = this;
+      const { curVisible: prevVisible } = this
       if (prevVisible !== visible) {
         this.setState({
           curVisible: visible,
           prevVisible,
-        });
+        })
       }
     },
     onDocumentClick(event) {
-      const { target } = event;
-      const root = this.$el;
+      const { target } = event
+      const root = this.$el
       // 过滤 popper
       // element popper 是挂在 document 下面，临时过滤
       if (!contains(root, target) && !target.closest('.el-popper')) {
-        this.close();
+        this.close()
       }
     },
     clearOutsideHandler() {
-      this.clickOutsideHandler.remove();
-      this.clickOutsideHandler = null;
+      this.clickOutsideHandler.remove()
+      this.clickOutsideHandler = null
     },
   },
   mounted() {
     this.$nextTick(() => {
-      this.update();
-    });
+      this.update()
+    })
   },
   beforeDestroy() {
-    this.clearOutsideHandler();
+    this.clearOutsideHandler()
   },
   render() {
-    const { position = {}, curVisible } = this;
+    const { position = {}, curVisible } = this
 
     // // this sucks~
-    const positionStyle = {};
+    const positionStyle = {}
     if (position.left) {
-      positionStyle.left = `${position.left || 0}px`;
+      positionStyle.left = `${position.left || 0}px`
     }
     if (position.right) {
-      positionStyle.right = `${position.right || 0}px`;
+      positionStyle.right = `${position.right || 0}px`
     }
     if (position.top) {
-      positionStyle.top = `${position.top || 0}px`;
+      positionStyle.top = `${position.top || 0}px`
     }
     if (position.bottom) {
-      positionStyle.bottom = `${position.bottom || 0}px`;
+      positionStyle.bottom = `${position.bottom || 0}px`
     }
 
-    if (!curVisible) return null;
+    if (!curVisible) return null
 
     return (
       <div class={`zj-tooltip basic-tooltip`} style={positionStyle}>
         {this.$slots.default}
       </div>
-    );
+    )
   },
-};
+}

@@ -1,18 +1,12 @@
-/** Copyright 2020 Tianshu AI Platform. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =============================================================
- */
+/** Copyright 2020 Tianshu AI Platform. All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. *
+============================================================= */
 
 <template>
   <div class="model-detail-container">
@@ -31,10 +25,10 @@
 </template>
 
 <script>
-import { MODEL_RESOURCE_MAP, RESOURCES_POOL_TYPE_MAP } from '@/utils';
+import { MODEL_RESOURCE_MAP, RESOURCES_POOL_TYPE_MAP } from '@/utils'
 
-import { parseObj } from '../../util';
-import KeyValueTable from '../keyValueTable';
+import { parseObj } from '../../util'
+import KeyValueTable from '../keyValueTable'
 
 // 用于标识展示字段的 Map
 const PARAM_KEY_MAP = new Map([
@@ -50,7 +44,7 @@ const PARAM_KEY_MAP = new Map([
   ['resourcesPoolSpecs', '节点规格'],
   ['resourcesPoolNode', '节点数量'],
   ['deployParams', '部署参数'],
-]);
+])
 
 export default {
   name: 'ModelDetail',
@@ -65,34 +59,34 @@ export default {
   data() {
     return {
       dictReady: false, // 需要判断字典数据是否完全拿到
-    };
+    }
   },
   computed: {
     paramList() {
       if (!this.dictReady) {
-        return [];
+        return []
       }
-      const result = [];
+      const result = []
       Array.from(PARAM_KEY_MAP.keys()).forEach((key) => {
         if (this.hasValue(key, this.model[key])) {
           result.push({
             label: PARAM_KEY_MAP.get(key),
             value: this.getValue(key, this.model[key]),
-          });
+          })
         }
-      });
-      return result;
+      })
+      return result
     },
   },
   created() {
     this.$on('dictReady', () => {
-      this.dictReady = true;
-    });
+      this.dictReady = true
+    })
   },
   methods: {
     hasValue(key, value) {
       if (value === null || value === undefined) {
-        return false;
+        return false
       }
 
       // 对于有特殊判断规则的字段单独判断
@@ -100,32 +94,34 @@ export default {
         case 'deployParams': {
           // 如果所有字段都为 null 则不展示
           return (
-            Object.keys(value).filter((key) => value[key] !== null && value[key] !== '').length > 0
-          );
+            Object.keys(value).filter(
+              (key) => value[key] !== null && value[key] !== '',
+            ).length > 0
+          )
         }
         default:
-          return true;
+          return true
       }
     },
     getValue(key, value) {
       switch (key) {
         case 'modelResource':
-          return MODEL_RESOURCE_MAP[value];
+          return MODEL_RESOURCE_MAP[value]
         case 'frameType':
-          return this.dict.label.frame_type[value];
+          return this.dict.label.frame_type[value]
         case 'resourcesPoolType':
-          return RESOURCES_POOL_TYPE_MAP[value];
+          return RESOURCES_POOL_TYPE_MAP[value]
         case 'deployParams':
-          return parseObj(value, '\n');
+          return parseObj(value, '\n')
         case 'imageName':
-          return `${this.model.imageName}:${this.model.imageTag}`;
+          return `${this.model.imageName}:${this.model.imageTag}`
         default:
           if (typeof value === 'object') {
-            return JSON.stringify(value);
+            return JSON.stringify(value)
           }
-          return value;
+          return value
       }
     },
   },
-};
+}
 </script>

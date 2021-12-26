@@ -14,15 +14,22 @@
  * =============================================================
  */
 
-import { BasicTooltip } from '@/hooks';
-import './style.scss';
+import { BasicTooltip } from '@/hooks'
+import './style.scss'
 
 const DropDownLabel = {
   name: 'DropDownLabel',
   functional: true,
   render(h, context) {
-    const { props } = context;
-    const { visible, position, hideTooltip, value, handleChange, labels = [] } = props;
+    const { props } = context
+    const {
+      visible,
+      position,
+      hideTooltip,
+      value,
+      handleChange,
+      labels = [],
+    } = props
     return (
       <BasicTooltip
         class="dropdown-label"
@@ -40,12 +47,16 @@ const DropDownLabel = {
           placeholder="请选择标签"
         >
           {labels.map((label) => (
-            <el-option key={label.id} label={label.name} value={label.id}></el-option>
+            <el-option
+              key={label.id}
+              label={label.name}
+              value={label.id}
+            ></el-option>
           ))}
         </el-select>
       </BasicTooltip>
-    );
+    )
   },
-};
+}
 
-export default DropDownLabel;
+export default DropDownLabel

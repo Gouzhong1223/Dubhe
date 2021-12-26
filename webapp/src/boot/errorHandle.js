@@ -14,46 +14,46 @@
  * =============================================================
  */
 
-import Vue from 'vue';
-import { Message, MessageBox } from 'element-ui';
-import store from '@/store';
+import Vue from 'vue'
+import { Message, MessageBox } from 'element-ui'
+import store from '@/store'
 
-const UNAUTHORIZED = 401; // 未授权
-const TOKENEXPIRE = 20012; // Token 失效
+const UNAUTHORIZED = 401 // 未授权
+const TOKENEXPIRE = 20012 // Token 失效
 
-let isMsgOn = false;
+let isMsgOn = false
 
 // 全局未捕获异常处理（包括普通异常和 await 未被捕获的异常）
 Vue.config.errorHandler = (err) => {
-  if (!err) return;
-  console.error(err);
+  if (!err) return
+  console.error(err)
   // 未授权只提示一次
   if (err.code === UNAUTHORIZED) {
-    if (isMsgOn === true) return;
-    isMsgOn = true;
+    if (isMsgOn === true) return
+    isMsgOn = true
   }
   if (err.name !== 'AssertError' && err.message) {
     Message.error({
       message: err.message,
       onClose: () => {
-        isMsgOn = false;
+        isMsgOn = false
       },
-    });
+    })
   } else {
-    isMsgOn = false;
+    isMsgOn = false
   }
-};
+}
 
 // 只针对 promise 异步捕获
 // eslint-disable-next-line func-names
 window.addEventListener('unhandledrejection', function(event) {
-  const { reason } = event;
+  const { reason } = event
   if (reason) {
     // 未授权
     if (reason.code === TOKENEXPIRE) {
       // 弹窗只允许一次
-      if (isMsgOn === true) return;
-      isMsgOn = true;
+      if (isMsgOn === true) return
+      isMsgOn = true
       // Token 失效
       MessageBox.confirm('您已经登出，请重新登录', '请登录', {
         confirmButtonText: '确认',
@@ -63,29 +63,29 @@ window.addEventListener('unhandledrejection', function(event) {
         .then(() => {
           // 此处调用 store lotout
           store.dispatch('LogOut').then(() => {
-            window.location.pathname !== '/login' && window.location.reload();
-          });
+            window.location.pathname !== '/login' && window.location.reload()
+          })
         })
         .finally(() => {
-          isMsgOn = false;
-        });
-      return;
+          isMsgOn = false
+        })
+      return
     }
     if (reason.code === UNAUTHORIZED) {
       // 未授权提醒只展示一次
-      if (isMsgOn === true) return;
-      isMsgOn = true;
+      if (isMsgOn === true) return
+      isMsgOn = true
     }
 
     if (reason.message) {
       Message.error({
         message: reason.message,
         onClose: () => {
-          isMsgOn = false;
+          isMsgOn = false
         },
-      });
+      })
     } else {
-      isMsgOn = false;
+      isMsgOn = false
     }
   }
-});
+})

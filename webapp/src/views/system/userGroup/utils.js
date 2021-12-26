@@ -14,7 +14,7 @@
  * =============================================================
  */
 
-import { validateNameWithHyphen, hasPermission } from '@/utils';
+import { validateNameWithHyphen, hasPermission } from '@/utils'
 
 // 用户组列表项
 export function getColumns({
@@ -90,7 +90,7 @@ export function getColumns({
         },
       ],
     },
-  ];
+  ]
 }
 
 // 用户组表单项
@@ -112,7 +112,7 @@ export const groupFormItems = [
     showWordLimit: true,
     placeholder: '请输入用户组描述',
   },
-];
+]
 
 // 用户组表单校验规则
 export const groupFormRules = {
@@ -125,7 +125,7 @@ export const groupFormRules = {
     },
   ],
   description: [{ max: 255, message: '长度在255个字符以内', trigger: 'blur' }],
-};
+}
 
 // 用户组搜索表单项
 export const queryFormItems = [
@@ -146,7 +146,7 @@ export const queryFormItems = [
     btnType: 'primary',
     func: 'query',
   },
-];
+]
 
 // 用户组用户列表项
 export function getUserColumns({ doDeleteUserFromGroup }) {
@@ -171,7 +171,7 @@ export function getUserColumns({ doDeleteUserFromGroup }) {
         },
       ],
     },
-  ];
+  ]
 }
 
 // 批量编辑用户权限表单项
@@ -183,7 +183,7 @@ export function getRoleEditFormItems(roleList) {
       prop: 'roleId',
       options: roleList.map((role) => ({ label: role.name, value: role.id })),
     },
-  ];
+  ]
 }
 
 // 批量编辑用户权限表单校验规则
@@ -195,4 +195,4 @@ export const roleEditRules = {
       trigger: 'manual',
     },
   ],
-};
+}
