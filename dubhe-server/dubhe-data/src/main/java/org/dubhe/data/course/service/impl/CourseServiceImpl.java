@@ -141,9 +141,6 @@ public class CourseServiceImpl implements CourseService {
             courseDetailDTO.setStartTime(courseSchedule.getStartTime());
             courseDetailDTO.setLastStudyTime(courseSchedule.getLastUpdateTime());
             courseDetailDTO.setDone(courseSchedule.getDone());
-            courseDetailDTO.setFileUrl(course.getCoverImage());
-            courseDetailDTO.setStatus(course.getStatus());
-            courseDetailDTO.setCoverImageId(course.getCoverImageId());
         } else {
             // 如果没有学习记录则将进度相关变量设置为默认值
             courseDetailDTO.setFinishChapter(DEFAULT_FINISH_CHAPTER);
@@ -151,10 +148,10 @@ public class CourseServiceImpl implements CourseService {
             courseDetailDTO.setStartTime(null);
             courseDetailDTO.setLastStudyTime(null);
             courseDetailDTO.setDone(DEFAULT_DONE);
-            courseDetailDTO.setFileUrl(course.getCoverImage());
-            courseDetailDTO.setStatus(course.getStatus());
-            courseDetailDTO.setCoverImageId(course.getCoverImageId());
         }
+        courseDetailDTO.setFileUrl(course.getCoverImage());
+        courseDetailDTO.setStatus(course.getStatus());
+        courseDetailDTO.setCoverImageId(course.getCoverImageId());
         return courseDetailDTO;
     }
 
