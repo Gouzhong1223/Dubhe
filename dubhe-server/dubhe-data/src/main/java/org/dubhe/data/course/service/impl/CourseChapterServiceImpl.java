@@ -203,7 +203,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         Course course = courseMapper.selectByPrimaryKey(courseChapter.getCourseId());
         course.setTotalChapters(course.getTotalChapters() - 1);
         course.setUpdateTime(LocalDateTime.now());
-
+        courseMapper.updateByPrimaryKeySelective(course);
         // 返回
         return DataResponseFactory.success();
     }
