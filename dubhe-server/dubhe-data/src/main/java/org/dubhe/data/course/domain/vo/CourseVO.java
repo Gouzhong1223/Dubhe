@@ -1,4 +1,4 @@
-package org.dubhe.data.course.domain.dto;
+package org.dubhe.data.course.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class CourseDetailDTO {
+public class CourseVO {
     /**
      * 课程 ID
      */

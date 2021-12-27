@@ -14,8 +14,8 @@ import org.dubhe.data.course.domain.CourseFile;
 import org.dubhe.data.course.domain.CourseSchedule;
 import org.dubhe.data.course.domain.CourseType;
 import org.dubhe.data.course.domain.dto.CourseCreateDTO;
-import org.dubhe.data.course.domain.dto.CourseDetailDTO;
-import org.dubhe.data.course.domain.dto.CourseTypeDetailDTO;
+import org.dubhe.data.course.domain.vo.CourseTypeVO;
+import org.dubhe.data.course.domain.vo.CourseVO;
 import org.dubhe.data.course.domain.dto.CourseUpdateDTO;
 import org.dubhe.data.course.service.CourseService;
 import org.springframework.stereotype.Service;
@@ -80,15 +80,15 @@ public class CourseServiceImpl implements CourseService {
         List<CourseType> courseTypes = courseTypeMapper.selectAll();
 
         // 根据分类查询所有的课程并且组装 courseDTO
-        ArrayList<CourseTypeDetailDTO> courseTypeDetailDTOS = new ArrayList<>();
+        ArrayList<CourseTypeVO> courseTypeVOS = new ArrayList<>();
 
         courseTypes.forEach(e -> {
-            // 构建 courseTypeDetailDTO
-            CourseTypeDetailDTO courseTypeDetailDTO = new CourseTypeDetailDTO();
-            courseTypeDetailDTO.setCourseTypeId(e.getId());
-            courseTypeDetailDTO.setCourseTypeName(e.getName());
-            // 构建 CourseDetailDTO 列表
-            ArrayList<CourseDetailDTO> courseDetailDTOS = new ArrayList<>();
+            // 构建 courseTypeVO
+            CourseTypeVO courseTypeVO = new CourseTypeVO();
+            courseTypeVO.setCourseTypeId(e.getId());
+            courseTypeVO.setCourseTypeName(e.getName());
+            // 构建 CourseVO 列表
+            ArrayList<CourseVO> courseVOS = new ArrayList<>();
 
             // 根据课程类型 ID 查询 Course
             List<Course> courses;
@@ -100,59 +100,59 @@ public class CourseServiceImpl implements CourseService {
                 courses = courseMapper.selectAllByTypeAndStatus(e.getId(), DEFAULT_COURSE_STATUS);
             }
             courses.forEach(course -> {
-                CourseDetailDTO courseDetailDTO = generateCourseDetailDTO(userId, course);
+                CourseVO courseVO = generateCourseVO(userId, course);
                 // 添加结果集
-                courseDetailDTOS.add(courseDetailDTO);
+                courseVOS.add(courseVO);
             });
 
-            // 设置 courseTypeDetailDTO 的 Course 为 courseDetailDTOS
-            courseTypeDetailDTO.setCourses(courseDetailDTOS);
+            // 设置 courseTypeVO 的 Course 为 courseVOS
+            courseTypeVO.setCourses(courseVOS);
 
-            // 将组装的 courseTypeDetailDTO 添加到结果集
-            courseTypeDetailDTOS.add(courseTypeDetailDTO);
+            // 将组装的 courseTypeVO 添加到结果集
+            courseTypeVOS.add(courseTypeVO);
         });
-        return new DataResponseBody<>(courseTypeDetailDTOS);
+        return new DataResponseBody<>(courseTypeVOS);
     }
 
     /**
-     * 根据 userId 和 courseID 生成 CourseDetailDTO
+     * 根据 userId 和 courseID 生成 CourseVO
      *
      * @param userId userId
      * @param course course
-     * @return CourseDetailDTO
+     * @return CourseVO
      */
-    private CourseDetailDTO generateCourseDetailDTO(Long userId, Course course) {
+    private CourseVO generateCourseVO(Long userId, Course course) {
         // 根据 userId 和 courseId 查询学习进度
         CourseSchedule courseSchedule = courseScheduleMapper.selectOneByUserIdAndCourseId(userId, course.getId());
-        CourseDetailDTO courseDetailDTO = new CourseDetailDTO();
+        CourseVO courseVO = new CourseVO();
         // 设置课程 ID
-        courseDetailDTO.setCourseId(course.getId());
+        courseVO.setCourseId(course.getId());
         // 设置课程名字
-        courseDetailDTO.setCourseName(course.getName());
+        courseVO.setCourseName(course.getName());
         // 设置课程简介
-        courseDetailDTO.setIntroduction(course.getIntroduction());
+        courseVO.setIntroduction(course.getIntroduction());
         // 设置总章节
-        courseDetailDTO.setTotalChapter(course.getTotalChapters());
+        courseVO.setTotalChapter(course.getTotalChapters());
         // 判断用户是否有学习记录
         if (courseSchedule != null) {
             // 有学习记录则从 courseSchedule 中取
-            courseDetailDTO.setFinishChapter(courseSchedule.getLearnedChapterNum());
-            courseDetailDTO.setSchedule(courseSchedule.getSchedule());
-            courseDetailDTO.setStartTime(courseSchedule.getStartTime());
-            courseDetailDTO.setLastStudyTime(courseSchedule.getLastUpdateTime());
-            courseDetailDTO.setDone(courseSchedule.getDone());
+            courseVO.setFinishChapter(courseSchedule.getLearnedChapterNum());
+            courseVO.setSchedule(courseSchedule.getSchedule());
+            courseVO.setStartTime(courseSchedule.getStartTime());
+            courseVO.setLastStudyTime(courseSchedule.getLastUpdateTime());
+            courseVO.setDone(courseSchedule.getDone());
         } else {
             // 如果没有学习记录则将进度相关变量设置为默认值
-            courseDetailDTO.setFinishChapter(DEFAULT_FINISH_CHAPTER);
-            courseDetailDTO.setSchedule(DEFAULT_SCHEDULE);
-            courseDetailDTO.setStartTime(null);
-            courseDetailDTO.setLastStudyTime(null);
-            courseDetailDTO.setDone(DEFAULT_DONE);
+            courseVO.setFinishChapter(DEFAULT_FINISH_CHAPTER);
+            courseVO.setSchedule(DEFAULT_SCHEDULE);
+            courseVO.setStartTime(null);
+            courseVO.setLastStudyTime(null);
+            courseVO.setDone(DEFAULT_DONE);
         }
-        courseDetailDTO.setFileUrl(course.getCoverImage());
-        courseDetailDTO.setStatus(course.getStatus());
-        courseDetailDTO.setCoverImageId(course.getCoverImageId());
-        return courseDetailDTO;
+        courseVO.setFileUrl(course.getCoverImage());
+        courseVO.setStatus(course.getStatus());
+        courseVO.setCoverImageId(course.getCoverImageId());
+        return courseVO;
     }
 
     @Override
@@ -175,7 +175,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public DataResponseBody updateCourse(CourseUpdateDTO courseUpdateDTO) {
-        Course courseRecord = updateCourseFromDTO(courseUpdateDTO);
+        Course courseRecord = getCourseDO(courseUpdateDTO);
         if (courseRecord == null) {
             return new DataResponseBody(ResponseCode.ERROR, "封面图 ID 不存在!");
         }
@@ -215,7 +215,7 @@ public class CourseServiceImpl implements CourseService {
      * @param courseUpdateDTO courseUpdateDTO
      * @return Course
      */
-    private Course updateCourseFromDTO(CourseUpdateDTO courseUpdateDTO) {
+    private Course getCourseDO(CourseUpdateDTO courseUpdateDTO) {
         Course courseRecord = courseMapper.selectByPrimaryKey(courseUpdateDTO.getCourseId());
         CourseFile courseFile = courseFileMapper.selectByPrimaryKey(courseUpdateDTO.getCoverImageId());
         if (courseFile == null) {

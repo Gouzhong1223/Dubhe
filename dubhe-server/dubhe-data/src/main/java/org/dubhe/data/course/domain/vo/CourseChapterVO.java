@@ -1,4 +1,4 @@
-package org.dubhe.data.course.domain.dto;
+package org.dubhe.data.course.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 /**
  * @Author : Gouzhong
  * @Blog : www.gouzhong1223.com
- * @Description : CourseChapterDetailDTO
+ * @Description : CourseChapterVO
  * @Date : create by QingSong in 2021-12-06 20:52
  * @Email : gouzhong1223@gmail.com
  * @Since : JDK 1.8
- * @PackageName : org.dubhe.course.domain.dto
+ * @PackageName : org.dubhe.course.domain.vo
  * @ProjectName : Dubhe
  * @Version : 1.0.0
  */
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CourseChapterDetailDTO {
+public class CourseChapterVO {
     /**
      * 章节 ID
      */

@@ -1,4 +1,4 @@
-package org.dubhe.data.course.domain.dto.admin;
+package org.dubhe.data.course.domain.vo.admin;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.dubhe.data.course.domain.Course;
 import org.dubhe.data.course.domain.CourseChapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ACourseDetailDTO {
+public class ACourseVO {
     /**
      * 课程
      */

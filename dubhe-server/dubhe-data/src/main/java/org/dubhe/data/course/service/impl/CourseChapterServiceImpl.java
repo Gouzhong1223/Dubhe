@@ -8,10 +8,10 @@ import org.dubhe.biz.permission.base.BaseService;
 import org.dubhe.data.course.dao.*;
 import org.dubhe.data.course.domain.*;
 import org.dubhe.data.course.domain.dto.CourseChapterCreateDTO;
-import org.dubhe.data.course.domain.dto.CourseChapterDetailDTO;
+import org.dubhe.data.course.domain.vo.CourseChapterVO;
 import org.dubhe.data.course.domain.dto.CourseChapterUpdateDTO;
-import org.dubhe.data.course.domain.dto.admin.ACourseDetailDTO;
-import org.dubhe.data.course.domain.dto.admin.ACourseTypeDetailDTO;
+import org.dubhe.data.course.domain.vo.admin.ACourseVO;
+import org.dubhe.data.course.domain.vo.admin.ACourseTypeVO;
 import org.dubhe.data.course.service.CourseChapterService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,6 @@ public class CourseChapterServiceImpl implements CourseChapterService {
     private final CourseFileMapper courseFileMapper;
     private final CourseScheduleMapper courseScheduleMapper;
     private final CourseMapper courseMapper;
-    private final CourseUserScheduleMapper courseUserScheduleMapper;
     private final CourseTypeMapper courseTypeMapper;
 
     public CourseChapterServiceImpl(CourseChapterScheduleMapper courseChapterScheduleMapper,
@@ -49,7 +48,6 @@ public class CourseChapterServiceImpl implements CourseChapterService {
                                     CourseFileMapper courseFileMapper,
                                     CourseScheduleMapper courseScheduleMapper,
                                     CourseMapper courseMapper,
-                                    CourseUserScheduleMapper courseUserScheduleMapper,
                                     CourseTypeMapper courseTypeMapper) {
         this.courseChapterScheduleMapper = courseChapterScheduleMapper;
         this.userContextService = userContextService;
@@ -57,7 +55,6 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         this.courseFileMapper = courseFileMapper;
         this.courseScheduleMapper = courseScheduleMapper;
         this.courseMapper = courseMapper;
-        this.courseUserScheduleMapper = courseUserScheduleMapper;
         this.courseTypeMapper = courseTypeMapper;
     }
 
@@ -68,16 +65,16 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         // 根据当前课程 ID 查询所有章节
         List<CourseChapter> courseChapters = courseChapterMapper.selectAllByCourseId(courseId);
         // 构建返回结果集
-        ArrayList<CourseChapterDetailDTO> courseChapterDetailDTOS = new ArrayList<>();
+        ArrayList<CourseChapterVO> courseChapterVOS = new ArrayList<>();
         courseChapters.forEach(e -> {
-            // courseChapterDetailDTO 模型转换
-            CourseChapterDetailDTO courseChapterDetailDTO = getCourseChapterDetailDTO(courseId, userId, e);
-            // 将 courseChapterDetailDTO 添加到结果集
-            courseChapterDetailDTOS.add(courseChapterDetailDTO);
+            // courseChapterVO 模型转换
+            CourseChapterVO courseChapterVO = getCourseChapterVO(courseId, userId, e);
+            // 将 courseChapterVO 添加到结果集
+            courseChapterVOS.add(courseChapterVO);
         });
         // 按照章节序号排序
-        courseChapterDetailDTOS.sort(Comparator.comparingInt(CourseChapterDetailDTO::getSerialNumber));
-        return DataResponseFactory.success(courseChapterDetailDTOS);
+        courseChapterVOS.sort(Comparator.comparingInt(CourseChapterVO::getSerialNumber));
+        return DataResponseFactory.success(courseChapterVOS);
     }
 
     @Override
@@ -139,7 +136,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         if (courseFile == null) {
             return DataResponseFactory.failed("文件不存在!");
         }
-        CourseChapter courseChapter = getCourseChapter(courseChapterCreateDTO);
+        CourseChapter courseChapter = getCourseChapterDO(courseChapterCreateDTO);
         courseChapterMapper.insertSelective(courseChapter);
         updateCourseSchedules(course);
         return DataResponseFactory.success(courseChapter);
@@ -159,7 +156,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         if (courseChapter == null) {
             return DataResponseFactory.failed("章节 ID 不存在");
         }
-        extracted(courseChapterUpdateDTO, courseChapter);
+        extractedCourseChapterDO(courseChapterUpdateDTO, courseChapter);
         courseChapterMapper.updateByPrimaryKeySelective(courseChapter);
         return DataResponseFactory.success(courseChapter);
     }
@@ -219,23 +216,23 @@ public class CourseChapterServiceImpl implements CourseChapterService {
         // 获取所有课程分类
         List<CourseType> courseTypes = courseTypeMapper.selectAll();
         // 构造结果集
-        ArrayList<ACourseTypeDetailDTO> resultList = new ArrayList<>();
+        ArrayList<ACourseTypeVO> resultList = new ArrayList<>();
         courseTypes.forEach(courseType -> {
-            ACourseTypeDetailDTO aCourseTypeDetailDTO = new ACourseTypeDetailDTO();
-            aCourseTypeDetailDTO.setCourseType(courseType);
+            ACourseTypeVO aCourseTypeVO = new ACourseTypeVO();
+            aCourseTypeVO.setCourseType(courseType);
             // 根据课程分类查询所有的课程
             List<Course> courses = courseMapper.selectAllByType(courseType.getId());
-            ArrayList<ACourseDetailDTO> aCourseDetailDTOS = new ArrayList<>();
+            ArrayList<ACourseVO> aCourseVOS = new ArrayList<>();
             courses.forEach(course -> {
-                ACourseDetailDTO aCourseDetailDTO = new ACourseDetailDTO();
-                aCourseDetailDTO.setCourse(course);
+                ACourseVO aCourseVO = new ACourseVO();
+                aCourseVO.setCourse(course);
                 // 根据课程 ID 查询所有的章节
                 List<CourseChapter> courseChapters = courseChapterMapper.selectAllByCourseId(course.getId());
-                aCourseDetailDTO.setCourseChapters(courseChapters);
-                aCourseDetailDTOS.add(aCourseDetailDTO);
+                aCourseVO.setCourseChapters(courseChapters);
+                aCourseVOS.add(aCourseVO);
             });
-            aCourseTypeDetailDTO.setACourseDetailDTOS(aCourseDetailDTOS);
-            resultList.add(aCourseTypeDetailDTO);
+            aCourseTypeVO.setACourseVOS(aCourseVOS);
+            resultList.add(aCourseTypeVO);
         });
         return DataResponseFactory.success(resultList);
     }
@@ -250,9 +247,9 @@ public class CourseChapterServiceImpl implements CourseChapterService {
      * 将 courseChapterUpdateDTO 映射到 courseChapter
      *
      * @param courseChapterUpdateDTO 修改信息
-     * @param courseChapter          courseChapter
+     * @param courseChapter          courseChapterDO
      */
-    private void extracted(CourseChapterUpdateDTO courseChapterUpdateDTO, CourseChapter courseChapter) {
+    private void extractedCourseChapterDO(CourseChapterUpdateDTO courseChapterUpdateDTO, CourseChapter courseChapter) {
         courseChapter.setCourseId(courseChapterUpdateDTO.getCourseId());
         courseChapter.setName(courseChapterUpdateDTO.getCourseChapterName());
         courseChapter.setSerialNumber(courseChapterUpdateDTO.getSerialNumber());
@@ -268,7 +265,7 @@ public class CourseChapterServiceImpl implements CourseChapterService {
      * @param courseChapterCreateDTO courseChapterCreateDTO
      * @return CourseChapter
      */
-    private CourseChapter getCourseChapter(CourseChapterCreateDTO courseChapterCreateDTO) {
+    private CourseChapter getCourseChapterDO(CourseChapterCreateDTO courseChapterCreateDTO) {
         return CourseChapter.builder()
                 .id(null)
                 .name(courseChapterCreateDTO.getCourseChapterName())
@@ -351,43 +348,43 @@ public class CourseChapterServiceImpl implements CourseChapterService {
      * @param courseId courseId
      * @param userId   userId
      * @param e        CourseChapter
-     * @return CourseChapterDetailDTO
+     * @return CourseChapterVO
      */
-    private CourseChapterDetailDTO getCourseChapterDetailDTO(Long courseId, Long userId, CourseChapter e) {
+    private CourseChapterVO getCourseChapterVO(Long courseId, Long userId, CourseChapter e) {
         // 根据 userId,课程 ID,章节 ID 查询学习记录
         CourseChapterSchedule courseChapterSchedule = courseChapterScheduleMapper.selectOneByUserIdAndChapterIdAndCourseId(userId, e.getId(), courseId);
-        // 构建 CourseChapterDetailDTO
-        CourseChapterDetailDTO courseChapterDetailDTO = new CourseChapterDetailDTO();
+        // 构建 CourseChapterVO
+        CourseChapterVO courseChapterVO = new CourseChapterVO();
         // 根据文件 ID 查询 courseFile
         CourseFile courseFile = courseFileMapper.selectByPrimaryKey(e.getFileId());
 
         // 设置 ID
-        courseChapterDetailDTO.setChapterId(e.getId());
+        courseChapterVO.setChapterId(e.getId());
         // 设置章节名字
-        courseChapterDetailDTO.setChapterName(e.getName());
+        courseChapterVO.setChapterName(e.getName());
         // 设置章节序号
-        courseChapterDetailDTO.setSerialNumber(e.getSerialNumber());
+        courseChapterVO.setSerialNumber(e.getSerialNumber());
         // 设置章节简介
-        courseChapterDetailDTO.setIntroduction(e.getIntroduction());
+        courseChapterVO.setIntroduction(e.getIntroduction());
         // 设置章节内容类型
-        courseChapterDetailDTO.setChapterType(e.getChapterType());
+        courseChapterVO.setChapterType(e.getChapterType());
         // 设置课程 ID
-        courseChapterDetailDTO.setCourseId(e.getCourseId());
+        courseChapterVO.setCourseId(e.getCourseId());
         // 设置文件 URL
-        courseChapterDetailDTO.setFileUrl(courseFile.getUrl());
+        courseChapterVO.setFileUrl(courseFile.getUrl());
         // 设置章节文件 ID
-        courseChapterDetailDTO.setFileId(courseFile.getId());
-        courseChapterDetailDTO.setCreateTime(e.getCreateTime());
-        courseChapterDetailDTO.setUpdateTime(e.getUpdateTime());
-        courseChapterDetailDTO.setFileName(courseFile.getName());
+        courseChapterVO.setFileId(courseFile.getId());
+        courseChapterVO.setCreateTime(e.getCreateTime());
+        courseChapterVO.setUpdateTime(e.getUpdateTime());
+        courseChapterVO.setFileName(courseFile.getName());
         // 判断用户是否有学习记录
         if (courseChapterSchedule == null) {
             // 没有学习记录
-            courseChapterDetailDTO.setLearned(0);
+            courseChapterVO.setLearned(0);
         } else {
             // 有学习记录
-            courseChapterDetailDTO.setLearned(1);
+            courseChapterVO.setLearned(1);
         }
-        return courseChapterDetailDTO;
+        return courseChapterVO;
     }
 }

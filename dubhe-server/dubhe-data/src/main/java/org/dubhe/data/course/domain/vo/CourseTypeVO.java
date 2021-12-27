@@ -1,9 +1,10 @@
-package org.dubhe.data.course.domain.dto;
+package org.dubhe.data.course.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dubhe.data.course.domain.vo.CourseVO;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Data
 @Builder
-public class CourseTypeDetailDTO {
+public class CourseTypeVO {
     /**
      * 课程分类 ID
      */
@@ -34,5 +35,5 @@ public class CourseTypeDetailDTO {
     /**
      * 课程 DTO
      */
-    private ArrayList<CourseDetailDTO> courses;
+    private ArrayList<CourseVO> courses;
 }
